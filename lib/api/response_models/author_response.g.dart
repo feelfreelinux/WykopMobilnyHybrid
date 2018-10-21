@@ -1,0 +1,183 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'author_response.dart';
+
+// **************************************************************************
+// BuiltValueGenerator
+// **************************************************************************
+
+// ignore_for_file: always_put_control_body_on_new_line
+// ignore_for_file: annotate_overrides
+// ignore_for_file: avoid_annotating_with_dynamic
+// ignore_for_file: avoid_catches_without_on_clauses
+// ignore_for_file: avoid_returning_this
+// ignore_for_file: lines_longer_than_80_chars
+// ignore_for_file: omit_local_variable_types
+// ignore_for_file: prefer_expression_function_bodies
+// ignore_for_file: sort_constructors_first
+// ignore_for_file: unnecessary_const
+// ignore_for_file: unnecessary_new
+// ignore_for_file: test_types_in_equals
+
+Serializer<AuthorResponse> _$authorResponseSerializer =
+    new _$AuthorResponseSerializer();
+
+class _$AuthorResponseSerializer
+    implements StructuredSerializer<AuthorResponse> {
+  @override
+  final Iterable<Type> types = const [AuthorResponse, _$AuthorResponse];
+  @override
+  final String wireName = 'AuthorResponse';
+
+  @override
+  Iterable serialize(Serializers serializers, AuthorResponse object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[
+      'color',
+      serializers.serialize(object.color, specifiedType: const FullType(num)),
+      'avatar',
+      serializers.serialize(object.avatar,
+          specifiedType: const FullType(String)),
+      'login',
+      serializers.serialize(object.login,
+          specifiedType: const FullType(String)),
+    ];
+
+    return result;
+  }
+
+  @override
+  AuthorResponse deserialize(Serializers serializers, Iterable serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new AuthorResponseBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'color':
+          result.color = serializers.deserialize(value,
+              specifiedType: const FullType(num)) as num;
+          break;
+        case 'avatar':
+          result.avatar = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'login':
+          result.login = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$AuthorResponse extends AuthorResponse {
+  @override
+  final num color;
+  @override
+  final String avatar;
+  @override
+  final String login;
+
+  factory _$AuthorResponse([void updates(AuthorResponseBuilder b)]) =>
+      (new AuthorResponseBuilder()..update(updates)).build();
+
+  _$AuthorResponse._({this.color, this.avatar, this.login}) : super._() {
+    if (color == null) {
+      throw new BuiltValueNullFieldError('AuthorResponse', 'color');
+    }
+    if (avatar == null) {
+      throw new BuiltValueNullFieldError('AuthorResponse', 'avatar');
+    }
+    if (login == null) {
+      throw new BuiltValueNullFieldError('AuthorResponse', 'login');
+    }
+  }
+
+  @override
+  AuthorResponse rebuild(void updates(AuthorResponseBuilder b)) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  AuthorResponseBuilder toBuilder() =>
+      new AuthorResponseBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is AuthorResponse &&
+        color == other.color &&
+        avatar == other.avatar &&
+        login == other.login;
+  }
+
+  @override
+  int get hashCode {
+    return $jf(
+        $jc($jc($jc(0, color.hashCode), avatar.hashCode), login.hashCode));
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper('AuthorResponse')
+          ..add('color', color)
+          ..add('avatar', avatar)
+          ..add('login', login))
+        .toString();
+  }
+}
+
+class AuthorResponseBuilder
+    implements Builder<AuthorResponse, AuthorResponseBuilder> {
+  _$AuthorResponse _$v;
+
+  num _color;
+  num get color => _$this._color;
+  set color(num color) => _$this._color = color;
+
+  String _avatar;
+  String get avatar => _$this._avatar;
+  set avatar(String avatar) => _$this._avatar = avatar;
+
+  String _login;
+  String get login => _$this._login;
+  set login(String login) => _$this._login = login;
+
+  AuthorResponseBuilder();
+
+  AuthorResponseBuilder get _$this {
+    if (_$v != null) {
+      _color = _$v.color;
+      _avatar = _$v.avatar;
+      _login = _$v.login;
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(AuthorResponse other) {
+    if (other == null) {
+      throw new ArgumentError.notNull('other');
+    }
+    _$v = other as _$AuthorResponse;
+  }
+
+  @override
+  void update(void updates(AuthorResponseBuilder b)) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  _$AuthorResponse build() {
+    final _$result = _$v ??
+        new _$AuthorResponse._(color: color, avatar: avatar, login: login);
+    replace(_$result);
+    return _$result;
+  }
+}
