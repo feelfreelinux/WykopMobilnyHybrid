@@ -16,7 +16,7 @@ class EntryWidget extends StatelessWidget {
         elevation: 0.9,
         child: Column(
           children: <Widget>[
-            AuthorWidget(author: entry.author),
+            AuthorWidget(author: entry.author, date: entry.date),
             EntryBodyWidget(entry: entry),
             EntryFooterWidget(entry: entry),
           ],
@@ -28,7 +28,7 @@ class EntryWidget extends StatelessWidget {
         elevation: 0.9,
         child: Column(
           children: <Widget>[
-            AuthorWidget(author: entry.author),
+            AuthorWidget(author: entry.author, date: entry.date),
             EntryBodyWidget(entry: entry),
             EntryEmbedWidget(embed: entry.embed),
             EntryFooterWidget(entry: entry),

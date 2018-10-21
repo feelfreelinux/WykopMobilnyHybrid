@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/models/models.dart';
-import 'package:flutter/material.dart';
+import 'package:owmflutter/utils/utils.dart';
 
 class AuthorWidget extends StatelessWidget {
   final Author author;
-  AuthorWidget({this.author});
+  final String date;
+  AuthorWidget({this.author, this.date});
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +23,17 @@ class AuthorWidget extends StatelessWidget {
                   image: new DecorationImage(
                       fit: BoxFit.fill,
                       image: new NetworkImage(author.avatar)))),
-          new Container(
-            padding: EdgeInsets.symmetric(horizontal: 4.0),
-            child: Text(author.login),
-          )
+          new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              new Container(
+                padding: EdgeInsets.symmetric(horizontal: 4.0),
+                child: Text(author.login, style: TextStyle(color: Utils.getAuthorColor(author, context)))),
+              new Container(
+                padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
+                child: Text(Utils.getSimpleDate(date), style: TextStyle(fontSize: 10.0, color: Theme.of(context).textTheme.caption.color))),
+              ]),
+            
         ],
       ),
     );

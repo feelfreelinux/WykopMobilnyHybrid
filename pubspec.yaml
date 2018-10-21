@@ -17,6 +17,7 @@ dependencies:
   dio: ^1.0.6
   path_provider: ^0.4.1
   html2md: ^0.2.1
+  timeago: ^2.0.8
 
 dev_dependencies:
   build_runner: ^1.0.0
