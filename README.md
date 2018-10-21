@@ -1,8 +1,7 @@
 # owmflutter
 
-A new Flutter project.
+Hybrid port of WykopMobilny
 
 ## Getting Started
 
-For help getting started with Flutter, view our online
-[documentation](https://flutter.io/).
+Set your wykop keys to assets/ secrets.json as shown in assets/secrets.example.json
