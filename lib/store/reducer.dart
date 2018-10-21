@@ -1,6 +1,6 @@
 import 'package:redux/redux.dart';
 import 'package:owmflutter/store/store.dart';
-import 'package:owmflutter/api/api.dart';
+import 'package:owmflutter/models/models.dart';
 import 'package:built_collection/built_collection.dart';
 
 AppState appReducer(AppState state, action) {
@@ -8,12 +8,12 @@ AppState appReducer(AppState state, action) {
       (b) => b..entries.replace(entriesReducer(state.entries, action)));
 }
 
-Reducer<BuiltList<EntryResponse>> entriesReducer =
-    combineReducers<BuiltList<EntryResponse>>([
-  TypedReducer<BuiltList<EntryResponse>, SetEntriesAction>(_setEntriesAction)
+Reducer<BuiltList<Entry>> entriesReducer =
+    combineReducers<BuiltList<Entry>>([
+  TypedReducer<BuiltList<Entry>, SetEntriesAction>(_setEntriesAction)
 ]);
 
-BuiltList<EntryResponse> _setEntriesAction(
-    BuiltList<EntryResponse> state, SetEntriesAction action) {
+BuiltList<Entry> _setEntriesAction(
+    BuiltList<Entry> state, SetEntriesAction action) {
   return state.rebuild((b) => b..replace(action.entries));
 }

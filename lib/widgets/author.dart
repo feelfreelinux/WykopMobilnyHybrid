@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:owmflutter/api/api.dart';
+import 'package:owmflutter/models/models.dart';
 import 'package:flutter/material.dart';
 
 class AuthorWidget extends StatelessWidget {
-  final EntryAuthor author;
+  final Author author;
   AuthorWidget({this.author});
 
   @override

@@ -34,7 +34,7 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
       'entries',
       serializers.serialize(object.entries,
           specifiedType:
-              const FullType(BuiltList, const [const FullType(EntryResponse)])),
+              const FullType(BuiltList, const [const FullType(Entry)])),
     ];
 
     return result;
@@ -53,8 +53,8 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
       switch (key) {
         case 'entries':
           result.entries.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(
-                      BuiltList, const [const FullType(EntryResponse)]))
+                  specifiedType:
+                      const FullType(BuiltList, const [const FullType(Entry)]))
               as BuiltList);
           break;
       }
@@ -66,7 +66,7 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
 
 class _$AppState extends AppState {
   @override
-  final BuiltList<EntryResponse> entries;
+  final BuiltList<Entry> entries;
 
   factory _$AppState([void updates(AppStateBuilder b)]) =>
       (new AppStateBuilder()..update(updates)).build();
@@ -105,10 +105,10 @@ class _$AppState extends AppState {
 class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   _$AppState _$v;
 
-  ListBuilder<EntryResponse> _entries;
-  ListBuilder<EntryResponse> get entries =>
-      _$this._entries ??= new ListBuilder<EntryResponse>();
-  set entries(ListBuilder<EntryResponse> entries) => _$this._entries = entries;
+  ListBuilder<Entry> _entries;
+  ListBuilder<Entry> get entries =>
+      _$this._entries ??= new ListBuilder<Entry>();
+  set entries(ListBuilder<Entry> entries) => _$this._entries = entries;
 
   AppStateBuilder();
 

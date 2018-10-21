@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:owmflutter/api/api.dart';
+import 'package:owmflutter/models/models.dart';
 import 'package:flutter/material.dart';
 
 class EntryFooterWidget extends StatelessWidget {
-  final EntryResponse entry;
+  final Entry entry;
   EntryFooterWidget({this.entry});
 
   @override

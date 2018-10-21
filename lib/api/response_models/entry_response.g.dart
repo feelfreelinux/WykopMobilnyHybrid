@@ -21,8 +21,6 @@ part of 'entry_response.dart';
 
 Serializer<EntryResponse> _$entryResponseSerializer =
     new _$EntryResponseSerializer();
-Serializer<EntryAuthor> _$entryAuthorSerializer = new _$EntryAuthorSerializer();
-Serializer<EntryEmbed> _$entryEmbedSerializer = new _$EntryEmbedSerializer();
 
 class _$EntryResponseSerializer implements StructuredSerializer<EntryResponse> {
   @override
@@ -46,7 +44,7 @@ class _$EntryResponseSerializer implements StructuredSerializer<EntryResponse> {
           specifiedType: const FullType(num)),
       'author',
       serializers.serialize(object.author,
-          specifiedType: const FullType(EntryAuthor)),
+          specifiedType: const FullType(AuthorResponse)),
     ];
     if (object.body != null) {
       result
@@ -58,7 +56,7 @@ class _$EntryResponseSerializer implements StructuredSerializer<EntryResponse> {
       result
         ..add('embed')
         ..add(serializers.serialize(object.embed,
-            specifiedType: const FullType(EntryEmbed)));
+            specifiedType: const FullType(EmbedResponse)));
     }
 
     return result;
@@ -97,110 +95,11 @@ class _$EntryResponseSerializer implements StructuredSerializer<EntryResponse> {
           break;
         case 'author':
           result.author.replace(serializers.deserialize(value,
-              specifiedType: const FullType(EntryAuthor)) as EntryAuthor);
+              specifiedType: const FullType(AuthorResponse)) as AuthorResponse);
           break;
         case 'embed':
           result.embed.replace(serializers.deserialize(value,
-              specifiedType: const FullType(EntryEmbed)) as EntryEmbed);
-          break;
-      }
-    }
-
-    return result.build();
-  }
-}
-
-class _$EntryAuthorSerializer implements StructuredSerializer<EntryAuthor> {
-  @override
-  final Iterable<Type> types = const [EntryAuthor, _$EntryAuthor];
-  @override
-  final String wireName = 'EntryAuthor';
-
-  @override
-  Iterable serialize(Serializers serializers, EntryAuthor object,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
-      'color',
-      serializers.serialize(object.color, specifiedType: const FullType(num)),
-      'avatar',
-      serializers.serialize(object.avatar,
-          specifiedType: const FullType(String)),
-      'login',
-      serializers.serialize(object.login,
-          specifiedType: const FullType(String)),
-    ];
-
-    return result;
-  }
-
-  @override
-  EntryAuthor deserialize(Serializers serializers, Iterable serialized,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = new EntryAuthorBuilder();
-
-    final iterator = serialized.iterator;
-    while (iterator.moveNext()) {
-      final key = iterator.current as String;
-      iterator.moveNext();
-      final dynamic value = iterator.current;
-      switch (key) {
-        case 'color':
-          result.color = serializers.deserialize(value,
-              specifiedType: const FullType(num)) as num;
-          break;
-        case 'avatar':
-          result.avatar = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
-          break;
-        case 'login':
-          result.login = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
-          break;
-      }
-    }
-
-    return result.build();
-  }
-}
-
-class _$EntryEmbedSerializer implements StructuredSerializer<EntryEmbed> {
-  @override
-  final Iterable<Type> types = const [EntryEmbed, _$EntryEmbed];
-  @override
-  final String wireName = 'EntryEmbed';
-
-  @override
-  Iterable serialize(Serializers serializers, EntryEmbed object,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
-      'url',
-      serializers.serialize(object.url, specifiedType: const FullType(String)),
-      'preview',
-      serializers.serialize(object.preview,
-          specifiedType: const FullType(String)),
-    ];
-
-    return result;
-  }
-
-  @override
-  EntryEmbed deserialize(Serializers serializers, Iterable serialized,
-      {FullType specifiedType = FullType.unspecified}) {
-    final result = new EntryEmbedBuilder();
-
-    final iterator = serialized.iterator;
-    while (iterator.moveNext()) {
-      final key = iterator.current as String;
-      iterator.moveNext();
-      final dynamic value = iterator.current;
-      switch (key) {
-        case 'url':
-          result.url = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
-          break;
-        case 'preview':
-          result.preview = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+              specifiedType: const FullType(EmbedResponse)) as EmbedResponse);
           break;
       }
     }
@@ -221,9 +120,9 @@ class _$EntryResponse extends EntryResponse {
   @override
   final num commentsCount;
   @override
-  final EntryAuthor author;
+  final AuthorResponse author;
   @override
-  final EntryEmbed embed;
+  final EmbedResponse embed;
 
   factory _$EntryResponse([void updates(EntryResponseBuilder b)]) =>
       (new EntryResponseBuilder()..update(updates)).build();
@@ -324,13 +223,15 @@ class EntryResponseBuilder
   num get commentsCount => _$this._commentsCount;
   set commentsCount(num commentsCount) => _$this._commentsCount = commentsCount;
 
-  EntryAuthorBuilder _author;
-  EntryAuthorBuilder get author => _$this._author ??= new EntryAuthorBuilder();
-  set author(EntryAuthorBuilder author) => _$this._author = author;
+  AuthorResponseBuilder _author;
+  AuthorResponseBuilder get author =>
+      _$this._author ??= new AuthorResponseBuilder();
+  set author(AuthorResponseBuilder author) => _$this._author = author;
 
-  EntryEmbedBuilder _embed;
-  EntryEmbedBuilder get embed => _$this._embed ??= new EntryEmbedBuilder();
-  set embed(EntryEmbedBuilder embed) => _$this._embed = embed;
+  EmbedResponseBuilder _embed;
+  EmbedResponseBuilder get embed =>
+      _$this._embed ??= new EmbedResponseBuilder();
+  set embed(EmbedResponseBuilder embed) => _$this._embed = embed;
 
   EntryResponseBuilder();
 
@@ -387,198 +288,6 @@ class EntryResponseBuilder
       }
       rethrow;
     }
-    replace(_$result);
-    return _$result;
-  }
-}
-
-class _$EntryAuthor extends EntryAuthor {
-  @override
-  final num color;
-  @override
-  final String avatar;
-  @override
-  final String login;
-
-  factory _$EntryAuthor([void updates(EntryAuthorBuilder b)]) =>
-      (new EntryAuthorBuilder()..update(updates)).build();
-
-  _$EntryAuthor._({this.color, this.avatar, this.login}) : super._() {
-    if (color == null) {
-      throw new BuiltValueNullFieldError('EntryAuthor', 'color');
-    }
-    if (avatar == null) {
-      throw new BuiltValueNullFieldError('EntryAuthor', 'avatar');
-    }
-    if (login == null) {
-      throw new BuiltValueNullFieldError('EntryAuthor', 'login');
-    }
-  }
-
-  @override
-  EntryAuthor rebuild(void updates(EntryAuthorBuilder b)) =>
-      (toBuilder()..update(updates)).build();
-
-  @override
-  EntryAuthorBuilder toBuilder() => new EntryAuthorBuilder()..replace(this);
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(other, this)) return true;
-    return other is EntryAuthor &&
-        color == other.color &&
-        avatar == other.avatar &&
-        login == other.login;
-  }
-
-  @override
-  int get hashCode {
-    return $jf(
-        $jc($jc($jc(0, color.hashCode), avatar.hashCode), login.hashCode));
-  }
-
-  @override
-  String toString() {
-    return (newBuiltValueToStringHelper('EntryAuthor')
-          ..add('color', color)
-          ..add('avatar', avatar)
-          ..add('login', login))
-        .toString();
-  }
-}
-
-class EntryAuthorBuilder implements Builder<EntryAuthor, EntryAuthorBuilder> {
-  _$EntryAuthor _$v;
-
-  num _color;
-  num get color => _$this._color;
-  set color(num color) => _$this._color = color;
-
-  String _avatar;
-  String get avatar => _$this._avatar;
-  set avatar(String avatar) => _$this._avatar = avatar;
-
-  String _login;
-  String get login => _$this._login;
-  set login(String login) => _$this._login = login;
-
-  EntryAuthorBuilder();
-
-  EntryAuthorBuilder get _$this {
-    if (_$v != null) {
-      _color = _$v.color;
-      _avatar = _$v.avatar;
-      _login = _$v.login;
-      _$v = null;
-    }
-    return this;
-  }
-
-  @override
-  void replace(EntryAuthor other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
-    _$v = other as _$EntryAuthor;
-  }
-
-  @override
-  void update(void updates(EntryAuthorBuilder b)) {
-    if (updates != null) updates(this);
-  }
-
-  @override
-  _$EntryAuthor build() {
-    final _$result =
-        _$v ?? new _$EntryAuthor._(color: color, avatar: avatar, login: login);
-    replace(_$result);
-    return _$result;
-  }
-}
-
-class _$EntryEmbed extends EntryEmbed {
-  @override
-  final String url;
-  @override
-  final String preview;
-
-  factory _$EntryEmbed([void updates(EntryEmbedBuilder b)]) =>
-      (new EntryEmbedBuilder()..update(updates)).build();
-
-  _$EntryEmbed._({this.url, this.preview}) : super._() {
-    if (url == null) {
-      throw new BuiltValueNullFieldError('EntryEmbed', 'url');
-    }
-    if (preview == null) {
-      throw new BuiltValueNullFieldError('EntryEmbed', 'preview');
-    }
-  }
-
-  @override
-  EntryEmbed rebuild(void updates(EntryEmbedBuilder b)) =>
-      (toBuilder()..update(updates)).build();
-
-  @override
-  EntryEmbedBuilder toBuilder() => new EntryEmbedBuilder()..replace(this);
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(other, this)) return true;
-    return other is EntryEmbed && url == other.url && preview == other.preview;
-  }
-
-  @override
-  int get hashCode {
-    return $jf($jc($jc(0, url.hashCode), preview.hashCode));
-  }
-
-  @override
-  String toString() {
-    return (newBuiltValueToStringHelper('EntryEmbed')
-          ..add('url', url)
-          ..add('preview', preview))
-        .toString();
-  }
-}
-
-class EntryEmbedBuilder implements Builder<EntryEmbed, EntryEmbedBuilder> {
-  _$EntryEmbed _$v;
-
-  String _url;
-  String get url => _$this._url;
-  set url(String url) => _$this._url = url;
-
-  String _preview;
-  String get preview => _$this._preview;
-  set preview(String preview) => _$this._preview = preview;
-
-  EntryEmbedBuilder();
-
-  EntryEmbedBuilder get _$this {
-    if (_$v != null) {
-      _url = _$v.url;
-      _preview = _$v.preview;
-      _$v = null;
-    }
-    return this;
-  }
-
-  @override
-  void replace(EntryEmbed other) {
-    if (other == null) {
-      throw new ArgumentError.notNull('other');
-    }
-    _$v = other as _$EntryEmbed;
-  }
-
-  @override
-  void update(void updates(EntryEmbedBuilder b)) {
-    if (updates != null) updates(this);
-  }
-
-  @override
-  _$EntryEmbed build() {
-    final _$result = _$v ?? new _$EntryEmbed._(url: url, preview: preview);
     replace(_$result);
     return _$result;
   }

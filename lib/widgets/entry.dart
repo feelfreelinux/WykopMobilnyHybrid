@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/api/api.dart';
+import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class EntryWidget extends StatelessWidget {
-  final EntryResponse entry;
+  final Entry entry;
   EntryWidget({this.entry});
 
   @override

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:owmflutter/api/api.dart';
+import 'package:owmflutter/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:html2md/html2md.dart' as html2md;
 import 'package:flutter_markdown/flutter_markdown.dart';
 
 class EntryBodyWidget extends StatelessWidget {
-  final EntryResponse entry;
+  final Entry entry;
   EntryBodyWidget({this.entry});
 
   @override

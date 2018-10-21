@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/store/store.dart';
-import 'package:owmflutter/api/api.dart';
+import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 
 class HotScreen extends StatelessWidget {
@@ -11,7 +11,7 @@ class HotScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text('Gorące wpisy 12h'),
         ),
-        body: StoreConnector<AppState, List<EntryResponse>>(
+        body: StoreConnector<AppState, List<Entry>>(
             converter: (store) => store.state.entries.toList(),
             onInit: (store) {
               store.dispatch(LoadHotAction());

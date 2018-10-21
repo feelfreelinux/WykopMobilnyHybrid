@@ -20,7 +20,7 @@ part of 'serializers.dart';
 // ignore_for_file: test_types_in_equals
 
 Serializers _$serializers = (new Serializers().toBuilder()
-      ..add(EntryAuthor.serializer)
-      ..add(EntryEmbed.serializer)
+      ..add(AuthorResponse.serializer)
+      ..add(EmbedResponse.serializer)
       ..add(EntryResponse.serializer))
     .build();
