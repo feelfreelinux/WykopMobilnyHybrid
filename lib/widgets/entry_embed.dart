@@ -10,7 +10,7 @@ class EntryEmbedWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 4.0),
-      child: Text(""),
+      child: Image.network(embed.preview),
     );
   }
 }
