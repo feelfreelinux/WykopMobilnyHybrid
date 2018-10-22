@@ -16,8 +16,8 @@ class AuthorWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           new Container(
-              width: 30.0,
-              height: 30.0,
+              width: 34.0,
+              height: 34.0,
               decoration: new BoxDecoration(
                   shape: BoxShape.rectangle,
                   image: new DecorationImage(
@@ -28,12 +28,13 @@ class AuthorWidget extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 4.0),
                 child: Text(author.login,
                     style: TextStyle(
+                        fontSize: 13.0,
                         color: Utils.getAuthorColor(author, context)))),
             new Container(
                 padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
                 child: Text(Utils.getSimpleDate(date),
                     style: TextStyle(
-                        fontSize: 10.0,
+                        fontSize: 11.0,
                         color: Theme.of(context).textTheme.caption.color))),
           ]),
         ],

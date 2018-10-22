@@ -16,7 +16,7 @@ class EntryWidget extends StatelessWidget {
           onTap: () {},
           child: Material(
             color: Theme.of(context).cardColor,
-            elevation: 0,
+            elevation: 0.0,
             child: Column(
               children: _buildEntryBody(),
             ),
