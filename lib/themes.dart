@@ -19,7 +19,6 @@ class Themes {
         primaryColor: Color(0xff292929),
         primaryColorDark: Color(0xff212121),
         backgroundColor: Color(0xff252525),
-        cardColor: Color(0xff2c2c2c),
-        textTheme: TextTheme(caption: TextStyle(color: Color(0xff8c000000))));
+        cardColor: Color(0xff2c2c2c));
   }
 }
