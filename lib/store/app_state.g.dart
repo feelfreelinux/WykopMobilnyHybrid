@@ -31,10 +31,9 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
   Iterable serialize(Serializers serializers, AppState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'entries',
-      serializers.serialize(object.entries,
-          specifiedType:
-              const FullType(BuiltList, const [const FullType(Entry)])),
+      'mikroblogState',
+      serializers.serialize(object.mikroblogState,
+          specifiedType: const FullType(MikroblogState)),
     ];
 
     return result;
@@ -51,11 +50,9 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'entries':
-          result.entries.replace(serializers.deserialize(value,
-                  specifiedType:
-                      const FullType(BuiltList, const [const FullType(Entry)]))
-              as BuiltList);
+        case 'mikroblogState':
+          result.mikroblogState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(MikroblogState)) as MikroblogState);
           break;
       }
     }
@@ -66,14 +63,14 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
 
 class _$AppState extends AppState {
   @override
-  final BuiltList<Entry> entries;
+  final MikroblogState mikroblogState;
 
   factory _$AppState([void updates(AppStateBuilder b)]) =>
       (new AppStateBuilder()..update(updates)).build();
 
-  _$AppState._({this.entries}) : super._() {
-    if (entries == null) {
-      throw new BuiltValueNullFieldError('AppState', 'entries');
+  _$AppState._({this.mikroblogState}) : super._() {
+    if (mikroblogState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'mikroblogState');
     }
   }
 
@@ -87,17 +84,18 @@ class _$AppState extends AppState {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is AppState && entries == other.entries;
+    return other is AppState && mikroblogState == other.mikroblogState;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, entries.hashCode));
+    return $jf($jc(0, mikroblogState.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('AppState')..add('entries', entries))
+    return (newBuiltValueToStringHelper('AppState')
+          ..add('mikroblogState', mikroblogState))
         .toString();
   }
 }
@@ -105,16 +103,17 @@ class _$AppState extends AppState {
 class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   _$AppState _$v;
 
-  ListBuilder<Entry> _entries;
-  ListBuilder<Entry> get entries =>
-      _$this._entries ??= new ListBuilder<Entry>();
-  set entries(ListBuilder<Entry> entries) => _$this._entries = entries;
+  MikroblogStateBuilder _mikroblogState;
+  MikroblogStateBuilder get mikroblogState =>
+      _$this._mikroblogState ??= new MikroblogStateBuilder();
+  set mikroblogState(MikroblogStateBuilder mikroblogState) =>
+      _$this._mikroblogState = mikroblogState;
 
   AppStateBuilder();
 
   AppStateBuilder get _$this {
     if (_$v != null) {
-      _entries = _$v.entries?.toBuilder();
+      _mikroblogState = _$v.mikroblogState?.toBuilder();
       _$v = null;
     }
     return this;
@@ -137,12 +136,13 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   _$AppState build() {
     _$AppState _$result;
     try {
-      _$result = _$v ?? new _$AppState._(entries: entries.build());
+      _$result =
+          _$v ?? new _$AppState._(mikroblogState: mikroblogState.build());
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'entries';
-        entries.build();
+        _$failedField = 'mikroblogState';
+        mikroblogState.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'AppState', _$failedField, e.toString());

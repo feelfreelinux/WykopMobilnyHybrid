@@ -8,11 +8,24 @@ final api = BaseWykopClient();
 
 void appMiddleware(Store<AppState> store, action, NextDispatcher next) {
   if (action is LoadHotAction) {
-    api.getHot().then((el) {
-      store.dispatch(SetEntriesAction(
-          entries: BuiltList.from(el.map((el) {
-        return Entry.mapFromResponse(el);
-      }).toList())));
+    store.dispatch(SetLoading(isLoading: true));
+    api.getHot(store.state.mikroblogState.page).then((el) {
+      store.dispatch(SetPageNumber(number: store.state.mikroblogState.page + 1));
+      store.dispatch(SetLoading(isLoading: false));
+
+
+      if (store.state.mikroblogState.page == 2) {
+        store.dispatch(SetEntriesAction(
+            entries: BuiltList.from(el.map((el) {
+          return Entry.mapFromResponse(el);
+        }).toList())));
+      } else {
+        store.dispatch(AddEntriesAction(
+            entries: BuiltList.from(el.map((el) {
+          return Entry.mapFromResponse(el);
+        }).toList())));
+
+      }
     });
   }
   next(action);
