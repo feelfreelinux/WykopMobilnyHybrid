@@ -20,7 +20,9 @@ abstract class Author implements Built<Author, AuthorBuilder> {
         color: response.color.toInt(),
         avatar: response.avatar,
         login: response.login,
-        sex: response.sex == null ? AuthorSex.OTHER : (response.sex == "male" ? AuthorSex.MALE : AuthorSex.FEMALE));
+        sex: response.sex == null
+            ? AuthorSex.OTHER
+            : (response.sex == "male" ? AuthorSex.MALE : AuthorSex.FEMALE));
   }
 
   Author._();

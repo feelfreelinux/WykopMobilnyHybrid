@@ -73,8 +73,8 @@ class BaseWykopClient {
 
   Future<BuiltList<EntryResponse>> getHot(int page) async {
     print("http://a2.wykop.pl/entries/hot/period/12/page/${page.toString()}");
-    var items = await _httpClient.wykopGetList(
-        EntryResponse.serializer, "http://a2.wykop.pl/entries/hot/period/12/page/${page.toString()}");
+    var items = await _httpClient.wykopGetList(EntryResponse.serializer,
+        "http://a2.wykop.pl/entries/hot/period/12/page/${page.toString()}");
     return BuiltList.from(items);
   }
 }

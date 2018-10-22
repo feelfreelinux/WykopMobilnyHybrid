@@ -10,9 +10,9 @@ void appMiddleware(Store<AppState> store, action, NextDispatcher next) {
   if (action is LoadHotAction) {
     store.dispatch(SetLoading(isLoading: true));
     api.getHot(store.state.mikroblogState.page).then((el) {
-      store.dispatch(SetPageNumber(number: store.state.mikroblogState.page + 1));
+      store
+          .dispatch(SetPageNumber(number: store.state.mikroblogState.page + 1));
       store.dispatch(SetLoading(isLoading: false));
-
 
       if (store.state.mikroblogState.page == 2) {
         store.dispatch(SetEntriesAction(
@@ -24,7 +24,6 @@ void appMiddleware(Store<AppState> store, action, NextDispatcher next) {
             entries: BuiltList.from(el.map((el) {
           return Entry.mapFromResponse(el);
         }).toList())));
-
       }
     });
   }

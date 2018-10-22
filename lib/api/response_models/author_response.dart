@@ -9,7 +9,7 @@ abstract class AuthorResponse
   num get color;
   String get avatar;
   String get login;
-  
+
   @nullable
   String get sex;
 

@@ -7,7 +7,8 @@ class InfiniteList extends StatefulWidget {
   final ItemBuilder itemBuilder;
   final bool isLoading;
   final VoidCallback loadData;
-  InfiniteList({this.itemBuilder, this.itemCount, this.isLoading, this.loadData});
+  InfiniteList(
+      {this.itemBuilder, this.itemCount, this.isLoading, this.loadData});
 
   @override
   _InfiniteListState createState() => _InfiniteListState();
@@ -20,7 +21,9 @@ class _InfiniteListState extends State<InfiniteList> {
   void initState() {
     super.initState();
     _scrollController.addListener(() {
-      if (!widget.isLoading && _scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+      if (!widget.isLoading &&
+          _scrollController.position.pixels ==
+              _scrollController.position.maxScrollExtent) {
         widget.loadData();
       }
     });

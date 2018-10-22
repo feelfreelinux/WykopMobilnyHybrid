@@ -24,20 +24,17 @@ class HotScreen extends StatelessWidget {
                     return Center(child: CircularProgressIndicator());
                   }
                   return StoreConnector<AppState, VoidCallback>(
-                    converter: (store) { return () => store.dispatch(LoadHotAction()); },
-                    builder: (context, callback) {
-return InfiniteList(
-                    isLoading: state.isLoading,
-                    loadData: callback,
-                    itemCount: state.entries.length,
-                    itemBuilder: (context, index) {
-                      return EntryWidget(entry: state.entries[index]);
-                    }
-                    
-                  );
-                    }
-                  
-                  );
+                      converter: (store) {
+                    return () => store.dispatch(LoadHotAction());
+                  }, builder: (context, callback) {
+                    return InfiniteList(
+                        isLoading: state.isLoading,
+                        loadData: callback,
+                        itemCount: state.entries.length,
+                        itemBuilder: (context, index) {
+                          return EntryWidget(entry: state.entries[index]);
+                        });
+                  });
                 })));
   }
 }
