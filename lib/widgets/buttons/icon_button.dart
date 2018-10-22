@@ -6,8 +6,8 @@ class FooterIconButton extends StatelessWidget {
 
   FooterIconButton({@required this.icon, @required this.onClicked});
   @override
-    Widget build(BuildContext context) {
-      return InkWell(
+  Widget build(BuildContext context) {
+    return InkWell(
       child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
           child: Row(
@@ -19,5 +19,5 @@ class FooterIconButton extends StatelessWidget {
           )),
       onTap: this.onClicked,
     );
-    }
+  }
 }

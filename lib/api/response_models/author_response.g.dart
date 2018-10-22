@@ -42,6 +42,12 @@ class _$AuthorResponseSerializer
       serializers.serialize(object.login,
           specifiedType: const FullType(String)),
     ];
+    if (object.sex != null) {
+      result
+        ..add('sex')
+        ..add(serializers.serialize(object.sex,
+            specifiedType: const FullType(String)));
+    }
 
     return result;
   }
@@ -69,6 +75,10 @@ class _$AuthorResponseSerializer
           result.login = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'sex':
+          result.sex = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
       }
     }
 
@@ -83,11 +93,14 @@ class _$AuthorResponse extends AuthorResponse {
   final String avatar;
   @override
   final String login;
+  @override
+  final String sex;
 
   factory _$AuthorResponse([void updates(AuthorResponseBuilder b)]) =>
       (new AuthorResponseBuilder()..update(updates)).build();
 
-  _$AuthorResponse._({this.color, this.avatar, this.login}) : super._() {
+  _$AuthorResponse._({this.color, this.avatar, this.login, this.sex})
+      : super._() {
     if (color == null) {
       throw new BuiltValueNullFieldError('AuthorResponse', 'color');
     }
@@ -113,13 +126,15 @@ class _$AuthorResponse extends AuthorResponse {
     return other is AuthorResponse &&
         color == other.color &&
         avatar == other.avatar &&
-        login == other.login;
+        login == other.login &&
+        sex == other.sex;
   }
 
   @override
   int get hashCode {
-    return $jf(
-        $jc($jc($jc(0, color.hashCode), avatar.hashCode), login.hashCode));
+    return $jf($jc(
+        $jc($jc($jc(0, color.hashCode), avatar.hashCode), login.hashCode),
+        sex.hashCode));
   }
 
   @override
@@ -127,7 +142,8 @@ class _$AuthorResponse extends AuthorResponse {
     return (newBuiltValueToStringHelper('AuthorResponse')
           ..add('color', color)
           ..add('avatar', avatar)
-          ..add('login', login))
+          ..add('login', login)
+          ..add('sex', sex))
         .toString();
   }
 }
@@ -148,6 +164,10 @@ class AuthorResponseBuilder
   String get login => _$this._login;
   set login(String login) => _$this._login = login;
 
+  String _sex;
+  String get sex => _$this._sex;
+  set sex(String sex) => _$this._sex = sex;
+
   AuthorResponseBuilder();
 
   AuthorResponseBuilder get _$this {
@@ -155,6 +175,7 @@ class AuthorResponseBuilder
       _color = _$v.color;
       _avatar = _$v.avatar;
       _login = _$v.login;
+      _sex = _$v.sex;
       _$v = null;
     }
     return this;
@@ -176,7 +197,8 @@ class AuthorResponseBuilder
   @override
   _$AuthorResponse build() {
     final _$result = _$v ??
-        new _$AuthorResponse._(color: color, avatar: avatar, login: login);
+        new _$AuthorResponse._(
+            color: color, avatar: avatar, login: login, sex: sex);
     replace(_$result);
     return _$result;
   }

@@ -9,6 +9,9 @@ abstract class AuthorResponse
   num get color;
   String get avatar;
   String get login;
+  
+  @nullable
+  String get sex;
 
   AuthorResponse._();
   static Serializer<AuthorResponse> get serializer =>

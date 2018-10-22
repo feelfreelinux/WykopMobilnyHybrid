@@ -12,7 +12,8 @@ class HotScreen extends StatelessWidget {
           title: Text('Gorące wpisy 12h'),
         ),
         body: Container(
-            decoration: new BoxDecoration(color: Theme.of(context).backgroundColor),
+            decoration:
+                new BoxDecoration(color: Theme.of(context).backgroundColor),
             child: StoreConnector<AppState, List<Entry>>(
                 converter: (store) => store.state.entries.toList(),
                 onInit: (store) {

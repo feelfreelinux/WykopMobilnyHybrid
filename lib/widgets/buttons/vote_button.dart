@@ -7,8 +7,8 @@ class VoteButton extends StatelessWidget {
 
   VoteButton({@required this.count, @required this.onClicked});
   @override
-    Widget build(BuildContext context) {
-      return InkWell(
+  Widget build(BuildContext context) {
+    return InkWell(
       child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
           child: Row(
@@ -26,5 +26,5 @@ class VoteButton extends StatelessWidget {
           )),
       onTap: this.onClicked,
     );
-    }
+  }
 }

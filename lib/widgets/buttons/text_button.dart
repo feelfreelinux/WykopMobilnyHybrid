@@ -5,10 +5,11 @@ class TextButton extends StatelessWidget {
   final IconData icon;
   final VoidCallback onClicked;
 
-  TextButton({@required this.text, @required this.icon, @required this.onClicked});
+  TextButton(
+      {@required this.text, @required this.icon, @required this.onClicked});
   @override
-    Widget build(BuildContext context) {
-      return InkWell(
+  Widget build(BuildContext context) {
+    return InkWell(
       child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
           child: Row(
@@ -26,5 +27,5 @@ class TextButton extends StatelessWidget {
           )),
       onTap: this.onClicked,
     );
-    }
+  }
 }

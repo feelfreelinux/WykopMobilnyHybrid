@@ -26,11 +26,13 @@ class _$Author extends Author {
   final String avatar;
   @override
   final String login;
+  @override
+  final AuthorSex sex;
 
   factory _$Author([void updates(AuthorBuilder b)]) =>
       (new AuthorBuilder()..update(updates)).build();
 
-  _$Author._({this.color, this.avatar, this.login}) : super._() {
+  _$Author._({this.color, this.avatar, this.login, this.sex}) : super._() {
     if (color == null) {
       throw new BuiltValueNullFieldError('Author', 'color');
     }
@@ -39,6 +41,9 @@ class _$Author extends Author {
     }
     if (login == null) {
       throw new BuiltValueNullFieldError('Author', 'login');
+    }
+    if (sex == null) {
+      throw new BuiltValueNullFieldError('Author', 'sex');
     }
   }
 
@@ -55,13 +60,15 @@ class _$Author extends Author {
     return other is Author &&
         color == other.color &&
         avatar == other.avatar &&
-        login == other.login;
+        login == other.login &&
+        sex == other.sex;
   }
 
   @override
   int get hashCode {
-    return $jf(
-        $jc($jc($jc(0, color.hashCode), avatar.hashCode), login.hashCode));
+    return $jf($jc(
+        $jc($jc($jc(0, color.hashCode), avatar.hashCode), login.hashCode),
+        sex.hashCode));
   }
 
   @override
@@ -69,7 +76,8 @@ class _$Author extends Author {
     return (newBuiltValueToStringHelper('Author')
           ..add('color', color)
           ..add('avatar', avatar)
-          ..add('login', login))
+          ..add('login', login)
+          ..add('sex', sex))
         .toString();
   }
 }
@@ -89,6 +97,10 @@ class AuthorBuilder implements Builder<Author, AuthorBuilder> {
   String get login => _$this._login;
   set login(String login) => _$this._login = login;
 
+  AuthorSex _sex;
+  AuthorSex get sex => _$this._sex;
+  set sex(AuthorSex sex) => _$this._sex = sex;
+
   AuthorBuilder();
 
   AuthorBuilder get _$this {
@@ -96,6 +108,7 @@ class AuthorBuilder implements Builder<Author, AuthorBuilder> {
       _color = _$v.color;
       _avatar = _$v.avatar;
       _login = _$v.login;
+      _sex = _$v.sex;
       _$v = null;
     }
     return this;
@@ -116,8 +129,8 @@ class AuthorBuilder implements Builder<Author, AuthorBuilder> {
 
   @override
   _$Author build() {
-    final _$result =
-        _$v ?? new _$Author._(color: color, avatar: avatar, login: login);
+    final _$result = _$v ??
+        new _$Author._(color: color, avatar: avatar, login: login, sex: sex);
     replace(_$result);
     return _$result;
   }

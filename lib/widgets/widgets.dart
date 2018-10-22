@@ -3,6 +3,7 @@ export 'author.dart';
 export 'entry_footer.dart';
 export 'entry_body.dart';
 export 'entry_embed.dart';
+export 'infinite_list.dart';
 export 'buttons/icon_button.dart';
 export 'buttons/text_button.dart';
 export 'buttons/comments_button.dart';
