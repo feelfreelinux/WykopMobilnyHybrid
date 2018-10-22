@@ -14,18 +14,27 @@ class HotScreen extends StatelessWidget {
         body: Container(
             decoration:
                 new BoxDecoration(color: Theme.of(context).backgroundColor),
-            child: StoreConnector<AppState, List<Entry>>(
-                converter: (store) => store.state.entries.toList(),
+            child: StoreConnector<AppState, MikroblogState>(
+                converter: (store) => store.state.mikroblogState,
                 onInit: (store) {
                   store.dispatch(LoadHotAction());
                 },
                 builder: (context, state) {
-                  return ListView.builder(
-                    itemCount: state.length,
-                    itemBuilder: (context, index) {
-                      return EntryWidget(entry: state[index]);
-                    },
-                  );
+                  if (state.isLoading && state.page == 1) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  return StoreConnector<AppState, VoidCallback>(
+                      converter: (store) {
+                    return () => store.dispatch(LoadHotAction());
+                  }, builder: (context, callback) {
+                    return InfiniteList(
+                        isLoading: state.isLoading,
+                        loadData: callback,
+                        itemCount: state.entries.length,
+                        itemBuilder: (context, index) {
+                          return EntryWidget(entry: state.entries[index]);
+                        });
+                  });
                 })));
   }
 }

@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 typedef ItemBuilder = Widget Function(BuildContext, int);
 
 class InfiniteList extends StatefulWidget {
-  int itemCount;
-  ItemBuilder itemBuilder;
-  bool isLoading = false;
-  VoidCallback loadData;
-  InfiniteList({this.itemBuilder, this.itemCount, this.isLoading, this.loadData});
+  final int itemCount;
+  final ItemBuilder itemBuilder;
+  final bool isLoading;
+  final VoidCallback loadData;
+  InfiniteList(
+      {this.itemBuilder, this.itemCount, this.isLoading, this.loadData});
 
   @override
   _InfiniteListState createState() => _InfiniteListState();
@@ -20,7 +21,9 @@ class _InfiniteListState extends State<InfiniteList> {
   void initState() {
     super.initState();
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+      if (!widget.isLoading &&
+          _scrollController.position.pixels ==
+              _scrollController.position.maxScrollExtent) {
         widget.loadData();
       }
     });
@@ -31,7 +34,7 @@ class _InfiniteListState extends State<InfiniteList> {
     return ListView.builder(
       itemCount: widget.itemCount + 1,
       itemBuilder: (context, index) {
-        if (index == widget.itemCount + 1) {
+        if (index == widget.itemCount) {
           return new Padding(
             padding: const EdgeInsets.all(8.0),
             child: new Center(
@@ -45,6 +48,7 @@ class _InfiniteListState extends State<InfiniteList> {
 
         return widget.itemBuilder(context, index);
       },
+      controller: _scrollController,
     );
   }
 

@@ -8,3 +8,18 @@ class SetEntriesAction {
   final BuiltList<Entry> entries;
   SetEntriesAction({this.entries});
 }
+
+class AddEntriesAction {
+  final BuiltList<Entry> entries;
+  AddEntriesAction({this.entries});
+}
+
+class SetLoading {
+  final bool isLoading;
+  SetLoading({this.isLoading});
+}
+
+class SetPageNumber {
+  final int number;
+  SetPageNumber({this.number});
+}

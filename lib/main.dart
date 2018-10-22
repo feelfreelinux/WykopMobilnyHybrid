@@ -11,7 +11,6 @@ final logger = new LoggingMiddleware.printer();
 void main() {
   final store =
       Store<AppState>(appReducer, initialState: AppState(), middleware: [
-    new LoggingMiddleware.printer(),
     appMiddleware,
   ]);
   runApp(OWMApp(
