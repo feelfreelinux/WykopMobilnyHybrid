@@ -48,6 +48,12 @@ class HotScreen extends StatelessWidget {
                         });
                   });
                 })),
+          floatingActionButton: new FloatingActionButton(
+    child: const Icon(OwmGlyphs.ic_pen),
+    onPressed: () {},
+  ),
+  floatingActionButtonLocation:    
+      FloatingActionButtonLocation.endFloat,
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: 2,
           type: BottomNavigationBarType.fixed,
