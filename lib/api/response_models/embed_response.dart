@@ -3,7 +3,8 @@ import 'package:built_value/serializer.dart';
 
 part 'embed_response.g.dart';
 
-abstract class EmbedResponse implements Built<EmbedResponse, EmbedResponseBuilder> {
+abstract class EmbedResponse
+    implements Built<EmbedResponse, EmbedResponseBuilder> {
   factory EmbedResponse([updates(EmbedResponseBuilder b)]) = _$EmbedResponse;
   String get url;
   String get preview;

@@ -9,7 +9,10 @@ abstract class Author implements Built<Author, AuthorBuilder> {
   String get login;
 
   factory Author.fromResponse({AuthorResponse response}) {
-    return _$Author._(color: response.color.toInt(), avatar: response.avatar, login: response.login);
+    return _$Author._(
+        color: response.color.toInt(),
+        avatar: response.avatar,
+        login: response.login);
   }
 
   Author._();

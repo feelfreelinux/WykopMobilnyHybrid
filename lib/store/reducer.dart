@@ -8,10 +8,8 @@ AppState appReducer(AppState state, action) {
       (b) => b..entries.replace(entriesReducer(state.entries, action)));
 }
 
-Reducer<BuiltList<Entry>> entriesReducer =
-    combineReducers<BuiltList<Entry>>([
-  TypedReducer<BuiltList<Entry>, SetEntriesAction>(_setEntriesAction)
-]);
+Reducer<BuiltList<Entry>> entriesReducer = combineReducers<BuiltList<Entry>>(
+    [TypedReducer<BuiltList<Entry>, SetEntriesAction>(_setEntriesAction)]);
 
 BuiltList<Entry> _setEntriesAction(
     BuiltList<Entry> state, SetEntriesAction action) {

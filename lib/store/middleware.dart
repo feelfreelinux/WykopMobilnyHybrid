@@ -9,7 +9,10 @@ final api = BaseWykopClient();
 void appMiddleware(Store<AppState> store, action, NextDispatcher next) {
   if (action is LoadHotAction) {
     api.getHot().then((el) {
-      store.dispatch(SetEntriesAction(entries: BuiltList.from(el.map((el) { return Entry.mapFromResponse(el); }).toList())));
+      store.dispatch(SetEntriesAction(
+          entries: BuiltList.from(el.map((el) {
+        return Entry.mapFromResponse(el);
+      }).toList())));
     });
   }
   next(action);

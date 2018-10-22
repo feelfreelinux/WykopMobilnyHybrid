@@ -12,18 +12,18 @@ class HotScreen extends StatelessWidget {
           title: Text('Gorące wpisy 12h'),
         ),
         body: Container(
-          child: StoreConnector<AppState, List<Entry>>(
-            converter: (store) => store.state.entries.toList(),
-            onInit: (store) {
-              store.dispatch(LoadHotAction());
-            },
-            builder: (context, state) {
-              return ListView.builder(
-                itemCount: state.length,
-                itemBuilder: (context, index) {
-                  return EntryWidget(entry: state[index]);
+            child: StoreConnector<AppState, List<Entry>>(
+                converter: (store) => store.state.entries.toList(),
+                onInit: (store) {
+                  store.dispatch(LoadHotAction());
                 },
-              );
-            })));
+                builder: (context, state) {
+                  return ListView.builder(
+                    itemCount: state.length,
+                    itemBuilder: (context, index) {
+                      return EntryWidget(entry: state[index]);
+                    },
+                  );
+                })));
   }
 }

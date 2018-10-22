@@ -10,36 +10,34 @@ class EntryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        return Padding(
-        padding: EdgeInsets.symmetric(vertical: 2.0),
-        child: InkWell(
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 2.0),
+      child: InkWell(
           onTap: () {},
           child: Material(
-        color: Theme.of(context).cardColor,
-        elevation: 0,
-        child: Column(
-          children: _buildEntryBody(),
-        ),
-      )),
-      );
-    
+            color: Theme.of(context).cardColor,
+            elevation: 0,
+            child: Column(
+              children: _buildEntryBody(),
+            ),
+          )),
+    );
   }
 
-  List<Widget>_buildEntryBody() {
+  List<Widget> _buildEntryBody() {
     if (entry.embed == null) {
       return [
-            AuthorWidget(author: entry.author, date: entry.date),
-            EntryBodyWidget(entry: entry),
-            EntryFooterWidget(entry: entry),
-          ];
+        AuthorWidget(author: entry.author, date: entry.date),
+        EntryBodyWidget(entry: entry),
+        EntryFooterWidget(entry: entry),
+      ];
     } else {
       return [
-            AuthorWidget(author: entry.author, date: entry.date),
-            EntryBodyWidget(entry: entry),
-            EntryEmbedWidget(embed: entry.embed),
-            EntryFooterWidget(entry: entry),
-          ];
+        AuthorWidget(author: entry.author, date: entry.date),
+        EntryBodyWidget(entry: entry),
+        EntryEmbedWidget(embed: entry.embed),
+        EntryFooterWidget(entry: entry),
+      ];
     }
-
   }
 }

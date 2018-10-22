@@ -1,9 +1,7 @@
-
 export 'response_models/entry_response.dart';
 export 'response_models/author_response.dart';
 export 'response_models/embed_response.dart';
 export 'response_models/serializers.dart';
-
 
 import 'package:http/http.dart';
 import 'dart:async';

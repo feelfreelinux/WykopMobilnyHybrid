@@ -27,5 +27,3 @@ abstract class EntryResponse
   EntryResponse._();
   static Serializer<EntryResponse> get serializer => _$entryResponseSerializer;
 }
-
-

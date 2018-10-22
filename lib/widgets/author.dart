@@ -23,17 +23,19 @@ class AuthorWidget extends StatelessWidget {
                   image: new DecorationImage(
                       fit: BoxFit.fill,
                       image: new NetworkImage(author.avatar)))),
-          new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              new Container(
+          new Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            new Container(
                 padding: EdgeInsets.symmetric(horizontal: 4.0),
-                child: Text(author.login, style: TextStyle(color: Utils.getAuthorColor(author, context)))),
-              new Container(
+                child: Text(author.login,
+                    style: TextStyle(
+                        color: Utils.getAuthorColor(author, context)))),
+            new Container(
                 padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
-                child: Text(Utils.getSimpleDate(date), style: TextStyle(fontSize: 10.0, color: Theme.of(context).textTheme.caption.color))),
-              ]),
-            
+                child: Text(Utils.getSimpleDate(date),
+                    style: TextStyle(
+                        fontSize: 10.0,
+                        color: Theme.of(context).textTheme.caption.color))),
+          ]),
         ],
       ),
     );
