@@ -28,8 +28,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   fonts:
-    - family: Glyphs
+    - family: OWMGlyphs
       fonts:
-       - asset: fonts/glyphs.ttf
+       - asset: fonts/OWMGlyphs.ttf
   assets:
     - secrets.json

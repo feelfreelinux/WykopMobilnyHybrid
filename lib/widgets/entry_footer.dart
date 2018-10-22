@@ -15,12 +15,12 @@ class EntryFooterWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            FooterIconButton(icon: Icons.share, onClicked: () {},),
-            FooterIconButton(icon: Icons.favorite_border, onClicked: () {},),
+            FooterIconButton(icon: OwmGlyphs.ic_buttontoolbar_share, onClicked: () {},),
+            FavoriteButton(onClicked: () {},),
             Expanded(child: Container()),
-            TextButton(icon: Icons.chat_bubble_outline, text: entry.commentsCount.toInt().toString(), onClicked: () {},),
-            TextButton(icon: Icons.add, text: entry.voteCount.toInt().toString(), onClicked: () {},),
-            FooterIconButton(icon: OwmGlyphs.dots_vertical, onClicked: () {},)
+            CommentsButton(count: entry.commentsCount, onClicked: () {},),
+            VoteButton(count: entry.voteCount, onClicked: () {},),
+            FooterIconButton(icon: OwmGlyphs.ic_buttontoolbar_dots, onClicked: () {},)
           ]),
     );
   }

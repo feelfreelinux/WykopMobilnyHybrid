@@ -11,7 +11,7 @@ class EntryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 2.0),
+      padding: EdgeInsets.symmetric(vertical: 1.0),
       child: InkWell(
           onTap: () {},
           child: Material(
