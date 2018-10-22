@@ -19,7 +19,7 @@ class AuthorWidget extends StatelessWidget {
               width: 30.0,
               height: 30.0,
               decoration: new BoxDecoration(
-                  shape: BoxShape.circle,
+                  shape: BoxShape.rectangle,
                   image: new DecorationImage(
                       fit: BoxFit.fill,
                       image: new NetworkImage(author.avatar)))),

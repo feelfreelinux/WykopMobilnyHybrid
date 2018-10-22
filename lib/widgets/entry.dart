@@ -10,31 +10,36 @@ class EntryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (entry.embed == null) {
-      return Card(
-        margin: EdgeInsets.all(4.0),
-        elevation: 0.9,
+        return Padding(
+        padding: EdgeInsets.symmetric(vertical: 2.0),
+        child: InkWell(
+          onTap: () {},
+          child: Material(
+        color: Theme.of(context).cardColor,
+        elevation: 0,
         child: Column(
-          children: <Widget>[
+          children: _buildEntryBody(),
+        ),
+      )),
+      );
+    
+  }
+
+  List<Widget>_buildEntryBody() {
+    if (entry.embed == null) {
+      return [
             AuthorWidget(author: entry.author, date: entry.date),
             EntryBodyWidget(entry: entry),
             EntryFooterWidget(entry: entry),
-          ],
-        ),
-      );
+          ];
     } else {
-      return Card(
-        margin: EdgeInsets.all(4.0),
-        elevation: 0.9,
-        child: Column(
-          children: <Widget>[
+      return [
             AuthorWidget(author: entry.author, date: entry.date),
             EntryBodyWidget(entry: entry),
             EntryEmbedWidget(embed: entry.embed),
             EntryFooterWidget(entry: entry),
-          ],
-        ),
-      );
+          ];
     }
+
   }
 }

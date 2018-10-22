@@ -18,6 +18,7 @@ dependencies:
   path_provider: ^0.4.1
   html2md: ^0.2.1
   timeago: ^2.0.8
+  font_awesome_flutter: ^8.1.0
 
 dev_dependencies:
   build_runner: ^1.0.0
@@ -26,5 +27,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  fonts:
+    - family: Glyphs
+      fonts:
+       - asset: fonts/glyphs.ttf
   assets:
     - secrets.json

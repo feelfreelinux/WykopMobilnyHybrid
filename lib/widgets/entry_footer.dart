@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/models/models.dart';
-import 'package:flutter/material.dart';
+import 'package:owmflutter/owm_glyphs.dart';
 
 class EntryFooterWidget extends StatelessWidget {
   final Entry entry;
@@ -14,24 +14,39 @@ class EntryFooterWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          IconButton(
-            icon:
-                const Icon(Icons.favorite, size: 18.0, color: Colors.redAccent),
-            onPressed: () {},
-          ),
-          Expanded(child: Container()),
-          FlatButton.icon(
-            icon: const Icon(Icons.comment, size: 18.0),
-            label: Text(entry.commentsCount.toInt().toString()),
-            onPressed: () {},
-          ),
-          FlatButton.icon(
-            icon: const Icon(Icons.add, size: 18.0, color: Colors.greenAccent),
-            label: Text(entry.voteCount.toInt().toString()),
-            onPressed: () {},
-          )
-        ],
-      ),
+_buildIconButton(context, Icons.favorite_border),
+Expanded(child: Container()),
+_buildTextButton(context, Icons.chat_bubble_outline, entry.commentsCount.toInt().toString()),
+_buildTextButton(context, Icons.add, entry.voteCount.toInt().toString()),
+_buildIconButton(context, OwmGlyphs.dots_vertical),
+        ]),
     );
+  }
+
+  Widget _buildTextButton(BuildContext context, IconData icon, String text) {
+    return InkWell(child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
+            child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Icon(icon, size: 20.0, color: Theme.of(context).textTheme.caption.color),
+              Text(text, style: TextStyle(fontSize: 18.0, color: Theme.of(context).textTheme.caption.color),),
+            ],
+            )),
+            onTap:  () {},
+          );
+  }
+
+  Widget _buildIconButton(BuildContext context, IconData icon) {
+    return InkWell(child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
+            child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Icon(icon, size: 20.0, color: Theme.of(context).textTheme.caption.color),
+            ],
+            )),
+            onTap:  () {},
+          );
   }
 }

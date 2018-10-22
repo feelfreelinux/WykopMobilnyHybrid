@@ -11,7 +11,8 @@ class HotScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text('Gorące wpisy 12h'),
         ),
-        body: StoreConnector<AppState, List<Entry>>(
+        body: Container(
+          child: StoreConnector<AppState, List<Entry>>(
             converter: (store) => store.state.entries.toList(),
             onInit: (store) {
               store.dispatch(LoadHotAction());
@@ -23,6 +24,6 @@ class HotScreen extends StatelessWidget {
                   return EntryWidget(entry: state[index]);
                 },
               );
-            }));
+            })));
   }
 }
