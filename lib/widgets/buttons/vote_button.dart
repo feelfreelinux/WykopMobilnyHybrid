@@ -10,7 +10,7 @@ class VoteButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
+          padding: EdgeInsets.only(left: 6.0, right: 10.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -19,7 +19,7 @@ class VoteButton extends StatelessWidget {
               Text(
                 count.toInt().toString(),
                 style: TextStyle(
-                    fontSize: 18.0,
+                    fontSize: 16.5,
                     color: Theme.of(context).textTheme.caption.color),
               ),
             ],

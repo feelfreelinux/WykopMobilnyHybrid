@@ -9,12 +9,12 @@ class FooterIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 8.0),
+          padding: EdgeInsets.symmetric(horizontal: 10.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Icon(icon,
-                  size: 20.0, color: Theme.of(context).textTheme.caption.color),
+                  size: 19.0, color: Theme.of(context).textTheme.caption.color),
             ],
           )),
       onTap: this.onClicked,
