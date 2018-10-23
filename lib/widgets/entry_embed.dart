@@ -9,7 +9,7 @@ class EntryEmbedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 4.0),
+      padding: EdgeInsets.only(top: 4.0),
       child: Image.network(embed.preview),
     );
   }

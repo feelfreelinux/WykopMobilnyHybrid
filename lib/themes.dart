@@ -5,8 +5,8 @@ class Themes {
     return ThemeData(
       brightness: Brightness.light,
       accentColor: Color(0xff3c84c1),
-      primaryColor: Color(0xff3a80ba),
-      primaryColorDark: Color(0xff3677ae),
+      primaryColor: Color(0xffffffff),
+      primaryColorDark: Color(0xfff0f0f0),
       backgroundColor: Color(0xfff5f5f5),
       cardColor: Color(0xffffffff),
     );

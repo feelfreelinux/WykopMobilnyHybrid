@@ -9,17 +9,23 @@ class HotScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          leading: new IconButton(icon: new Icon(OwmGlyphs.ic_navi_profile),
+          onPressed: () {},
+      ),
+          titleSpacing: 0.0,
+          centerTitle: true,
+          elevation: 2.5,
           title: Text('Mikroblog'),
           actions: <Widget>[
             // action button
             IconButton(
-              icon: Icon(OwmGlyphs.ic_tag),
+              icon: Icon(OwmGlyphs.ic_refresh),
               onPressed: () {},
             ),
             IconButton(
-              icon: Icon(OwmGlyphs.ic_mail),
+              icon: Icon(OwmGlyphs.ic_navi_search),
               onPressed: () {},
-            ),
+            )
             // action button
           ],
         ),
@@ -60,23 +66,23 @@ class HotScreen extends StatelessWidget {
           items: [
             BottomNavigationBarItem(
               icon: new Icon(OwmGlyphs.ic_navi_links),
-              title: new Text('Znaleziska'),
+              title: new Text('Znaleziska', style: new TextStyle(fontSize: 11.0)),
             ),
             BottomNavigationBarItem(
               icon: new Icon(OwmGlyphs.ic_navi_my_wykop),
-              title: new Text('Mój Wykop'),
+              title: new Text('Mój Wykop', style: new TextStyle(fontSize: 11.0)),
             ),
             BottomNavigationBarItem(
               icon: new Icon(OwmGlyphs.ic_navi_mirkoblog),
-              title: new Text('Mikroblog'),
+              title: new Text('Mikroblog', style: new TextStyle(fontSize: 11.0)),
             ),
             BottomNavigationBarItem(
               icon: new Icon(OwmGlyphs.ic_navi_favourite),
-              title: new Text('Ulubione'),
+              title: new Text('Ulubione', style: new TextStyle(fontSize: 11.0)),
             ),
             BottomNavigationBarItem(
               icon: new Icon(OwmGlyphs.ic_navi_messages),
-              title: new Text('Wiadomości'),
+              title: new Text('Wiadomości', style: new TextStyle(fontSize: 11.0)),
             ),
           ],
         ));

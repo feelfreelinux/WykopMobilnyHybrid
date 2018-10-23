@@ -11,7 +11,7 @@ class EntryBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 4.0),
+      padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 4.0),
         child: new MarkdownBody(
