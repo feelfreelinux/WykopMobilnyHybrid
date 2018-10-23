@@ -4,15 +4,14 @@ import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
-class EntryWidget extends StatelessWidget {
-  final Entry entry;
-  final bool ellipsize;
-  EntryWidget({this.entry, this.ellipsize});
+class EntryCommentWidget extends StatelessWidget {
+  final EntryComment comment;
+  EntryCommentWidget({this.comment});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 0.0, bottom: 3.0),
+      padding: EdgeInsets.only(top: 2.0, bottom: 2.0, left: 14.0),
       child: InkWell(
           onTap: () {},
           child: Material(
@@ -26,18 +25,18 @@ class EntryWidget extends StatelessWidget {
   }
 
   List<Widget> _buildEntryBody() {
-    if (entry.embed == null) {
+    if (comment.embed == null) {
       return [
-        AuthorWidget(author: entry.author, date: entry.date),
-        EntryBodyWidget(entry: entry, ellipsize: ellipsize),
-        EntryFooterWidget(entry: entry),
+        AuthorWidget(author: comment.author, date: comment.date),
+        EntryCommentBodyWidget(comment: comment),
+        EntryCommentFooterWidget(comment: comment),
       ];
     } else {
       return [
-        AuthorWidget(author: entry.author, date: entry.date),
-        EntryBodyWidget(entry: entry, ellipsize: ellipsize,),
-        EmbedWidget(embed: entry.embed),
-        EntryFooterWidget(entry: entry),
+        AuthorWidget(author: comment.author, date: comment.date),
+        EntryCommentBodyWidget(comment: comment),
+        EmbedWidget(embed: comment.embed),
+        EntryCommentFooterWidget(comment: comment),
       ];
     }
   }

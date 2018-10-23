@@ -6,7 +6,7 @@ part 'author_response.g.dart';
 abstract class AuthorResponse
     implements Built<AuthorResponse, AuthorResponseBuilder> {
   factory AuthorResponse([updates(AuthorResponseBuilder b)]) = _$AuthorResponse;
-  num get color;
+  int get color;
   String get avatar;
   String get login;
 

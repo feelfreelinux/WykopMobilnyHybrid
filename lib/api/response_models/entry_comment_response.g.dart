@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'entry_response.dart';
+part of 'entry_comment_response.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
@@ -19,17 +19,21 @@ part of 'entry_response.dart';
 // ignore_for_file: unnecessary_new
 // ignore_for_file: test_types_in_equals
 
-Serializer<EntryResponse> _$entryResponseSerializer =
-    new _$EntryResponseSerializer();
+Serializer<EntryCommentResponse> _$entryCommentResponseSerializer =
+    new _$EntryCommentResponseSerializer();
 
-class _$EntryResponseSerializer implements StructuredSerializer<EntryResponse> {
+class _$EntryCommentResponseSerializer
+    implements StructuredSerializer<EntryCommentResponse> {
   @override
-  final Iterable<Type> types = const [EntryResponse, _$EntryResponse];
+  final Iterable<Type> types = const [
+    EntryCommentResponse,
+    _$EntryCommentResponse
+  ];
   @override
-  final String wireName = 'EntryResponse';
+  final String wireName = 'EntryCommentResponse';
 
   @override
-  Iterable serialize(Serializers serializers, EntryResponse object,
+  Iterable serialize(Serializers serializers, EntryCommentResponse object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'id',
@@ -39,20 +43,10 @@ class _$EntryResponseSerializer implements StructuredSerializer<EntryResponse> {
       'vote_count',
       serializers.serialize(object.voteCount,
           specifiedType: const FullType(int)),
-      'comments_count',
-      serializers.serialize(object.commentsCount,
-          specifiedType: const FullType(int)),
       'author',
       serializers.serialize(object.author,
           specifiedType: const FullType(AuthorResponse)),
     ];
-    if (object.comments != null) {
-      result
-        ..add('comments')
-        ..add(serializers.serialize(object.comments,
-            specifiedType: const FullType(
-                BuiltList, const [const FullType(EntryCommentResponse)])));
-    }
     if (object.body != null) {
       result
         ..add('body')
@@ -70,9 +64,9 @@ class _$EntryResponseSerializer implements StructuredSerializer<EntryResponse> {
   }
 
   @override
-  EntryResponse deserialize(Serializers serializers, Iterable serialized,
+  EntryCommentResponse deserialize(Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new EntryResponseBuilder();
+    final result = new EntryCommentResponseBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -88,22 +82,12 @@ class _$EntryResponseSerializer implements StructuredSerializer<EntryResponse> {
           result.date = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
-        case 'comments':
-          result.comments.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(
-                      BuiltList, const [const FullType(EntryCommentResponse)]))
-              as BuiltList);
-          break;
         case 'body':
           result.body = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'vote_count':
           result.voteCount = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
-          break;
-        case 'comments_count':
-          result.commentsCount = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
         case 'author':
@@ -121,71 +105,57 @@ class _$EntryResponseSerializer implements StructuredSerializer<EntryResponse> {
   }
 }
 
-class _$EntryResponse extends EntryResponse {
+class _$EntryCommentResponse extends EntryCommentResponse {
   @override
   final int id;
   @override
   final String date;
   @override
-  final BuiltList<EntryCommentResponse> comments;
-  @override
   final String body;
   @override
   final int voteCount;
-  @override
-  final int commentsCount;
   @override
   final AuthorResponse author;
   @override
   final EmbedResponse embed;
 
-  factory _$EntryResponse([void updates(EntryResponseBuilder b)]) =>
-      (new EntryResponseBuilder()..update(updates)).build();
+  factory _$EntryCommentResponse(
+          [void updates(EntryCommentResponseBuilder b)]) =>
+      (new EntryCommentResponseBuilder()..update(updates)).build();
 
-  _$EntryResponse._(
-      {this.id,
-      this.date,
-      this.comments,
-      this.body,
-      this.voteCount,
-      this.commentsCount,
-      this.author,
-      this.embed})
+  _$EntryCommentResponse._(
+      {this.id, this.date, this.body, this.voteCount, this.author, this.embed})
       : super._() {
     if (id == null) {
-      throw new BuiltValueNullFieldError('EntryResponse', 'id');
+      throw new BuiltValueNullFieldError('EntryCommentResponse', 'id');
     }
     if (date == null) {
-      throw new BuiltValueNullFieldError('EntryResponse', 'date');
+      throw new BuiltValueNullFieldError('EntryCommentResponse', 'date');
     }
     if (voteCount == null) {
-      throw new BuiltValueNullFieldError('EntryResponse', 'voteCount');
-    }
-    if (commentsCount == null) {
-      throw new BuiltValueNullFieldError('EntryResponse', 'commentsCount');
+      throw new BuiltValueNullFieldError('EntryCommentResponse', 'voteCount');
     }
     if (author == null) {
-      throw new BuiltValueNullFieldError('EntryResponse', 'author');
+      throw new BuiltValueNullFieldError('EntryCommentResponse', 'author');
     }
   }
 
   @override
-  EntryResponse rebuild(void updates(EntryResponseBuilder b)) =>
+  EntryCommentResponse rebuild(void updates(EntryCommentResponseBuilder b)) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  EntryResponseBuilder toBuilder() => new EntryResponseBuilder()..replace(this);
+  EntryCommentResponseBuilder toBuilder() =>
+      new EntryCommentResponseBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is EntryResponse &&
+    return other is EntryCommentResponse &&
         id == other.id &&
         date == other.date &&
-        comments == other.comments &&
         body == other.body &&
         voteCount == other.voteCount &&
-        commentsCount == other.commentsCount &&
         author == other.author &&
         embed == other.embed;
   }
@@ -194,36 +164,28 @@ class _$EntryResponse extends EntryResponse {
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc(
-                $jc(
-                    $jc(
-                        $jc($jc($jc(0, id.hashCode), date.hashCode),
-                            comments.hashCode),
-                        body.hashCode),
-                    voteCount.hashCode),
-                commentsCount.hashCode),
+            $jc($jc($jc($jc(0, id.hashCode), date.hashCode), body.hashCode),
+                voteCount.hashCode),
             author.hashCode),
         embed.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('EntryResponse')
+    return (newBuiltValueToStringHelper('EntryCommentResponse')
           ..add('id', id)
           ..add('date', date)
-          ..add('comments', comments)
           ..add('body', body)
           ..add('voteCount', voteCount)
-          ..add('commentsCount', commentsCount)
           ..add('author', author)
           ..add('embed', embed))
         .toString();
   }
 }
 
-class EntryResponseBuilder
-    implements Builder<EntryResponse, EntryResponseBuilder> {
-  _$EntryResponse _$v;
+class EntryCommentResponseBuilder
+    implements Builder<EntryCommentResponse, EntryCommentResponseBuilder> {
+  _$EntryCommentResponse _$v;
 
   int _id;
   int get id => _$this._id;
@@ -233,12 +195,6 @@ class EntryResponseBuilder
   String get date => _$this._date;
   set date(String date) => _$this._date = date;
 
-  ListBuilder<EntryCommentResponse> _comments;
-  ListBuilder<EntryCommentResponse> get comments =>
-      _$this._comments ??= new ListBuilder<EntryCommentResponse>();
-  set comments(ListBuilder<EntryCommentResponse> comments) =>
-      _$this._comments = comments;
-
   String _body;
   String get body => _$this._body;
   set body(String body) => _$this._body = body;
@@ -246,10 +202,6 @@ class EntryResponseBuilder
   int _voteCount;
   int get voteCount => _$this._voteCount;
   set voteCount(int voteCount) => _$this._voteCount = voteCount;
-
-  int _commentsCount;
-  int get commentsCount => _$this._commentsCount;
-  set commentsCount(int commentsCount) => _$this._commentsCount = commentsCount;
 
   AuthorResponseBuilder _author;
   AuthorResponseBuilder get author =>
@@ -261,16 +213,14 @@ class EntryResponseBuilder
       _$this._embed ??= new EmbedResponseBuilder();
   set embed(EmbedResponseBuilder embed) => _$this._embed = embed;
 
-  EntryResponseBuilder();
+  EntryCommentResponseBuilder();
 
-  EntryResponseBuilder get _$this {
+  EntryCommentResponseBuilder get _$this {
     if (_$v != null) {
       _id = _$v.id;
       _date = _$v.date;
-      _comments = _$v.comments?.toBuilder();
       _body = _$v.body;
       _voteCount = _$v.voteCount;
-      _commentsCount = _$v.commentsCount;
       _author = _$v.author?.toBuilder();
       _embed = _$v.embed?.toBuilder();
       _$v = null;
@@ -279,45 +229,40 @@ class EntryResponseBuilder
   }
 
   @override
-  void replace(EntryResponse other) {
+  void replace(EntryCommentResponse other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$EntryResponse;
+    _$v = other as _$EntryCommentResponse;
   }
 
   @override
-  void update(void updates(EntryResponseBuilder b)) {
+  void update(void updates(EntryCommentResponseBuilder b)) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$EntryResponse build() {
-    _$EntryResponse _$result;
+  _$EntryCommentResponse build() {
+    _$EntryCommentResponse _$result;
     try {
       _$result = _$v ??
-          new _$EntryResponse._(
+          new _$EntryCommentResponse._(
               id: id,
               date: date,
-              comments: _comments?.build(),
               body: body,
               voteCount: voteCount,
-              commentsCount: commentsCount,
               author: author.build(),
               embed: _embed?.build());
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'comments';
-        _comments?.build();
-
         _$failedField = 'author';
         author.build();
         _$failedField = 'embed';
         _embed?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'EntryResponse', _$failedField, e.toString());
+            'EntryCommentResponse', _$failedField, e.toString());
       }
       rethrow;
     }

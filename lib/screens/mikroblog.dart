@@ -17,7 +17,6 @@ class HotScreen extends StatelessWidget {
           elevation: 2.5,
           title: Text('Mikroblog'),
           actions: <Widget>[
-            // action button
             IconButton(
               icon: Icon(OwmGlyphs.ic_refresh),
               onPressed: () {},
@@ -26,7 +25,6 @@ class HotScreen extends StatelessWidget {
               icon: Icon(OwmGlyphs.ic_navi_search),
               onPressed: () {},
             )
-            // action button
           ],
         ),
         body: Container(
@@ -46,11 +44,11 @@ class HotScreen extends StatelessWidget {
                     return () => store.dispatch(LoadHotAction());
                   }, builder: (context, callback) {
                     return InfiniteList(
-                        isLoading: state.isLoading,
+                        isLoading: state.isLoading && state.haveReachedEnd,
                         loadData: callback,
-                        itemCount: state.entries.length,
+                        itemCount: state.entriesIds.length,
                         itemBuilder: (context, index) {
-                          return EntryWidget(entry: state.entries[index]);
+                          return EntryWidget(entry: state.entries[state.entriesIds[index]], ellipsize: true);
                         });
                   });
                 })),

@@ -8,13 +8,22 @@ Reducer<MikroblogState> mikroblogReducer = combineReducers<MikroblogState>(
     TypedReducer<MikroblogState, SetEntriesAction>(_setEntriesAction),
     TypedReducer<MikroblogState, SetLoading>(_setLoading),
     TypedReducer<MikroblogState, SetPageNumber>(_setPageNumber),
-    TypedReducer<MikroblogState, AddEntriesAction>(_addEntriesAction)
+    TypedReducer<MikroblogState, AddEntriesAction>(_addEntriesAction),
+    TypedReducer<MikroblogState, SetHaveReachedEnd>(_setFullyLoaded),
+    TypedReducer<MikroblogState, UpdateEntryAction>(_setEntryAction),
   ],
 );
 
 MikroblogState _setEntriesAction(
     MikroblogState state, SetEntriesAction action) {
-  return state.rebuild((b) => b..entries.replace(action.entries));
+  return state.rebuild((b) => b
+    ..entries.replace(BuiltMap<int, Entry>.from(_listToMap(action.entries)))
+    ..entriesIds.addAll(action.entries.map((el) { return el.id; })));
+}
+
+MikroblogState _setEntryAction(
+    MikroblogState state, UpdateEntryAction action) {
+  return state.rebuild((b) => b..entries[action.entry.id] = action.entry);
 }
 
 MikroblogState _setLoading(MikroblogState state, SetLoading action) {
@@ -27,5 +36,16 @@ MikroblogState _setPageNumber(MikroblogState state, SetPageNumber action) {
 
 MikroblogState _addEntriesAction(
     MikroblogState state, AddEntriesAction action) {
-  return state.rebuild((b) => b..entries.addAll(action.entries));
+  return state.rebuild((b) => b
+  ..entries.addAll(_listToMap(action.entries))
+  ..entriesIds.addAll(action.entries.map((el) { return el.id; }))
+    );
+}
+
+MikroblogState _setFullyLoaded(MikroblogState state, SetHaveReachedEnd action) {
+  return state.rebuild((b) => b..haveReachedEnd = action.haveReachedEnd);
+}
+
+Map<int, Entry> _listToMap(BuiltList<Entry> entries) {
+  return Map.fromIterable(entries, key: (v) => v.id, value: (v) => v);
 }

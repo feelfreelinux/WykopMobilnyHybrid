@@ -22,5 +22,10 @@ part of 'serializers.dart';
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(AuthorResponse.serializer)
       ..add(EmbedResponse.serializer)
-      ..add(EntryResponse.serializer))
+      ..add(EntryCommentResponse.serializer)
+      ..add(EntryResponse.serializer)
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(EntryCommentResponse)]),
+          () => new ListBuilder<EntryCommentResponse>()))
     .build();

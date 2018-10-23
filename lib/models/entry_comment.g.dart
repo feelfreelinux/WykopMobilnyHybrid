@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'entry.dart';
+part of 'entry_comment.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
@@ -19,7 +19,7 @@ part of 'entry.dart';
 // ignore_for_file: unnecessary_new
 // ignore_for_file: test_types_in_equals
 
-class _$Entry extends Entry {
+class _$EntryComment extends EntryComment {
   @override
   final int id;
   @override
@@ -29,64 +29,45 @@ class _$Entry extends Entry {
   @override
   final int voteCount;
   @override
-  final int commentsCount;
-  @override
-  final BuiltList<EntryComment> comments;
-  @override
   final Author author;
   @override
   final Embed embed;
 
-  factory _$Entry([void updates(EntryBuilder b)]) =>
-      (new EntryBuilder()..update(updates)).build();
+  factory _$EntryComment([void updates(EntryCommentBuilder b)]) =>
+      (new EntryCommentBuilder()..update(updates)).build();
 
-  _$Entry._(
-      {this.id,
-      this.date,
-      this.body,
-      this.voteCount,
-      this.commentsCount,
-      this.comments,
-      this.author,
-      this.embed})
+  _$EntryComment._(
+      {this.id, this.date, this.body, this.voteCount, this.author, this.embed})
       : super._() {
     if (id == null) {
-      throw new BuiltValueNullFieldError('Entry', 'id');
+      throw new BuiltValueNullFieldError('EntryComment', 'id');
     }
     if (date == null) {
-      throw new BuiltValueNullFieldError('Entry', 'date');
+      throw new BuiltValueNullFieldError('EntryComment', 'date');
     }
     if (voteCount == null) {
-      throw new BuiltValueNullFieldError('Entry', 'voteCount');
-    }
-    if (commentsCount == null) {
-      throw new BuiltValueNullFieldError('Entry', 'commentsCount');
-    }
-    if (comments == null) {
-      throw new BuiltValueNullFieldError('Entry', 'comments');
+      throw new BuiltValueNullFieldError('EntryComment', 'voteCount');
     }
     if (author == null) {
-      throw new BuiltValueNullFieldError('Entry', 'author');
+      throw new BuiltValueNullFieldError('EntryComment', 'author');
     }
   }
 
   @override
-  Entry rebuild(void updates(EntryBuilder b)) =>
+  EntryComment rebuild(void updates(EntryCommentBuilder b)) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  EntryBuilder toBuilder() => new EntryBuilder()..replace(this);
+  EntryCommentBuilder toBuilder() => new EntryCommentBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is Entry &&
+    return other is EntryComment &&
         id == other.id &&
         date == other.date &&
         body == other.body &&
         voteCount == other.voteCount &&
-        commentsCount == other.commentsCount &&
-        comments == other.comments &&
         author == other.author &&
         embed == other.embed;
   }
@@ -95,35 +76,28 @@ class _$Entry extends Entry {
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc(
-                $jc(
-                    $jc(
-                        $jc($jc($jc(0, id.hashCode), date.hashCode),
-                            body.hashCode),
-                        voteCount.hashCode),
-                    commentsCount.hashCode),
-                comments.hashCode),
+            $jc($jc($jc($jc(0, id.hashCode), date.hashCode), body.hashCode),
+                voteCount.hashCode),
             author.hashCode),
         embed.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('Entry')
+    return (newBuiltValueToStringHelper('EntryComment')
           ..add('id', id)
           ..add('date', date)
           ..add('body', body)
           ..add('voteCount', voteCount)
-          ..add('commentsCount', commentsCount)
-          ..add('comments', comments)
           ..add('author', author)
           ..add('embed', embed))
         .toString();
   }
 }
 
-class EntryBuilder implements Builder<Entry, EntryBuilder> {
-  _$Entry _$v;
+class EntryCommentBuilder
+    implements Builder<EntryComment, EntryCommentBuilder> {
+  _$EntryComment _$v;
 
   int _id;
   int get id => _$this._id;
@@ -141,16 +115,6 @@ class EntryBuilder implements Builder<Entry, EntryBuilder> {
   int get voteCount => _$this._voteCount;
   set voteCount(int voteCount) => _$this._voteCount = voteCount;
 
-  int _commentsCount;
-  int get commentsCount => _$this._commentsCount;
-  set commentsCount(int commentsCount) => _$this._commentsCount = commentsCount;
-
-  ListBuilder<EntryComment> _comments;
-  ListBuilder<EntryComment> get comments =>
-      _$this._comments ??= new ListBuilder<EntryComment>();
-  set comments(ListBuilder<EntryComment> comments) =>
-      _$this._comments = comments;
-
   AuthorBuilder _author;
   AuthorBuilder get author => _$this._author ??= new AuthorBuilder();
   set author(AuthorBuilder author) => _$this._author = author;
@@ -159,16 +123,14 @@ class EntryBuilder implements Builder<Entry, EntryBuilder> {
   EmbedBuilder get embed => _$this._embed ??= new EmbedBuilder();
   set embed(EmbedBuilder embed) => _$this._embed = embed;
 
-  EntryBuilder();
+  EntryCommentBuilder();
 
-  EntryBuilder get _$this {
+  EntryCommentBuilder get _$this {
     if (_$v != null) {
       _id = _$v.id;
       _date = _$v.date;
       _body = _$v.body;
       _voteCount = _$v.voteCount;
-      _commentsCount = _$v.commentsCount;
-      _comments = _$v.comments?.toBuilder();
       _author = _$v.author?.toBuilder();
       _embed = _$v.embed?.toBuilder();
       _$v = null;
@@ -177,44 +139,40 @@ class EntryBuilder implements Builder<Entry, EntryBuilder> {
   }
 
   @override
-  void replace(Entry other) {
+  void replace(EntryComment other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$Entry;
+    _$v = other as _$EntryComment;
   }
 
   @override
-  void update(void updates(EntryBuilder b)) {
+  void update(void updates(EntryCommentBuilder b)) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$Entry build() {
-    _$Entry _$result;
+  _$EntryComment build() {
+    _$EntryComment _$result;
     try {
       _$result = _$v ??
-          new _$Entry._(
+          new _$EntryComment._(
               id: id,
               date: date,
               body: body,
               voteCount: voteCount,
-              commentsCount: commentsCount,
-              comments: comments.build(),
               author: author.build(),
               embed: _embed?.build());
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'comments';
-        comments.build();
         _$failedField = 'author';
         author.build();
         _$failedField = 'embed';
         _embed?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'Entry', _$failedField, e.toString());
+            'EntryComment', _$failedField, e.toString());
       }
       rethrow;
     }

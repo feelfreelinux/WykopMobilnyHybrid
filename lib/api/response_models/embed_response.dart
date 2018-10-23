@@ -9,6 +9,8 @@ abstract class EmbedResponse
   String get url;
   String get preview;
 
+  
+
   EmbedResponse._();
   static Serializer<EmbedResponse> get serializer => _$embedResponseSerializer;
 }

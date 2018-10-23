@@ -34,7 +34,7 @@ class _$AuthorResponseSerializer
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'color',
-      serializers.serialize(object.color, specifiedType: const FullType(num)),
+      serializers.serialize(object.color, specifiedType: const FullType(int)),
       'avatar',
       serializers.serialize(object.avatar,
           specifiedType: const FullType(String)),
@@ -65,7 +65,7 @@ class _$AuthorResponseSerializer
       switch (key) {
         case 'color':
           result.color = serializers.deserialize(value,
-              specifiedType: const FullType(num)) as num;
+              specifiedType: const FullType(int)) as int;
           break;
         case 'avatar':
           result.avatar = serializers.deserialize(value,
@@ -88,7 +88,7 @@ class _$AuthorResponseSerializer
 
 class _$AuthorResponse extends AuthorResponse {
   @override
-  final num color;
+  final int color;
   @override
   final String avatar;
   @override
@@ -152,9 +152,9 @@ class AuthorResponseBuilder
     implements Builder<AuthorResponse, AuthorResponseBuilder> {
   _$AuthorResponse _$v;
 
-  num _color;
-  num get color => _$this._color;
-  set color(num color) => _$this._color = color;
+  int _color;
+  int get color => _$this._color;
+  set color(int color) => _$this._color = color;
 
   String _avatar;
   String get avatar => _$this._avatar;

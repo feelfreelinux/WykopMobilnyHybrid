@@ -35,10 +35,16 @@ class _$MikroblogStateSerializer
     final result = <Object>[
       'entries',
       serializers.serialize(object.entries,
-          specifiedType:
-              const FullType(BuiltList, const [const FullType(Entry)])),
+          specifiedType: const FullType(
+              BuiltMap, const [const FullType(int), const FullType(Entry)])),
+      'entriesIds',
+      serializers.serialize(object.entriesIds,
+          specifiedType: const FullType(List, const [const FullType(int)])),
       'isLoading',
       serializers.serialize(object.isLoading,
+          specifiedType: const FullType(bool)),
+      'haveReachedEnd',
+      serializers.serialize(object.haveReachedEnd,
           specifiedType: const FullType(bool)),
       'page',
       serializers.serialize(object.page, specifiedType: const FullType(num)),
@@ -60,12 +66,23 @@ class _$MikroblogStateSerializer
       switch (key) {
         case 'entries':
           result.entries.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltMap, const [
+                const FullType(int),
+                const FullType(Entry)
+              ])) as BuiltMap);
+          break;
+        case 'entriesIds':
+          result.entriesIds = serializers.deserialize(value,
                   specifiedType:
-                      const FullType(BuiltList, const [const FullType(Entry)]))
-              as BuiltList);
+                      const FullType(List, const [const FullType(int)]))
+              as List<int>;
           break;
         case 'isLoading':
           result.isLoading = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
+        case 'haveReachedEnd':
+          result.haveReachedEnd = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool;
           break;
         case 'page':
@@ -81,21 +98,37 @@ class _$MikroblogStateSerializer
 
 class _$MikroblogState extends MikroblogState {
   @override
-  final BuiltList<Entry> entries;
+  final BuiltMap<int, Entry> entries;
+  @override
+  final List<int> entriesIds;
   @override
   final bool isLoading;
+  @override
+  final bool haveReachedEnd;
   @override
   final num page;
 
   factory _$MikroblogState([void updates(MikroblogStateBuilder b)]) =>
       (new MikroblogStateBuilder()..update(updates)).build();
 
-  _$MikroblogState._({this.entries, this.isLoading, this.page}) : super._() {
+  _$MikroblogState._(
+      {this.entries,
+      this.entriesIds,
+      this.isLoading,
+      this.haveReachedEnd,
+      this.page})
+      : super._() {
     if (entries == null) {
       throw new BuiltValueNullFieldError('MikroblogState', 'entries');
     }
+    if (entriesIds == null) {
+      throw new BuiltValueNullFieldError('MikroblogState', 'entriesIds');
+    }
     if (isLoading == null) {
       throw new BuiltValueNullFieldError('MikroblogState', 'isLoading');
+    }
+    if (haveReachedEnd == null) {
+      throw new BuiltValueNullFieldError('MikroblogState', 'haveReachedEnd');
     }
     if (page == null) {
       throw new BuiltValueNullFieldError('MikroblogState', 'page');
@@ -115,21 +148,29 @@ class _$MikroblogState extends MikroblogState {
     if (identical(other, this)) return true;
     return other is MikroblogState &&
         entries == other.entries &&
+        entriesIds == other.entriesIds &&
         isLoading == other.isLoading &&
+        haveReachedEnd == other.haveReachedEnd &&
         page == other.page;
   }
 
   @override
   int get hashCode {
-    return $jf(
-        $jc($jc($jc(0, entries.hashCode), isLoading.hashCode), page.hashCode));
+    return $jf($jc(
+        $jc(
+            $jc($jc($jc(0, entries.hashCode), entriesIds.hashCode),
+                isLoading.hashCode),
+            haveReachedEnd.hashCode),
+        page.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('MikroblogState')
           ..add('entries', entries)
+          ..add('entriesIds', entriesIds)
           ..add('isLoading', isLoading)
+          ..add('haveReachedEnd', haveReachedEnd)
           ..add('page', page))
         .toString();
   }
@@ -139,14 +180,23 @@ class MikroblogStateBuilder
     implements Builder<MikroblogState, MikroblogStateBuilder> {
   _$MikroblogState _$v;
 
-  ListBuilder<Entry> _entries;
-  ListBuilder<Entry> get entries =>
-      _$this._entries ??= new ListBuilder<Entry>();
-  set entries(ListBuilder<Entry> entries) => _$this._entries = entries;
+  MapBuilder<int, Entry> _entries;
+  MapBuilder<int, Entry> get entries =>
+      _$this._entries ??= new MapBuilder<int, Entry>();
+  set entries(MapBuilder<int, Entry> entries) => _$this._entries = entries;
+
+  List<int> _entriesIds;
+  List<int> get entriesIds => _$this._entriesIds;
+  set entriesIds(List<int> entriesIds) => _$this._entriesIds = entriesIds;
 
   bool _isLoading;
   bool get isLoading => _$this._isLoading;
   set isLoading(bool isLoading) => _$this._isLoading = isLoading;
+
+  bool _haveReachedEnd;
+  bool get haveReachedEnd => _$this._haveReachedEnd;
+  set haveReachedEnd(bool haveReachedEnd) =>
+      _$this._haveReachedEnd = haveReachedEnd;
 
   num _page;
   num get page => _$this._page;
@@ -157,7 +207,9 @@ class MikroblogStateBuilder
   MikroblogStateBuilder get _$this {
     if (_$v != null) {
       _entries = _$v.entries?.toBuilder();
+      _entriesIds = _$v.entriesIds;
       _isLoading = _$v.isLoading;
+      _haveReachedEnd = _$v.haveReachedEnd;
       _page = _$v.page;
       _$v = null;
     }
@@ -183,7 +235,11 @@ class MikroblogStateBuilder
     try {
       _$result = _$v ??
           new _$MikroblogState._(
-              entries: entries.build(), isLoading: isLoading, page: page);
+              entries: entries.build(),
+              entriesIds: entriesIds,
+              isLoading: isLoading,
+              haveReachedEnd: haveReachedEnd,
+              page: page);
     } catch (_) {
       String _$failedField;
       try {

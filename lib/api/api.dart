@@ -1,6 +1,7 @@
 export 'response_models/entry_response.dart';
 export 'response_models/author_response.dart';
 export 'response_models/embed_response.dart';
+export 'response_models/entry_comment_response.dart';
 export 'response_models/serializers.dart';
 
 import 'package:http/http.dart';
@@ -72,10 +73,15 @@ class BaseWykopClient {
   BaseWykopClient();
 
   Future<BuiltList<EntryResponse>> getHot(int page) async {
-    print("http://a2.wykop.pl/entries/hot/period/12/page/${page.toString()}");
     var items = await _httpClient.wykopGetList(EntryResponse.serializer,
         "http://a2.wykop.pl/entries/hot/period/12/page/${page.toString()}");
     return BuiltList.from(items);
+  }
+
+  Future<EntryResponse> getEntry(int id) async {
+    var item = await _httpClient.wykopGet(EntryResponse.serializer,
+        "http://a2.wykop.pl/entries/entry/${id.toString()}");
+    return item;
   }
 }
 

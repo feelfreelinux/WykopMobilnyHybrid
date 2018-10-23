@@ -8,12 +8,14 @@ part 'mikroblog_state.g.dart';
 
 abstract class MikroblogState
     implements Built<MikroblogState, MikroblogStateBuilder> {
-  BuiltList<Entry> get entries;
+  BuiltMap<int, Entry> get entries;
+  List<int> get entriesIds;
   bool get isLoading;
+  bool get haveReachedEnd;
   num get page;
 
   factory MikroblogState() {
-    return _$MikroblogState._(entries: BuiltList(), isLoading: false, page: 1);
+    return _$MikroblogState._(entries: new BuiltMap<int, Entry>(), entriesIds: [], isLoading: false, haveReachedEnd: false, page: 1);
   }
 
   MikroblogState._();

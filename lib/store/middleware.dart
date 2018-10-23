@@ -14,17 +14,26 @@ void appMiddleware(Store<AppState> store, action, NextDispatcher next) {
           .dispatch(SetPageNumber(number: store.state.mikroblogState.page + 1));
       store.dispatch(SetLoading(isLoading: false));
 
+      if (el.length == 0) {
+        store.dispatch(SetHaveReachedEnd(haveReachedEnd: true));
+      }
       if (store.state.mikroblogState.page == 2) {
         store.dispatch(SetEntriesAction(
             entries: BuiltList.from(el.map((el) {
           return Entry.mapFromResponse(el);
         }).toList())));
-      } else {
+      } else {        
         store.dispatch(AddEntriesAction(
             entries: BuiltList.from(el.map((el) {
           return Entry.mapFromResponse(el);
         }).toList())));
       }
+    });
+  }
+
+  if (action is LoadEntry) {
+    api.getEntry(action.entryId).then((el) {
+      store.dispatch(UpdateEntryAction(entry: Entry.mapFromResponse(el)));
     });
   }
   next(action);

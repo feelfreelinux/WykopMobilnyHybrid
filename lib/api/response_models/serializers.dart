@@ -9,6 +9,7 @@ part 'serializers.g.dart';
   EntryResponse,
   AuthorResponse,
   EmbedResponse,
+  EntryCommentResponse,
 ])
 final Serializers serializers =
     (_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();

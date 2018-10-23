@@ -3,9 +3,9 @@ import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/owm_glyphs.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 
-class EntryFooterWidget extends StatelessWidget {
-  final Entry entry;
-  EntryFooterWidget({this.entry});
+class EntryCommentFooterWidget extends StatelessWidget {
+  final EntryComment comment;
+  EntryCommentFooterWidget({this.comment});
 
   @override
   Widget build(BuildContext context) {
@@ -19,16 +19,13 @@ class EntryFooterWidget extends StatelessWidget {
               icon: OwmGlyphs.ic_buttontoolbar_share,
               onClicked: () {},
             ),
-            FavoriteButton(
+            FooterIconButton(
+              icon: OwmGlyphs.ic_buttontoolbar_reply,
               onClicked: () {},
             ),
             Expanded(child: Container()),
-            CommentsButton(
-              count: entry.commentsCount,
-              onClicked: () {},
-            ),
             VoteButton(
-              count: entry.voteCount,
+              count: comment.voteCount,
               onClicked: () {},
             ),
             FooterIconButton(

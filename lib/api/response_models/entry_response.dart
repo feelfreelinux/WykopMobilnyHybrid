@@ -1,23 +1,27 @@
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:owmflutter/api/api.dart';
+import 'package:built_collection/built_collection.dart';
 
 part 'entry_response.g.dart';
 
 abstract class EntryResponse
     implements Built<EntryResponse, EntryResponseBuilder> {
   factory EntryResponse([updates(EntryResponseBuilder b)]) = _$EntryResponse;
-  num get id;
+  int get id;
   String get date;
+
+  @nullable
+  BuiltList<EntryCommentResponse> get comments;
 
   @nullable
   String get body;
 
   @BuiltValueField(wireName: "vote_count")
-  num get voteCount;
+  int get voteCount;
 
   @BuiltValueField(wireName: "comments_count")
-  num get commentsCount;
+  int get commentsCount;
 
   AuthorResponse get author;
 
