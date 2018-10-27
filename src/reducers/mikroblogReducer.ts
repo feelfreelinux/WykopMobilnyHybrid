@@ -3,11 +3,11 @@ import { Entry } from '../models/'
 import { GET_HOT_ENTRIES, SET_ENTRIES, MikroblogActions } from '../actions/mikroblogActions'
 
 export interface MikroblogState {
-    readonly entries: Entry[]
+    readonly entryIds: string[]
 }
 
 const defaultState: MikroblogState = {
-    entries: [],
+    entryIds: [],
 }
 
 export const mikroblogReducer: Reducer<MikroblogState, MikroblogActions> = (state = defaultState, action: MikroblogActions) => {
@@ -15,7 +15,7 @@ export const mikroblogReducer: Reducer<MikroblogState, MikroblogActions> = (stat
         case SET_ENTRIES: {
             return {
                 ...state,
-                entries: action.payload.entries
+                entryIds: action.payload.entryIds
             }
         }
         default: return state;

@@ -16,7 +16,7 @@ export interface GetHotEntries extends Action {
 export interface SetEntries extends Action {
     type: 'SET_ENTRIES',
     payload: {
-        entries: Entry[]
+        entryIds: string[]
     }
 }
 
