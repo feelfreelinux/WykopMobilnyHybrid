@@ -28,6 +28,7 @@ const LightTheme: AppTheme = {
     $authorHeaderDateColor: '#757575',
     $hintColor: '#9e9e9e',
     $digCountColor: '#ef5213',
+    $buttonsBarItemsColor: '#737373',
 }
 
 export default LightTheme

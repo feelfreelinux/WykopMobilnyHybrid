@@ -28,6 +28,7 @@ export interface AppTheme {
         $authorHeaderDateColor: string
         $hintColor: string
         $digCountColor: string
+        $buttonsBarItemsColor: string
     
 }
 export {
