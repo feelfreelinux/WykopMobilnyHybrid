@@ -7,6 +7,6 @@ export interface Entry {
     date: Date
     voteCount: number
     commentsCount: number
-    author: Author
+    author: number
     embed: Embed | null
 }

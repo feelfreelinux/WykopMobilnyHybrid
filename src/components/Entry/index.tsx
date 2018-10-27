@@ -36,8 +36,8 @@ export default class EntryComponent extends PureComponent<{ entryId: number, ent
         <FooterButton iconName="ic_buttontoolbar_share" iconFontSize={18} />
         <FooterButton iconName="ic_buttontoolbar_favorite" />
         <View style={{ flexGrow: 1 }} />
-        <FooterButton iconName="ic_buttontoolbar_comment" iconMarginTop={3} iconMarginRight={5} iconFontSize={18} wrapperPaddingLeft={10} text={entry['comments_count'].toString()} />
-        <FooterButton iconName="ic_buttontoolbar_plus" iconMarginTop={1} iconMarginRight={1} iconFontSize={21} wrapperPaddingLeft={6} text={entry['vote_count'].toString()} />
+        <FooterButton iconName="ic_buttontoolbar_comment" iconMarginTop={3} iconMarginRight={5} iconFontSize={18} wrapperPaddingLeft={10} text={entry.commentsCount.toString()} />
+        <FooterButton iconName="ic_buttontoolbar_plus" iconMarginTop={1} iconMarginRight={1} iconFontSize={21} wrapperPaddingLeft={6} text={entry.voteCount.toString()} />
         <FooterButton iconName="ic_buttontoolbar_dots" />
       </View>
     )

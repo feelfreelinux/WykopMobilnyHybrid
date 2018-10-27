@@ -7,11 +7,12 @@ import { getHotEntries, GetHotEntries, SetEntries, MikroblogActions } from '../a
 const mapStateToProps = (state: RootState, props) => ({
   ...props,
   entryIds: state.mikroblog.entryIds,
-  entries: state.entity.entities.entries
+  entries: state.entity.entities.entries,
+  refreshing: state.mikroblog.refreshing,
 })
 
 const mapDispatchToProps = (dispatch: Dispatch<MikroblogActions>) => ({
-  getHotEntries: (page: number) => dispatch(getHotEntries()),
+  getHotEntries: (period) => dispatch(getHotEntries(period)),
 })
 
 export default connect(
