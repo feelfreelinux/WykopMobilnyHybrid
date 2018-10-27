@@ -22,3 +22,14 @@ export const getAuthorColor = (author: Author) => {
             return '#3F6FA0'
     }
 }
+
+export const getAuthorSex = (author: Author) => {
+    switch(author.sex) {
+        case 'male':
+            return '#46abf2'
+        case 'female':
+            return '#f246d0'
+        default:
+            return null
+    }
+}

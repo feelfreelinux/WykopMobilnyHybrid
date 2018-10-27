@@ -4,7 +4,7 @@ import { SetEntries, SET_ENTRIES } from '../actions/mikroblogActions'
 export const MikroblogMiddleware: Middleware = store => next => action => {
     switch (action.type) {
         case 'GET_HOT_ENTRIES': {
-            fetch('http://a2.wykop.pl/entries/hot/period/12/appkey/aNd401dAPp', {
+            fetch('http://a2.wykop.pl/entries/hot/period/6/appkey/aNd401dAPp', {
                 method: 'GET',
             }).then(async (el) => {
                 const data = await el.json()

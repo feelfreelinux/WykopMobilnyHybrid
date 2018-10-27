@@ -2,7 +2,7 @@ import EStyleSheet from 'react-native-extended-stylesheet'
 
 export default EStyleSheet.create({
     containerStyle: {
-        padding: 8,
+        marginTop: 10,
     },
     imageStyle: {
         width: '100%',
