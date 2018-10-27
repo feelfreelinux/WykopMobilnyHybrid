@@ -9,7 +9,5 @@ export default EStyleSheet.create({
   footerStyle: {
     flex: 1,
     flexDirection: 'row',
-    paddingLeft: 12,
-    paddingRight: 12,
   }
 });

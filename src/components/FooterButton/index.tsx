@@ -1,23 +1,27 @@
 import React, { Component } from 'react'
-import { View, TouchableHighlight, TouchableWithoutFeedback, Text } from 'react-native'
-import styles, { marginedIconStyle, marginedWrapperStyle } from './styles'
+import { View, TouchableOpacity, Text } from 'react-native'
+import styles, { iconStyle, wrapperStyle } from './styles'
 import { OWMIcons } from '../../../App';
 
-export default class EntryComponent extends Component<{ iconName: string, topMarginOveride: number, text: string | null, ignoreMargin: boolean }, {}> {
+export default class EntryComponent extends Component<{ iconName: string, iconMarginTop: number, iconMarginRight: number, iconFontSize: number, text: string | null, wrapperPaddingLeft: number }, {}> {
     public static defaultProps = {
         text: null,
-        topMarginOveride: 0,
-        ignoreMargin: false
+        iconMarginTop: 0,
+        iconMarginRight: 0,
+        iconFontSize: 20,
+        wrapperPaddingLeft: 10,
     }
 
     render() {
-        const wrapperStyle = marginedWrapperStyle( this.props.ignoreMargin ? 0 : 6)
-        const style = marginedIconStyle(this.props.topMarginOveride)
+        const wrapper = wrapperStyle(this.props.wrapperPaddingLeft)
+        const icon = iconStyle(this.props.iconMarginTop, this.props.iconMarginRight, this.props.iconFontSize)
         return (
-            <View style={wrapperStyle.buttonWrapperStyle}>
-                <OWMIcons name={this.props.iconName} style={style.iconsStyle} />
-                {this._renderText()}
-            </View>
+            <TouchableOpacity>
+                <View style={wrapper.buttonWrapperStyle}>
+                    <OWMIcons name={this.props.iconName} style={icon.iconsStyle} />
+                    {this._renderText()}
+                </View>
+            </TouchableOpacity>
         )
     }
 

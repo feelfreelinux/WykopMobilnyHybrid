@@ -1,20 +1,22 @@
 import EStyleSheet from 'react-native-extended-stylesheet'
 
-export const marginedIconStyle = (margin) => {
+export const iconStyle = (marginTop, marginRight, fontSize) => {
     return EStyleSheet.create({
         iconsStyle: {
-            fontSize: 20,
-            marginTop: margin,
+            fontSize: fontSize,
+            marginTop: marginTop,
+            marginRight: marginRight,
             color: '$buttonsBarItemsColor'
-          }
+        }
     })
 }
 
-export const marginedWrapperStyle = (padding) => {
+export const wrapperStyle = (paddingLeft) => {
     return EStyleSheet.create({
         buttonWrapperStyle: {
-            padding,
-            height: 30,
+            paddingLeft: paddingLeft,
+            paddingRight: 10,
+            height: 32,
             flex: 0,
             flexDirection: 'row',
             alignSelf: 'center',
@@ -24,10 +26,8 @@ export const marginedWrapperStyle = (padding) => {
 }
 
 export default EStyleSheet.create({
-
-  textStyle: {
-    marginLeft: 4,
-    fontSize: 16,
-    color: '$buttonsBarItemsColor'
-  },
+    textStyle: {
+        fontSize: 16,
+        color: '$buttonsBarItemsColor'
+    },
 });
