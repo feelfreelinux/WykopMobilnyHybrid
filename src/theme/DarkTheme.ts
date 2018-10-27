@@ -1,0 +1,33 @@
+import { AppTheme } from './index'
+const DarkTheme: AppTheme = {
+    $backgroundColor: '#ffffff',
+    $theme: 'light',
+    $windowBackground: '#ffffff',
+    $textColor: '#cc000000',
+    $textColorGrey: '#99000000',
+    $textColorLight: '#8c000000',
+    $textColorButtonToolbar: '#8c000000',
+    $colorAccent: '#3c84c1',
+    $colorPrimary: '#3a80ba',
+    $colorPrimaryDark: '#3677ae',
+    $itemBackground: '#ffffff',
+    $itemBackgroundSelected: '#f5f5f5',
+    $toolbarItemsColor: '#1e1e1e',
+    $surveyBarColor: '#9b9b9b',
+    $separatorColor: '#bebebe',
+    $lineColor: '#efefef',
+    $colorBadgeOwn: '#3498db',
+    $colorBadgeAuthors: '#F75616',
+    $colorBadgeHot: '#f71e16',
+    $linkItemClicked: '#f3f3f3',
+    $yourMessageColor: '#f1f1f1',
+    $usersMessageColor: '#e1f0ff',
+    $drawablesColor: '#e6e6e6',
+    $plusPressedColor: '#27ae60',
+    $minusPressedColor: '#c0392b',
+    $authorHeaderDateColor: '#757575',
+    $hintColor: '#9e9e9e',
+    $digCountColor: '#ef5213',
+}
+
+export default DarkTheme

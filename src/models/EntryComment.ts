@@ -1,6 +1,6 @@
 export interface EntryComment {
     id: number
-    body: String
+    body: string
     date: Date
     voteCount: number
     commentsCount: number

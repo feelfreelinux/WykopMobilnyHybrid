@@ -9,6 +9,8 @@
     "lib": ["dom", "esnext"],
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
-    "noImplicitReturns": true
+    "noImplicitReturns": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
   }
 }

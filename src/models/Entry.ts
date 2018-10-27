@@ -3,7 +3,7 @@ import { Author } from "./Author"
 
 export interface Entry {
     id: number
-    body: String
+    body: string | null
     date: Date
     voteCount: number
     commentsCount: number
