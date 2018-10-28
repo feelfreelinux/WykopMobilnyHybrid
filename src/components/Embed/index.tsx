@@ -24,11 +24,21 @@ export default class EmbedComponent extends PureComponent<{ embed: Embed }, Stat
 
 
     _handleSizeReceived = (width, height) => {
-        this.setState({
-            width,
-            height,
-            isLoaded: true,
-        })
+        // If image is small, we shouldn't display the resize overlay
+        if (height > 300) {
+            this.setState({
+                width,
+                height,
+                isLoaded: true,
+            })
+        } else {
+            this.setState({
+                width,
+                height,
+                isLoaded: true,
+                isResized: true,
+            }) 
+        }
     }
 
     render() {
