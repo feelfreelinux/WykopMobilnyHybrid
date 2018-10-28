@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Embed } from '../../models'
-import { Text, Image, View } from 'react-native'
+import { View } from 'react-native'
 import styles from './styles'
 import HTML from 'react-native-render-html';
 

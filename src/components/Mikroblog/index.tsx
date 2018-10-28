@@ -4,13 +4,12 @@ import { Entry } from '../../models'
 import { FlatList } from 'react-native'
 import EntryContainer from '../../containers/EntryContainer'
 
-export default class Messages extends PureComponent<{ getHotEntries: (period) => any, refreshing: boolean, entryIds: string[] }, {}> {
+export default class Mikroblog extends PureComponent<{ getHotEntries: (period) => any, refreshing: boolean, entryIds: string[] }, {}> {
     componentDidMount() {
         this.props.getHotEntries("12")
     }
 
     render() {
-        console.log(this.props.entryIds)
         return (
             <FlatList
                 keyExtractor={(entryId, _) => entryId.toString()}

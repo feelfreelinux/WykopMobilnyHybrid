@@ -6,6 +6,7 @@ import fontelloConfig from '../../assets/fonts/config.json'
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation'
 import MikroblogContainer from '../containers/MikroblogContainer'
 import NotImplemented from '../components/NotImplementedPlaceholder'
+import EntryDetailsContainer from '../containers/EntryDetailsContainer'
 
 const OWMIcons = createIconSetFromFontello(fontelloConfig, 'owmglyphs')
 
@@ -100,9 +101,16 @@ export default createStackNavigator({
       screen: Tabs,
       navigationOptions: {
         title: 'Mikroblog',
-        headerTitleStyle: {textAlign:'center', alignSelf:'center',flex:1}
-      }
-  }
+        headerTitleStyle: { textAlign:'center', alignSelf:'center', flex:1 }
+        },
+    },
+    
+    EntryDetails: {
+        screen: EntryDetailsContainer,
+        navigationOptions: {
+          title: 'Wpis',
+          },
+    }
   }, {
     initialRouteName: 'Home'
   })
