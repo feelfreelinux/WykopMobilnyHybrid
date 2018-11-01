@@ -1,7 +1,6 @@
 import { Action, ActionCreator, Dispatch } from 'redux'
-import { ThunkAction, } from 'redux-thunk'
+import { ThunkResult } from '../store/index'
 import { Entry } from '../models'
-import { Wykop } from 'wykop-v2'
 import { normalize, schema } from 'normalizr'
 import { entriesSchema, entrySchema } from '../models/Schema'
 import { SET_ENTRY_COMMENTS } from "../actions/entryActions"
@@ -58,7 +57,7 @@ export interface SetEntries extends Action {
     }
 }
 
-export const loadHotEntriesAction: ActionCreator<ThunkAction<any, any, any, any>> = (period) => {
+export const loadHotEntriesAction: (period: string) => ThunkResult<void> = (period: string) => {
     return async (dispatch: Dispatch<any>, getState) => { 
         if (!getState().mikroblog.refreshing && !getState().mikroblog.hasReachedEnd) {
             dispatch({ type: "SET_MIKROBLOG_REFRESHING", payload: { refreshing: true } });

@@ -8,14 +8,15 @@ export interface ListsState {
     readonly entryIds: any
 }
 
-const defaultState: ListsState = {
+export const defaultState: ListsState = {
     refreshing: false,
     hasReachedEnd: false,
     page: 1,
     entryIds: []
 }
 
-export const listsReducer = <A extends any, Y extends AnyAction>(name, reducer: Reducer<A, Y>) => {
+// @TODO Properly type this mess
+export const listsReducer = <D, Y extends AnyAction>(name, reducer: Reducer<D, Y>) => {
     return (state = defaultState, action: AnyAction) => {
         switch (action.type) {
             case `SET_${name}_REFRESHING`: {

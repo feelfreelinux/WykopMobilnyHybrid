@@ -1,15 +1,16 @@
 import { Reducer, AnyAction } from 'redux'
+import { ListsState, defaultState as listsDefaultState } from './listsReducer'
 import { Entry } from '../models/'
 import { GET_HOT_ENTRIES, CLEAR_ENTRIES, SET_REFRESHING, SET_ENTRIES, MikroblogActions, SET_HAS_REACHED_END } from '../actions/mikroblogActions'
 
-export interface MikroblogState {
+export interface MikroblogState extends ListsState{
     readonly entryIds: string[]
     readonly page: number
 }
 
 const defaultState: MikroblogState = {
     entryIds: [],
-    page: 1,
+    ...listsDefaultState
 }
 
 export const mikroblogReducer: Reducer<MikroblogState, MikroblogActions> = (state = defaultState, action: MikroblogActions) => {

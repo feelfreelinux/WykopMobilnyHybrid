@@ -1,10 +1,9 @@
 import { connect } from 'react-redux'
 import { RootState } from '../reducers'
-import { Dispatch } from 'redux'
 import Mikroblog from '../components/Mikroblog'
 import { loadHotEntriesAction } from '../actions/mikroblogActions'
-import { getHotEntries, GetHotEntries, SetEntries, MikroblogActions } from '../actions/mikroblogActions';
 import { ThunkDispatch } from 'redux-thunk';
+import { RootActions } from '../actions';
 
 const mapStateToProps = (state: RootState, props) => ({
   ...props,
@@ -13,7 +12,7 @@ const mapStateToProps = (state: RootState, props) => ({
   refreshing: (state.mikroblog as any).refreshing,
 })
 
-const mapDispatchToProps = (dispatch: any) => ({
+const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, undefined, RootActions>) => ({
   getHotEntries: (period) => dispatch(loadHotEntriesAction(period)),
 })
 
