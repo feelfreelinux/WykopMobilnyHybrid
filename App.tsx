@@ -10,13 +10,13 @@ import * as PropTypes from 'prop-types'
 import EStyleSheet from 'react-native-extended-stylesheet'
 import { createIconSetFromFontello } from '@expo/vector-icons'
 import { Font } from 'expo'
-
 import fontelloConfig from './assets/fonts/config.json'
 export const OWMIcons = createIconSetFromFontello(fontelloConfig, 'owmglyphs')
+import thunk from 'redux-thunk';
 
 EStyleSheet.build(LightTheme)
 
-const store = createStore(rootReducer, applyMiddleware(MikroblogMiddleware))
+const store = createStore(rootReducer, applyMiddleware(MikroblogMiddleware, thunk))
 
 interface ThemeContextProvider {
   theme: AppTheme

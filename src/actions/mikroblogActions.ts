@@ -1,5 +1,12 @@
-import { Action, ActionCreator } from 'redux'
+import { Action, ActionCreator, Dispatch } from 'redux'
+import { ThunkAction, } from 'redux-thunk'
 import { Entry } from '../models'
+import { Wykop } from 'wykop-v2'
+import { normalize, schema } from 'normalizr'
+import { entriesSchema, entrySchema } from '../models/Schema'
+import { SET_ENTRY_COMMENTS } from "../actions/entryActions"
+const camelCaseKeys = require('camelcase-keys')
+import { EntitesActions, ADD_TO_STATE, AddToStateAction } from '../actions/entityActions'
 
 export const ADD_HOT_ENTRIES = 'ADD_HOT_ENTRIES'
 export const GET_HOT_ENTRIES = 'GET_HOT_ENTRIES'
@@ -51,10 +58,30 @@ export interface SetEntries extends Action {
     }
 }
 
+export const loadHotEntriesAction: ActionCreator<ThunkAction<any, any, any, any>> = (period) => {
+    return async (dispatch: Dispatch<any>, getState) => { 
+        if (!getState().mikroblog.refreshing && !getState().mikroblog.hasReachedEnd) {
+            dispatch({ type: "SET_MIKROBLOG_REFRESHING", payload: { refreshing: true } });
+                fetch(`http://a2.wykop.pl/entries/hot/period/12/page/${getState().mikroblog.page.toString()}/appkey/aNd401dAPp`, {
+                    method: 'GET',
+                }).then(async (el) => {
+                    const data = await el.json()
+                    const normalized = (normalize(camelCaseKeys(data.data), entriesSchema))
+                    if (data.data.length === 0) {
+                        dispatch({ type: "SET_MIKROBLOG_HAS_REACHED_END", payload: { hasReachedEnd: true } });
+                    }
+                    dispatch({ type: ADD_TO_STATE, payload: { entities: normalized.entities } });
+                    dispatch({ type: SET_ENTRIES, payload: { entryIds: normalized.result } });
+                    dispatch({ type: "SET_MIKROBLOG_REFRESHING", payload: { refreshing: false } });
+                })
+            }
+    }
+}
+
 export const getHotEntries: ActionCreator<GetHotEntries> = (period: string) => ({
-  type: 'GET_HOT_ENTRIES',
+    type: 'GET_HOT_ENTRIES',
     payload: {
-      period,
+        period,
     }
 })
 

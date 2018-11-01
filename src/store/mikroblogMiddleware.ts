@@ -3,7 +3,7 @@ import { EntitesActions, ADD_TO_STATE, AddToStateAction } from '../actions/entit
 import { SetEntries, SET_ENTRIES, SET_REFRESHING, SET_HAS_REACHED_END } from '../actions/mikroblogActions'
 import { normalize, schema } from 'normalizr'
 import { entriesSchema, entrySchema } from '../models/Schema'
-import { SET_ENTRY_COMMENTS } from "../actions/entryActions";
+import { SET_ENTRY_COMMENTS } from "../actions/entryActions"
 const camelCaseKeys = require('camelcase-keys')
 
 export const MikroblogMiddleware: Middleware = store => next => action => {
