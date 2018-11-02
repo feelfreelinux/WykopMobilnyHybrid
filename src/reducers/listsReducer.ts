@@ -1,5 +1,6 @@
-import { Reducer, AnyAction, Action } from 'redux'
+import { Reducer, AnyAction, Action, ActionCreator } from 'redux'
 import { Entry } from '../models/'
+import { SetHasReachedEndAction, SetRefreshingAction, SetPageAction, ActionType, ActionTypes } from '../actions/listActions'
 
 export interface ListsState {
     readonly refreshing: boolean
@@ -14,29 +15,6 @@ export const defaultState: ListsState = {
     page: 1,
     entryIds: []
 }
-
-interface ActionTypes {
-    SET_REFRESHING: string
-    SET_PAGE: string
-    SET_HAS_REACHED_END: string
-}
-
-interface SetRefreshingAction {
-    type: string
-    payload: { refreshing: boolean }
-}
-
-interface SetHasReachedEndAction {
-    type: string
-    payload: { hasReachedEnd: boolean }
-}
-
-interface SetPageAction {
-    type: string
-    payload: { page: number }
-}
-
-type ActionType<ExtraActionsT extends Action> = SetRefreshingAction | SetPageAction | SetHasReachedEndAction | SetPageAction | ExtraActionsT
 
 export const listsReducer = <StateT extends ListsState, ExtraActionsT extends Action = never>(actions: ActionTypes, wrappedReducer: (s: ListsState, a: ExtraActionsT) => StateT) => {
     return (state: ListsState, action: ActionType<ExtraActionsT>): ListsState => {

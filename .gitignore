@@ -1,3 +1,6 @@
+# Secrets
+assets/secrets.json
+
 # Logs
 logs
 *.log

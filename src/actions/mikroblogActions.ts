@@ -5,15 +5,16 @@ import { normalize, schema } from 'normalizr'
 import { entriesSchema, entrySchema } from '../models/Schema'
 const camelCaseKeys = require('camelcase-keys')
 import { addToState } from '../actions/entityActions'
+import { setRefreshing, setHasReachedEnd } from './listActions'
 
 export const ADD_HOT_ENTRIES = 'ADD_HOT_ENTRIES'
 export const GET_HOT_ENTRIES = 'GET_HOT_ENTRIES'
 export const SET_ENTRIES = 'SET_ENTRIES'
-export const SET_PAGE = 'MIKROBLOG_SET_PAGE'
-
 export const CLEAR_ENTRIES = 'CLEAR_ENTRIES'
-export const SET_REFRESHING = 'SET_REFRESHING'
-export const SET_HAS_REACHED_END = 'SET_HAS_REACHED_END'
+
+export const SET_PAGE = 'MIKROBLOG_SET_PAGE'
+export const SET_REFRESHING = 'MIKROBLOG_SET_REFRESHING'
+export const SET_HAS_REACHED_END = 'MIKROBLOG_SET_HAS_REACHED_END'
 
 export interface GetHotEntries extends Action {
     type: 'GET_HOT_ENTRIES',
@@ -45,22 +46,17 @@ export interface SetEntries extends Action {
 
 
 export const loadHotEntriesAction: (period: string) => ThunkResult<void> = () => {
-    return async (dispatch: Dispatch<AnyAction>, getState) => { 
+    return async (dispatch: Dispatch<AnyAction>, getState, wykopApi) => { 
         if (!getState().mikroblog.refreshing && !getState().mikroblog.hasReachedEnd) {
-            dispatch({ type: "SET_MIKROBLOG_REFRESHING", payload: { refreshing: true } });
-                fetch(`http://a2.wykop.pl/entries/hot/period/12/page/${getState().mikroblog.page.toString()}/appkey/aNd401dAPp`, {
-                    method: 'GET',
-                }).then(async (el) => {
-                    const data = await el.json()
-                    const normalized = (normalize(camelCaseKeys(data.data), entriesSchema))
-                    if (data.data.length === 0) {
-                        dispatch({ type: "SET_MIKROBLOG_HAS_REACHED_END", payload: { hasReachedEnd: true } })
-                    }
-                    dispatch(addToState(normalized.entities))
-                    dispatch({ type: SET_ENTRIES, payload: { entryIds: normalized.result } })
-                    dispatch({ type: "SET_MIKROBLOG_REFRESHING", payload: { refreshing: false } })
-                })
+            dispatch(setRefreshing(SET_REFRESHING, true))
+            const entries = await wykopApi.entries.getHotEntries("12", getState().mikroblog.page)
+            if (entries.result.length === 0) {
+                dispatch(setHasReachedEnd(SET_HAS_REACHED_END, true))
             }
+            dispatch(addToState(entries.entities))
+            dispatch({ type: SET_ENTRIES, payload: { entryIds: entries.result } })
+            dispatch(setRefreshing(SET_REFRESHING,false))
+        }
     }
 }
 

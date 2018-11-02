@@ -12,11 +12,12 @@ import { createIconSetFromFontello } from '@expo/vector-icons'
 import { Font } from 'expo'
 import fontelloConfig from './assets/fonts/config.json'
 export const OWMIcons = createIconSetFromFontello(fontelloConfig, 'owmglyphs')
-import thunk from 'redux-thunk';
+import thunk from 'redux-thunk'
+import WykopApi from './src/api/WykopApi'
 
 EStyleSheet.build(LightTheme)
 
-const store = createStore(rootReducer, applyMiddleware(MikroblogMiddleware, thunk))
+const store = createStore(rootReducer, applyMiddleware(MikroblogMiddleware, thunk.withExtraArgument(new WykopApi())))
 
 interface ThemeContextProvider {
   theme: AppTheme
