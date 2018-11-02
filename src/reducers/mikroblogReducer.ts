@@ -5,12 +5,17 @@ import { GET_HOT_ENTRIES, CLEAR_ENTRIES, SET_REFRESHING, SET_ENTRIES, MikroblogA
 
 export interface MikroblogState extends ListsState{
     readonly entryIds: string[]
-    readonly page: number
 }
 
 const defaultState: MikroblogState = {
     entryIds: [],
+
     ...listsDefaultState
+}
+
+
+const listTypes = {
+    
 }
 
 export const mikroblogReducer: Reducer<MikroblogState, MikroblogActions> = (state = defaultState, action: MikroblogActions) => {

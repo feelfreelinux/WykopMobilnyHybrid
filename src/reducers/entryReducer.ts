@@ -1,21 +1,27 @@
 import { Reducer, AnyAction } from 'redux'
 import { Entry } from '../models/'
-import { GET_ENTRY_COMMENTS, SET_ENTRY_COMMENTS, EntryActions } from '../actions/entryActions'
+import { SET_ENTRY_COMMENTS, EntryActions } from '../actions/entryActions'
+import { createSelector } from 'reselect'
+
+export interface EntriesState {
+    [key: string] : EntryState
+}
 
 export interface EntryState {
     readonly commentIds: string[],
 }
 
-const defaultState: EntryState = {
-    commentIds: []
+const defaultState: EntriesState = {
 }
 
-export const entryReducer: Reducer<EntryState, EntryActions> = (state = defaultState, action: EntryActions) => {
+export const entryReducer: Reducer<EntriesState, EntryActions> = (state = defaultState, action: EntryActions) => {
     switch (action.type) {
         case SET_ENTRY_COMMENTS: {
             return {
                 ...state,
-                commentIds: action.payload.commentIds,
+                [action.payload.navigatorKey]: {
+                    commentIds: action.payload.commentIds
+                }
             }
         }
         default: return state;

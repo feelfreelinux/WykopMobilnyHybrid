@@ -1,4 +1,4 @@
-import { Reducer, AnyAction } from 'redux'
+import { Reducer, AnyAction, Action } from 'redux'
 import { Entry } from '../models/'
 
 export interface ListsState {
@@ -15,32 +15,51 @@ export const defaultState: ListsState = {
     entryIds: []
 }
 
-// @TODO Properly type this mess
-export const listsReducer = <D, Y extends AnyAction>(name, reducer: Reducer<D, Y>) => {
-    return (state = defaultState, action: AnyAction) => {
+interface ActionTypes {
+    SET_REFRESHING: string
+    SET_PAGE: string
+    SET_HAS_REACHED_END: string
+}
+
+interface SetRefreshingAction {
+    type: string
+    payload: { refreshing: boolean }
+}
+
+interface SetHasReachedEndAction {
+    type: string
+    payload: { hasReachedEnd: boolean }
+}
+
+interface SetPageAction {
+    type: string
+    payload: { page: number }
+}
+
+type ActionType<ExtraActionsT extends Action> = SetRefreshingAction | SetPageAction | SetHasReachedEndAction | SetPageAction | ExtraActionsT
+
+export const listsReducer = <StateT extends ListsState, ExtraActionsT extends Action = never>(actions: ActionTypes, wrappedReducer: (s: ListsState, a: ExtraActionsT) => StateT) => {
+    return (state: ListsState, action: ActionType<ExtraActionsT>): ListsState => {
         switch (action.type) {
-            case `SET_${name}_REFRESHING`: {
+            case actions.SET_HAS_REACHED_END:
                 return {
                     ...state,
-                    refreshing: action.payload.refreshing
+                    hasReachedEnd: (action as SetHasReachedEndAction).payload.hasReachedEnd,
+                    refreshing: state.refreshing && !(action as SetHasReachedEndAction).payload.hasReachedEnd
                 }
-            }
-
-            case `SET_${name}_PAGE`: {
+            case actions.SET_REFRESHING:
                 return {
                     ...state,
-                    page: action.payload.page,
+                    refreshing: (action as SetRefreshingAction).payload.refreshing
                 }
-            }
-
-            case `SET_${name}_HAS_REACHED_END`: {
+            case actions.SET_PAGE:
                 return {
                     ...state,
-                    hasReachedEnd: action.payload.hasReachedEnd,
-                    refreshing: state.refreshing && !action.payload.hasReachedEnd
+                    page: (action as SetPageAction).payload.page,
                 }
-            }
-            default: return reducer(state as any, action as any);
+            default: return wrappedReducer(state, action as any)
         }
     }
 }
+
+

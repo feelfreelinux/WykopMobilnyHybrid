@@ -1,15 +1,15 @@
-import { Action, ActionCreator, Dispatch } from 'redux'
+import { Action, ActionCreator, Dispatch, AnyAction } from 'redux'
 import { ThunkResult } from '../store/index'
 import { Entry } from '../models'
 import { normalize, schema } from 'normalizr'
 import { entriesSchema, entrySchema } from '../models/Schema'
-import { SET_ENTRY_COMMENTS } from "../actions/entryActions"
 const camelCaseKeys = require('camelcase-keys')
-import { EntitesActions, ADD_TO_STATE, AddToStateAction } from '../actions/entityActions'
+import { addToState } from '../actions/entityActions'
 
 export const ADD_HOT_ENTRIES = 'ADD_HOT_ENTRIES'
 export const GET_HOT_ENTRIES = 'GET_HOT_ENTRIES'
 export const SET_ENTRIES = 'SET_ENTRIES'
+export const SET_PAGE = 'MIKROBLOG_SET_PAGE'
 
 export const CLEAR_ENTRIES = 'CLEAR_ENTRIES'
 export const SET_REFRESHING = 'SET_REFRESHING'
@@ -36,20 +36,6 @@ export interface ClearEntries extends Action {
     }
 }
 
-export interface SetRefreshing extends Action {
-    type: 'SET_REFRESHING',
-    payload: {
-        refreshing: boolean
-    }
-}
-
-export interface SetHasReachedEnd extends Action {
-    type: 'SET_HAS_REACHED_END',
-    payload: {
-        hasReachedEnd: boolean
-    }
-}
-
 export interface SetEntries extends Action {
     type: 'SET_ENTRIES',
     payload: {
@@ -57,8 +43,9 @@ export interface SetEntries extends Action {
     }
 }
 
-export const loadHotEntriesAction: (period: string) => ThunkResult<void> = (period: string) => {
-    return async (dispatch: Dispatch<any>, getState) => { 
+
+export const loadHotEntriesAction: (period: string) => ThunkResult<void> = () => {
+    return async (dispatch: Dispatch<AnyAction>, getState) => { 
         if (!getState().mikroblog.refreshing && !getState().mikroblog.hasReachedEnd) {
             dispatch({ type: "SET_MIKROBLOG_REFRESHING", payload: { refreshing: true } });
                 fetch(`http://a2.wykop.pl/entries/hot/period/12/page/${getState().mikroblog.page.toString()}/appkey/aNd401dAPp`, {
@@ -67,11 +54,11 @@ export const loadHotEntriesAction: (period: string) => ThunkResult<void> = (peri
                     const data = await el.json()
                     const normalized = (normalize(camelCaseKeys(data.data), entriesSchema))
                     if (data.data.length === 0) {
-                        dispatch({ type: "SET_MIKROBLOG_HAS_REACHED_END", payload: { hasReachedEnd: true } });
+                        dispatch({ type: "SET_MIKROBLOG_HAS_REACHED_END", payload: { hasReachedEnd: true } })
                     }
-                    dispatch({ type: ADD_TO_STATE, payload: { entities: normalized.entities } });
-                    dispatch({ type: SET_ENTRIES, payload: { entryIds: normalized.result } });
-                    dispatch({ type: "SET_MIKROBLOG_REFRESHING", payload: { refreshing: false } });
+                    dispatch(addToState(normalized.entities))
+                    dispatch({ type: SET_ENTRIES, payload: { entryIds: normalized.result } })
+                    dispatch({ type: "SET_MIKROBLOG_REFRESHING", payload: { refreshing: false } })
                 })
             }
     }
@@ -84,4 +71,4 @@ export const getHotEntries: ActionCreator<GetHotEntries> = (period: string) => (
     }
 })
 
-export type MikroblogActions = SetEntries | GetHotEntries | ClearEntries | SetRefreshing | SetHasReachedEnd
+export type MikroblogActions = SetEntries | GetHotEntries | ClearEntries

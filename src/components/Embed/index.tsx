@@ -19,7 +19,7 @@ export default class EmbedComponent extends PureComponent<{ embed: Embed }, Stat
             isLoaded: false,
             isResized: false,
         }
-        Image.getSize(this.props.embed.preview, this._handleSizeReceived, () => {})
+        Image.getSize(this.props.embed.preview, this._handleSizeReceived.bind(this), (() => {}).bind(this))
     }
 
 
