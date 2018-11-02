@@ -1,39 +1,21 @@
 import { Reducer, AnyAction } from 'redux'
 import { ListsState, defaultState as listsDefaultState } from './listsReducer'
-import { Entry } from '../models/'
-import { GET_HOT_ENTRIES, CLEAR_ENTRIES, SET_REFRESHING, SET_ENTRIES, MikroblogActions, SET_HAS_REACHED_END } from '../actions/mikroblogActions'
+import { SET_ENTRIES, MikroblogActions } from '../actions/mikroblogActions'
+import { EntriesState, defaultState as entriesDefaultState } from './entryListReducer'
 
-export interface MikroblogState extends ListsState{
+export interface MikroblogState extends ListsState, EntriesState {
     readonly entryIds: string[]
 }
 
 const defaultState: MikroblogState = {
     entryIds: [],
 
-    ...listsDefaultState
-}
-
-
-const listTypes = {
-    
+    ...listsDefaultState,
+    ...entriesDefaultState,
 }
 
 export const mikroblogReducer: Reducer<MikroblogState, MikroblogActions> = (state = defaultState, action: MikroblogActions) => {
     switch (action.type) {
-        case SET_ENTRIES: {
-            return {
-                ...state,
-                entryIds: [...state.entryIds, ...action.payload.entryIds],
-                page: state.page + 1,
-            }
-        }
-
-        case SET_ENTRIES: {
-            return {
-                ...state,
-                entryIds: action.payload.entryIds
-            }
-        }
-        default: return state;
+        default: return state
     }
 }

@@ -59,13 +59,13 @@ export default class EmbedComponent extends PureComponent<{ embed: Embed }, Stat
         if (this.state.isLoaded && this.state.isResized) {
             const style = sizedImageStyle(this.state.height, this.state.width)
             return (
-                <Image source={{uri: this.props.embed.preview }} style={style.imageStyle} />
+                <Image resizeMethod="resize" source={{uri: this.props.embed.preview }} style={style.imageStyle} />
             )
         } else if (this.state.isLoaded && !this.state.isResized) {
             const style = sizedImageStyle(300, this.state.width)
             return (
                 <TouchableOpacity onPress={this._resizeImage}>
-                    <Image source={{uri: this.props.embed.preview }} style={style.imageStyle} />
+                    <Image resizeMethod="resize" source={{uri: this.props.embed.preview }} style={style.imageStyle} />
                 </TouchableOpacity>
             )  
         } else {

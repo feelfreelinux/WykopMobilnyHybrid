@@ -14,7 +14,7 @@ export default class AuthorComponent extends PureComponent<{ authorId: number, d
         return (
           <View style={styles.containerStyle}>
             <View style={styles.avatarContainerStyle}>
-                <Image source={{uri: author.avatar }} style={styles.avatarStyle} />
+                <Image resizeMethod="resize" source={{uri: author.avatar }} style={styles.avatarStyle} />
                 <View style={stylesAuthorSex.viewStyle}></View>
             </View>
             <View style={styles.nicknameContainerStyle}>

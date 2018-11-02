@@ -63,6 +63,7 @@
     "react-native-htmlview": "^0.13.0",
     "react-native-markdown-renderer": "^3.2.8",
     "react-native-material-ripple": "^0.8.0",
+    "react-native-optimized-flatlist": "^1.0.4",
     "react-native-render-html": "^3.10.0",
     "react-navigation": "^2.17.0",
     "react-redux": "^5.0.7",

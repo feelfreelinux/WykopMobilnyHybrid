@@ -9,7 +9,8 @@ const mapStateToProps = (state: RootState, props) => ({
   ...props,
   entryIds: state.mikroblog.entryIds,
   entries: state.entity.entities.entries,
-  refreshing: (state.mikroblog as any).refreshing,
+  loading: state.mikroblog.loading,
+  refreshing: state.mikroblog.refreshing,
 })
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, undefined, RootActions>) => ({

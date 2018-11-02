@@ -28,8 +28,9 @@ export default class EntryDetails extends PureComponent<{ navigation, getEntryCo
             <FlatList
                 keyExtractor={(entryId, _) => entryId.toString()}
                 data={[this._entryId, ...this.props.commentIds]}
-                initialNumToRender={8}
-                maxToRenderPerBatch={5}
+                windowSize={41}
+                initialNumToRender={16}
+                maxToRenderPerBatch={8}
                 renderItem={this._renderItem}
             />
         )

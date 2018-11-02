@@ -4,6 +4,7 @@ export interface ActionTypes {
     SET_REFRESHING: string
     SET_PAGE: string
     SET_HAS_REACHED_END: string
+    SET_LOADING: string
 }
 
 export interface SetRefreshingAction {
@@ -16,6 +17,11 @@ export interface SetHasReachedEndAction {
     payload: { hasReachedEnd: boolean }
 }
 
+export interface SetLoadingAction {
+    type: string
+    payload: { loading: boolean }
+}
+
 export interface SetPageAction {
     type: string
     payload: { page: number }
@@ -25,6 +31,13 @@ export const setRefreshing: ActionCreator<SetRefreshingAction> = (type, refreshi
     type,
     payload: {
         refreshing,
+    }
+})
+
+export const setLoading: ActionCreator<SetLoadingAction> = (type, loading: boolean) => ({
+    type,
+    payload: {
+        loading,
     }
 })
 
@@ -42,4 +55,4 @@ export const setHasReachedEnd: ActionCreator<SetHasReachedEndAction> = (type, ha
     }
 })
 
-export type ActionType<ExtraActionsT extends Action> = SetRefreshingAction | SetPageAction | SetHasReachedEndAction | SetPageAction | ExtraActionsT
+export type ActionType<ExtraActionsT extends Action> = SetLoadingAction | SetRefreshingAction | SetPageAction | SetHasReachedEndAction | SetPageAction | ExtraActionsT

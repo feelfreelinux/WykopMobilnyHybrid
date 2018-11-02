@@ -29,7 +29,6 @@ class EntryComponent extends PureComponent<{ navigation, entryId: number, entrie
       </View>
     )
   }
-
   _openDetails = () => {
     this.props.navigation.navigate('EntryDetails', {
       entryId: this.props.entryId

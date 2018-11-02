@@ -1,17 +1,15 @@
 import { Action, ActionCreator, Dispatch, AnyAction } from 'redux'
 import { ThunkResult } from '../store/index'
-import { Entry } from '../models'
-import { normalize, schema } from 'normalizr'
-import { entriesSchema, entrySchema } from '../models/Schema'
-const camelCaseKeys = require('camelcase-keys')
 import { addToState } from '../actions/entityActions'
-import { setRefreshing, setHasReachedEnd } from './listActions'
+import { setRefreshing, setHasReachedEnd, setPage, setLoading } from './listActions'
+import { addEntries, setEntries, clearEntries } from './entryListActions'
 
-export const ADD_HOT_ENTRIES = 'ADD_HOT_ENTRIES'
 export const GET_HOT_ENTRIES = 'GET_HOT_ENTRIES'
-export const SET_ENTRIES = 'SET_ENTRIES'
-export const CLEAR_ENTRIES = 'CLEAR_ENTRIES'
+export const SET_ENTRIES = 'MIKROBLOG_SET_ENTRIES'
+export const CLEAR_ENTRIES = 'MIKROBLOG_CLEAR_ENTRIES'
+export const ADD_ENTRIES = 'MIKROBLOG_ADD_ENTRIES'
 
+export const SET_LOADING = 'MIKROBLOG_SET_LOADING'
 export const SET_PAGE = 'MIKROBLOG_SET_PAGE'
 export const SET_REFRESHING = 'MIKROBLOG_SET_REFRESHING'
 export const SET_HAS_REACHED_END = 'MIKROBLOG_SET_HAS_REACHED_END'
@@ -47,15 +45,22 @@ export interface SetEntries extends Action {
 
 export const loadHotEntriesAction: (period: string) => ThunkResult<void> = () => {
     return async (dispatch: Dispatch<AnyAction>, getState, wykopApi) => { 
-        if (!getState().mikroblog.refreshing && !getState().mikroblog.hasReachedEnd) {
-            dispatch(setRefreshing(SET_REFRESHING, true))
+        const state = getState().mikroblog
+        if ((!state.refreshing && !state.loading) && !state.hasReachedEnd) {
+            if (state.page === 1) {
+                dispatch(setRefreshing(SET_REFRESHING, true))
+            } else {
+                dispatch(setLoading(SET_LOADING, true))
+            }
             const entries = await wykopApi.entries.getHotEntries("12", getState().mikroblog.page)
             if (entries.result.length === 0) {
                 dispatch(setHasReachedEnd(SET_HAS_REACHED_END, true))
             }
             dispatch(addToState(entries.entities))
-            dispatch({ type: SET_ENTRIES, payload: { entryIds: entries.result } })
+            dispatch(addEntries(ADD_ENTRIES, entries.result))
+            dispatch(setPage(SET_PAGE, getState().mikroblog.page + 1))
             dispatch(setRefreshing(SET_REFRESHING,false))
+            dispatch(setLoading(SET_LOADING,false))
         }
     }
 }
