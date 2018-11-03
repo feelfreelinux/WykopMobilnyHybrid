@@ -25,17 +25,10 @@ export const setEntryComments: ActionCreator<SetEntryComments> = (navigatorKey: 
   })
 
 export const getEntryComments: (navigatorKey, entryId) => ThunkResult<void> = (navigatorKey: string, entryId: string) => {
-    return async (dispatch: Dispatch<AnyAction>, getState) => { 
-        fetch(`http://a2.wykop.pl/entries/entry/${entryId}/appkey/aNd401dAPp`, {
-            method: 'GET',
-        }).then(async (el) => {
-            const data = await el.json()
-            const comments = data.data.comments.map((el) => camelCaseKeys(el))
-            data.data.comments = comments
-            const normalized = (normalize(camelCaseKeys(data.data), entrySchema))
-            dispatch(addToState(normalized.entities))
-            dispatch(setEntryComments(navigatorKey, normalized.entities.entries[entryId].comments))
-        })
+    return async (dispatch: Dispatch<AnyAction>, getState, api) => { 
+        const entry = await api.entries.getEntry(entryId)
+        dispatch(addToState(entry.entities))
+        dispatch(setEntryComments(navigatorKey, entry.entities.entries[entryId].comments))
     }
 }
 

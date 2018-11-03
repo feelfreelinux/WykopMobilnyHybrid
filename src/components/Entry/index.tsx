@@ -7,6 +7,7 @@ import EmbedComponent from '../Embed'
 import BodyComponent from '../Body'
 import FooterButton from '../FooterButton'
 import { withNavigation } from 'react-navigation'
+import { navigate } from '../../navigation/NavigationService';
 
 class EntryComponent extends PureComponent<{ navigation, entryId: number, entries }, {}> {
   render() {
@@ -30,7 +31,8 @@ class EntryComponent extends PureComponent<{ navigation, entryId: number, entrie
     )
   }
   _openDetails = () => {
-    this.props.navigation.navigate('EntryDetails', {
+    console.log('wtfs')
+    navigate('EntryDetails', {
       entryId: this.props.entryId
     })
   }

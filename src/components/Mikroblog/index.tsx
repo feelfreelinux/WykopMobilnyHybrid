@@ -5,7 +5,7 @@ import { FlatList, Text, ActivityIndicator } from 'react-native'
 import EntryContainer from '../../containers/EntryContainer'
 import { OptimizedFlatList } from 'react-native-optimized-flatlist'
 
-export default class Mikroblog extends PureComponent<{ getHotEntries: (period) => any, loading: boolean, refreshing: boolean, entryIds: string[] }, {}> {
+export default class Mikroblog extends PureComponent<{getHotEntries: (period) => void, loading: boolean, refreshing: boolean, entryIds: string[] }, {}> {
     componentDidMount() {
         this.props.getHotEntries("12")
     }
@@ -21,7 +21,7 @@ export default class Mikroblog extends PureComponent<{ getHotEntries: (period) =
     render() {
         return (
             <FlatList
-                keyExtractor={(entryId) => entryId}
+                keyExtractor={(entryId) => entryId.toString()}
                 data={this._getEntries()}
                 refreshing={this.props.refreshing}
                 onRefresh={() => {}}

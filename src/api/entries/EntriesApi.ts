@@ -1,6 +1,6 @@
 
 import Wykop from 'wykop-v2'
-import { entriesSchema } from '../../models/Schema'
+import { entriesSchema, entrySchema } from '../../models/Schema'
 import { normalize, schema } from 'normalizr'
 const camelCaseKeys = require('camelcase-keys')
 
@@ -17,5 +17,14 @@ export default class EntriesApi {
         })
         const normalized = (normalize(camelCaseKeys(hotEntries), entriesSchema))
         return normalized
+    }
+
+    getEntry = async (entryId: string) => {
+        const entry = await this.api.request(['entries', 'entry'], {
+            api: [entryId]
+        })
+        const comments = entry.comments.map((el) => camelCaseKeys(el))
+        entry.comments = comments
+        return (normalize(camelCaseKeys(entry), entrySchema))
     }
 }

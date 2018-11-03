@@ -14,10 +14,12 @@ import fontelloConfig from './assets/fonts/config.json'
 export const OWMIcons = createIconSetFromFontello(fontelloConfig, 'owmglyphs')
 import thunk from 'redux-thunk'
 import WykopApi from './src/api/WykopApi'
+import { setTopLevelNavigator } from './src/navigation/NavigationService'
 
+export const wykopApi = new WykopApi()
 EStyleSheet.build(LightTheme)
 
-const store = createStore(rootReducer, applyMiddleware(MikroblogMiddleware, thunk.withExtraArgument(new WykopApi())))
+const store = createStore(rootReducer, applyMiddleware(MikroblogMiddleware, thunk.withExtraArgument(wykopApi)))
 
 interface ThemeContextProvider {
   theme: AppTheme
@@ -33,7 +35,7 @@ export default class App extends React.Component<{}> implements React.ChildConte
   render() {
     return (
       <Provider store={store}>
-        <Stack/>
+        <Stack ref={ref => setTopLevelNavigator(ref)}/>
       </Provider>
     )
   }
