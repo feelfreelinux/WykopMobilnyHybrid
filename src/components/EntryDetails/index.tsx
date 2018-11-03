@@ -29,8 +29,9 @@ export default class EntryDetails extends PureComponent<{ navigation, getEntryCo
                 keyExtractor={(entryId, _) => entryId.toString()}
                 data={[this._entryId, ...this.props.commentIds]}
                 windowSize={41}
-                initialNumToRender={16}
-                maxToRenderPerBatch={8}
+                initialNumToRender={6}
+                maxToRenderPerBatch={4}
+                updateCellsBatchingPeriod={25}
                 renderItem={this._renderItem}
             />
         )

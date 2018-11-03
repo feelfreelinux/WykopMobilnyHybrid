@@ -1,6 +1,6 @@
 import { Action, Dispatch, AnyAction, ActionCreator } from 'redux'
 import { ThunkResult } from '../store/index'
-import Expo from 'expo'
+import { SecureStore } from 'expo'
 import { STORAGE_LOGIN, STORAGE_TOKEN } from '../constants'
 import { navigate } from '../navigation/NavigationService'
 
@@ -41,8 +41,8 @@ export const setCredentials: ActionCreator<SetCredentialsAction> = (login: strin
 
 export const loginUser: (login, token) => ThunkResult<void> = (login: string, token: string) => {
     return async (dispatch: Dispatch<AnyAction>, getState, api) => {
-        await Expo.SecureStore.setItemAsync(STORAGE_LOGIN, login)
-        await Expo.SecureStore.setItemAsync(STORAGE_TOKEN, token)
+        await SecureStore.setItemAsync(STORAGE_LOGIN, login)
+        await SecureStore.setItemAsync(STORAGE_TOKEN, token)
         dispatch(setCredentials(login, token))
         const user = await api.login(login, token)
         dispatch(setLoggedIn(user.profile.login, user.profile.avatar))
@@ -54,8 +54,8 @@ export const loginUser: (login, token) => ThunkResult<void> = (login: string, to
 
 export const restoreAuthState: () => ThunkResult<void> = () => {
     return async (dispatch: Dispatch<AnyAction>, getState, api) => {
-        const login = await Expo.SecureStore.getItemAsync(STORAGE_LOGIN)
-        const token = await  Expo.SecureStore.getItemAsync(STORAGE_TOKEN)
+        const login = await SecureStore.getItemAsync(STORAGE_LOGIN)
+        const token = await  SecureStore.getItemAsync(STORAGE_TOKEN)
         if (login && token) {
             dispatch(setCredentials(login, token))
             const user = await api.login(login, token)

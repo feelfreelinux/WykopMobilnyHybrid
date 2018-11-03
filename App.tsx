@@ -15,7 +15,7 @@ export const OWMIcons = createIconSetFromFontello(fontelloConfig, 'owmglyphs')
 import thunk from 'redux-thunk'
 import WykopApi from './src/api/WykopApi'
 import { setTopLevelNavigator } from './src/navigation/NavigationService'
-
+console.log = () => {}
 export const wykopApi = new WykopApi()
 EStyleSheet.build(LightTheme)
 
