@@ -29,7 +29,7 @@ export default EStyleSheet.create({
     containerStyle: {
         flex: 1,
         flexDirection: 'row',
-        marginTop: 8,
+        marginTop: 10,
         marginLeft: 12,
         marginRight: 12,
     },

@@ -16,7 +16,7 @@ export const wrapperStyle = (paddingLeft) => {
         buttonWrapperStyle: {
             paddingLeft: paddingLeft,
             paddingRight: 10,
-            height: 32,
+            height: 34,
             flex: 0,
             flexDirection: 'row',
             alignSelf: 'center',
