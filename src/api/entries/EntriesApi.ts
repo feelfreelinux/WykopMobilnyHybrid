@@ -13,7 +13,6 @@ export default class EntriesApi {
             named: {
                 page,
                 period,
-                output: 'clear',
             }
         })
         const normalized = (normalize(camelCaseKeys(hotEntries), entriesSchema))
@@ -22,7 +21,6 @@ export default class EntriesApi {
 
     getEntry = async (entryId: string) => {
         const entry = await this.api.request(['entries', 'entry'], {
-            named: { output: 'clear' },
             api: [entryId]
         })
         const comments = entry.comments.map((el) => camelCaseKeys(el))

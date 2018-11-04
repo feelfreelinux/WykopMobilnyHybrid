@@ -40,6 +40,7 @@ export default class EntryDetails extends PureComponent<{ navigation, getEntryCo
     render() {
         return (<View style={{ flex: 1, minHeight: 1, minWidth: 1 }}>
             <RecyclerListView
+                renderAheadOffset={350}
                 dataProvider={this.dataProvider.cloneWithRows([this._entryId, ...this.props.commentIds])}
                 layoutProvider={this.layoutProvider}
                 forceNonDeterministicRendering={true}
