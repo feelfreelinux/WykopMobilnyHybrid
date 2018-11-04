@@ -26,6 +26,7 @@ export default class Mikroblog extends PureComponent<{ getHotEntries: (period) =
                 layoutProvider={this.layoutProvider}
                 forceNonDeterministicRendering={true}
                 itemAnimator={this.animator}
+                renderAheadOffset={1000}
                 canChangeSize={true}
                 renderFooter={this._renderFooter}
                 rowRenderer={(type, data) => <EntryContainer entryId={data} />}
