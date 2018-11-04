@@ -1,13 +1,14 @@
 import React, { PureComponent } from 'react'
 import { View, FlatList, Text, ActivityIndicator, Dimensions } from 'react-native'
 import EntryContainer from '../../containers/EntryContainer'
-import { RecyclerListView, DataProvider, LayoutProvider } from 'recyclerlistview'
+import { RecyclerListView, DataProvider, LayoutProvider, BaseItemAnimator } from 'recyclerlistview'
 
 export default class Mikroblog extends PureComponent<{ getHotEntries: (period) => void, loading: boolean, refreshing: boolean, entryIds: string[] }, {}> {
     componentDidMount() {
         this.props.getHotEntries("12")
     }
 
+    animator = new BaseItemAnimator()
     dataProvider = new DataProvider((r1, r2) => {
         return r1 !== r2;
     })
@@ -28,6 +29,8 @@ export default class Mikroblog extends PureComponent<{ getHotEntries: (period) =
                 dataProvider={this.dataProvider.cloneWithRows(this.props.entryIds)}
                 layoutProvider={this.layoutProvider}
                 forceNonDeterministicRendering={true}
+                itemAnimator={this.animator}
+                canChangeSize={true}
                 rowRenderer={(type, data) => <EntryContainer entryId={data} />}
             /></View>)
     }

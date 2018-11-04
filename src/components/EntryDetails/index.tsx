@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import { View, Dimensions } from 'react-native'
 import EntryContainer from '../../containers/EntryContainer'
 import EntryCommentContainer from '../../containers/EntryCommentContainer'
-import { RecyclerListView, DataProvider, LayoutProvider } from 'recyclerlistview';
+import { RecyclerListView, DataProvider, LayoutProvider, BaseItemAnimator } from 'recyclerlistview';
 
 export default class EntryDetails extends PureComponent<{ navigation, getEntryComments: (id) => any, entries, entryComments, commentIds: string[] }, {}> {
     _entryId: number
@@ -10,6 +10,7 @@ export default class EntryDetails extends PureComponent<{ navigation, getEntryCo
         return r1 !== r2;
     })
 
+    animator = new BaseItemAnimator()
     layoutProvider = new LayoutProvider((index) => index == 0 ? 'entry' : 'comment', (type, dim, index) => {
         if (type == 'entry') {
             dim.height = 700
@@ -44,6 +45,8 @@ export default class EntryDetails extends PureComponent<{ navigation, getEntryCo
                 dataProvider={this.dataProvider.cloneWithRows([this._entryId, ...this.props.commentIds])}
                 layoutProvider={this.layoutProvider}
                 forceNonDeterministicRendering={true}
+                canChangeSize={true}
+                itemAnimator={this.animator}
                 rowRenderer={this._renderItem}
             /></View>)
     }
