@@ -8,13 +8,13 @@ export default class BodyComponent extends PureComponent<{ body: string }, {}> {
         if (this.props.body != null) {
             return (
                 <View style={styles.containerStyle}>
-                    <Text numberOfLines={6}>{ this.props.body === null ? '' : this.props.body  }</Text>
+                    <HTML html={ this.props.body }/>
                 </View>
-            );
+            )
         } else {
             return (
                 <View/>
-            );
+            )
         }
     }
 }

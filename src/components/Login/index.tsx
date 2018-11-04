@@ -1,9 +1,6 @@
 import React, { Component, PureComponent } from 'react'
 import { WebView, NavState } from 'react-native'
-import Expo from 'expo'
 import { apiKey } from '../../../assets/secrets.json'
-import { STORAGE_LOGIN, STORAGE_TOKEN } from '../../constants'
-import { wykopApi } from '../../../App'
 
 export default class LoginComponent extends PureComponent<{ isLoggedIn, loginUser: (login, token) => void, navigation }> {
   render() {
@@ -27,11 +24,5 @@ export default class LoginComponent extends PureComponent<{ isLoggedIn, loginUse
               this.props.loginUser(login,token)
           }
       }
-  }
-
-  _saveCredentials = async (login: string, token: string) => {
-    await Expo.SecureStore.setItemAsync(STORAGE_LOGIN, login)
-    await Expo.SecureStore.setItemAsync(STORAGE_TOKEN, token)
-    return
   }
 }

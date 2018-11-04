@@ -1,7 +1,7 @@
 import Wykop from 'wykop-v2'
 import EntriesApi from './entries/EntriesApi';
 import secrets from '../../assets/secrets.json'
-import Expo from 'expo'
+import { SecureStore } from 'expo'
 import { STORAGE_LOGIN, STORAGE_TOKEN } from '../constants';
 
 export default class WykopApi {
@@ -29,8 +29,8 @@ export default class WykopApi {
     }
 
     async loginFromStorage() {
-        const login = await Expo.SecureStore.getItemAsync(STORAGE_LOGIN)
-        const token = await Expo.SecureStore.getItemAsync(STORAGE_TOKEN)
+        const login = await SecureStore.getItemAsync(STORAGE_LOGIN)
+        const token = await SecureStore.getItemAsync(STORAGE_TOKEN)
 
 
         if (login && token) {
