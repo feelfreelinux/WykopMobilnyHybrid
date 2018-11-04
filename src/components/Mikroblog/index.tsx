@@ -15,11 +15,7 @@ export default class Mikroblog extends PureComponent<{ getHotEntries: (period) =
 
     layoutProvider = new LayoutProvider(() => 'VSEL', (type, dim, index) => { dim.width = Math.round(Dimensions.get('window').width * 1000) / 1000 - 6; dim.height = 700 })
     _renderItem = (item) => {
-        if (item.index === this.props.entryIds.length) {
-            return (<ActivityIndicator size="large" color="#0000ff" />)
-        } else {
-            return (<EntryContainer entryId={item.item} />)
-        }
+        return (<EntryContainer entryId={item.item} />)
     }
 
     render() {
@@ -31,13 +27,16 @@ export default class Mikroblog extends PureComponent<{ getHotEntries: (period) =
                 forceNonDeterministicRendering={true}
                 itemAnimator={this.animator}
                 canChangeSize={true}
+                renderFooter={this._renderFooter}
                 rowRenderer={(type, data) => <EntryContainer entryId={data} />}
             /></View>)
     }
 
-    _getEntries() {
+    _renderFooter = () => {
         if (this.props.loading) {
-            return [...this.props.entryIds, "loading"]
-        } else return this.props.entryIds
+            return (<ActivityIndicator size="large" color="#0000ff" />)
+        } else {
+            return (<View style={{ height: 10 }}/>)
+        }
     }
 }
