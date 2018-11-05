@@ -14,6 +14,30 @@ interface State {
 }
 
 export default class EmbedComponent extends PureComponent<{ embed: Embed }, State> {
+    _isMounted = false
+
+    _createImageSizeHandler = (id) => {
+        return (width, height) => {
+            if (this._isMounted && id === this.props.embed.id) {
+            // If image is small, we shouldn't display the resize overlay
+            if (height * (this.state.widthScreen / width) >= this.state.heightCurled) {
+                this.setState({
+                    width,
+                    height,
+                    isLoaded: true,
+                })
+            } else {
+                this.setState({
+                    width,
+                    height,
+                    isLoaded: true,
+                    isResized: true,
+                })
+            }
+            }
+        }
+    }
+
     constructor(props) {
         super(props)
         this.state = {
@@ -25,33 +49,32 @@ export default class EmbedComponent extends PureComponent<{ embed: Embed }, Stat
             heightScreen: Dimensions.get('window').height,
             heightCurled: Dimensions.get('window').height / 3,
         }
-        Dimensions.addEventListener('change', (e) => {
-            const { width, height } = e.window;
-            this.setState({
-                widthScreen: width,
-                heightScreen: height,
-                heightCurled: height / 3
-            });
-        })
-        Image.getSize(this.props.embed.preview, this._handleSizeReceived.bind(this), (() => { }).bind(this))
+        Dimensions.addEventListener('change', this._dimensionListener)
+        Image.getSize(this.props.embed.preview, this._createImageSizeHandler(this.props.embed.id), this._errorListener)
     }
 
-    _handleSizeReceived = (width, height) => {
-        // If image is small, we shouldn't display the resize overlay
-        if (height * (this.state.widthScreen / width) >= this.state.heightCurled) {
-            this.setState({
-                width,
-                height,
-                isLoaded: true,
-            })
-        } else {
-            this.setState({
-                width,
-                height,
-                isLoaded: true,
-                isResized: true,
-            })
-        }
+    componentWillUpdate() {
+        
+    }
+
+    _errorListener = () => { }
+
+    componentWillUnmount() {
+        this._isMounted = false
+        Dimensions.removeEventListener('change', this._dimensionListener)
+    }
+
+    componentDidMount() {
+        this._isMounted = true
+    }
+
+    _dimensionListener = (e) => {
+        const { width, height } = e.window
+        this.setState({
+            widthScreen: width,
+            heightScreen: height,
+            heightCurled: height / 3
+        })
     }
 
     render() {

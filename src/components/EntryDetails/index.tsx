@@ -3,6 +3,7 @@ import { View, Dimensions } from 'react-native'
 import EntryContainer from '../../containers/EntryContainer'
 import EntryCommentContainer from '../../containers/EntryCommentContainer'
 import { RecyclerListView, DataProvider, LayoutProvider, BaseItemAnimator } from 'recyclerlistview';
+import { getScreenWidth } from '../../utils';
 
 export default class EntryDetails extends PureComponent<{ navigation, getEntryComments: (id) => any, entries, entryComments, commentIds: string[] }, {}> {
     _entryId: number
@@ -11,13 +12,13 @@ export default class EntryDetails extends PureComponent<{ navigation, getEntryCo
     })
 
     animator = new BaseItemAnimator()
-    layoutProvider = new LayoutProvider((index) => index == 0 ? 'entry' : 'comment', (type, dim, index) => {
+    layoutProvider = new LayoutProvider((index) => index == 0 ? 'entry' : 'comment', (type, dim) => {
         if (type == 'entry') {
             dim.height = 700
         } else {
             dim.height = 200
         }
-        dim.width = Math.round(Dimensions.get('window').width * 1000) / 1000 - 6;
+        dim.width = getScreenWidth()
     
     })
     
@@ -42,6 +43,7 @@ export default class EntryDetails extends PureComponent<{ navigation, getEntryCo
         return (<View style={{ flex: 1, minHeight: 1, minWidth: 1 }}>
             <RecyclerListView
                 renderAheadOffset={2500}
+                disableRecycling={true}
                 dataProvider={this.dataProvider.cloneWithRows([this._entryId, ...this.props.commentIds])}
                 layoutProvider={this.layoutProvider}
                 forceNonDeterministicRendering={true}

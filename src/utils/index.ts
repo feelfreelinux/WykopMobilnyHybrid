@@ -1,4 +1,5 @@
 import { Author } from "../models";
+import { Dimensions } from "react-native";
 
 export const getAuthorColor = (author: Author) => {
     switch(author.color) {
@@ -21,6 +22,10 @@ export const getAuthorColor = (author: Author) => {
         default:
             return '#3F6FA0'
     }
+}
+
+export const getScreenWidth = () => {
+    return Math.round(Dimensions.get('window').width * 1000) / 1000 - 6
 }
 
 export const getAuthorSex = (author: Author) => {

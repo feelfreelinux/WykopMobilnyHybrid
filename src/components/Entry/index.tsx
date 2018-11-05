@@ -31,7 +31,6 @@ class EntryComponent extends PureComponent<{ navigation, entryId: number, entrie
     )
   }
   _openDetails = () => {
-    console.log('wtfs')
     navigate('EntryDetails', {
       entryId: this.props.entryId
     })
