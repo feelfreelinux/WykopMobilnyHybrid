@@ -30,7 +30,7 @@ export default class Mikroblog extends PureComponent<{ getHotEntries: (period) =
     render() {
         if (this.props.entryIds.length > 0) {
         return (
-        <View style={{ flex: 1, minHeight: 1, minWidth: 1 }}>
+        /*<View style={{ flex: 1, minHeight: 1, minWidth: 1 }}>
             <RecyclerListView
                 onEndReached={() => { this.props.getHotEntries("12") }}
                 dataProvider={this.dataProvider.cloneWithRows(this.props.entryIds)}
@@ -41,7 +41,20 @@ export default class Mikroblog extends PureComponent<{ getHotEntries: (period) =
                 canChangeSize={true}
                 renderFooter={this._renderFooter}
                 rowRenderer={(type, data) => <EntryContainer entryId={data} />}
-            /></View>)
+            /></View>)*/
+<FlatList
+                keyExtractor={(entryId) => entryId.toString()}
+                data={this.props.entryIds}
+                refreshing={this.props.refreshing}
+                onRefresh={() => {}}
+                windowSize={Dimensions.get('window').height*2}
+                initialNumToRender={4}
+                maxToRenderPerBatch={8}
+                onEndReachedThreshold={3}
+                removeClippedSubviews={true}
+                onEndReached={() => { this.props.getHotEntries("12") }}
+                renderItem={this._renderItem}
+        />             )   
         } else {
             return (<View/>)
         }
