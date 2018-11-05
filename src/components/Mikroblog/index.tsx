@@ -4,20 +4,25 @@ import EntryContainer from '../../containers/EntryContainer'
 import { RecyclerListView, DataProvider, LayoutProvider, BaseItemAnimator } from 'recyclerlistview'
 import { getScreenWidth } from '../../utils'
 
-export default class Mikroblog extends PureComponent<{ getHotEntries: (period) => void, loading: boolean, refreshing: boolean, entryIds: string[] }, {}> {
+export default class Mikroblog extends PureComponent<{ getHotEntries: (period) => void, entries, loading: boolean, refreshing: boolean, entryIds: string[] }, {}> {
     componentDidMount() {
         this.props.getHotEntries("12")
     }
 
     animator = new BaseItemAnimator()
     dataProvider = new DataProvider((r1, r2) => {
-        return r1 !== r2;
+        return this.props.entries[r1].id !== this.props.entries[this.props.entryIds[r2]].id;
     })
 
-    layoutProvider = new LayoutProvider(() => 'entry', (_, dim) => {
+    layoutProvider = new LayoutProvider(() => 'entry', (_, dim, index) => {
         dim.width = getScreenWidth()
-        dim.height = 400
+        if(this.props.entries[this.props.entryIds[index]].embed) {
+            dim.height = 420
+        } else {
+            dim.height = 190
+        }
     })
+
     _renderItem = (item) => {
         return (<EntryContainer entryId={item.item} />)
     }
@@ -27,7 +32,6 @@ export default class Mikroblog extends PureComponent<{ getHotEntries: (period) =
         return (
         <View style={{ flex: 1, minHeight: 1, minWidth: 1 }}>
             <RecyclerListView
-                disableRecycling={true}
                 onEndReached={() => { this.props.getHotEntries("12") }}
                 dataProvider={this.dataProvider.cloneWithRows(this.props.entryIds)}
                 layoutProvider={this.layoutProvider}

@@ -8,7 +8,7 @@ export default class BodyComponent extends PureComponent<{ body: string }, {}> {
         if (this.props.body != null) {
             return (
                 <View style={styles.containerStyle}>
-                    <HTML html={ this.props.body }/>
+                    <Text numberOfLines={6}>{ this.props.body }</Text>
                 </View>
             )
         } else {
