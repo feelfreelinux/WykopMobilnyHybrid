@@ -16,5 +16,18 @@ export default EStyleSheet.create({
     imageStyle: {
         width: '100%',
         height: 300,
+    },
+    textStyle: {
+        fontSize: 11,
+        padding: 3,
+        textAlign: 'center',
+        width: '100%',
+        backgroundColor: '#f0f0f0aa',
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        textShadowColor: '#ffffff',
+        textShadowOffset: { width: 0.5, height: 0.5 },
+        textShadowRadius: 1,
     }
 })

@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { Embed } from '../../models'
-import { Image, View, TouchableOpacity, Dimensions } from 'react-native'
+import { Image, View, TouchableHighlight, Dimensions, Text } from 'react-native'
 import styles, { sizedImageStyle } from './styles'
 
 interface State {
@@ -70,21 +70,23 @@ export default class EmbedComponent extends PureComponent<{ embed: Embed }, Stat
 
     _renderImage() {
         const height = this.state.height * (this.state.widthScreen / this.state.width)
+        const style = sizedImageStyle(height, this.state.widthScreen)
         if (this.state.isLoaded && this.state.isResized) {
-            const style = sizedImageStyle(height, this.state.widthScreen)
             return (
                 <Image resizeMethod="resize" source={{ uri: this.props.embed.preview }} style={style.imageStyle} />
             )
         } else if (this.state.isLoaded && !this.state.isResized) {
-            const style = sizedImageStyle(this.state.heightCurled, this.state.widthScreen)
             return (
-                <TouchableOpacity onPress={this._resizeImage}>
-                    <Image resizeMethod="resize" source={{ uri: this.props.embed.preview }} style={style.imageStyle} />
-                </TouchableOpacity>
+                <TouchableHighlight onPress={this._resizeImage}>
+                    <View style={{ width: this.state.widthScreen, height: this.state.heightCurled, overflow: 'hidden', flex: 1, flexDirection: 'column' }}>
+                        <Image resizeMethod="resize" blurRadius={this.props.embed.plus18 ? 10 : 0} source={{ uri: this.props.embed.preview }} style={style.imageStyle} />
+                        <Text style={styles.textStyle}>••• pokaż cały obrazek •••</Text>
+                    </View>
+                </TouchableHighlight>
             )
         } else {
             return (
-                <View style={{ height: height, width: this.state.widthScreen }} />
+                <View style={{ height: this.state.heightCurled, width: this.state.widthScreen }} />
             )
         }
     }
