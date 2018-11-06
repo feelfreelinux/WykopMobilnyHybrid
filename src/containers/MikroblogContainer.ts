@@ -14,7 +14,7 @@ const mapStateToProps = (state: RootState, props) => ({
 })
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, undefined, RootActions>) => ({
-  getHotEntries: (period) => dispatch(loadHotEntriesAction(period)),
+  getHotEntries: (period, refresh) => dispatch(loadHotEntriesAction(period, refresh)),
 })
 
 export default connect(

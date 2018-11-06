@@ -14,7 +14,7 @@ class EntryComponent extends PureComponent<{ navigation, entryId: number, entrie
     const entry = this.props.entries[this.props.entryId]
     if (entry.embed != null) {
       return (
-        <View onLayout={this.onLayout} style={styles.entryStyle} >
+        <View style={styles.entryStyle} >
           <AuthorContainer date={entry.date} authorId={entry.author} />
           <BodyComponent body={entry.body} />
           <EmbedComponent embed={entry.embed} />
@@ -23,16 +23,14 @@ class EntryComponent extends PureComponent<{ navigation, entryId: number, entrie
       )
     }
     return (
-      <View  onLayout={this.onLayout} style={styles.entryStyle} >
+      <View  style={styles.entryStyle} >
         <AuthorContainer date={entry.date} authorId={entry.author} />
         <BodyComponent body={entry.body} />
         {this._renderFooter()}
       </View>
     )
   }
-  onLayout = (e) => {
-    console.log(e.nativeEvent.layout.height)
-  }
+
   _openDetails = () => {
     navigate('EntryDetails', {
       entryId: this.props.entryId

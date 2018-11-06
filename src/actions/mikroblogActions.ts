@@ -43,8 +43,12 @@ export interface SetEntries extends Action {
 }
 
 
-export const loadHotEntriesAction: (period: string) => ThunkResult<void> = () => {
-    return async (dispatch: Dispatch<AnyAction>, getState, wykopApi) => { 
+export const loadHotEntriesAction: (period: string, refresh: boolean) => ThunkResult<void> = (period, refresh) => {
+    return async (dispatch: Dispatch<AnyAction>, getState, wykopApi) => {
+        if (refresh) {
+            dispatch(setPage(SET_PAGE, 1))
+        }
+
         const state = getState().mikroblog
         if ((!state.refreshing && !state.loading) && !state.hasReachedEnd) {
             if (state.page === 1) {
@@ -57,7 +61,11 @@ export const loadHotEntriesAction: (period: string) => ThunkResult<void> = () =>
                 dispatch(setHasReachedEnd(SET_HAS_REACHED_END, true))
             }
             dispatch(addToState(entries.entities))
-            dispatch(addEntries(ADD_ENTRIES, entries.result))
+            if (refresh) {
+                dispatch(setEntries(SET_ENTRIES, entries.result))
+            } else {
+                dispatch(addEntries(ADD_ENTRIES, entries.result))
+            }
             dispatch(setPage(SET_PAGE, getState().mikroblog.page + 1))
             dispatch(setRefreshing(SET_REFRESHING,false))
             dispatch(setLoading(SET_LOADING,false))
