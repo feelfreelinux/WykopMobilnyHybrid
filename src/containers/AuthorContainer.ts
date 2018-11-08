@@ -6,7 +6,7 @@ import { MikroblogActions } from '../actions/mikroblogActions';
 
 const mapStateToProps = (state: RootState, props) => ({
   ...props,
-  authors: state.entity.entities.authors
+  author: state.entity.entities.authors[props.authorId]
 })
 
 const mapDispatchToProps = (dispatch: Dispatch<MikroblogActions>) => ({

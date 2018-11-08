@@ -2,7 +2,8 @@ import { Action, ActionCreator, Dispatch, AnyAction } from 'redux'
 import { ThunkResult } from '../store/index'
 import { addToState } from '../actions/entityActions'
 import { setRefreshing, setHasReachedEnd, setPage, setLoading } from './listActions'
-import { addEntries, setEntries, clearEntries } from './entryListActions'
+import { addEntries, setEntries, clearEntries, baseLoadEntries } from './entryListActions'
+import { ThunkDispatch } from 'redux-thunk';
 
 export const GET_HOT_ENTRIES = 'GET_HOT_ENTRIES'
 export const SET_ENTRIES = 'MIKROBLOG_SET_ENTRIES'
@@ -14,6 +15,17 @@ export const SET_PAGE = 'MIKROBLOG_SET_PAGE'
 export const SET_REFRESHING = 'MIKROBLOG_SET_REFRESHING'
 export const SET_HAS_REACHED_END = 'MIKROBLOG_SET_HAS_REACHED_END'
 
+const Actions = {
+    GET_HOT_ENTRIES,
+    SET_ENTRIES,
+    CLEAR_ENTRIES,
+    ADD_ENTRIES,
+    SET_LOADING,
+    SET_PAGE,
+    SET_REFRESHING,
+    SET_HAS_REACHED_END
+}
+
 export interface GetHotEntries extends Action {
     type: 'GET_HOT_ENTRIES',
     payload: {
@@ -21,55 +33,22 @@ export interface GetHotEntries extends Action {
     }
 }
 
-export interface AddHotEntries extends Action {
-    type: 'ADD_HOT_ENTRIES',
-    payload: {
-      period: string,
-    }
-}
-
-export interface ClearEntries extends Action {
-    type: 'CLEAR_ENTRIES',
-    payload: {
-        entryIds: string[]
-    }
-}
-
-export interface SetEntries extends Action {
-    type: 'SET_ENTRIES',
-    payload: {
-        entryIds: string[]
-    }
-}
-
 
 export const loadHotEntriesAction: (period: string, refresh: boolean) => ThunkResult<void> = (period, refresh) => {
-    return async (dispatch: Dispatch<AnyAction>, getState, wykopApi) => {
-        if (refresh) {
-            dispatch(setPage(SET_PAGE, 1))
-        }
+    return async (dispatch, getState, wykopApi) => {
+        dispatch(baseLoadEntries(Actions, wykopApi.entries.getHotEntries(period, getState().mikroblog.page), refresh))
+    }
+}
 
-        const state = getState().mikroblog
-        if ((!state.refreshing && !state.loading) && !state.hasReachedEnd) {
-            if (state.page === 1) {
-                dispatch(setRefreshing(SET_REFRESHING, true))
-            } else {
-                dispatch(setLoading(SET_LOADING, true))
-            }
-            const entries = await wykopApi.entries.getHotEntries("12", getState().mikroblog.page)
-            if (entries.result.length === 0) {
-                dispatch(setHasReachedEnd(SET_HAS_REACHED_END, true))
-            }
-            dispatch(addToState(entries.entities))
-            if (refresh) {
-                dispatch(setEntries(SET_ENTRIES, entries.result))
-            } else {
-                dispatch(addEntries(ADD_ENTRIES, entries.result))
-            }
-            dispatch(setPage(SET_PAGE, getState().mikroblog.page + 1))
-            dispatch(setRefreshing(SET_REFRESHING,false))
-            dispatch(setLoading(SET_LOADING,false))
-        }
+export const loadActiveEntries: (refresh: boolean) => ThunkResult<void> = (refresh) => {
+    return async (dispatch, getState, wykopApi) => {
+        dispatch(baseLoadEntries(Actions, wykopApi.entries.getActiveEntries(getState().mikroblog.page), refresh))
+    }
+}
+
+export const loadStreamEntries: (refresh: boolean) => ThunkResult<void> = (refresh) => {
+    return async (dispatch, getState, wykopApi) => {
+        dispatch(baseLoadEntries(Actions, wykopApi.entries.getStreamEntries(getState().mikroblog.page), refresh))
     }
 }
 
@@ -80,4 +59,4 @@ export const getHotEntries: ActionCreator<GetHotEntries> = (period: string) => (
     }
 })
 
-export type MikroblogActions = SetEntries | GetHotEntries | ClearEntries
+export type MikroblogActions = GetHotEntries

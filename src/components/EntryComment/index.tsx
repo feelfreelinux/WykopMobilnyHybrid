@@ -7,9 +7,9 @@ import EmbedComponent from '../Embed'
 import BodyComponent from '../Body'
 import FooterButton from '../FooterButton'
 
-export default class EntryCommentComponent extends PureComponent<{ commentId: number, entryComments }, {}> {
+export default class EntryCommentComponent extends PureComponent<{ commentId: number, entryComment }, {}> {
   render() {
-    const comment = this.props.entryComments[this.props.commentId]
+    const comment = this.props.entryComment
     if (comment.embed != null) {
       return (
         <View style={styles.entryStyle} >
@@ -30,7 +30,7 @@ export default class EntryCommentComponent extends PureComponent<{ commentId: nu
   }
 
   _renderFooter() {
-    const comment = this.props.entryComments[this.props.commentId]
+    const comment = this.props.entryComment
     return (
       <View style={styles.footerStyle}>
         <FooterButton iconName="ic_buttontoolbar_share" iconFontSize={18} />

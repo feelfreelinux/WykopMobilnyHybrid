@@ -1,6 +1,7 @@
 import { Reducer } from 'redux'
 import { Entry, Author, EntryComment } from '../models/'
 import { ADD_TO_STATE, EntitesActions } from '../actions/entityActions'
+import 'react-native-console-time-polyfill'
 export type AppEntities = {
     authors: {
       [authorId: string]: Author

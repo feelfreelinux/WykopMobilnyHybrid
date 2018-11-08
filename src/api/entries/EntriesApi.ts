@@ -18,7 +18,27 @@ export default class EntriesApi {
         const normalized = (normalize(camelCaseKeys(hotEntries), entriesSchema))
         return normalized
     }
+    
+    getActiveEntries = async (page: number) => {
+        const hotEntries = await this.api.request(['entries', 'active'], {
+            named: {
+                page,
+            }
+        })
+        const normalized = (normalize(camelCaseKeys(hotEntries), entriesSchema))
+        return normalized
+    }
 
+    getStreamEntries = async (page: number) => {
+        const hotEntries = await this.api.request(['entries', 'stream'], {
+            named: {
+                page,
+            }
+        })
+        const normalized = (normalize(camelCaseKeys(hotEntries), entriesSchema))
+        return normalized
+    }
+    
     getEntry = async (entryId: string) => {
         const entry = await this.api.request(['entries', 'entry'], {
             api: [entryId]

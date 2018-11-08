@@ -4,7 +4,7 @@ import EntryComment from '../components/EntryComment'
 
 const mapStateToProps = (state: RootState, props) => ({
   ...props,
-  entryComments: state.entity.entities.entryComments,
+  entryComment: state.entity.entities.entryComments[props.commentId],
 })
 
 const mapDispatchToProps = (dispatch) => ({

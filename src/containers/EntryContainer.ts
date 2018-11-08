@@ -2,11 +2,11 @@ import { connect } from 'react-redux'
 import { RootState } from '../reducers'
 import { Dispatch } from 'redux'
 import EntryComponent from '../components/Entry'
-import { getHotEntries, GetHotEntries, SetEntries, MikroblogActions } from '../actions/mikroblogActions';
+import { MikroblogActions } from '../actions/mikroblogActions';
 
 const mapStateToProps = (state: RootState, props) => ({
   ...props,
-  entries: state.entity.entities.entries
+  entry: state.entity.entities.entries[props.entryId]
 })
 
 const mapDispatchToProps = (dispatch: Dispatch<MikroblogActions>) => ({

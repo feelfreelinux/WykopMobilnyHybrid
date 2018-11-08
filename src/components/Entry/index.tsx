@@ -9,9 +9,9 @@ import FooterButton from '../FooterButton'
 import { withNavigation } from 'react-navigation'
 import { navigate } from '../../navigation/NavigationService';
 
-class EntryComponent extends PureComponent<{ navigation, entryId: number, entries }, {}> {
+class EntryComponent extends PureComponent<{ navigation, entryId: number, entry }, {}> {
   render() {
-    const entry = this.props.entries[this.props.entryId]
+    const entry = this.props.entry
     if (entry.embed != null) {
       return (
         <View style={styles.entryStyle} >
@@ -38,7 +38,7 @@ class EntryComponent extends PureComponent<{ navigation, entryId: number, entrie
   }
 
   _renderFooter() {
-    const entry = this.props.entries[this.props.entryId]
+    const entry = this.props.entry
     return (
       <View style={styles.footerStyle}>
         <FooterButton iconName="ic_buttontoolbar_share" iconFontSize={18} />

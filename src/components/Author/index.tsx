@@ -6,9 +6,9 @@ import * as plLocale from 'date-fns/locale/pl'
 import styles, { getNicknameStyle, getAuthorSexStyle } from './styles'
 import { getAuthorColor, getAuthorSex } from '../../utils'
 
-export default class AuthorComponent extends PureComponent<{ authorId: number, date: Date, authors }, {}> {
+export default class AuthorComponent extends PureComponent<{ author, date: Date, authors }, {}> {
     render() {
-        const author = this.props.authors[this.props.authorId]
+        const author = this.props.author
         const stylesAuthorColor = getNicknameStyle(getAuthorColor(author))
         const stylesAuthorSex = getAuthorSexStyle(getAuthorSex(author))
         return (

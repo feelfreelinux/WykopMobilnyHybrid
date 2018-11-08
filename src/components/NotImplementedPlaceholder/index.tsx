@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react'
-import { Embed } from '../../models'
-import { Text, View } from 'react-native'
+import { Text, View, Button } from 'react-native'
+import 'react-native-console-time-polyfill';
 
-export default class NotImplementedPlaceholder extends PureComponent<{ embed: Embed }, {}> {
+export default class NotImplementedPlaceholder extends PureComponent<{}, {}> {
     render() {
         return (
             <View>
-                <Text>{ "Not implemented" }</Text>
+                <Text>{"Not implemented"}</Text>
             </View>
         );
     }

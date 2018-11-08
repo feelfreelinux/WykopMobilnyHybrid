@@ -1,16 +1,72 @@
 import * as React from 'react'
 import { createIconSetFromFontello } from '@expo/vector-icons'
-import { View, Image, TouchableOpacity, StatusBar } from 'react-native'
+import { View, Image, TouchableOpacity, StatusBar, Button } from 'react-native'
 import { Font } from 'expo'
 import fontelloConfig from '../../../assets/fonts/config.json'
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation'
+import { createMaterialTopTabNavigator, createBottomTabNavigator, createStackNavigator, withNavigation } from 'react-navigation'
 import MikroblogContainer from '../../containers/MikroblogContainer'
 import NotImplemented from '../../components/NotImplementedPlaceholder'
 import EntryDetailsContainer from '../../containers/EntryDetailsContainer'
-import LoginComponent from '../../components/Login';
+import { MikroblogPageType } from '../../components/Mikroblog';
 import AppbarUserContainer from '../../containers/AppbarUserContainer';
 
 const OWMIcons = createIconSetFromFontello(fontelloConfig, 'owmglyphs')
+
+const MikroblogTabStack = createStackNavigator({
+    Newest: () => (<MikroblogContainer pageType={MikroblogPageType.NEWEST}/>),
+    Hot12: () => (<MikroblogContainer pageType={MikroblogPageType.HOT_6}/>),
+    Hot24: () => (<MikroblogContainer pageType={MikroblogPageType.HOT_24}/>),
+    Hot6: () => (<MikroblogContainer pageType={MikroblogPageType.HOT_6}/>),
+    Active: () => (<MikroblogContainer pageType={MikroblogPageType.ACTIVE}/>),
+}, {
+    navigationOptions: ({ navigation }) => {
+        return {
+
+            header: (
+                <View>
+                    <Button  onPress={() => {
+                        navigation.dispatch({
+                            key: 'Hot24',
+                            type: 'ReplaceCurrentScreen',
+                            routeName: 'Hot24',
+                          } as any)
+                    }} title={'24'}/>
+        
+                    <Button onPress={() => {
+                        navigation.dispatch({
+                            key: 'Hot6',
+                            type: 'ReplaceCurrentScreen',
+                            routeName: 'Hot6',
+                          } as any)
+                    }} title={'6'}/>
+                    <Button onPress={() => {
+                        navigation.dispatch({
+                            key: 'Hot12',
+                            type: 'ReplaceCurrentScreen',
+                            routeName: 'Hot12',
+                          } as any)
+                    }} title={'12'}/>
+                </View> ),
+            headerStyle: { height: 48 },
+        }
+    },
+
+    initialRouteName: 'Newest',
+})
+const prevGetStateForActionHomeStack = MikroblogTabStack.router.getStateForAction;
+MikroblogTabStack.router.getStateForAction = (action, state) => {
+    if (state && (action.type as any) === 'ReplaceCurrentScreen') {
+      const routes = state.routes.slice(0, state.routes.length - 1);
+      routes.push(action);
+      return {
+        ...state,
+        routes,
+        index: routes.length - 1,
+      };
+    }
+    return prevGetStateForActionHomeStack(action, state);
+}
+
 
 class FontIcon extends React.PureComponent<{ name, size, color }, { fontLoaded }> {
     constructor(props) {
@@ -47,6 +103,7 @@ class FontIcon extends React.PureComponent<{ name, size, color }, { fontLoaded }
     }
 }
 
+
 const Tabs = createBottomTabNavigator(
     {
         LinksScreen: {
@@ -70,7 +127,7 @@ const Tabs = createBottomTabNavigator(
                 title: 'Mikroblog',
                 tabBarIcon: ({ tintColor }) => <FontIcon name="ic_navi_mirkoblog" color={tintColor} size={22} />
             },
-            screen: MikroblogContainer,
+            screen: MikroblogTabStack,
         },
         FavoriteScreen: {
             navigationOptions: {

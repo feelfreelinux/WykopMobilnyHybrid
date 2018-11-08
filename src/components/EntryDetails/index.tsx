@@ -2,8 +2,6 @@ import React, { PureComponent } from 'react'
 import { View, Dimensions, FlatList, ActivityIndicator } from 'react-native'
 import EntryContainer from '../../containers/EntryContainer'
 import EntryCommentContainer from '../../containers/EntryCommentContainer'
-import { RecyclerListView, DataProvider, LayoutProvider, BaseItemAnimator } from 'recyclerlistview';
-import { getScreenWidth } from '../../utils';
 
 export default class EntryDetails extends PureComponent<{ navigation, getEntryComments: (id) => any, entries, entryComments, commentIds: string[] }, {}> {
     _entryId: number
@@ -27,7 +25,7 @@ export default class EntryDetails extends PureComponent<{ navigation, getEntryCo
     render() {
         if (this.props.commentIds.length > 0) {
         return (
-<FlatList
+            <FlatList
                 keyExtractor={(entryId) => entryId.toString()}
                 data={[this._entryId, ...this.props.commentIds]}
                 windowSize={Dimensions.get('window').height*2}
