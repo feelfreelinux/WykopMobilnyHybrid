@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { createIconSetFromFontello } from '@expo/vector-icons'
-import { View, Image, TouchableOpacity, StatusBar, Button } from 'react-native'
+import { View, Image, Text, TouchableOpacity, StatusBar, Button } from 'react-native'
 import { Font } from 'expo'
 import fontelloConfig from '../../../assets/fonts/config.json'
 import { createMaterialTopTabNavigator, createBottomTabNavigator, createStackNavigator, withNavigation } from 'react-navigation'
@@ -12,57 +12,67 @@ import AppbarUserContainer from '../../containers/AppbarUserContainer';
 
 const OWMIcons = createIconSetFromFontello(fontelloConfig, 'owmglyphs')
 
+const MikroTab = ({ routeKey, title, navigation }) => {
+    return (<View style={{ flex: 1, flexGrow: 1 }}>
+        <TouchableOpacity
+            style={{
+                backgroundColor: '#fafafa',
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center'
+            }}
+            onPress={() => {
+                navigation.dispatch({
+                    key: routeKey,
+                    type: 'ReplaceCurrentScreen',
+                    routeName: routeKey,
+                } as any)
+            }}>
+            <Text style={{ fontWeight: navigation.routeName === routeKey ? 'bold' : 'normal' }}>{title}</Text>
+        </TouchableOpacity>
+    </View>)
+}
+
 const MikroblogTabStack = createStackNavigator({
-    Newest: () => (<MikroblogContainer pageType={MikroblogPageType.NEWEST}/>),
-    Hot12: () => (<MikroblogContainer pageType={MikroblogPageType.HOT_6}/>),
-    Hot24: () => (<MikroblogContainer pageType={MikroblogPageType.HOT_24}/>),
-    Hot6: () => (<MikroblogContainer pageType={MikroblogPageType.HOT_6}/>),
-    Active: () => (<MikroblogContainer pageType={MikroblogPageType.ACTIVE}/>),
+    Newest: () => (<MikroblogContainer pageType={MikroblogPageType.NEWEST} />),
+    Hot12: () => (<MikroblogContainer pageType={MikroblogPageType.HOT_12} />),
+    Hot24: () => (<MikroblogContainer pageType={MikroblogPageType.HOT_24} />),
+    Hot6: () => (<MikroblogContainer pageType={MikroblogPageType.HOT_6} />),
+    Active: () => (<MikroblogContainer pageType={MikroblogPageType.ACTIVE} />),
 }, {
-    navigationOptions: ({ navigation }) => {
-        return {
+        navigationOptions: ({ navigation }) => {
+            return {
 
-            header: (
-                <View>
-                    <Button  onPress={() => {
-                        navigation.dispatch({
-                            key: 'Hot24',
-                            type: 'ReplaceCurrentScreen',
-                            routeName: 'Hot24',
-                          } as any)
-                    }} title={'24'}/>
-        
-                    <Button onPress={() => {
-                        navigation.dispatch({
-                            key: 'Hot6',
-                            type: 'ReplaceCurrentScreen',
-                            routeName: 'Hot6',
-                          } as any)
-                    }} title={'6'}/>
-                    <Button onPress={() => {
-                        navigation.dispatch({
-                            key: 'Hot12',
-                            type: 'ReplaceCurrentScreen',
-                            routeName: 'Hot12',
-                          } as any)
-                    }} title={'12'}/>
-                </View> ),
-            headerStyle: { height: 48 },
-        }
-    },
+                header: (
+                    <View
+                        style={{
+                            height: 35,
+                        }}
+                    >
 
-    initialRouteName: 'Newest',
-})
+                        <View style={{ backgroundColor: 'white', height: 48, flex: 1, flexDirection: 'row' }}>
+                            <MikroTab routeKey={'Newest'} title={"Nowe"} navigation={navigation} />
+                            <MikroTab routeKey={'Active'} title={"Aktywne"} navigation={navigation} />
+                            <MikroTab routeKey={'Hot6'} title={"6h"} navigation={navigation} />
+                            <MikroTab routeKey={'Hot12'} title={"12h"} navigation={navigation} />
+                            <MikroTab routeKey={'Hot24'} title={"24h"} navigation={navigation} />
+                        </View></View>),
+                headerStyle: { height: 48 },
+            }
+        },
+
+        initialRouteName: 'Newest',
+    })
 const prevGetStateForActionHomeStack = MikroblogTabStack.router.getStateForAction;
 MikroblogTabStack.router.getStateForAction = (action, state) => {
     if (state && (action.type as any) === 'ReplaceCurrentScreen') {
-      const routes = state.routes.slice(0, state.routes.length - 1);
-      routes.push(action);
-      return {
-        ...state,
-        routes,
-        index: routes.length - 1,
-      };
+        const routes = state.routes.slice(0, state.routes.length - 1);
+        routes.push(action);
+        return {
+            ...state,
+            routes,
+            index: routes.length - 1,
+        };
     }
     return prevGetStateForActionHomeStack(action, state);
 }
@@ -161,7 +171,7 @@ export default class HomeComponent extends React.PureComponent<{ restoreAuthStat
     static navigationOptions = ({ navigation }) => {
         return {
             headerLeft: (
-                <AppbarUserContainer/>
+                <AppbarUserContainer />
             ),
             headerRight: (
                 <View style={{ flex: 1, flexDirection: 'row', }}>
@@ -188,6 +198,6 @@ export default class HomeComponent extends React.PureComponent<{ restoreAuthStat
     }
 
     render() {
-        return (<Tabs/>)
+        return (<Tabs />)
     }
 }
