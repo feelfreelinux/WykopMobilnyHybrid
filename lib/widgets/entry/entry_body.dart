@@ -15,8 +15,11 @@ class EntryBodyWidget extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 4.0),
-        child: new MarkdownBody(
-            data: html2md.convert(entry.body != null ? entry.body.length > 300 && ellipsize ? entry.body.substring(0, 200) + '...' : entry.body : '')),
+        child: new Text(entry.body != null
+                ? entry.body.length > 300 && ellipsize
+                    ? entry.body.substring(0, 200) + '...'
+                    : entry.body
+                : ''),
       ),
     );
   }

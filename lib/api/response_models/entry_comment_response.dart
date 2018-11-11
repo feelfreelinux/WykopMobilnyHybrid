@@ -6,7 +6,8 @@ part 'entry_comment_response.g.dart';
 
 abstract class EntryCommentResponse
     implements Built<EntryCommentResponse, EntryCommentResponseBuilder> {
-  factory EntryCommentResponse([updates(EntryCommentResponseBuilder b)]) = _$EntryCommentResponse;
+  factory EntryCommentResponse([updates(EntryCommentResponseBuilder b)]) =
+      _$EntryCommentResponse;
   int get id;
   String get date;
 
@@ -22,5 +23,6 @@ abstract class EntryCommentResponse
   EmbedResponse get embed;
 
   EntryCommentResponse._();
-  static Serializer<EntryCommentResponse> get serializer => _$entryCommentResponseSerializer;
+  static Serializer<EntryCommentResponse> get serializer =>
+      _$entryCommentResponseSerializer;
 }

@@ -10,7 +10,7 @@ class EmbedWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 4.0),
-      child: Image.network(embed.preview),
+      child: Image.network(embed.preview, height: 200.0,),
     );
   }
 }

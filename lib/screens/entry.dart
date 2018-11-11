@@ -20,24 +20,22 @@ class EntryScreen extends StatelessWidget {
             decoration:
                 new BoxDecoration(color: Theme.of(context).backgroundColor),
             child: StoreConnector<AppState, Entry>(
-                converter: (store) => store.state.mikroblogState.entries[entryId],
+                converter: (store) =>
+                    store.state.mikroblogState.entries[entryId],
                 onInit: (store) {
                   store.dispatch(LoadEntry(entryId: entryId));
                 },
                 builder: (context, state) {
                   return ListView.builder(
-                        itemCount: state.comments.length + 1,
-                        itemBuilder: (context, index) {
-                          if (index == 0) {
-                            return EntryWidget(ellipsize: false, entry: state);
-                          } else {
-                            return EntryCommentWidget(comment: state.comments[index-1]);
-                          }
-                        });
-                  
+                      itemCount: state.comments.length + 1,
+                      itemBuilder: (context, index) {
+                        if (index == 0) {
+                          return EntryWidget(ellipsize: false, entry: state);
+                        } else {
+                          return EntryCommentWidget(
+                              comment: state.comments[index - 1]);
+                        }
+                      });
                 })));
-              
-
-
   }
 }

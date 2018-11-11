@@ -35,7 +35,10 @@ class EntryWidget extends StatelessWidget {
     } else {
       return [
         AuthorWidget(author: entry.author, date: entry.date),
-        EntryBodyWidget(entry: entry, ellipsize: ellipsize,),
+        EntryBodyWidget(
+          entry: entry,
+          ellipsize: ellipsize,
+        ),
         EmbedWidget(embed: entry.embed),
         EntryFooterWidget(entry: entry),
       ];

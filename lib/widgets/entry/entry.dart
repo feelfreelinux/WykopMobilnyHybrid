@@ -13,15 +13,13 @@ class EntryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 0.0, bottom: 3.0),
-      child: InkWell(
-          onTap: () {},
-          child: Material(
-            color: Theme.of(context).cardColor,
-            elevation: 0.0,
-            child: Column(
-              children: _buildEntryBody(),
-            ),
-          )),
+      child: Material(
+        color: Theme.of(context).cardColor,
+        elevation: 0.0,
+        child: Column(
+          children: _buildEntryBody(),
+        ),
+      ),
     );
   }
 
@@ -29,13 +27,19 @@ class EntryWidget extends StatelessWidget {
     if (entry.embed == null) {
       return [
         AuthorWidget(author: entry.author, date: entry.date),
-        EntryBodyWidget(entry: entry, ellipsize: ellipsize,),
+        EntryBodyWidget(
+          entry: entry,
+          ellipsize: ellipsize,
+        ),
         EntryFooterWidget(entry: entry),
       ];
     } else {
       return [
         AuthorWidget(author: entry.author, date: entry.date),
-        EntryBodyWidget(entry: entry, ellipsize: ellipsize,),
+        EntryBodyWidget(
+          entry: entry,
+          ellipsize: ellipsize,
+        ),
         EmbedWidget(embed: entry.embed),
         EntryFooterWidget(entry: entry),
       ];

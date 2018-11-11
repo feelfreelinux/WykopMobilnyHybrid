@@ -12,15 +12,13 @@ class EntryCommentWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: 2.0, bottom: 2.0, left: 14.0),
-      child: InkWell(
-          onTap: () {},
-          child: Material(
-            color: Theme.of(context).cardColor,
-            elevation: 0.0,
-            child: Column(
-              children: _buildEntryBody(),
-            ),
-          )),
+      child: Material(
+        color: Theme.of(context).cardColor,
+        elevation: 0.0,
+        child: Column(
+          children: _buildEntryBody(),
+        ),
+      ),
     );
   }
 

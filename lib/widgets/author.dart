@@ -29,13 +29,18 @@ class AuthorWidget extends StatelessWidget {
                             fit: BoxFit.fill,
                             image: new NetworkImage(author.avatar)))),
                 new Container(
-                  padding: EdgeInsets.only(top: 1.0),
-                  child: SizedBox(
-                    width: 32.0,
-                    height: 1.6,
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(color: author.sex == AuthorSex.MALE ? Colors.blue : author.sex == AuthorSex.FEMALE ? Colors.pink : Colors.transparent),
-                    ))),
+                    padding: EdgeInsets.only(top: 1.0),
+                    child: SizedBox(
+                        width: 32.0,
+                        height: 1.6,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                              color: author.sex == AuthorSex.MALE
+                                  ? Colors.blue
+                                  : author.sex == AuthorSex.FEMALE
+                                      ? Colors.pink
+                                      : Colors.transparent),
+                        ))),
               ],
             ),
           ),

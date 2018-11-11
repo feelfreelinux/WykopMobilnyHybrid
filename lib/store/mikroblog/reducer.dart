@@ -18,11 +18,12 @@ MikroblogState _setEntriesAction(
     MikroblogState state, SetEntriesAction action) {
   return state.rebuild((b) => b
     ..entries.replace(BuiltMap<int, Entry>.from(_listToMap(action.entries)))
-    ..entriesIds.addAll(action.entries.map((el) { return el.id; })));
+    ..entriesIds.addAll(action.entries.map((el) {
+      return el.id;
+    })));
 }
 
-MikroblogState _setEntryAction(
-    MikroblogState state, UpdateEntryAction action) {
+MikroblogState _setEntryAction(MikroblogState state, UpdateEntryAction action) {
   return state.rebuild((b) => b..entries[action.entry.id] = action.entry);
 }
 
@@ -37,9 +38,10 @@ MikroblogState _setPageNumber(MikroblogState state, SetPageNumber action) {
 MikroblogState _addEntriesAction(
     MikroblogState state, AddEntriesAction action) {
   return state.rebuild((b) => b
-  ..entries.addAll(_listToMap(action.entries))
-  ..entriesIds.addAll(action.entries.map((el) { return el.id; }))
-    );
+    ..entries.addAll(_listToMap(action.entries))
+    ..entriesIds.addAll(action.entries.map((el) {
+      return el.id;
+    })));
 }
 
 MikroblogState _setFullyLoaded(MikroblogState state, SetHaveReachedEnd action) {

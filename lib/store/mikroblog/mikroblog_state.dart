@@ -15,7 +15,12 @@ abstract class MikroblogState
   num get page;
 
   factory MikroblogState() {
-    return _$MikroblogState._(entries: new BuiltMap<int, Entry>(), entriesIds: [], isLoading: false, haveReachedEnd: false, page: 1);
+    return _$MikroblogState._(
+        entries: new BuiltMap<int, Entry>(),
+        entriesIds: [],
+        isLoading: false,
+        haveReachedEnd: false,
+        page: 1);
   }
 
   MikroblogState._();

@@ -27,7 +27,25 @@ class EntryFooterWidget extends StatelessWidget {
             CommentsButton(
               count: entry.commentsCount,
               onClicked: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => EntryScreen(entryId: entry.id,)));
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (BuildContext context,
+                        Animation<double> animation,
+                        Animation<double> secondaryAnimation) {
+                      return EntryScreen(entryId: entry.id);
+                    },
+                    transitionsBuilder:
+                        (context, animation1, animation2, child) {
+                      return FadeTransition(
+                        opacity: Tween<double>(begin: 0.0, end: 1.0)
+                            .animate(animation1),
+                        child: child,
+                      );
+                    },
+                    transitionDuration: Duration(milliseconds: 400),
+                  ),
+                );
               },
             ),
             VoteButton(

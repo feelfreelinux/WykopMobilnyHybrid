@@ -4,7 +4,8 @@ import 'package:owmflutter/api/api.dart';
 
 part 'entry_comment.g.dart';
 
-abstract class EntryComment implements Built<EntryComment, EntryCommentBuilder> {
+abstract class EntryComment
+    implements Built<EntryComment, EntryCommentBuilder> {
   int get id;
   String get date;
 

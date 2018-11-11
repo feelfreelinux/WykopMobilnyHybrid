@@ -32,7 +32,11 @@ abstract class Entry implements Built<Entry, EntryBuilder> {
         body: response.body,
         voteCount: response.voteCount,
         commentsCount: response.commentsCount,
-        comments: response.comments == null ? BuiltList.from([]) : BuiltList.from(response.comments.map((el) { return EntryComment.mapFromResponse(el); })),
+        comments: response.comments == null
+            ? BuiltList.from([])
+            : BuiltList.from(response.comments.map((el) {
+                return EntryComment.mapFromResponse(el);
+              })),
         author: Author.fromResponse(response: response.author),
         embed: (response.embed != null
             ? Embed.fromResponse(response: response.embed)

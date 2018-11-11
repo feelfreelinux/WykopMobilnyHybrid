@@ -22,7 +22,7 @@ void appMiddleware(Store<AppState> store, action, NextDispatcher next) {
             entries: BuiltList.from(el.map((el) {
           return Entry.mapFromResponse(el);
         }).toList())));
-      } else {        
+      } else {
         store.dispatch(AddEntriesAction(
             entries: BuiltList.from(el.map((el) {
           return Entry.mapFromResponse(el);

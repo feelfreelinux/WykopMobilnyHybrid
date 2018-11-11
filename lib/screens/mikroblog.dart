@@ -9,9 +9,10 @@ class HotScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          leading: new IconButton(icon: new Icon(OwmGlyphs.ic_navi_profile),
-          onPressed: () {},
-      ),
+          leading: new IconButton(
+            icon: new Icon(OwmGlyphs.ic_navi_profile),
+            onPressed: () {},
+          ),
           titleSpacing: 0.0,
           centerTitle: true,
           elevation: 2.5,
@@ -48,31 +49,35 @@ class HotScreen extends StatelessWidget {
                         loadData: callback,
                         itemCount: state.entriesIds.length,
                         itemBuilder: (context, index) {
-                          return EntryWidget(entry: state.entries[state.entriesIds[index]], ellipsize: true);
+                          return EntryWidget(
+                              entry: state.entries[state.entriesIds[index]],
+                              ellipsize: true);
                         });
                   });
                 })),
-          floatingActionButton: new FloatingActionButton(
-    child: const Icon(OwmGlyphs.ic_pen),
-    onPressed: () {},
-  ),
-  floatingActionButtonLocation:    
-      FloatingActionButtonLocation.endFloat,
+        floatingActionButton: new FloatingActionButton(
+          child: const Icon(OwmGlyphs.ic_pen),
+          onPressed: () {},
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: 2,
           type: BottomNavigationBarType.fixed,
           items: [
             BottomNavigationBarItem(
               icon: new Icon(OwmGlyphs.ic_navi_links),
-              title: new Text('Znaleziska', style: new TextStyle(fontSize: 11.0)),
+              title:
+                  new Text('Znaleziska', style: new TextStyle(fontSize: 11.0)),
             ),
             BottomNavigationBarItem(
               icon: new Icon(OwmGlyphs.ic_navi_my_wykop),
-              title: new Text('Mój Wykop', style: new TextStyle(fontSize: 11.0)),
+              title:
+                  new Text('Mój Wykop', style: new TextStyle(fontSize: 11.0)),
             ),
             BottomNavigationBarItem(
               icon: new Icon(OwmGlyphs.ic_navi_mirkoblog),
-              title: new Text('Mikroblog', style: new TextStyle(fontSize: 11.0)),
+              title:
+                  new Text('Mikroblog', style: new TextStyle(fontSize: 11.0)),
             ),
             BottomNavigationBarItem(
               icon: new Icon(OwmGlyphs.ic_navi_favourite),
@@ -80,7 +85,8 @@ class HotScreen extends StatelessWidget {
             ),
             BottomNavigationBarItem(
               icon: new Icon(OwmGlyphs.ic_navi_messages),
-              title: new Text('Wiadomości', style: new TextStyle(fontSize: 11.0)),
+              title:
+                  new Text('Wiadomości', style: new TextStyle(fontSize: 11.0)),
             ),
           ],
         ));
