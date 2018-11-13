@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/utils/utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class AuthorWidget extends StatelessWidget {
   final Author author;
@@ -27,7 +28,7 @@ class AuthorWidget extends StatelessWidget {
                         shape: BoxShape.rectangle,
                         image: DecorationImage(
                             fit: BoxFit.fill,
-                            image: NetworkImage(author.avatar)))),
+                            image: CachedNetworkImageProvider(author.avatar)))),
                 Container(
                     padding: EdgeInsets.only(top: 1.0),
                     child: SizedBox(
