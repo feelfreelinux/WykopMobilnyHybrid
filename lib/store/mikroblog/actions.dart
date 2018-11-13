@@ -44,26 +44,24 @@ class SetHaveReachedEnd {
 
 ThunkAction<AppState> loadHotPeriod(String period) {
   return (Store<AppState> store) async {
-      store.dispatch(SetLoading(isLoading: true));
-      var results = await api.getHot(store.state.mikroblogState.page);
-      store
-          .dispatch(SetPageNumber(number: store.state.mikroblogState.page + 1));
-      store.dispatch(SetLoading(isLoading: false));
+    store.dispatch(SetLoading(isLoading: true));
+    var results = await api.getHot(store.state.mikroblogState.page);
+    store.dispatch(SetPageNumber(number: store.state.mikroblogState.page + 1));
+    store.dispatch(SetLoading(isLoading: false));
 
-      if (results.length == 0) {
-        store.dispatch(SetHaveReachedEnd(haveReachedEnd: true));
-      }
-      if (store.state.mikroblogState.page == 2) {
-        store.dispatch(SetEntriesAction(
-            entries: BuiltList.from(results.map((el) {
-          return Entry.mapFromResponse(el);
-        }).toList())));
-      } else {
-        store.dispatch(AddEntriesAction(
-            entries: BuiltList.from(results.map((el) {
-          return Entry.mapFromResponse(el);
-        }).toList())));
-      }
-
+    if (results.length == 0) {
+      store.dispatch(SetHaveReachedEnd(haveReachedEnd: true));
+    }
+    if (store.state.mikroblogState.page == 2) {
+      store.dispatch(SetEntriesAction(
+          entries: BuiltList.from(results.map((el) {
+        return Entry.mapFromResponse(el);
+      }).toList())));
+    } else {
+      store.dispatch(AddEntriesAction(
+          entries: BuiltList.from(results.map((el) {
+        return Entry.mapFromResponse(el);
+      }).toList())));
+    }
   };
 }
