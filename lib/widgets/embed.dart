@@ -24,7 +24,7 @@ class EmbedWidget extends StatelessWidget {
                     builder: (context) => EmbedFullScreen(
                         heroTag: heroTag,
                         imageProvider: CachedNetworkImageProvider(
-                          embed.preview,
+                          embed.url,
                         )),
                   ));
             },

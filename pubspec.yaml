@@ -24,6 +24,9 @@ dependencies:
   cached_network_image: ^0.5.0
   transparent_image: ^0.1.0
   photo_view: ^0.0.10
+  share: ^0.5.3
+  package_info: ^0.3.2
+  flutter_custom_tabs: ^0.4.0
 
 dev_dependencies:
   build_runner: ^1.0.0
