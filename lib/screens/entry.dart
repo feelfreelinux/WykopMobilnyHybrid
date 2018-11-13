@@ -17,8 +17,7 @@ class EntryScreen extends StatelessWidget {
           title: Text('Wpis'),
         ),
         body: Container(
-            decoration:
-                new BoxDecoration(color: Theme.of(context).backgroundColor),
+            decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
             child: StoreConnector<AppState, Entry>(
                 converter: (store) =>
                     store.state.mikroblogState.entries[entryId],

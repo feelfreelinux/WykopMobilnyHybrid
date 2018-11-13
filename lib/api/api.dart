@@ -18,7 +18,7 @@ import 'package:crypto/crypto.dart' as crypto;
 
 class BaseWykopHttpClient extends BaseClient {
   final String baseUrl = 'https://a2.wykop.pl';
-  final Client _inner = new Client();
+  final Client _inner = Client();
   ApiSecrets _secrets;
 
   BaseWykopHttpClient();
@@ -29,7 +29,7 @@ class BaseWykopHttpClient extends BaseClient {
   }
 
   String generateMd5(String data) {
-    var content = new Utf8Encoder().convert(data);
+    var content = Utf8Encoder().convert(data);
     var md5 = crypto.md5;
     var digest = md5.convert(content);
     return hex.encode(digest.bytes);
@@ -68,7 +68,7 @@ class BaseWykopHttpClient extends BaseClient {
 }
 
 class BaseWykopClient {
-  final BaseWykopHttpClient _httpClient = new BaseWykopHttpClient();
+  final BaseWykopHttpClient _httpClient = BaseWykopHttpClient();
 
   BaseWykopClient();
 
