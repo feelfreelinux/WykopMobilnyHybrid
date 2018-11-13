@@ -34,7 +34,7 @@ class HotScreen extends StatelessWidget {
             child: StoreConnector<AppState, MikroblogState>(
                 converter: (store) => store.state.mikroblogState,
                 onInit: (store) {
-                  store.dispatch(LoadHotAction());
+                  store.dispatch(loadHotPeriod("12"));
                 },
                 builder: (context, state) {
                   if (state.isLoading && state.page == 1) {

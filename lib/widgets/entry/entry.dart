@@ -27,8 +27,8 @@ class EntryWidget extends StatelessWidget {
     if (entry.embed == null) {
       return [
         AuthorWidget(author: entry.author, date: entry.date),
-        EntryBodyWidget(
-          entry: entry,
+        BodyWidget(
+          body: entry.body,
           ellipsize: ellipsize,
         ),
         EntryFooterWidget(entry: entry),
@@ -36,8 +36,8 @@ class EntryWidget extends StatelessWidget {
     } else {
       return [
         AuthorWidget(author: entry.author, date: entry.date),
-        EntryBodyWidget(
-          entry: entry,
+        BodyWidget(
+          body: entry.body,
           ellipsize: ellipsize,
         ),
         EmbedWidget(embed: entry.embed),

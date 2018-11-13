@@ -5,6 +5,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/themes.dart';
 import 'package:redux_logging/redux_logging.dart';
+import 'package:redux_thunk/redux_thunk.dart' show thunkMiddleware;
 
 final logger = new LoggingMiddleware.printer();
 
@@ -12,6 +13,7 @@ void main() {
   final store =
       Store<AppState>(appReducer, initialState: AppState(), middleware: [
     appMiddleware,
+    thunkMiddleware,
   ]);
   runApp(OWMApp(
     store: store,

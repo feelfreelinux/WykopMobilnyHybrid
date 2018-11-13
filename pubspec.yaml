@@ -16,8 +16,10 @@ dependencies:
   html: ^0.13.3+3
   dio: ^1.0.6
   path_provider: ^0.4.1
-  html2md: ^0.2.1
-  timeago: ^2.0.8
+  flutter_webview_plugin: ^0.2.1
+  flutter_html: ^0.8.2
+  redux_thunk: ^0.2.1
+  timeago: ^2.0.9
   font_awesome_flutter: ^8.1.0
 
 dev_dependencies:
