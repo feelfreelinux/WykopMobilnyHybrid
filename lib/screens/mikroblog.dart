@@ -9,8 +9,8 @@ class HotScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          leading: new IconButton(
-            icon: new Icon(OwmGlyphs.ic_navi_profile),
+          leading: IconButton(
+            icon: Icon(OwmGlyphs.ic_navi_profile),
             onPressed: () {},
           ),
           titleSpacing: 0.0,
@@ -29,8 +29,7 @@ class HotScreen extends StatelessWidget {
           ],
         ),
         body: Container(
-            decoration:
-                new BoxDecoration(color: Theme.of(context).backgroundColor),
+            decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
             child: StoreConnector<AppState, MikroblogState>(
                 converter: (store) => store.state.mikroblogState,
                 onInit: (store) {
@@ -56,7 +55,7 @@ class HotScreen extends StatelessWidget {
                         });
                   });
                 })),
-        floatingActionButton: new FloatingActionButton(
+        floatingActionButton: FloatingActionButton(
           child: const Icon(OwmGlyphs.ic_pen),
           onPressed: () {},
         ),
@@ -66,28 +65,24 @@ class HotScreen extends StatelessWidget {
           type: BottomNavigationBarType.fixed,
           items: [
             BottomNavigationBarItem(
-              icon: new Icon(OwmGlyphs.ic_navi_links),
-              title:
-                  new Text('Znaleziska', style: new TextStyle(fontSize: 11.0)),
+              icon: Icon(OwmGlyphs.ic_navi_links),
+              title: Text('Znaleziska', style: TextStyle(fontSize: 11.0)),
             ),
             BottomNavigationBarItem(
-              icon: new Icon(OwmGlyphs.ic_navi_my_wykop),
-              title:
-                  new Text('Mój Wykop', style: new TextStyle(fontSize: 11.0)),
+              icon: Icon(OwmGlyphs.ic_navi_my_wykop),
+              title: Text('Mój Wykop', style: TextStyle(fontSize: 11.0)),
             ),
             BottomNavigationBarItem(
-              icon: new Icon(OwmGlyphs.ic_navi_mirkoblog),
-              title:
-                  new Text('Mikroblog', style: new TextStyle(fontSize: 11.0)),
+              icon: Icon(OwmGlyphs.ic_navi_mirkoblog),
+              title: Text('Mikroblog', style: TextStyle(fontSize: 11.0)),
             ),
             BottomNavigationBarItem(
-              icon: new Icon(OwmGlyphs.ic_navi_favourite),
-              title: new Text('Ulubione', style: new TextStyle(fontSize: 11.0)),
+              icon: Icon(OwmGlyphs.ic_navi_favourite),
+              title: Text('Ulubione', style: TextStyle(fontSize: 11.0)),
             ),
             BottomNavigationBarItem(
-              icon: new Icon(OwmGlyphs.ic_navi_messages),
-              title:
-                  new Text('Wiadomości', style: new TextStyle(fontSize: 11.0)),
+              icon: Icon(OwmGlyphs.ic_navi_messages),
+              title: Text('Wiadomości', style: TextStyle(fontSize: 11.0)),
             ),
           ],
         ));

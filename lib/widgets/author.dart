@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/utils/utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class AuthorWidget extends StatelessWidget {
   final Author author;
@@ -20,15 +21,15 @@ class AuthorWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                new Container(
+                Container(
                     width: 32.0,
                     height: 32.0,
-                    decoration: new BoxDecoration(
+                    decoration: BoxDecoration(
                         shape: BoxShape.rectangle,
-                        image: new DecorationImage(
+                        image: DecorationImage(
                             fit: BoxFit.fill,
-                            image: new NetworkImage(author.avatar)))),
-                new Container(
+                            image: CachedNetworkImageProvider(author.avatar)))),
+                Container(
                     padding: EdgeInsets.only(top: 1.0),
                     child: SizedBox(
                         width: 32.0,
@@ -44,14 +45,14 @@ class AuthorWidget extends StatelessWidget {
               ],
             ),
           ),
-          new Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            new Container(
+          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 1.0),
                 child: Text(author.login,
                     style: TextStyle(
                         fontSize: 13.0,
                         color: Utils.getAuthorColor(author, context)))),
-            new Container(
+            Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 1.0),
                 child: Text(Utils.getSimpleDate(date),
                     style: TextStyle(

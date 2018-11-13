@@ -15,7 +15,7 @@ class InfiniteList extends StatefulWidget {
 }
 
 class _InfiniteListState extends State<InfiniteList> {
-  ScrollController _scrollController = new ScrollController();
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -35,12 +35,12 @@ class _InfiniteListState extends State<InfiniteList> {
       itemCount: widget.itemCount + 1,
       itemBuilder: (context, index) {
         if (index == widget.itemCount) {
-          return new Padding(
+          return Padding(
             padding: const EdgeInsets.all(8.0),
-            child: new Center(
-              child: new Opacity(
+            child: Center(
+              child: Opacity(
                 opacity: widget.isLoading ? 1.0 : 0.0,
-                child: new CircularProgressIndicator(),
+                child: CircularProgressIndicator(),
               ),
             ),
           );

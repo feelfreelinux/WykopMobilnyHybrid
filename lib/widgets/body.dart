@@ -12,7 +12,7 @@ class BodyWidget extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 4.0),
-        child: new Html(
+        child: Html(
             data: body != null
                 ? body.length > 300 && ellipsize
                     ? body.substring(0, 200) + '...'
