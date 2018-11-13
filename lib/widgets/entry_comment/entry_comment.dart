@@ -26,13 +26,13 @@ class EntryCommentWidget extends StatelessWidget {
     if (comment.embed == null) {
       return [
         AuthorWidget(author: comment.author, date: comment.date),
-        BodyWidget(body: comment.body),
+        BodyWidget(body: comment.body, ellipsize: false),
         EntryCommentFooterWidget(comment: comment),
       ];
     } else {
       return [
         AuthorWidget(author: comment.author, date: comment.date),
-        BodyWidget(body: comment.body),
+        BodyWidget(body: comment.body, ellipsize: false),
         EmbedWidget(embed: comment.embed),
         EntryCommentFooterWidget(comment: comment),
       ];
