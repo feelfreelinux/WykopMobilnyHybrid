@@ -27,32 +27,18 @@ class AddEntriesAction {
   AddEntriesAction({this.entries});
 }
 
-class SetLoading {
-  final bool isLoading;
-  SetLoading({this.isLoading});
-}
-
-class SetPageNumber {
-  final int number;
-  SetPageNumber({this.number});
-}
-
-class SetHaveReachedEnd {
-  final bool haveReachedEnd;
-  SetHaveReachedEnd({this.haveReachedEnd});
-}
-
 ThunkAction<AppState> loadHotPeriod(String period) {
   return (Store<AppState> store) async {
-    store.dispatch(SetLoading(isLoading: true));
-    var results = await api.getHot(store.state.mikroblogState.page);
-    store.dispatch(SetPageNumber(number: store.state.mikroblogState.page + 1));
-    store.dispatch(SetLoading(isLoading: false));
+    store.dispatch(SetLoading(type: "MIKROBLOG", isLoading: true));
+    var results = await api.getHot(store.state.mikroblogState.listState.page);
+    store.dispatch(
+        SetPageNumber(type: "MIKROBLOG", number: store.state.mikroblogState.listState.page + 1));
+    store.dispatch(SetLoading(type: "MIKROBLOG", isLoading: false));
 
     if (results.length == 0) {
-      store.dispatch(SetHaveReachedEnd(haveReachedEnd: true));
+      store.dispatch(SetHaveReachedEnd(type: "MIKROBLOG", haveReachedEnd: true));
     }
-    if (store.state.mikroblogState.page == 2) {
+    if (store.state.mikroblogState.listState.page == 2) {
       store.dispatch(SetEntriesAction(
           entries: BuiltList.from(results.map((el) {
         return Entry.mapFromResponse(el);

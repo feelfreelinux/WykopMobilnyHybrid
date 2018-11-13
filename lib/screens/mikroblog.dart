@@ -37,7 +37,7 @@ class HotScreen extends StatelessWidget {
                   store.dispatch(loadHotPeriod("12"));
                 },
                 builder: (context, state) {
-                  if (state.isLoading && state.page == 1) {
+                  if (state.listState.isLoading && state.listState.page == 1) {
                     return Center(child: CircularProgressIndicator());
                   }
                   return StoreConnector<AppState, VoidCallback>(
@@ -45,7 +45,8 @@ class HotScreen extends StatelessWidget {
                     return () => store.dispatch(LoadHotAction());
                   }, builder: (context, callback) {
                     return InfiniteList(
-                        isLoading: state.isLoading && state.haveReachedEnd,
+                        isLoading: state.listState.isLoading &&
+                            state.listState.haveReachedEnd,
                         loadData: callback,
                         itemCount: state.entriesIds.length,
                         itemBuilder: (context, index) {

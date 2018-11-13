@@ -3,16 +3,18 @@ import 'package:redux/redux.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:owmflutter/store/store.dart';
 
-Reducer<MikroblogState> mikroblogReducer = combineReducers<MikroblogState>(
-  [
-    TypedReducer<MikroblogState, SetEntriesAction>(_setEntriesAction),
-    TypedReducer<MikroblogState, SetLoading>(_setLoading),
-    TypedReducer<MikroblogState, SetPageNumber>(_setPageNumber),
-    TypedReducer<MikroblogState, AddEntriesAction>(_addEntriesAction),
-    TypedReducer<MikroblogState, SetHaveReachedEnd>(_setFullyLoaded),
-    TypedReducer<MikroblogState, UpdateEntryAction>(_setEntryAction),
-  ],
-);
+MikroblogState mikroblogReducer(MikroblogState state, action) {
+  var newState = state.rebuild((b) => b
+    ..listState
+        .replace(createListReducer(state.listState, "MIKROBLOG", action)));
+  return combineReducers<MikroblogState>(
+    [
+      TypedReducer<MikroblogState, SetEntriesAction>(_setEntriesAction),
+      TypedReducer<MikroblogState, AddEntriesAction>(_addEntriesAction),
+      TypedReducer<MikroblogState, UpdateEntryAction>(_setEntryAction),
+    ],
+  )(newState, action);
+}
 
 MikroblogState _setEntriesAction(
     MikroblogState state, SetEntriesAction action) {
@@ -27,14 +29,6 @@ MikroblogState _setEntryAction(MikroblogState state, UpdateEntryAction action) {
   return state.rebuild((b) => b..entries[action.entry.id] = action.entry);
 }
 
-MikroblogState _setLoading(MikroblogState state, SetLoading action) {
-  return state.rebuild((b) => b.isLoading = action.isLoading);
-}
-
-MikroblogState _setPageNumber(MikroblogState state, SetPageNumber action) {
-  return state.rebuild((b) => b.page = action.number);
-}
-
 MikroblogState _addEntriesAction(
     MikroblogState state, AddEntriesAction action) {
   return state.rebuild((b) => b
@@ -42,10 +36,6 @@ MikroblogState _addEntriesAction(
     ..entriesIds.addAll(action.entries.map((el) {
       return el.id;
     })));
-}
-
-MikroblogState _setFullyLoaded(MikroblogState state, SetHaveReachedEnd action) {
-  return state.rebuild((b) => b..haveReachedEnd = action.haveReachedEnd);
 }
 
 Map<int, Entry> _listToMap(BuiltList<Entry> entries) {
