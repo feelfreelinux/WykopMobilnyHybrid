@@ -12,7 +12,6 @@ ListState createListReducer(ListState state, String type, action) {
       ],
     )(state, action);
   }
-  ;
   return state;
 }
 

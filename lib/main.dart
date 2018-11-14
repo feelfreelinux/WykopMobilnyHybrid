@@ -33,7 +33,7 @@ class OWMApp extends StatelessWidget {
           title: 'Wykop Mobilny',
           theme: Themes.lightTheme(),
           routes: {
-            '/': (context) => HotScreen(),
+            '/': (context) => MikroblogScreen(),
           },
         ));
   }

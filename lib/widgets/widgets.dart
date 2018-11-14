@@ -4,6 +4,7 @@ export 'entry_comment/entry_comment.dart';
 export 'entry_comment/entry_comment_footer.dart';
 export 'author.dart';
 export 'body.dart';
+export 'entrylist.dart';
 export 'embed.dart';
 export 'infinite_list.dart';
 export 'buttons/icon_button.dart';

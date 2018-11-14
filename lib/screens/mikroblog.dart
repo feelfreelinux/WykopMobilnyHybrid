@@ -4,11 +4,13 @@ import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/owm_glyphs.dart';
 
-class HotScreen extends StatelessWidget {
+class MikroblogScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
+    return DefaultTabController(
+        length: 5,
+        child: Scaffold(
+          appBar: AppBar(
           leading: InkWell(
               child: Padding(
             padding: EdgeInsets.all(10.0),
@@ -38,73 +40,29 @@ class HotScreen extends StatelessWidget {
               tooltip: "Odśwież",
             )
           ],
-        ),
-        body: Container(
-            decoration:
-                new BoxDecoration(color: Theme.of(context).backgroundColor),
-            child: StoreConnector<AppState, MikroblogState>(
-                converter: (store) => store.state.mikroblogState,
-                onInit: (store) {
-                  store.dispatch(loadHotPeriod("12"));
-                },
-                builder: (context, state) {
-                  if (state.listState.isLoading && state.listState.page == 1) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  return StoreConnector<AppState, VoidCallback>(
-                      converter: (store) {
-                    return () => store.dispatch(loadHotPeriod("12"));
-                  }, builder: (context, callback) {
-                    return InfiniteList(
-                        isLoading: state.listState.isLoading && state.listState.haveReachedEnd,
-                        loadData: callback,
-                        itemCount: state.entriesIds.length,
-                        itemBuilder: (context, index) {
-                          return EntryWidget(
-                              entry: state.entries[state.entriesIds[index]],
-                              ellipsize: true);
-                        });
-                  });
-                })),
-        floatingActionButton: new FloatingActionButton(
-          child: const Icon(OwmGlyphs.ic_pen),
-          onPressed: () {},
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        bottomNavigationBar: BottomAppBar(
-            child: new Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12),
-          child: new Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              IconButton(
-                icon: Icon(OwmGlyphs.ic_navi_links),
-                onPressed: () {},
-                color: Color(0xff666666),
-              ),
-              IconButton(
-                icon: Icon(OwmGlyphs.ic_navi_my_wykop),
-                onPressed: () {},
-                color: Color(0xff666666),
-              ),
-              IconButton(
-                icon: Icon(OwmGlyphs.ic_navi_mirkoblog),
-                onPressed: () {},
-                color: Color(0xff3c84c1),
-              ),
-              IconButton(
-                icon: Icon(OwmGlyphs.ic_navi_favourite),
-                onPressed: () {},
-                color: Color(0xff666666),
-              ),
-              IconButton(
-                icon: Icon(OwmGlyphs.ic_navi_messages),
-                onPressed: () {},
-                color: Color(0xff666666),
-              ),
+        
+            bottom: TabBar(
+              tabs: [
+                Tab(child: Text('Nowe')),
+                Tab(child: Text('Aktywne', textScaleFactor: 0.9,)),
+                Tab(text: '6h'),
+                Tab(text: '12h'),
+                Tab(text: '24h'),
+
+              ],
+            )
+          ),
+          body: TabBarView(
+            physics: NeverScrollableScrollPhysics(),
+            children: [
+              EntryList(),
+              EntryList(),
+              EntryList(),
+              EntryList(),
+              EntryList(),
             ],
           ),
-        )));
+        ),
+      );
   }
 }
