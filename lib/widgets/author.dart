@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/utils/utils.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:owmflutter/widgets/widgets.dart';
 
 class AuthorWidget extends StatelessWidget {
   final Author author;
@@ -16,35 +16,7 @@ class AuthorWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Expanded(
-            flex: 0,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    width: 32.0,
-                    height: 32.0,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        image: DecorationImage(
-                            fit: BoxFit.fill,
-                            image: CachedNetworkImageProvider(author.avatar)))),
-                Container(
-                    padding: EdgeInsets.only(top: 1.0),
-                    child: SizedBox(
-                        width: 32.0,
-                        height: 1.6,
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                              color: author.sex == AuthorSex.MALE
-                                  ? Colors.blue
-                                  : author.sex == AuthorSex.FEMALE
-                                      ? Colors.pink
-                                      : Colors.transparent),
-                        ))),
-              ],
-            ),
-          ),
+          AvatarWidget(author: author, size: 38, visibility: true),
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 1.0),

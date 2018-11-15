@@ -2,6 +2,7 @@ export 'entry/entry.dart';
 export 'entry/entry_footer.dart';
 export 'entry_comment/entry_comment.dart';
 export 'entry_comment/entry_comment_footer.dart';
+export 'avatar.dart';
 export 'author.dart';
 export 'body.dart';
 export 'entrylist.dart';
