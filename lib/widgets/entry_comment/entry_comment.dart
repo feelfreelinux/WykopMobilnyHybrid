@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:owmflutter/api/api.dart';
+import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/widgets/widgets.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter/material.dart';
 
 class EntryCommentWidget extends StatelessWidget {
-  final EntryComment comment;
-  EntryCommentWidget({this.comment});
+  final int commentId;
+  EntryCommentWidget({this.commentId});
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +16,17 @@ class EntryCommentWidget extends StatelessWidget {
       child: Material(
         color: Theme.of(context).cardColor,
         elevation: 0.0,
-        child: Column(
-          children: _buildEntryBody(),
+        child: StoreConnector<AppState, EntryComment>(
+          converter: (store) => store.state.entitiesState.entryComments[commentId],
+          builder: (context, comment) {
+            return Column(children: _buildEntryCommentBody(comment));
+          }
         ),
       ),
     );
   }
 
-  List<Widget> _buildEntryBody() {
+  List<Widget> _buildEntryCommentBody(EntryComment comment) {
     if (comment.embed == null) {
       return [
         AuthorWidget(author: comment.author, date: comment.date),

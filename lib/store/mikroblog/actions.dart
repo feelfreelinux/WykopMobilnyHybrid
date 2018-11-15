@@ -17,37 +17,24 @@ class UpdateEntryAction {
   UpdateEntryAction({this.entry});
 }
 
-class SetEntriesAction {
-  final BuiltList<Entry> entries;
-  SetEntriesAction({this.entries});
-}
-
-class AddEntriesAction {
-  final BuiltList<Entry> entries;
-  AddEntriesAction({this.entries});
-}
-
 ThunkAction<AppState> loadHotPeriod(String period) {
   return (Store<AppState> store) async {
     store.dispatch(SetLoading(type: "MIKROBLOG", isLoading: true));
     var results = await api.getHot(store.state.mikroblogState.listState.page);
-    store.dispatch(
-        SetPageNumber(type: "MIKROBLOG", number: store.state.mikroblogState.listState.page + 1));
+    store.dispatch(SetPageNumber(
+        type: "MIKROBLOG",
+        number: store.state.mikroblogState.listState.page + 1));
     store.dispatch(SetLoading(type: "MIKROBLOG", isLoading: false));
 
-    if (results.length == 0) {
-      store.dispatch(SetHaveReachedEnd(type: "MIKROBLOG", haveReachedEnd: true));
+    store.dispatch(AddEntitiesAction(entities: results.state));
+    if (results.result.length == 0) {
+      store
+          .dispatch(SetHaveReachedEnd(type: "MIKROBLOG", haveReachedEnd: true));
     }
     if (store.state.mikroblogState.listState.page == 2) {
-      store.dispatch(SetEntriesAction(
-          entries: BuiltList.from(results.map((el) {
-        return Entry.mapFromResponse(el);
-      }).toList())));
-    } else {
-      store.dispatch(AddEntriesAction(
-          entries: BuiltList.from(results.map((el) {
-        return Entry.mapFromResponse(el);
-      }).toList())));
+      store.dispatch(ClearEntries(type: "MIKROBLOG_ENTRIES"));
     }
+    store.dispatch(
+        AddEntries(entriesIds: results.result, type: "MIKROBLOG_ENTRIES"));
   };
 }

@@ -9,15 +9,12 @@ part 'mikroblog_state.g.dart';
 
 abstract class MikroblogState
     implements Built<MikroblogState, MikroblogStateBuilder> {
-  BuiltMap<int, Entry> get entries;
-  BuiltList<int> get entriesIds;
+  EntriesState get entriesState;
   ListState get listState;
 
   factory MikroblogState() {
     return _$MikroblogState._(
-        entries: new BuiltMap<int, Entry>(),
-        entriesIds: BuiltList.from([]),
-        listState: new ListState());
+        entriesState: EntriesState(), listState: new ListState());
   }
 
   MikroblogState._();

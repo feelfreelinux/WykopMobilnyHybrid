@@ -31,9 +31,15 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
   Iterable serialize(Serializers serializers, AppState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
+      'entitiesState',
+      serializers.serialize(object.entitiesState,
+          specifiedType: const FullType(EntitiesState)),
       'mikroblogState',
       serializers.serialize(object.mikroblogState,
           specifiedType: const FullType(MikroblogState)),
+      'entryScreensState',
+      serializers.serialize(object.entryScreensState,
+          specifiedType: const FullType(EntryScreensState)),
     ];
 
     return result;
@@ -50,9 +56,18 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
+        case 'entitiesState':
+          result.entitiesState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(EntitiesState)) as EntitiesState);
+          break;
         case 'mikroblogState':
           result.mikroblogState.replace(serializers.deserialize(value,
               specifiedType: const FullType(MikroblogState)) as MikroblogState);
+          break;
+        case 'entryScreensState':
+          result.entryScreensState.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(EntryScreensState))
+              as EntryScreensState);
           break;
       }
     }
@@ -63,14 +78,26 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
 
 class _$AppState extends AppState {
   @override
+  final EntitiesState entitiesState;
+  @override
   final MikroblogState mikroblogState;
+  @override
+  final EntryScreensState entryScreensState;
 
   factory _$AppState([void updates(AppStateBuilder b)]) =>
       (new AppStateBuilder()..update(updates)).build();
 
-  _$AppState._({this.mikroblogState}) : super._() {
+  _$AppState._(
+      {this.entitiesState, this.mikroblogState, this.entryScreensState})
+      : super._() {
+    if (entitiesState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'entitiesState');
+    }
     if (mikroblogState == null) {
       throw new BuiltValueNullFieldError('AppState', 'mikroblogState');
+    }
+    if (entryScreensState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'entryScreensState');
     }
   }
 
@@ -84,18 +111,24 @@ class _$AppState extends AppState {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is AppState && mikroblogState == other.mikroblogState;
+    return other is AppState &&
+        entitiesState == other.entitiesState &&
+        mikroblogState == other.mikroblogState &&
+        entryScreensState == other.entryScreensState;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, mikroblogState.hashCode));
+    return $jf($jc($jc($jc(0, entitiesState.hashCode), mikroblogState.hashCode),
+        entryScreensState.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('AppState')
-          ..add('mikroblogState', mikroblogState))
+          ..add('entitiesState', entitiesState)
+          ..add('mikroblogState', mikroblogState)
+          ..add('entryScreensState', entryScreensState))
         .toString();
   }
 }
@@ -103,17 +136,31 @@ class _$AppState extends AppState {
 class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   _$AppState _$v;
 
+  EntitiesStateBuilder _entitiesState;
+  EntitiesStateBuilder get entitiesState =>
+      _$this._entitiesState ??= new EntitiesStateBuilder();
+  set entitiesState(EntitiesStateBuilder entitiesState) =>
+      _$this._entitiesState = entitiesState;
+
   MikroblogStateBuilder _mikroblogState;
   MikroblogStateBuilder get mikroblogState =>
       _$this._mikroblogState ??= new MikroblogStateBuilder();
   set mikroblogState(MikroblogStateBuilder mikroblogState) =>
       _$this._mikroblogState = mikroblogState;
 
+  EntryScreensStateBuilder _entryScreensState;
+  EntryScreensStateBuilder get entryScreensState =>
+      _$this._entryScreensState ??= new EntryScreensStateBuilder();
+  set entryScreensState(EntryScreensStateBuilder entryScreensState) =>
+      _$this._entryScreensState = entryScreensState;
+
   AppStateBuilder();
 
   AppStateBuilder get _$this {
     if (_$v != null) {
+      _entitiesState = _$v.entitiesState?.toBuilder();
       _mikroblogState = _$v.mikroblogState?.toBuilder();
+      _entryScreensState = _$v.entryScreensState?.toBuilder();
       _$v = null;
     }
     return this;
@@ -136,13 +183,20 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   _$AppState build() {
     _$AppState _$result;
     try {
-      _$result =
-          _$v ?? new _$AppState._(mikroblogState: mikroblogState.build());
+      _$result = _$v ??
+          new _$AppState._(
+              entitiesState: entitiesState.build(),
+              mikroblogState: mikroblogState.build(),
+              entryScreensState: entryScreensState.build());
     } catch (_) {
       String _$failedField;
       try {
+        _$failedField = 'entitiesState';
+        entitiesState.build();
         _$failedField = 'mikroblogState';
         mikroblogState.build();
+        _$failedField = 'entryScreensState';
+        entryScreensState.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'AppState', _$failedField, e.toString());

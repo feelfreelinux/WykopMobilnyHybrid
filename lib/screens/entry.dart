@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/widgets/widgets.dart';
-import 'package:owmflutter/owm_glyphs.dart';
-import 'package:owmflutter/models/models.dart';
+import 'package:uuid/uuid.dart';
 
 class EntryScreen extends StatelessWidget {
   final int entryId;
+  final String screenId = Uuid().v4();
 
   EntryScreen({Key key, @required this.entryId}) : super(key: key);
 
@@ -18,21 +18,21 @@ class EntryScreen extends StatelessWidget {
         ),
         body: Container(
             decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
-            child: StoreConnector<AppState, Entry>(
+            child: StoreConnector<AppState, List<int>>(
                 converter: (store) =>
-                    store.state.mikroblogState.entries[entryId],
+                    store.state.entryScreensState.states[screenId] != null ? store.state.entryScreensState.states[screenId].ids : [],
                 onInit: (store) {
-                  store.dispatch(LoadEntry(entryId: entryId));
+                  store.dispatch(loadEntry(screenId, entryId));
                 },
-                builder: (context, state) {
+                builder: (context, ids) {
                   return ListView.builder(
-                      itemCount: state.comments.length + 1,
+                      itemCount: ids.length,
                       itemBuilder: (context, index) {
                         if (index == 0) {
-                          return EntryWidget(ellipsize: false, entry: state);
+                          return EntryWidget(
+                              ellipsize: false, entryId: entryId);
                         } else {
-                          return EntryCommentWidget(
-                              comment: state.comments[index - 1]);
+                          return EntryCommentWidget(commentId: ids[index]);
                         }
                       });
                 })));

@@ -33,14 +33,9 @@ class _$MikroblogStateSerializer
   Iterable serialize(Serializers serializers, MikroblogState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'entries',
-      serializers.serialize(object.entries,
-          specifiedType: const FullType(
-              BuiltMap, const [const FullType(int), const FullType(Entry)])),
-      'entriesIds',
-      serializers.serialize(object.entriesIds,
-          specifiedType:
-              const FullType(BuiltList, const [const FullType(int)])),
+      'entriesState',
+      serializers.serialize(object.entriesState,
+          specifiedType: const FullType(EntriesState)),
       'listState',
       serializers.serialize(object.listState,
           specifiedType: const FullType(ListState)),
@@ -60,18 +55,9 @@ class _$MikroblogStateSerializer
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'entries':
-          result.entries.replace(serializers.deserialize(value,
-              specifiedType: const FullType(BuiltMap, const [
-                const FullType(int),
-                const FullType(Entry)
-              ])) as BuiltMap);
-          break;
-        case 'entriesIds':
-          result.entriesIds.replace(serializers.deserialize(value,
-                  specifiedType:
-                      const FullType(BuiltList, const [const FullType(int)]))
-              as BuiltList);
+        case 'entriesState':
+          result.entriesState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(EntriesState)) as EntriesState);
           break;
         case 'listState':
           result.listState.replace(serializers.deserialize(value,
@@ -86,22 +72,16 @@ class _$MikroblogStateSerializer
 
 class _$MikroblogState extends MikroblogState {
   @override
-  final BuiltMap<int, Entry> entries;
-  @override
-  final BuiltList<int> entriesIds;
+  final EntriesState entriesState;
   @override
   final ListState listState;
 
   factory _$MikroblogState([void updates(MikroblogStateBuilder b)]) =>
       (new MikroblogStateBuilder()..update(updates)).build();
 
-  _$MikroblogState._({this.entries, this.entriesIds, this.listState})
-      : super._() {
-    if (entries == null) {
-      throw new BuiltValueNullFieldError('MikroblogState', 'entries');
-    }
-    if (entriesIds == null) {
-      throw new BuiltValueNullFieldError('MikroblogState', 'entriesIds');
+  _$MikroblogState._({this.entriesState, this.listState}) : super._() {
+    if (entriesState == null) {
+      throw new BuiltValueNullFieldError('MikroblogState', 'entriesState');
     }
     if (listState == null) {
       throw new BuiltValueNullFieldError('MikroblogState', 'listState');
@@ -120,22 +100,19 @@ class _$MikroblogState extends MikroblogState {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is MikroblogState &&
-        entries == other.entries &&
-        entriesIds == other.entriesIds &&
+        entriesState == other.entriesState &&
         listState == other.listState;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc(0, entries.hashCode), entriesIds.hashCode),
-        listState.hashCode));
+    return $jf($jc($jc(0, entriesState.hashCode), listState.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('MikroblogState')
-          ..add('entries', entries)
-          ..add('entriesIds', entriesIds)
+          ..add('entriesState', entriesState)
           ..add('listState', listState))
         .toString();
   }
@@ -145,16 +122,11 @@ class MikroblogStateBuilder
     implements Builder<MikroblogState, MikroblogStateBuilder> {
   _$MikroblogState _$v;
 
-  MapBuilder<int, Entry> _entries;
-  MapBuilder<int, Entry> get entries =>
-      _$this._entries ??= new MapBuilder<int, Entry>();
-  set entries(MapBuilder<int, Entry> entries) => _$this._entries = entries;
-
-  ListBuilder<int> _entriesIds;
-  ListBuilder<int> get entriesIds =>
-      _$this._entriesIds ??= new ListBuilder<int>();
-  set entriesIds(ListBuilder<int> entriesIds) =>
-      _$this._entriesIds = entriesIds;
+  EntriesStateBuilder _entriesState;
+  EntriesStateBuilder get entriesState =>
+      _$this._entriesState ??= new EntriesStateBuilder();
+  set entriesState(EntriesStateBuilder entriesState) =>
+      _$this._entriesState = entriesState;
 
   ListStateBuilder _listState;
   ListStateBuilder get listState =>
@@ -165,8 +137,7 @@ class MikroblogStateBuilder
 
   MikroblogStateBuilder get _$this {
     if (_$v != null) {
-      _entries = _$v.entries?.toBuilder();
-      _entriesIds = _$v.entriesIds?.toBuilder();
+      _entriesState = _$v.entriesState?.toBuilder();
       _listState = _$v.listState?.toBuilder();
       _$v = null;
     }
@@ -192,16 +163,12 @@ class MikroblogStateBuilder
     try {
       _$result = _$v ??
           new _$MikroblogState._(
-              entries: entries.build(),
-              entriesIds: entriesIds.build(),
-              listState: listState.build());
+              entriesState: entriesState.build(), listState: listState.build());
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'entries';
-        entries.build();
-        _$failedField = 'entriesIds';
-        entriesIds.build();
+        _$failedField = 'entriesState';
+        entriesState.build();
         _$failedField = 'listState';
         listState.build();
       } catch (e) {
