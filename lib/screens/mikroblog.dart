@@ -57,10 +57,10 @@ class MikroblogScreen extends StatelessWidget {
         body: TabBarView(
           children: [
             EntryList(converterCallback: (store) => store.state.newest, loadDataCallback: (store, refresh) => store.dispatch(loadNewest())),
-            EntryList(converterCallback: (store) { return store.state.activeState; }, loadDataCallback: (store, refresh) { store.dispatch(loadActive());}),
-            EntryList(converterCallback: (store) => store.state.newest, loadDataCallback: (store, refresh) => store.dispatch(loadNewest())),
             EntryList(converterCallback: (store) => store.state.activeState, loadDataCallback: (store, refresh) => store.dispatch(loadActive())),
-            EntryList(converterCallback: (store) => store.state.activeState, loadDataCallback: (store, refresh) => store.dispatch(loadActive())),           ],
+            EntryList(converterCallback: (store) => store.state.hot6State, loadDataCallback: (store, refresh) => store.dispatch(loadHot6())),
+            EntryList(converterCallback: (store) => store.state.hot12State, loadDataCallback: (store, refresh) => store.dispatch(loadHot12())),
+            EntryList(converterCallback: (store) => store.state.hot24State, loadDataCallback: (store, refresh) => store.dispatch(loadHot24())),           ],
         ),
       ),
     );
