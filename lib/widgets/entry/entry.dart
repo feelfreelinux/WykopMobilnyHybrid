@@ -18,11 +18,11 @@ class EntryWidget extends StatelessWidget {
         child: Material(
             color: Theme.of(context).cardColor,
             elevation: 0.0,
-            child: StoreConnector<AppState, EntitiesState>(
-                converter: (store) => store.state.entitiesState,
+            child: StoreConnector<AppState, Entry>(
+                converter: (store) => store.state.entitiesState.entries[entryId],
                 builder: (context, entry) {
                   return Column(
-                    children: _buildEntryBody(entry.entries[entryId]),
+                    children: _buildEntryBody(entry),
                   );
                 })));
   }
