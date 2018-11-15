@@ -3,6 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/owm_glyphs.dart';
+import 'package:owmflutter/store/store.dart';
 
 class MikroblogScreen extends StatelessWidget {
   @override
@@ -56,11 +57,11 @@ class MikroblogScreen extends StatelessWidget {
         body: TabBarView(
           physics: NeverScrollableScrollPhysics(),
           children: [
-            EntryList(),
-            EntryList(),
-            EntryList(),
-            EntryList(),
-            EntryList(),
+            EntryList(converterCallback: (store) => store.state.newest, loadDataCallback: (store, refresh) => store.dispatch(loadNewest())),
+            EntryList(converterCallback: (store) => store.state.activeState, loadDataCallback: (store, refresh) => store.dispatch(loadActive())),
+            EntryList(converterCallback: (store) => store.state.hot6State, loadDataCallback: (store, refresh) => store.dispatch(loadHot6())),
+            EntryList(converterCallback: (store) => store.state.hot12State, loadDataCallback: (store, refresh) => store.dispatch(loadHot12())),
+            EntryList(converterCallback: (store) => store.state.hot24State, loadDataCallback: (store, refresh) => store.dispatch(loadHot24())),
           ],
         ),
       ),

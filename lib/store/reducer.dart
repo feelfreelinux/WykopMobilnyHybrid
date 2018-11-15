@@ -7,5 +7,9 @@ AppState appReducer(AppState state, action) {
   return state.rebuild((b) => b
     ..entitiesState.replace(entitiesReducer(state.entitiesState, action))
     ..entryScreensState.replace(entryScreenReducer(state.entryScreensState, action))
-    ..mikroblogState.replace(mikroblogReducer(state.mikroblogState, action)));
+    ..activeState.replace(mikroblogReducer("ACTIVE", state.hot12State, action))
+    ..newest.replace(mikroblogReducer("NEWEST", state.hot12State, action))
+    ..hot24State.replace(mikroblogReducer("HOT24", state.hot12State, action))
+    ..hot6State.replace(mikroblogReducer("HOT12", state.hot12State, action))
+    ..hot12State.replace(mikroblogReducer("HOT6", state.hot12State, action)));
 }

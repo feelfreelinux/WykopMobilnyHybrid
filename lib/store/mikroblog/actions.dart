@@ -17,24 +17,32 @@ class UpdateEntryAction {
   UpdateEntryAction({this.entry});
 }
 
-ThunkAction<AppState> loadHotPeriod(String period) {
+ThunkAction<AppState> loadHot6() {
   return (Store<AppState> store) async {
-    store.dispatch(SetLoading(type: "MIKROBLOG", isLoading: true));
-    var results = await api.getHot(store.state.mikroblogState.listState.page);
-    store.dispatch(SetPageNumber(
-        type: "MIKROBLOG",
-        number: store.state.mikroblogState.listState.page + 1));
-    store.dispatch(SetLoading(type: "MIKROBLOG", isLoading: false));
+    store.dispatch(loadEntries("HOT6", (page) => api.getHot(page, "6"), store.state.hot6State.listState));
+  };
+}
 
-    store.dispatch(AddEntitiesAction(entities: results.state));
-    if (results.result.length == 0) {
-      store
-          .dispatch(SetHaveReachedEnd(type: "MIKROBLOG", haveReachedEnd: true));
-    }
-    if (store.state.mikroblogState.listState.page == 2) {
-      store.dispatch(ClearEntries(type: "MIKROBLOG_ENTRIES"));
-    }
-    store.dispatch(
-        AddEntries(entriesIds: results.result, type: "MIKROBLOG_ENTRIES"));
+ThunkAction<AppState> loadHot12() {
+  return (Store<AppState> store) async {
+    store.dispatch(loadEntries("HOT12", (page) => api.getHot(page, "12"), store.state.hot12State.listState));
+  };
+}
+
+ThunkAction<AppState> loadHot24() {
+  return (Store<AppState> store) async {
+    store.dispatch(loadEntries("HOT24", (page) => api.getHot(page, "24"), store.state.hot24State.listState));
+  };
+}
+
+ThunkAction<AppState> loadNewest() {
+  return (Store<AppState> store) async {
+    store.dispatch(loadEntries("NEWEST", (page) => api.getNewest(page), store.state.newest.listState));
+  };
+}
+
+ThunkAction<AppState> loadActive() {
+  return (Store<AppState> store) async {
+    store.dispatch(loadEntries("ACTIVE", (page) => api.getActive(page), store.state.activeState.listState));
   };
 }

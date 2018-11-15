@@ -49,6 +49,8 @@ class BaseWykopHttpClient extends BaseClient {
         headers: {'apisign': signRequest("$url/appkey/$appkey")});
     var decoded = json.decode(httpResponse.body) as Map;
     if (decoded.containsKey("error")) {
+      print(url);
+      print(decoded["error"]);
       throw ("TODO");
     } else {
       return decoded["data"];
@@ -73,9 +75,21 @@ class BaseWykopClient {
 
   BaseWykopClient();
 
-  Future<Result> getHot(int page) async {
+  Future<Result> getHot(int page, String period) async {
     var items = await _httpClient.wykopGetList(EntryResponse.serializer,
-        "http://a2.wykop.pl/entries/hot/period/12/page/${page.toString()}");
+        "http://a2.wykop.pl/entries/hot/period/" + period + "/page/${page.toString()}");
+    return normalizeEntries(BuiltList.from(items));
+  }
+
+  Future<Result> getNewest(int page) async {
+    var items = await _httpClient.wykopGetList(EntryResponse.serializer,
+        "http://a2.wykop.pl/entries/stream/page/${page.toString()}");
+    return normalizeEntries(BuiltList.from(items));
+  }
+
+  Future<Result> getActive(int page) async {
+    var items = await _httpClient.wykopGetList(EntryResponse.serializer,
+        "http://a2.wykop.pl/entries/active/page/${page.toString()}");
     return normalizeEntries(BuiltList.from(items));
   }
 

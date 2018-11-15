@@ -34,8 +34,20 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
       'entitiesState',
       serializers.serialize(object.entitiesState,
           specifiedType: const FullType(EntitiesState)),
-      'mikroblogState',
-      serializers.serialize(object.mikroblogState,
+      'hot12State',
+      serializers.serialize(object.hot12State,
+          specifiedType: const FullType(MikroblogState)),
+      'hot24State',
+      serializers.serialize(object.hot24State,
+          specifiedType: const FullType(MikroblogState)),
+      'hot6State',
+      serializers.serialize(object.hot6State,
+          specifiedType: const FullType(MikroblogState)),
+      'activeState',
+      serializers.serialize(object.activeState,
+          specifiedType: const FullType(MikroblogState)),
+      'newest',
+      serializers.serialize(object.newest,
           specifiedType: const FullType(MikroblogState)),
       'entryScreensState',
       serializers.serialize(object.entryScreensState,
@@ -60,8 +72,24 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
           result.entitiesState.replace(serializers.deserialize(value,
               specifiedType: const FullType(EntitiesState)) as EntitiesState);
           break;
-        case 'mikroblogState':
-          result.mikroblogState.replace(serializers.deserialize(value,
+        case 'hot12State':
+          result.hot12State.replace(serializers.deserialize(value,
+              specifiedType: const FullType(MikroblogState)) as MikroblogState);
+          break;
+        case 'hot24State':
+          result.hot24State.replace(serializers.deserialize(value,
+              specifiedType: const FullType(MikroblogState)) as MikroblogState);
+          break;
+        case 'hot6State':
+          result.hot6State.replace(serializers.deserialize(value,
+              specifiedType: const FullType(MikroblogState)) as MikroblogState);
+          break;
+        case 'activeState':
+          result.activeState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(MikroblogState)) as MikroblogState);
+          break;
+        case 'newest':
+          result.newest.replace(serializers.deserialize(value,
               specifiedType: const FullType(MikroblogState)) as MikroblogState);
           break;
         case 'entryScreensState':
@@ -80,7 +108,15 @@ class _$AppState extends AppState {
   @override
   final EntitiesState entitiesState;
   @override
-  final MikroblogState mikroblogState;
+  final MikroblogState hot12State;
+  @override
+  final MikroblogState hot24State;
+  @override
+  final MikroblogState hot6State;
+  @override
+  final MikroblogState activeState;
+  @override
+  final MikroblogState newest;
   @override
   final EntryScreensState entryScreensState;
 
@@ -88,13 +124,31 @@ class _$AppState extends AppState {
       (new AppStateBuilder()..update(updates)).build();
 
   _$AppState._(
-      {this.entitiesState, this.mikroblogState, this.entryScreensState})
+      {this.entitiesState,
+      this.hot12State,
+      this.hot24State,
+      this.hot6State,
+      this.activeState,
+      this.newest,
+      this.entryScreensState})
       : super._() {
     if (entitiesState == null) {
       throw new BuiltValueNullFieldError('AppState', 'entitiesState');
     }
-    if (mikroblogState == null) {
-      throw new BuiltValueNullFieldError('AppState', 'mikroblogState');
+    if (hot12State == null) {
+      throw new BuiltValueNullFieldError('AppState', 'hot12State');
+    }
+    if (hot24State == null) {
+      throw new BuiltValueNullFieldError('AppState', 'hot24State');
+    }
+    if (hot6State == null) {
+      throw new BuiltValueNullFieldError('AppState', 'hot6State');
+    }
+    if (activeState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'activeState');
+    }
+    if (newest == null) {
+      throw new BuiltValueNullFieldError('AppState', 'newest');
     }
     if (entryScreensState == null) {
       throw new BuiltValueNullFieldError('AppState', 'entryScreensState');
@@ -113,13 +167,27 @@ class _$AppState extends AppState {
     if (identical(other, this)) return true;
     return other is AppState &&
         entitiesState == other.entitiesState &&
-        mikroblogState == other.mikroblogState &&
+        hot12State == other.hot12State &&
+        hot24State == other.hot24State &&
+        hot6State == other.hot6State &&
+        activeState == other.activeState &&
+        newest == other.newest &&
         entryScreensState == other.entryScreensState;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc(0, entitiesState.hashCode), mikroblogState.hashCode),
+    return $jf($jc(
+        $jc(
+            $jc(
+                $jc(
+                    $jc(
+                        $jc($jc(0, entitiesState.hashCode),
+                            hot12State.hashCode),
+                        hot24State.hashCode),
+                    hot6State.hashCode),
+                activeState.hashCode),
+            newest.hashCode),
         entryScreensState.hashCode));
   }
 
@@ -127,7 +195,11 @@ class _$AppState extends AppState {
   String toString() {
     return (newBuiltValueToStringHelper('AppState')
           ..add('entitiesState', entitiesState)
-          ..add('mikroblogState', mikroblogState)
+          ..add('hot12State', hot12State)
+          ..add('hot24State', hot24State)
+          ..add('hot6State', hot6State)
+          ..add('activeState', activeState)
+          ..add('newest', newest)
           ..add('entryScreensState', entryScreensState))
         .toString();
   }
@@ -142,11 +214,34 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   set entitiesState(EntitiesStateBuilder entitiesState) =>
       _$this._entitiesState = entitiesState;
 
-  MikroblogStateBuilder _mikroblogState;
-  MikroblogStateBuilder get mikroblogState =>
-      _$this._mikroblogState ??= new MikroblogStateBuilder();
-  set mikroblogState(MikroblogStateBuilder mikroblogState) =>
-      _$this._mikroblogState = mikroblogState;
+  MikroblogStateBuilder _hot12State;
+  MikroblogStateBuilder get hot12State =>
+      _$this._hot12State ??= new MikroblogStateBuilder();
+  set hot12State(MikroblogStateBuilder hot12State) =>
+      _$this._hot12State = hot12State;
+
+  MikroblogStateBuilder _hot24State;
+  MikroblogStateBuilder get hot24State =>
+      _$this._hot24State ??= new MikroblogStateBuilder();
+  set hot24State(MikroblogStateBuilder hot24State) =>
+      _$this._hot24State = hot24State;
+
+  MikroblogStateBuilder _hot6State;
+  MikroblogStateBuilder get hot6State =>
+      _$this._hot6State ??= new MikroblogStateBuilder();
+  set hot6State(MikroblogStateBuilder hot6State) =>
+      _$this._hot6State = hot6State;
+
+  MikroblogStateBuilder _activeState;
+  MikroblogStateBuilder get activeState =>
+      _$this._activeState ??= new MikroblogStateBuilder();
+  set activeState(MikroblogStateBuilder activeState) =>
+      _$this._activeState = activeState;
+
+  MikroblogStateBuilder _newest;
+  MikroblogStateBuilder get newest =>
+      _$this._newest ??= new MikroblogStateBuilder();
+  set newest(MikroblogStateBuilder newest) => _$this._newest = newest;
 
   EntryScreensStateBuilder _entryScreensState;
   EntryScreensStateBuilder get entryScreensState =>
@@ -159,7 +254,11 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   AppStateBuilder get _$this {
     if (_$v != null) {
       _entitiesState = _$v.entitiesState?.toBuilder();
-      _mikroblogState = _$v.mikroblogState?.toBuilder();
+      _hot12State = _$v.hot12State?.toBuilder();
+      _hot24State = _$v.hot24State?.toBuilder();
+      _hot6State = _$v.hot6State?.toBuilder();
+      _activeState = _$v.activeState?.toBuilder();
+      _newest = _$v.newest?.toBuilder();
       _entryScreensState = _$v.entryScreensState?.toBuilder();
       _$v = null;
     }
@@ -186,15 +285,27 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _$result = _$v ??
           new _$AppState._(
               entitiesState: entitiesState.build(),
-              mikroblogState: mikroblogState.build(),
+              hot12State: hot12State.build(),
+              hot24State: hot24State.build(),
+              hot6State: hot6State.build(),
+              activeState: activeState.build(),
+              newest: newest.build(),
               entryScreensState: entryScreensState.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'entitiesState';
         entitiesState.build();
-        _$failedField = 'mikroblogState';
-        mikroblogState.build();
+        _$failedField = 'hot12State';
+        hot12State.build();
+        _$failedField = 'hot24State';
+        hot24State.build();
+        _$failedField = 'hot6State';
+        hot6State.build();
+        _$failedField = 'activeState';
+        activeState.build();
+        _$failedField = 'newest';
+        newest.build();
         _$failedField = 'entryScreensState';
         entryScreensState.build();
       } catch (e) {
