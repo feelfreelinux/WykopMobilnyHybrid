@@ -7,7 +7,6 @@ import 'package:owmflutter/app.dart';
 void main() {
   final store =
       Store<AppState>(appReducer, initialState: AppState(), middleware: [
-    appMiddleware,
     thunkMiddleware,
   ]);
 

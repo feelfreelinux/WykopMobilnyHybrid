@@ -114,3 +114,5 @@ Future<ApiSecrets> loadSecrets() async {
   return ApiSecrets(
       appkey: decoded["wykop_key"], secret: decoded["wykop_secret"]);
 }
+
+var api = new BaseWykopClient();

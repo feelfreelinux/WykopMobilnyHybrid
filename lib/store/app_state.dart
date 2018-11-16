@@ -8,22 +8,14 @@ part 'app_state.g.dart';
 
 abstract class AppState implements Built<AppState, AppStateBuilder> {
   EntitiesState get entitiesState;
-  MikroblogState get hot12State;
-  MikroblogState get hot24State;
-  MikroblogState get hot6State;
-  MikroblogState get activeState;
-  MikroblogState get newest;
 
+  MikroblogState get mikroblogState;
   EntryScreensState get entryScreensState;
 
   factory AppState() {
     return _$AppState._(
-      hot12State: MikroblogState(),
-      hot6State: MikroblogState(),
-      hot24State: MikroblogState(),
+      mikroblogState: MikroblogState(),
       entitiesState: EntitiesState(),
-      newest: MikroblogState(),
-      activeState: MikroblogState(),
       entryScreensState: EntryScreensState());
   }
 

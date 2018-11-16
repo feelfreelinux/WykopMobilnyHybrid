@@ -4,7 +4,7 @@ import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:redux/redux.dart';
 
-typedef MikroblogState ConverterCallback(Store<AppState> store);
+typedef EntrylistState ConverterCallback(Store<AppState> store);
 typedef void LoadDataCallback(Store<AppState> store, bool refresh);
 
 class EntryList extends StatelessWidget {
@@ -17,7 +17,7 @@ class EntryList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         decoration: new BoxDecoration(color: Theme.of(context).backgroundColor),
-        child: StoreConnector<AppState, MikroblogState>(
+        child: StoreConnector<AppState, EntrylistState>(
             converter: (store) => converterCallback(store),
             onInit: (store) => loadDataCallback(store, false),
             builder: (context, state) {

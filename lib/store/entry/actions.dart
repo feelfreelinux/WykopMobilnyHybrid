@@ -1,9 +1,8 @@
 import 'package:owmflutter/store/store.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:redux/redux.dart';
-import 'package:redux/redux.dart';
 import 'package:owmflutter/api/normalizers.dart';
-import 'package:owmflutter/store/store.dart';
+import 'package:owmflutter/api/api.dart';
 
 class SetEntryAction {
   final List<int> ids;

@@ -1,13 +1,16 @@
-import 'package:owmflutter/models/models.dart';
 import 'package:redux/redux.dart';
-import 'package:built_collection/built_collection.dart';
 import 'package:owmflutter/store/store.dart';
+import 'package:owmflutter/models/models.dart';
+import 'package:built_collection/built_collection.dart';
 
-MikroblogState mikroblogReducer(String type, MikroblogState state, action) {
-  var newState = state.rebuild((b) => b
-    ..entriesState.replace(
-        createEntriesReducer(state.entriesState, type + "_ENTRIES", action))
-    ..listState
-        .replace(createListReducer(state.listState, type, action)));
-  return combineReducers<MikroblogState>([])(newState, action);
+/*
+  Reducer that directs actions of all mikroblog screens into their reducers.
+**/
+MikroblogState mikroblogReducer(MikroblogState state, action) {
+  return state.rebuild((b) => b
+    ..activeState.replace(entriesReducer("ACTIVE", state.activeState, action))
+    ..newestState.replace(entriesReducer("NEWEST", state.newestState, action))
+    ..hot24State.replace(entriesReducer("HOT24", state.hot24State, action))
+    ..hot6State.replace(entriesReducer("HOT6", state.hot6State, action))
+    ..hot12State.replace(entriesReducer("HOT12", state.hot12State, action)));
 }

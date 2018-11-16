@@ -33,12 +33,21 @@ class _$MikroblogStateSerializer
   Iterable serialize(Serializers serializers, MikroblogState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'entriesState',
-      serializers.serialize(object.entriesState,
-          specifiedType: const FullType(EntriesState)),
-      'listState',
-      serializers.serialize(object.listState,
-          specifiedType: const FullType(ListState)),
+      'hot12State',
+      serializers.serialize(object.hot12State,
+          specifiedType: const FullType(EntrylistState)),
+      'hot24State',
+      serializers.serialize(object.hot24State,
+          specifiedType: const FullType(EntrylistState)),
+      'hot6State',
+      serializers.serialize(object.hot6State,
+          specifiedType: const FullType(EntrylistState)),
+      'activeState',
+      serializers.serialize(object.activeState,
+          specifiedType: const FullType(EntrylistState)),
+      'newestState',
+      serializers.serialize(object.newestState,
+          specifiedType: const FullType(EntrylistState)),
     ];
 
     return result;
@@ -55,13 +64,25 @@ class _$MikroblogStateSerializer
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'entriesState':
-          result.entriesState.replace(serializers.deserialize(value,
-              specifiedType: const FullType(EntriesState)) as EntriesState);
+        case 'hot12State':
+          result.hot12State.replace(serializers.deserialize(value,
+              specifiedType: const FullType(EntrylistState)) as EntrylistState);
           break;
-        case 'listState':
-          result.listState.replace(serializers.deserialize(value,
-              specifiedType: const FullType(ListState)) as ListState);
+        case 'hot24State':
+          result.hot24State.replace(serializers.deserialize(value,
+              specifiedType: const FullType(EntrylistState)) as EntrylistState);
+          break;
+        case 'hot6State':
+          result.hot6State.replace(serializers.deserialize(value,
+              specifiedType: const FullType(EntrylistState)) as EntrylistState);
+          break;
+        case 'activeState':
+          result.activeState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(EntrylistState)) as EntrylistState);
+          break;
+        case 'newestState':
+          result.newestState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(EntrylistState)) as EntrylistState);
           break;
       }
     }
@@ -72,19 +93,40 @@ class _$MikroblogStateSerializer
 
 class _$MikroblogState extends MikroblogState {
   @override
-  final EntriesState entriesState;
+  final EntrylistState hot12State;
   @override
-  final ListState listState;
+  final EntrylistState hot24State;
+  @override
+  final EntrylistState hot6State;
+  @override
+  final EntrylistState activeState;
+  @override
+  final EntrylistState newestState;
 
   factory _$MikroblogState([void updates(MikroblogStateBuilder b)]) =>
       (new MikroblogStateBuilder()..update(updates)).build();
 
-  _$MikroblogState._({this.entriesState, this.listState}) : super._() {
-    if (entriesState == null) {
-      throw new BuiltValueNullFieldError('MikroblogState', 'entriesState');
+  _$MikroblogState._(
+      {this.hot12State,
+      this.hot24State,
+      this.hot6State,
+      this.activeState,
+      this.newestState})
+      : super._() {
+    if (hot12State == null) {
+      throw new BuiltValueNullFieldError('MikroblogState', 'hot12State');
     }
-    if (listState == null) {
-      throw new BuiltValueNullFieldError('MikroblogState', 'listState');
+    if (hot24State == null) {
+      throw new BuiltValueNullFieldError('MikroblogState', 'hot24State');
+    }
+    if (hot6State == null) {
+      throw new BuiltValueNullFieldError('MikroblogState', 'hot6State');
+    }
+    if (activeState == null) {
+      throw new BuiltValueNullFieldError('MikroblogState', 'activeState');
+    }
+    if (newestState == null) {
+      throw new BuiltValueNullFieldError('MikroblogState', 'newestState');
     }
   }
 
@@ -100,20 +142,31 @@ class _$MikroblogState extends MikroblogState {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is MikroblogState &&
-        entriesState == other.entriesState &&
-        listState == other.listState;
+        hot12State == other.hot12State &&
+        hot24State == other.hot24State &&
+        hot6State == other.hot6State &&
+        activeState == other.activeState &&
+        newestState == other.newestState;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, entriesState.hashCode), listState.hashCode));
+    return $jf($jc(
+        $jc(
+            $jc($jc($jc(0, hot12State.hashCode), hot24State.hashCode),
+                hot6State.hashCode),
+            activeState.hashCode),
+        newestState.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('MikroblogState')
-          ..add('entriesState', entriesState)
-          ..add('listState', listState))
+          ..add('hot12State', hot12State)
+          ..add('hot24State', hot24State)
+          ..add('hot6State', hot6State)
+          ..add('activeState', activeState)
+          ..add('newestState', newestState))
         .toString();
   }
 }
@@ -122,23 +175,45 @@ class MikroblogStateBuilder
     implements Builder<MikroblogState, MikroblogStateBuilder> {
   _$MikroblogState _$v;
 
-  EntriesStateBuilder _entriesState;
-  EntriesStateBuilder get entriesState =>
-      _$this._entriesState ??= new EntriesStateBuilder();
-  set entriesState(EntriesStateBuilder entriesState) =>
-      _$this._entriesState = entriesState;
+  EntrylistStateBuilder _hot12State;
+  EntrylistStateBuilder get hot12State =>
+      _$this._hot12State ??= new EntrylistStateBuilder();
+  set hot12State(EntrylistStateBuilder hot12State) =>
+      _$this._hot12State = hot12State;
 
-  ListStateBuilder _listState;
-  ListStateBuilder get listState =>
-      _$this._listState ??= new ListStateBuilder();
-  set listState(ListStateBuilder listState) => _$this._listState = listState;
+  EntrylistStateBuilder _hot24State;
+  EntrylistStateBuilder get hot24State =>
+      _$this._hot24State ??= new EntrylistStateBuilder();
+  set hot24State(EntrylistStateBuilder hot24State) =>
+      _$this._hot24State = hot24State;
+
+  EntrylistStateBuilder _hot6State;
+  EntrylistStateBuilder get hot6State =>
+      _$this._hot6State ??= new EntrylistStateBuilder();
+  set hot6State(EntrylistStateBuilder hot6State) =>
+      _$this._hot6State = hot6State;
+
+  EntrylistStateBuilder _activeState;
+  EntrylistStateBuilder get activeState =>
+      _$this._activeState ??= new EntrylistStateBuilder();
+  set activeState(EntrylistStateBuilder activeState) =>
+      _$this._activeState = activeState;
+
+  EntrylistStateBuilder _newestState;
+  EntrylistStateBuilder get newestState =>
+      _$this._newestState ??= new EntrylistStateBuilder();
+  set newestState(EntrylistStateBuilder newestState) =>
+      _$this._newestState = newestState;
 
   MikroblogStateBuilder();
 
   MikroblogStateBuilder get _$this {
     if (_$v != null) {
-      _entriesState = _$v.entriesState?.toBuilder();
-      _listState = _$v.listState?.toBuilder();
+      _hot12State = _$v.hot12State?.toBuilder();
+      _hot24State = _$v.hot24State?.toBuilder();
+      _hot6State = _$v.hot6State?.toBuilder();
+      _activeState = _$v.activeState?.toBuilder();
+      _newestState = _$v.newestState?.toBuilder();
       _$v = null;
     }
     return this;
@@ -163,14 +238,24 @@ class MikroblogStateBuilder
     try {
       _$result = _$v ??
           new _$MikroblogState._(
-              entriesState: entriesState.build(), listState: listState.build());
+              hot12State: hot12State.build(),
+              hot24State: hot24State.build(),
+              hot6State: hot6State.build(),
+              activeState: activeState.build(),
+              newestState: newestState.build());
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'entriesState';
-        entriesState.build();
-        _$failedField = 'listState';
-        listState.build();
+        _$failedField = 'hot12State';
+        hot12State.build();
+        _$failedField = 'hot24State';
+        hot24State.build();
+        _$failedField = 'hot6State';
+        hot6State.build();
+        _$failedField = 'activeState';
+        activeState.build();
+        _$failedField = 'newestState';
+        newestState.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'MikroblogState', _$failedField, e.toString());
