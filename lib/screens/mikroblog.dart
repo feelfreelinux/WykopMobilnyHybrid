@@ -40,13 +40,10 @@ class MikroblogScreen extends StatelessWidget {
               )
             ],
             bottom: TabBar(
+              isScrollable: true,
               tabs: [
-                Tab(child: Text('Nowe')),
-                Tab(
-                    child: Text(
-                  'Aktywne',
-                  textScaleFactor: 0.9,
-                )),
+                Tab(text: 'Nowe'),
+                Tab(text: 'Aktywne'),
                 Tab(text: '6h'),
                 Tab(text: '12h'),
                 Tab(text: '24h'),
