@@ -20,7 +20,9 @@ class EntryScreen extends StatelessWidget {
             decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
             child: StoreConnector<AppState, List<int>>(
                 converter: (store) =>
-                    store.state.entryScreensState.states[screenId] != null ? store.state.entryScreensState.states[screenId].ids : [],
+                    store.state.entryScreensState.states[screenId] != null
+                        ? store.state.entryScreensState.states[screenId].ids
+                        : [],
                 onInit: (store) {
                   store.dispatch(loadEntry(screenId, entryId));
                 },

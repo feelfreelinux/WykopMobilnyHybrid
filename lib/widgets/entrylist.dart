@@ -16,7 +16,7 @@ class EntryList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: new BoxDecoration(color: Theme.of(context).backgroundColor),
+        decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
         child: StoreConnector<AppState, EntrylistState>(
             converter: (store) => converterCallback(store),
             onInit: (store) => loadDataCallback(store, false),

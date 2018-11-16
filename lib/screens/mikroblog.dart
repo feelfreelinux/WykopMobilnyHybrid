@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/owm_glyphs.dart';
-import 'package:owmflutter/screens/screens.dart';
 
 class MikroblogScreen extends StatelessWidget {
   @override
@@ -15,14 +13,14 @@ class MikroblogScreen extends StatelessWidget {
             leading: InkWell(
                 child: Padding(
               padding: EdgeInsets.all(10.0),
-              child: new Container(
+              child: Container(
                   width: 1,
                   height: 1,
-                  decoration: new BoxDecoration(
+                  decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      image: new DecorationImage(
+                      image: DecorationImage(
                           fit: BoxFit.fill,
-                          image: new NetworkImage(
+                          image: NetworkImage(
                               "https://www.wykop.pl/cdn/c3397992/avatar_def,q80.png")))),
             )),
             titleSpacing: 0.0,
@@ -57,12 +55,32 @@ class MikroblogScreen extends StatelessWidget {
         body: TabBarView(
           physics: NeverScrollableScrollPhysics(),
           children: [
-            EntryList(converterCallback: (store) => store.state.mikroblogState.newestState, loadDataCallback: (store, refresh) => store.dispatch(loadNewest())),
-            EntryList(converterCallback: (store) => store.state.mikroblogState.activeState, loadDataCallback: (store, refresh) => store.dispatch(loadActive())),
-            EntryList(converterCallback: (store) => store.state.mikroblogState.hot6State, loadDataCallback: (store, refresh) => store.dispatch(loadHot6())),
-            EntryList(converterCallback: (store) => store.state.mikroblogState.hot12State, loadDataCallback: (store, refresh) => store.dispatch(loadHot12())),
-            EntryList(converterCallback: (store) => store.state.mikroblogState.hot24State, loadDataCallback: (store, refresh) => store.dispatch(loadHot24())),
-            ],
+            EntryList(
+                converterCallback: (store) =>
+                    store.state.mikroblogState.newestState,
+                loadDataCallback: (store, refresh) =>
+                    store.dispatch(loadNewest())),
+            EntryList(
+                converterCallback: (store) =>
+                    store.state.mikroblogState.activeState,
+                loadDataCallback: (store, refresh) =>
+                    store.dispatch(loadActive())),
+            EntryList(
+                converterCallback: (store) =>
+                    store.state.mikroblogState.hot6State,
+                loadDataCallback: (store, refresh) =>
+                    store.dispatch(loadHot6())),
+            EntryList(
+                converterCallback: (store) =>
+                    store.state.mikroblogState.hot12State,
+                loadDataCallback: (store, refresh) =>
+                    store.dispatch(loadHot12())),
+            EntryList(
+                converterCallback: (store) =>
+                    store.state.mikroblogState.hot24State,
+                loadDataCallback: (store, refresh) =>
+                    store.dispatch(loadHot24())),
+          ],
         ),
       ),
     );

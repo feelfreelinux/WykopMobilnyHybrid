@@ -17,11 +17,11 @@ class EntryCommentWidget extends StatelessWidget {
         color: Theme.of(context).cardColor,
         elevation: 0.0,
         child: StoreConnector<AppState, EntryComment>(
-          converter: (store) => store.state.entitiesState.entryComments[commentId],
-          builder: (context, comment) {
-            return Column(children: _buildEntryCommentBody(comment));
-          }
-        ),
+            converter: (store) =>
+                store.state.entitiesState.entryComments[commentId],
+            builder: (context, comment) {
+              return Column(children: _buildEntryCommentBody(comment));
+            }),
       ),
     );
   }

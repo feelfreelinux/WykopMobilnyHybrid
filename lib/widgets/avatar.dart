@@ -25,12 +25,14 @@ class AvatarWidget extends StatelessWidget {
               bottom: 0,
               right: 0,
               child: Opacity(
-                  opacity: visibility && author.sex != AuthorSex.OTHER ? 1.0 : 0.0,
+                  opacity:
+                      visibility && author.sex != AuthorSex.OTHER ? 1.0 : 0.0,
                   child: Container(
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
-                              color: Colors.white, // set card color from settings
+                              color:
+                                  Colors.white, // set card color from settings
                               width: size / 36)),
                       child: Container(
                           width: size / 4.5,

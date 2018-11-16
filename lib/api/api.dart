@@ -76,8 +76,11 @@ class BaseWykopClient {
   BaseWykopClient();
 
   Future<Result> getHot(int page, String period) async {
-    var items = await _httpClient.wykopGetList(EntryResponse.serializer,
-        "http://a2.wykop.pl/entries/hot/period/" + period + "/page/${page.toString()}");
+    var items = await _httpClient.wykopGetList(
+        EntryResponse.serializer,
+        "http://a2.wykop.pl/entries/hot/period/" +
+            period +
+            "/page/${page.toString()}");
     return normalizeEntries(BuiltList.from(items));
   }
 

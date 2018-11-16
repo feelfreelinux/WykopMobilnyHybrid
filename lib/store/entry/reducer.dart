@@ -7,9 +7,10 @@ Reducer<EntryScreensState> entryScreenReducer = combineReducers([
 
 EntryScreensState _setEntry(EntryScreensState state, SetEntryAction action) {
   return state.rebuild((b) => b
-  ..states.putIfAbsent(action.screenId, () => EntryScreenState())
-  ..states.updateValue(action.screenId, (b) => b
-    ..ids.clear()
-    ..ids.addAll(action.ids))
-  );
+    ..states.putIfAbsent(action.screenId, () => EntryScreenState())
+    ..states.updateValue(
+        action.screenId,
+        (b) => b
+          ..ids.clear()
+          ..ids.addAll(action.ids)));
 }

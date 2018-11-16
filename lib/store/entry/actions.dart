@@ -14,7 +14,7 @@ ThunkAction<AppState> loadEntry(String screenId, int entryId) {
   return (Store<AppState> store) async {
     var entry = await api.getEntry(entryId);
     var result = normalizeEntry(entry);
-    
+
     store.dispatch(AddEntitiesAction(entities: result.state));
     store.dispatch(SetEntryAction(ids: result.result, screenId: screenId));
   };
