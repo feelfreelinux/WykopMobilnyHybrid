@@ -19,7 +19,8 @@ class EntryWidget extends StatelessWidget {
             color: Theme.of(context).cardColor,
             elevation: 0.0,
             child: StoreConnector<AppState, Entry>(
-                converter: (store) => store.state.entitiesState.entries[entryId],
+                converter: (store) =>
+                    store.state.entitiesState.entries[entryId],
                 builder: (context, entry) {
                   return Column(
                     children: _buildEntryBody(entry),

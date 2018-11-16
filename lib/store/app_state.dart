@@ -14,9 +14,9 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   factory AppState() {
     return _$AppState._(
-      mikroblogState: MikroblogState(),
-      entitiesState: EntitiesState(),
-      entryScreensState: EntryScreensState());
+        mikroblogState: MikroblogState(),
+        entitiesState: EntitiesState(),
+        entryScreensState: EntryScreensState());
   }
 
   AppState._();
