@@ -51,7 +51,26 @@ class _EmbedState extends State<EmbedWidget> {
           child: Container(
             decoration: this.getDecoration(),
             constraints: this.currentConstraints(),
+            child: _drawFooter()
         )));
+  }
+
+  Widget _drawFooter() {
+    if (!this.loading && !this.resized) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Expanded(
+          child: Container()
+        ),
+        Container(
+          color: Color(0xaaf0f0f0),
+          child: Text('••• pokaż cały obrazek •••', style: TextStyle(), textAlign: TextAlign.center),
+        )
+      ]);
+    } else {
+      return Container();
+    }
   }
 
   // If image size is already fetched, load whole image from cache
