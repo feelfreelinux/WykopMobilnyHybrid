@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:owmflutter/store/store.dart';
-import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/owm_glyphs.dart';
+// import 'package:owmflutter/widgets/bottom_navigation_dot_bar.dart';
 
 class MainScreen extends StatelessWidget {
   @override
@@ -50,5 +48,19 @@ class MainScreen extends StatelessWidget {
             ],
           ),
         )));
+    //         bottomNavigationBar:
+    //     BottomNavigationDotBar(items: <BottomNavigationDotBarItem>[
+    //   BottomNavigationDotBarItem(
+    //     icon: OwmGlyphs.ic_navi_links,
+    //   ),
+    //   BottomNavigationDotBarItem(
+    //       icon: OwmGlyphs.ic_navi_my_wykop, onTap: () {}),
+    //   BottomNavigationDotBarItem(
+    //       icon: OwmGlyphs.ic_navi_mirkoblog, onTap: () {}),
+    //   BottomNavigationDotBarItem(
+    //       icon: OwmGlyphs.ic_navi_favourite, onTap: () {}),
+    //   BottomNavigationDotBarItem(
+    //       icon: OwmGlyphs.ic_navi_messages, onTap: () {}),
+    // ]));
   }
 }
