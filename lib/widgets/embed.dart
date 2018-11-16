@@ -34,6 +34,7 @@ class _EmbedState extends State<EmbedWidget> {
 
   @override
   Widget build(BuildContext context) {
+    String heroTag = 'embedImage${widget.embed.hashCode}';
     return GestureDetector(
         // @TODO Handle NSFW
         onTap: () {
@@ -45,10 +46,12 @@ class _EmbedState extends State<EmbedWidget> {
             this.openFullscreen();
           }
         },
-        child: Container(
-          decoration: this.getDecoration(),
-          constraints: this.currentConstraints(),
-        ));
+        child: Hero(
+          tag: heroTag,
+          child: Container(
+            decoration: this.getDecoration(),
+            constraints: this.currentConstraints(),
+        )));
   }
 
   // If image size is already fetched, load whole image from cache
@@ -91,7 +94,7 @@ class _EmbedState extends State<EmbedWidget> {
 
     Navigator.push(
         context,
-        CupertinoPageRoute(
+        MaterialPageRoute(
           builder: (context) => EmbedFullScreen(
               heroTag: heroTag,
               imageProvider: CachedNetworkImageProvider(
