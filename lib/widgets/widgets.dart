@@ -7,6 +7,7 @@ export 'author.dart';
 export 'body.dart';
 export 'entrylist.dart';
 export 'embed.dart';
+export 'appbar_user.dart';
 export 'infinite_list.dart';
 export 'buttons/icon_button.dart';
 export 'buttons/text_button.dart';

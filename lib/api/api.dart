@@ -40,10 +40,12 @@ class BaseWykopHttpClient extends BaseClient {
     return generateMd5(_secrets.secret + url);
   }
 
+  Future<ApiSecrets> initSecrets() async {
+    _secrets = await loadSecrets(); 
+    return _secrets;
+  }
+
   Future<dynamic> _wykopGet(String url) async {
-    if (_secrets == null) {
-      _secrets = await loadSecrets();
-    }
     var appkey = _secrets.appkey;
     var httpResponse = await _inner.get("$url/appkey/$appkey",
         headers: {'apisign': signRequest("$url/appkey/$appkey")});
@@ -72,8 +74,13 @@ class BaseWykopHttpClient extends BaseClient {
 
 class BaseWykopClient {
   final BaseWykopHttpClient _httpClient = BaseWykopHttpClient();
+  
+  String getAppKey() => _httpClient._secrets.appkey;
+  String getAppSecret() => _httpClient._secrets.secret;
 
-  BaseWykopClient();
+  BaseWykopClient() {
+    _httpClient.initSecrets();
+  }
 
   Future<Result> getHot(int page, String period) async {
     var items = await _httpClient.wykopGetList(
