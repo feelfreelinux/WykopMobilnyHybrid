@@ -10,19 +10,7 @@ class MikroblogScreen extends StatelessWidget {
       length: 5,
       child: Scaffold(
         appBar: AppBar(
-            leading: InkWell(
-                child: Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Container(
-                  width: 1,
-                  height: 1,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: NetworkImage(
-                              "https://www.wykop.pl/cdn/c3397992/avatar_def,q80.png")))),
-            )),
+            leading: AppbarUserWidget(),
             titleSpacing: 0.0,
             centerTitle: true,
             elevation: 1.5,
