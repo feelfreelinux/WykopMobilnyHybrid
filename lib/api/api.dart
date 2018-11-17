@@ -5,10 +5,9 @@ export 'response_models/entry_comment_response.dart';
 export 'response_models/serializers.dart';
 export 'normalizers.dart';
 
-import 'package:http/http.dart';
 import 'dart:async';
 import 'package:built_value/serializer.dart';
-import 'package:built_value/built_value.dart';
+import 'dart:io';
 import 'package:built_collection/built_collection.dart';
 import 'package:owmflutter/api/api.dart';
 import 'dart:convert';
@@ -16,101 +15,119 @@ import 'dart:async' show Future;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart' as crypto;
+import 'package:dio/dio.dart';
 
-class BaseWykopHttpClient extends BaseClient {
-  final String baseUrl = 'https://a2.wykop.pl';
-  final Client _inner = Client();
+String generateMd5(String data) {
+  var content = Utf8Encoder().convert(data);
+  var md5 = crypto.md5;
+  var digest = md5.convert(content);
+
+  return hex.encode(digest.bytes);
+}
+
+class ApiClient {
   ApiSecrets _secrets;
+  var _dio = new Dio(Options(
+    baseUrl: "https://a2.wykop.pl",
+    connectTimeout: 5000,
+    receiveTimeout: 5000,
+  ));
 
-  BaseWykopHttpClient();
+  ApiClient () {}
 
-  @override
-  Future<StreamedResponse> send(BaseRequest request) {
-    return _inner.send(request);
+  void initialize() {
+    loadSecrets().then((keys) => this._secrets = keys);
+
+    // Signing interceptor
+    _dio.interceptor.request.onSend = (Options options) async {
+      var toSign = _secrets.secret + "https://a2.wykop.pl" + options.path;
+      if (options.method == "POST") {
+        toSign += (options.data).values.join(',');
+        print (options.data);
+      }
+
+      options.headers['apisign'] = generateMd5(toSign);
+      options.headers['User-Agent'] = 'OWMHYBRID';
+      return options;
+    };
+
+    _dio.interceptor.response.onError = (DioError error) {
+      print(error.response.data);
+      return error;
+    };
   }
 
-  String generateMd5(String data) {
-    var content = Utf8Encoder().convert(data);
-    var md5 = crypto.md5;
-    var digest = md5.convert(content);
-    return hex.encode(digest.bytes);
+    Future<dynamic> request(String endpoint,
+      String resource,
+      { List<String> api: const [],
+      Map<String, String> named: const {},
+      Map<String, String> post: const { 'owm-get': 'yes'}}) async {
+        if (this._secrets == null) {
+          this._secrets = await loadSecrets();
+          print(this._secrets);
+        }
+
+        var path = '/' + endpoint + '/' + resource + '/';
+        path += api.join('/');
+        named.forEach((key, value) {
+          path += key + '/' + value;
+        });
+        path += '/appkey/' + this._secrets.appkey;
+
+        Response response;
+        if (post.containsKey('owm-get')) {
+          response = await _dio.get(path);
+        } else {
+          response = await _dio.post(path, data: (post), options: new Options(contentType: ContentType.parse("application/x-www-form-urlencoded")));
+        }
+
+        return response.data["data"];
   }
 
-  String signRequest(String url) {
-    return generateMd5(_secrets.secret + url);
-  }
-
-  Future<ApiSecrets> initSecrets() async {
-    _secrets = await loadSecrets(); 
-    return _secrets;
-  }
-
-  Future<dynamic> _wykopGet(String url) async {
-    var appkey = _secrets.appkey;
-    var httpResponse = await _inner.get("$url/appkey/$appkey",
-        headers: {'apisign': signRequest("$url/appkey/$appkey")});
-    var decoded = json.decode(httpResponse.body) as Map;
-    if (decoded.containsKey("error")) {
-      print(url);
-      print(decoded["error"]);
-      throw ("TODO");
-    } else {
-      return decoded["data"];
-    }
-  }
-
-  Future<List<T>> wykopGetList<T>(Serializer<T> serializer, String url) async {
-    var list = await _wykopGet(url) as List<dynamic>;
+  List<T> deserializeList<T>(Serializer<T> serializer, map) {
+    var list = List<dynamic>.from(map);
     return list.map((el) {
       return serializers.deserializeWith(serializer, el);
     }).toList();
   }
 
-  Future<T> wykopGet<T>(Serializer<T> serializer, String url) async {
-    var map = await _wykopGet(url) as Map;
-    return serializers.deserializeWith(serializer, map);
+  T deserializeElement<T>(Serializer<T> serializer, map) {
+    return serializers.deserializeWith(serializer, (map));
   }
 }
 
-class BaseWykopClient {
-  final BaseWykopHttpClient _httpClient = BaseWykopHttpClient();
-  
-  String getAppKey() => _httpClient._secrets.appkey;
-  String getAppSecret() => _httpClient._secrets.secret;
+class WykopApiClient {
+  final ApiClient _client = ApiClient();
 
-  BaseWykopClient() {
-    _httpClient.initSecrets();
+  String getAppKey() => _client._secrets.appkey;
+  String getAppSecret() => _client._secrets.secret;
+
+  WykopApiClient() {
+    _client.initialize();
   }
 
   Future<Result> getHot(int page, String period) async {
-    var items = await _httpClient.wykopGetList(
-        EntryResponse.serializer,
-        "http://a2.wykop.pl/entries/hot/period/" +
-            period +
-            "/page/${page.toString()}");
-    return normalizeEntries(BuiltList.from(items));
+    var items = await _client.request('entries', 'hot', named: { 'period': period, 'page': page.toString() });
+    return normalizeEntries(BuiltList.from(_client.deserializeList(EntryResponse.serializer, items)));
   }
 
   Future<Result> getNewest(int page) async {
-    var items = await _httpClient.wykopGetList(EntryResponse.serializer,
-        "http://a2.wykop.pl/entries/stream/page/${page.toString()}");
-    return normalizeEntries(BuiltList.from(items));
+    var items = await _client.request('entries', 'stream', named: { 'page': page.toString() });
+    return normalizeEntries(BuiltList.from(_client.deserializeList(EntryResponse.serializer, items)));
   }
 
   Future<Result> getActive(int page) async {
-    var items = await _httpClient.wykopGetList(EntryResponse.serializer,
-        "http://a2.wykop.pl/entries/active/page/${page.toString()}");
-    return normalizeEntries(BuiltList.from(items));
+    var items = await _client.request('entries', 'active', named: { 'page': page.toString() });
+    return normalizeEntries(BuiltList.from(_client.deserializeList(EntryResponse.serializer, items)));
   }
 
-  Future<EntryResponse> getEntry(int id) async {
-    var item = await _httpClient.wykopGet(EntryResponse.serializer,
-        "http://a2.wykop.pl/entries/entry/${id.toString()}");
-    return item;
+  Future<Result> getEntry(int id) async {
+    var items = await _client.request('entries', 'entry', api: [id.toString()]);
+    return normalizeEntry(_client.deserializeElement(EntryResponse.serializer, items));
   }
 }
 
-class WykopApi {}
+var api = WykopApiClient();
 
 class ApiSecrets {
   final String secret;
@@ -124,5 +141,3 @@ Future<ApiSecrets> loadSecrets() async {
   return ApiSecrets(
       appkey: decoded["wykop_key"], secret: decoded["wykop_secret"]);
 }
-
-var api = new BaseWykopClient();

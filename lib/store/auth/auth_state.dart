@@ -4,8 +4,7 @@ import 'package:built_collection/built_collection.dart';
 
 part 'auth_state.g.dart';
 
-abstract class AuthState
-    implements Built<AuthState, AuthStateBuilder> {
+abstract class AuthState implements Built<AuthState, AuthStateBuilder> {
   String get token;
   String get login;
   String get avatarUrl;
@@ -13,7 +12,8 @@ abstract class AuthState
   bool get loggedIn;
 
   factory AuthState() {
-    return _$AuthState._(token: "", login: "", avatarUrl: "", loggedIn: false, accountKey: "");
+    return _$AuthState._(
+        token: "", login: "", avatarUrl: "", loggedIn: false, accountKey: "");
   }
 
   AuthState._();

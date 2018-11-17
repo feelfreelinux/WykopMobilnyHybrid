@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/widgets/widgets.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/store/store.dart';
 

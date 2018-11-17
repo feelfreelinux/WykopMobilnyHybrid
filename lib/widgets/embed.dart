@@ -47,25 +47,21 @@ class _EmbedState extends State<EmbedWidget> {
           }
         },
         child: Hero(
-          tag: heroTag,
-          child: Container(
-            decoration: this.getDecoration(),
-            constraints: this.currentConstraints(),
-            child: _drawFooter()
-        )));
+            tag: heroTag,
+            child: Container(
+                decoration: this.getDecoration(),
+                constraints: this.currentConstraints(),
+                child: _drawFooter())));
   }
 
   Widget _drawFooter() {
     if (!this.loading && !this.resized) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Expanded(
-          child: Container()
-        ),
+      return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+        Expanded(child: Container()),
         Container(
           color: Color(0xaaf0f0f0),
-          child: Text('••• pokaż cały obrazek •••', style: TextStyle(), textAlign: TextAlign.center),
+          child: Text('••• pokaż cały obrazek •••',
+              style: TextStyle(), textAlign: TextAlign.center),
         )
       ]);
     } else {
@@ -76,14 +72,14 @@ class _EmbedState extends State<EmbedWidget> {
   // If image size is already fetched, load whole image from cache
   BoxDecoration getDecoration() {
     if (loading) {
-      return new BoxDecoration(); 
+      return new BoxDecoration();
     }
     return new BoxDecoration(
-      image: new DecorationImage(
-        image: new CachedNetworkImageProvider(widget.embed.preview),
-        alignment: FractionalOffset.topCenter,
-        fit: BoxFit.fitWidth));
-  } 
+        image: new DecorationImage(
+            image: new CachedNetworkImageProvider(widget.embed.preview),
+            alignment: FractionalOffset.topCenter,
+            fit: BoxFit.fitWidth));
+  }
 
   // Returns size - default height for loading and unresized image, full for resized image
   BoxConstraints currentConstraints() {

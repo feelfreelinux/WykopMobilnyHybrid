@@ -24,3 +24,7 @@ export 'entries/actions.dart';
 export 'entry/reducer.dart';
 export 'entry/actions.dart';
 export 'entry/entry_state.dart';
+
+export 'auth/reducer.dart';
+export 'auth/actions.dart';
+export 'auth/auth_state.dart';
