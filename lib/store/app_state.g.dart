@@ -31,6 +31,9 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
   Iterable serialize(Serializers serializers, AppState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
+      'authState',
+      serializers.serialize(object.authState,
+          specifiedType: const FullType(AuthState)),
       'entitiesState',
       serializers.serialize(object.entitiesState,
           specifiedType: const FullType(EntitiesState)),
@@ -56,6 +59,10 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
+        case 'authState':
+          result.authState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(AuthState)) as AuthState);
+          break;
         case 'entitiesState':
           result.entitiesState.replace(serializers.deserialize(value,
               specifiedType: const FullType(EntitiesState)) as EntitiesState);
@@ -78,6 +85,8 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
 
 class _$AppState extends AppState {
   @override
+  final AuthState authState;
+  @override
   final EntitiesState entitiesState;
   @override
   final MikroblogState mikroblogState;
@@ -88,8 +97,14 @@ class _$AppState extends AppState {
       (new AppStateBuilder()..update(updates)).build();
 
   _$AppState._(
-      {this.entitiesState, this.mikroblogState, this.entryScreensState})
+      {this.authState,
+      this.entitiesState,
+      this.mikroblogState,
+      this.entryScreensState})
       : super._() {
+    if (authState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'authState');
+    }
     if (entitiesState == null) {
       throw new BuiltValueNullFieldError('AppState', 'entitiesState');
     }
@@ -112,6 +127,7 @@ class _$AppState extends AppState {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is AppState &&
+        authState == other.authState &&
         entitiesState == other.entitiesState &&
         mikroblogState == other.mikroblogState &&
         entryScreensState == other.entryScreensState;
@@ -119,13 +135,16 @@ class _$AppState extends AppState {
 
   @override
   int get hashCode {
-    return $jf($jc($jc($jc(0, entitiesState.hashCode), mikroblogState.hashCode),
+    return $jf($jc(
+        $jc($jc($jc(0, authState.hashCode), entitiesState.hashCode),
+            mikroblogState.hashCode),
         entryScreensState.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('AppState')
+          ..add('authState', authState)
           ..add('entitiesState', entitiesState)
           ..add('mikroblogState', mikroblogState)
           ..add('entryScreensState', entryScreensState))
@@ -135,6 +154,11 @@ class _$AppState extends AppState {
 
 class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   _$AppState _$v;
+
+  AuthStateBuilder _authState;
+  AuthStateBuilder get authState =>
+      _$this._authState ??= new AuthStateBuilder();
+  set authState(AuthStateBuilder authState) => _$this._authState = authState;
 
   EntitiesStateBuilder _entitiesState;
   EntitiesStateBuilder get entitiesState =>
@@ -158,6 +182,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
 
   AppStateBuilder get _$this {
     if (_$v != null) {
+      _authState = _$v.authState?.toBuilder();
       _entitiesState = _$v.entitiesState?.toBuilder();
       _mikroblogState = _$v.mikroblogState?.toBuilder();
       _entryScreensState = _$v.entryScreensState?.toBuilder();
@@ -185,12 +210,15 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
     try {
       _$result = _$v ??
           new _$AppState._(
+              authState: authState.build(),
               entitiesState: entitiesState.build(),
               mikroblogState: mikroblogState.build(),
               entryScreensState: entryScreensState.build());
     } catch (_) {
       String _$failedField;
       try {
+        _$failedField = 'authState';
+        authState.build();
         _$failedField = 'entitiesState';
         entitiesState.build();
         _$failedField = 'mikroblogState';

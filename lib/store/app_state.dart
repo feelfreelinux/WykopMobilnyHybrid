@@ -7,6 +7,7 @@ import 'package:owmflutter/store/store.dart';
 part 'app_state.g.dart';
 
 abstract class AppState implements Built<AppState, AppStateBuilder> {
+  AuthState get authState;
   EntitiesState get entitiesState;
 
   MikroblogState get mikroblogState;
@@ -14,6 +15,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
 
   factory AppState() {
     return _$AppState._(
+        authState: AuthState(),
         mikroblogState: MikroblogState(),
         entitiesState: EntitiesState(),
         entryScreensState: EntryScreensState());

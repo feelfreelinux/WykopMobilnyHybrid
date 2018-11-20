@@ -1,46 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:owmflutter/api/api.dart';
+import 'package:owmflutter/store/store.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
 
-class LoginScreen extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _LoginState();
-  }
-}
+typedef void LoginCallback(String login, String token);
 
-class _LoginState extends State<LoginScreen> {
-  bool loggedIn = false;
-  String token = "";
-  String login = "";
-
-  @override
-  void initState() {
-    super.initState();
-    final flutterWebviewPlugin = new FlutterWebviewPlugin();
-
-    flutterWebviewPlugin.onUrlChanged.listen((String url) {
-      // Extract token, dispatch action to redux
-      if (url.contains('ConnectSuccess')) {
-        var login =
-            url.substring(url.indexOf("/login/") + 7, url.indexOf("/token/"));
-        var token =
-            url.substring(url.indexOf("/token/") + 7, url.lastIndexOf("/"));
-        this.setState(() {
-          this.login = login;
-          this.token = token;
-        });
-      }
-    });
-  }
-
+class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new WebviewScaffold(
-      url: "https://a2.wykop.pl/login/connect/appkey/${api.getAppKey()}",
-      appBar: new AppBar(
-        title: new Text("Zaloguj się"),
-      ),
-    );
+    return StoreConnector<AppState, LoginCallback>(
+        converter: (store) =>
+            (login, token) => store.dispatch(loginUser(token, login)),
+        builder: (context, callback) {
+          return InAppWebView(
+              initialUrl:
+                  "https://a2.wykop.pl/login/connect/appkey/${api.getAppKey()}",
+              onLoadStart: (InAppWebViewController controller, String url) {
+                if (url.contains('ConnectSuccess')) {
+                  var login = url.substring(
+                      url.indexOf("/login/") + 7, url.indexOf("/token/"));
+                  var token = url.substring(
+                      url.indexOf("/token/") + 7, url.lastIndexOf("/"));
+                  callback(login, token);
+                }
+              });
+        });
   }
 }

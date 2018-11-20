@@ -5,7 +5,7 @@ import 'package:owmflutter/widgets/embed_full_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class EmbedWidget extends StatefulWidget {
-  EmbedWidget({this.embed});
+  EmbedWidget({this.embed: null});
   final Embed embed;
 
   _EmbedState createState() => _EmbedState();

@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/screens/screens.dart';
+import 'package:owmflutter/store/store.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
 class AppbarUserWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: InkWell(
+      child: StoreConnector<AppState, AuthState>(
+        onInit: (store) => store.dispatch(syncStateWithApi()),
+        converter: (store) => store.state.authState,
+        builder: (context, authState) {
+          return InkWell(
           onTap: () {
             Navigator.push(
               context,
@@ -35,8 +41,9 @@ class AppbarUserWidget extends StatelessWidget {
                     image: DecorationImage(
                         fit: BoxFit.fill,
                         image: NetworkImage(
-                            "https://www.wykop.pl/cdn/c3397992/avatar_def,q80.png")))),
-          )),
-    );
+                            authState.loggedIn ? authState.avatarUrl : "https://www.wykop.pl/cdn/c3397992/avatar_def,q80.png")))),
+          ));
+        }
+    ));
   }
 }
