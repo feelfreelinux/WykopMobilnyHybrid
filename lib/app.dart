@@ -6,7 +6,6 @@ import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/themes.dart';
 import 'package:owmflutter/keys.dart';
 
-
 class OwmApp extends StatelessWidget {
   final Store<AppState> store;
 

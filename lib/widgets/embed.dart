@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/widgets/embed_full_screen.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
 
 class EmbedWidget extends StatefulWidget {
   EmbedWidget({this.embed: null});
@@ -15,20 +15,32 @@ class _EmbedState extends State<EmbedWidget> {
   double _imageFactor = 0.0;
   bool loading = true;
   bool resized = false;
+  var imageResolver;
+  var imageSizeListener;
 
   @override
   void initState() {
     super.initState();
+    imageSizeListener = (ImageInfo image, bool _) => updateImageSize(image);
 
     // First, fetch image size for sizedbox calculations
-    CachedNetworkImageProvider(widget.embed.preview)
-        .resolve(ImageConfiguration())
-        .addListener((image, _) {
-      this.setState(() {
-        loading = false;
-        _imageFactor = image.image.height / image.image.width;
-        resized = false;
-      });
+    imageResolver =
+        AdvancedNetworkImage(widget.embed.preview, useDiskCache: true)
+            .resolve(ImageConfiguration());
+    imageResolver.addListener(this.imageSizeListener);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    this.imageResolver.removeListener(this.imageSizeListener);
+  }
+
+  void updateImageSize(ImageInfo image) {
+    setState(() {
+      loading = false;
+      _imageFactor = image.image.height / image.image.width;
+      resized = false;
     });
   }
 
@@ -76,7 +88,8 @@ class _EmbedState extends State<EmbedWidget> {
     }
     return new BoxDecoration(
         image: new DecorationImage(
-            image: new CachedNetworkImageProvider(widget.embed.preview),
+            image: new AdvancedNetworkImage(widget.embed.preview,
+                useDiskCache: true),
             alignment: FractionalOffset.topCenter,
             fit: BoxFit.fitWidth));
   }
@@ -111,11 +124,8 @@ class _EmbedState extends State<EmbedWidget> {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => EmbedFullScreen(
-              heroTag: heroTag,
-              imageProvider: CachedNetworkImageProvider(
-                widget.embed.url,
-              )),
+          builder: (context) =>
+              EmbedFullScreen(heroTag: heroTag, imageProvider: AdvancedNetworkImage(widget.embed.url, useDiskCache: true)),
         ));
   }
 }

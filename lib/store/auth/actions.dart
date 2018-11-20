@@ -12,7 +12,7 @@ class SaveAuthCredentialsAction {
 
 ThunkAction<AppState> loginUser(String token, String login) {
   return (Store<AppState> store) async {
-    var creds = await api.login(login, token);
+    var creds = await api.users.login(login, token);
 
     // Exit login screen
     OwmKeys.navKey.currentState.pop();
@@ -29,7 +29,7 @@ ThunkAction<AppState> syncStateWithApi() {
 
     if (creds != null) {
       store.dispatch(SaveAuthCredentialsAction(
-        login: creds.login, avatarUrl: creds.avatarUrl));
+          login: creds.login, avatarUrl: creds.avatarUrl));
     }
   };
 }

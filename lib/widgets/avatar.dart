@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/models/models.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
 
 class AvatarWidget extends StatelessWidget {
   final Author author;
@@ -20,7 +20,8 @@ class AvatarWidget extends StatelessWidget {
                   shape: BoxShape.circle,
                   image: DecorationImage(
                       fit: BoxFit.fill,
-                      image: CachedNetworkImageProvider(author.avatar)))),
+                      image: AdvancedNetworkImage(author.avatar,
+                          useDiskCache: true)))),
           Positioned(
               bottom: 0,
               right: 0,

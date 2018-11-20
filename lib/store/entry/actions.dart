@@ -12,7 +12,7 @@ class SetEntryAction {
 
 ThunkAction<AppState> loadEntry(String screenId, int entryId) {
   return (Store<AppState> store) async {
-    var result = await api.getEntry(entryId);
+    var result = await api.entries.getEntry(entryId);
 
     store.dispatch(AddEntitiesAction(entities: result.state));
     store.dispatch(SetEntryAction(ids: result.result, screenId: screenId));
