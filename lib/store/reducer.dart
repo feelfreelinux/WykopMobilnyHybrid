@@ -9,5 +9,6 @@ AppState appReducer(AppState state, action) {
     ..authState.replace(authReducer(state.authState, action))
     ..entryScreensState
         .replace(entryScreenReducer(state.entryScreensState, action))
+    ..linksState.replace(linksReducer(state.linksState, action))
     ..mikroblogState.replace(mikroblogReducer(state.mikroblogState, action)));
 }

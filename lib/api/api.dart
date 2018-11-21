@@ -9,6 +9,7 @@ export 'client.dart';
 export 'resources/api_resource.dart';
 export 'resources/entries.dart';
 export 'resources/users.dart';
+export 'resources/links.dart';
 
 import 'dart:async';
 import 'package:owmflutter/api/client.dart';
@@ -32,6 +33,7 @@ class WykopApiClient {
   String getAppKey() => _client.secrets.appkey;
   String getAppSecret() => _client.secrets.secret;
 
+  LinksApi links;
   EntriesApi entries;
   UsersApi users;
 
@@ -49,6 +51,7 @@ class WykopApiClient {
     _client.initialize();
     this.entries = EntriesApi(_client);
     this.users = UsersApi(_client);
+    this.links = LinksApi(_client);
   }
 }
 

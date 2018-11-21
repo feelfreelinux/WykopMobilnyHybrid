@@ -10,12 +10,14 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   AuthState get authState;
   EntitiesState get entitiesState;
 
+  LinksState get linksState;
   MikroblogState get mikroblogState;
   EntryScreensState get entryScreensState;
 
   factory AppState() {
     return _$AppState._(
         authState: AuthState(),
+        linksState: LinksState(),
         mikroblogState: MikroblogState(),
         entitiesState: EntitiesState(),
         entryScreensState: EntryScreensState());

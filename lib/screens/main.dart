@@ -7,7 +7,7 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: MikroblogScreen(),
+        body: HomeScreen(),
         floatingActionButton: new FloatingActionButton(
           child: const Icon(OwmGlyphs.ic_pen),
           onPressed: () {},

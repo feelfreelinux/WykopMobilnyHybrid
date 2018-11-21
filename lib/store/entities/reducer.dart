@@ -9,5 +9,6 @@ Reducer<EntitiesState> entitiesReducer = combineReducers<EntitiesState>(
 EntitiesState _addToState(EntitiesState state, AddEntitiesAction action) {
   return state.rebuild((b) => b
     ..entries.addAll(action.entities.entries.asMap())
+    ..links.addAll(action.entities.links.asMap())
     ..entryComments.addAll(action.entities.entryComments.asMap()));
 }

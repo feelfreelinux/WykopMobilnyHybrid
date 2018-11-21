@@ -5,7 +5,7 @@ import 'package:owmflutter/widgets/embed_full_screen.dart';
 import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
 
 class EmbedWidget extends StatefulWidget {
-  EmbedWidget({this.embed: null, this.reducedWidth: 0.0});
+  EmbedWidget({this.embed, this.reducedWidth: 0.0});
   final Embed embed;
   final double reducedWidth;
 
