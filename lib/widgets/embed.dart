@@ -5,8 +5,9 @@ import 'package:owmflutter/widgets/embed_full_screen.dart';
 import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
 
 class EmbedWidget extends StatefulWidget {
-  EmbedWidget({this.embed: null});
+  EmbedWidget({this.embed: null, this.reducedWidth: 0.0});
   final Embed embed;
+  final double reducedWidth;
 
   _EmbedState createState() => _EmbedState();
 }
@@ -71,9 +72,10 @@ class _EmbedState extends State<EmbedWidget> {
       return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Expanded(child: Container()),
         Container(
+          padding: EdgeInsets.all(2.6),
           color: Color(0xaaf0f0f0),
           child: Text('••• pokaż cały obrazek •••',
-              style: TextStyle(), textAlign: TextAlign.center),
+              style: TextStyle(fontSize: 10.5), textAlign: TextAlign.center),
         )
       ]);
     } else {
@@ -84,12 +86,12 @@ class _EmbedState extends State<EmbedWidget> {
   // If image size is already fetched, load whole image from cache
   BoxDecoration getDecoration() {
     if (loading) {
-      return new BoxDecoration();
+      return BoxDecoration();
     }
-    return new BoxDecoration(
-        image: new DecorationImage(
-            image: new AdvancedNetworkImage(widget.embed.preview,
-                useDiskCache: true),
+    return BoxDecoration(
+        image: DecorationImage(
+            image:
+                AdvancedNetworkImage(widget.embed.preview, useDiskCache: true),
             alignment: FractionalOffset.topCenter,
             fit: BoxFit.fitWidth));
   }
@@ -97,7 +99,8 @@ class _EmbedState extends State<EmbedWidget> {
   // Returns size - default height for loading and unresized image, full for resized image
   BoxConstraints currentConstraints() {
     if (!loading) {
-      var height = MediaQuery.of(context).size.width * this._imageFactor;
+      var height = (MediaQuery.of(context).size.width - widget.reducedWidth) *
+          this._imageFactor;
 
       if (!resized && height <= 300) {
         this.setState(() {
@@ -113,7 +116,8 @@ class _EmbedState extends State<EmbedWidget> {
       return BoxConstraints.tight(Size.fromHeight(300));
     } else {
       return BoxConstraints.tight(Size.fromHeight(
-          MediaQuery.of(context).size.width * this._imageFactor));
+          (MediaQuery.of(context).size.width - widget.reducedWidth) *
+              this._imageFactor));
     }
   }
 
@@ -124,8 +128,10 @@ class _EmbedState extends State<EmbedWidget> {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) =>
-              EmbedFullScreen(heroTag: heroTag, imageProvider: AdvancedNetworkImage(widget.embed.url, useDiskCache: true)),
+          builder: (context) => EmbedFullScreen(
+              heroTag: heroTag,
+              imageProvider:
+                  AdvancedNetworkImage(widget.embed.url, useDiskCache: true)),
         ));
   }
 }
