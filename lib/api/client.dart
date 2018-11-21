@@ -95,8 +95,18 @@ class ApiClient {
           'login': credentials.login,
           'accountkey': credentials.token
         });
+
+        var originalPath = error.response.request.path;
+
+        originalPath =
+            originalPath.substring(0, originalPath.indexOf("/userkey/")) +
+                "/userkey/" +
+                authResponse["userkey"];
+        print(originalPath);
+
         this.credentials.refreshToken = authResponse["userkey"];
-        return await _dio.request(error.response.request.path,
+        await saveAuthCreds(this.credentials);
+        return await _dio.request(originalPath,
             options: error.response.request);
       }
 

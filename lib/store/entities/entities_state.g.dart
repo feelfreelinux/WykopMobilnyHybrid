@@ -40,6 +40,10 @@ class _$EntitiesStateSerializer implements StructuredSerializer<EntitiesState> {
       serializers.serialize(object.entryComments,
           specifiedType: const FullType(BuiltMap,
               const [const FullType(int), const FullType(EntryComment)])),
+      'links',
+      serializers.serialize(object.links,
+          specifiedType: const FullType(
+              BuiltMap, const [const FullType(int), const FullType(Link)])),
     ];
 
     return result;
@@ -70,6 +74,13 @@ class _$EntitiesStateSerializer implements StructuredSerializer<EntitiesState> {
                 const FullType(EntryComment)
               ])) as BuiltMap);
           break;
+        case 'links':
+          result.links.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltMap, const [
+                const FullType(int),
+                const FullType(Link)
+              ])) as BuiltMap);
+          break;
       }
     }
 
@@ -82,16 +93,22 @@ class _$EntitiesState extends EntitiesState {
   final BuiltMap<int, Entry> entries;
   @override
   final BuiltMap<int, EntryComment> entryComments;
+  @override
+  final BuiltMap<int, Link> links;
 
   factory _$EntitiesState([void updates(EntitiesStateBuilder b)]) =>
       (new EntitiesStateBuilder()..update(updates)).build();
 
-  _$EntitiesState._({this.entries, this.entryComments}) : super._() {
+  _$EntitiesState._({this.entries, this.entryComments, this.links})
+      : super._() {
     if (entries == null) {
       throw new BuiltValueNullFieldError('EntitiesState', 'entries');
     }
     if (entryComments == null) {
       throw new BuiltValueNullFieldError('EntitiesState', 'entryComments');
+    }
+    if (links == null) {
+      throw new BuiltValueNullFieldError('EntitiesState', 'links');
     }
   }
 
@@ -107,19 +124,22 @@ class _$EntitiesState extends EntitiesState {
     if (identical(other, this)) return true;
     return other is EntitiesState &&
         entries == other.entries &&
-        entryComments == other.entryComments;
+        entryComments == other.entryComments &&
+        links == other.links;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, entries.hashCode), entryComments.hashCode));
+    return $jf($jc(
+        $jc($jc(0, entries.hashCode), entryComments.hashCode), links.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('EntitiesState')
           ..add('entries', entries)
-          ..add('entryComments', entryComments))
+          ..add('entryComments', entryComments)
+          ..add('links', links))
         .toString();
   }
 }
@@ -139,12 +159,18 @@ class EntitiesStateBuilder
   set entryComments(MapBuilder<int, EntryComment> entryComments) =>
       _$this._entryComments = entryComments;
 
+  MapBuilder<int, Link> _links;
+  MapBuilder<int, Link> get links =>
+      _$this._links ??= new MapBuilder<int, Link>();
+  set links(MapBuilder<int, Link> links) => _$this._links = links;
+
   EntitiesStateBuilder();
 
   EntitiesStateBuilder get _$this {
     if (_$v != null) {
       _entries = _$v.entries?.toBuilder();
       _entryComments = _$v.entryComments?.toBuilder();
+      _links = _$v.links?.toBuilder();
       _$v = null;
     }
     return this;
@@ -169,7 +195,9 @@ class EntitiesStateBuilder
     try {
       _$result = _$v ??
           new _$EntitiesState._(
-              entries: entries.build(), entryComments: entryComments.build());
+              entries: entries.build(),
+              entryComments: entryComments.build(),
+              links: links.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -177,6 +205,8 @@ class EntitiesStateBuilder
         entries.build();
         _$failedField = 'entryComments';
         entryComments.build();
+        _$failedField = 'links';
+        links.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'EntitiesState', _$failedField, e.toString());

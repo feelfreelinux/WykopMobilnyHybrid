@@ -1,4 +1,5 @@
 export 'response_models/entry_response.dart';
+export 'response_models/link_response.dart';
 export 'response_models/author_response.dart';
 export 'response_models/embed_response.dart';
 export 'response_models/entry_comment_response.dart';

@@ -21,8 +21,21 @@ Result normalizeEntries(BuiltList<EntryResponse> entries) {
       state: EntitiesState().rebuild((b) => b..entries.addAll(entriesMap)));
 }
 
+Result normalizeLinks(BuiltList<LinkResponse> links) {
+  var mappedLinks = links.map((c) => Link.mapFromResponse(c));
+  var linksMap = Map<int, Link>.from(
+      Map.fromIterable(mappedLinks, key: (v) => v.id, value: (v) => v));
+  var ids = links.map((e) => e.id);
+
+  return Result(
+      result: ids.toList(),
+      state: EntitiesState().rebuild((b) => b..links.addAll(linksMap)));
+}
+
 Result normalizeEntryComments(BuiltList<EntryCommentResponse> comments) {
-  var mappedComments = comments.map((c) => EntryComment.mapFromResponse(c));
+  var mappedComments = comments == null
+      ? Map.from({})
+      : comments.map((c) => EntryComment.mapFromResponse(c));
   var commentsMap = Map<int, EntryComment>.from(
       Map.fromIterable(mappedComments, key: (v) => v.id, value: (v) => v));
   var ids = comments.map((e) => e.id);
