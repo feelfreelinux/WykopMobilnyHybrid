@@ -35,7 +35,7 @@ class _$EntrylistStateSerializer
     final result = <Object>[
       'entriesState',
       serializers.serialize(object.entriesState,
-          specifiedType: const FullType(EntriesState)),
+          specifiedType: const FullType(PaginationState)),
       'listState',
       serializers.serialize(object.listState,
           specifiedType: const FullType(ListState)),
@@ -57,7 +57,8 @@ class _$EntrylistStateSerializer
       switch (key) {
         case 'entriesState':
           result.entriesState.replace(serializers.deserialize(value,
-              specifiedType: const FullType(EntriesState)) as EntriesState);
+                  specifiedType: const FullType(PaginationState))
+              as PaginationState);
           break;
         case 'listState':
           result.listState.replace(serializers.deserialize(value,
@@ -72,7 +73,7 @@ class _$EntrylistStateSerializer
 
 class _$EntrylistState extends EntrylistState {
   @override
-  final EntriesState entriesState;
+  final PaginationState entriesState;
   @override
   final ListState listState;
 
@@ -122,10 +123,10 @@ class EntrylistStateBuilder
     implements Builder<EntrylistState, EntrylistStateBuilder> {
   _$EntrylistState _$v;
 
-  EntriesStateBuilder _entriesState;
-  EntriesStateBuilder get entriesState =>
-      _$this._entriesState ??= new EntriesStateBuilder();
-  set entriesState(EntriesStateBuilder entriesState) =>
+  PaginationStateBuilder _entriesState;
+  PaginationStateBuilder get entriesState =>
+      _$this._entriesState ??= new PaginationStateBuilder();
+  set entriesState(PaginationStateBuilder entriesState) =>
       _$this._entriesState = entriesState;
 
   ListStateBuilder _listState;

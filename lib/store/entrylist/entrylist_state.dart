@@ -9,12 +9,12 @@ part 'entrylist_state.g.dart';
 
 abstract class EntrylistState
     implements Built<EntrylistState, EntrylistStateBuilder> {
-  EntriesState get entriesState;
+  PaginationState get entriesState;
   ListState get listState;
 
   factory EntrylistState() {
     return _$EntrylistState._(
-        entriesState: EntriesState(), listState: new ListState());
+        entriesState: PaginationState(), listState: new ListState());
   }
 
   EntrylistState._();

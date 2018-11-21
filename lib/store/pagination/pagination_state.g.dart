@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'entries_state.dart';
+part of 'pagination_state.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
@@ -19,21 +19,22 @@ part of 'entries_state.dart';
 // ignore_for_file: unnecessary_new
 // ignore_for_file: test_types_in_equals
 
-Serializer<EntriesState> _$entriesStateSerializer =
-    new _$EntriesStateSerializer();
+Serializer<PaginationState> _$paginationStateSerializer =
+    new _$PaginationStateSerializer();
 
-class _$EntriesStateSerializer implements StructuredSerializer<EntriesState> {
+class _$PaginationStateSerializer
+    implements StructuredSerializer<PaginationState> {
   @override
-  final Iterable<Type> types = const [EntriesState, _$EntriesState];
+  final Iterable<Type> types = const [PaginationState, _$PaginationState];
   @override
-  final String wireName = 'EntriesState';
+  final String wireName = 'PaginationState';
 
   @override
-  Iterable serialize(Serializers serializers, EntriesState object,
+  Iterable serialize(Serializers serializers, PaginationState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'entryIds',
-      serializers.serialize(object.entryIds,
+      'itemIds',
+      serializers.serialize(object.itemIds,
           specifiedType:
               const FullType(BuiltList, const [const FullType(int)])),
     ];
@@ -42,9 +43,9 @@ class _$EntriesStateSerializer implements StructuredSerializer<EntriesState> {
   }
 
   @override
-  EntriesState deserialize(Serializers serializers, Iterable serialized,
+  PaginationState deserialize(Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new EntriesStateBuilder();
+    final result = new PaginationStateBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -52,8 +53,8 @@ class _$EntriesStateSerializer implements StructuredSerializer<EntriesState> {
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'entryIds':
-          result.entryIds.replace(serializers.deserialize(value,
+        case 'itemIds':
+          result.itemIds.replace(serializers.deserialize(value,
                   specifiedType:
                       const FullType(BuiltList, const [const FullType(int)]))
               as BuiltList);
@@ -65,89 +66,90 @@ class _$EntriesStateSerializer implements StructuredSerializer<EntriesState> {
   }
 }
 
-class _$EntriesState extends EntriesState {
+class _$PaginationState extends PaginationState {
   @override
-  final BuiltList<int> entryIds;
+  final BuiltList<int> itemIds;
 
-  factory _$EntriesState([void updates(EntriesStateBuilder b)]) =>
-      (new EntriesStateBuilder()..update(updates)).build();
+  factory _$PaginationState([void updates(PaginationStateBuilder b)]) =>
+      (new PaginationStateBuilder()..update(updates)).build();
 
-  _$EntriesState._({this.entryIds}) : super._() {
-    if (entryIds == null) {
-      throw new BuiltValueNullFieldError('EntriesState', 'entryIds');
+  _$PaginationState._({this.itemIds}) : super._() {
+    if (itemIds == null) {
+      throw new BuiltValueNullFieldError('PaginationState', 'itemIds');
     }
   }
 
   @override
-  EntriesState rebuild(void updates(EntriesStateBuilder b)) =>
+  PaginationState rebuild(void updates(PaginationStateBuilder b)) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  EntriesStateBuilder toBuilder() => new EntriesStateBuilder()..replace(this);
+  PaginationStateBuilder toBuilder() =>
+      new PaginationStateBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is EntriesState && entryIds == other.entryIds;
+    return other is PaginationState && itemIds == other.itemIds;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, entryIds.hashCode));
+    return $jf($jc(0, itemIds.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('EntriesState')
-          ..add('entryIds', entryIds))
+    return (newBuiltValueToStringHelper('PaginationState')
+          ..add('itemIds', itemIds))
         .toString();
   }
 }
 
-class EntriesStateBuilder
-    implements Builder<EntriesState, EntriesStateBuilder> {
-  _$EntriesState _$v;
+class PaginationStateBuilder
+    implements Builder<PaginationState, PaginationStateBuilder> {
+  _$PaginationState _$v;
 
-  ListBuilder<int> _entryIds;
-  ListBuilder<int> get entryIds => _$this._entryIds ??= new ListBuilder<int>();
-  set entryIds(ListBuilder<int> entryIds) => _$this._entryIds = entryIds;
+  ListBuilder<int> _itemIds;
+  ListBuilder<int> get itemIds => _$this._itemIds ??= new ListBuilder<int>();
+  set itemIds(ListBuilder<int> itemIds) => _$this._itemIds = itemIds;
 
-  EntriesStateBuilder();
+  PaginationStateBuilder();
 
-  EntriesStateBuilder get _$this {
+  PaginationStateBuilder get _$this {
     if (_$v != null) {
-      _entryIds = _$v.entryIds?.toBuilder();
+      _itemIds = _$v.itemIds?.toBuilder();
       _$v = null;
     }
     return this;
   }
 
   @override
-  void replace(EntriesState other) {
+  void replace(PaginationState other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$EntriesState;
+    _$v = other as _$PaginationState;
   }
 
   @override
-  void update(void updates(EntriesStateBuilder b)) {
+  void update(void updates(PaginationStateBuilder b)) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$EntriesState build() {
-    _$EntriesState _$result;
+  _$PaginationState build() {
+    _$PaginationState _$result;
     try {
-      _$result = _$v ?? new _$EntriesState._(entryIds: entryIds.build());
+      _$result = _$v ?? new _$PaginationState._(itemIds: itemIds.build());
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'entryIds';
-        entryIds.build();
+        _$failedField = 'itemIds';
+        itemIds.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'EntriesState', _$failedField, e.toString());
+            'PaginationState', _$failedField, e.toString());
       }
       rethrow;
     }

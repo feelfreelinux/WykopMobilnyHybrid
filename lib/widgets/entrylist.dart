@@ -31,10 +31,10 @@ class EntryList extends StatelessWidget {
                     isLoading: state.listState.isLoading &&
                         state.listState.haveReachedEnd,
                     loadData: callback,
-                    itemCount: state.entriesState.entryIds.length,
+                    itemCount: state.entriesState.itemIds.length,
                     itemBuilder: (context, index) {
                       return EntryWidget(
-                          entryId: state.entriesState.entryIds[index],
+                          entryId: state.entriesState.itemIds[index],
                           ellipsize: true);
                     });
               });

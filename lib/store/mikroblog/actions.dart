@@ -8,14 +8,14 @@ import 'package:redux/redux.dart';
 
 ThunkAction<AppState> loadHot6() {
   return (Store<AppState> store) async {
-    store.dispatch(loadEntries("HOT6", (page) => api.entries.getHot(page, "6"),
+    store.dispatch(loadItems("HOT6", (page) => api.entries.getHot(page, "6"),
         store.state.mikroblogState.hot6State.listState));
   };
 }
 
 ThunkAction<AppState> loadHot12() {
   return (Store<AppState> store) async {
-    store.dispatch(loadEntries(
+    store.dispatch(loadItems(
         "HOT12",
         (page) => api.entries.getHot(page, "12"),
         store.state.mikroblogState.hot12State.listState));
@@ -24,7 +24,7 @@ ThunkAction<AppState> loadHot12() {
 
 ThunkAction<AppState> loadHot24() {
   return (Store<AppState> store) async {
-    store.dispatch(loadEntries(
+    store.dispatch(loadItems(
         "HOT24",
         (page) => api.entries.getHot(page, "24"),
         store.state.mikroblogState.hot24State.listState));
@@ -33,14 +33,14 @@ ThunkAction<AppState> loadHot24() {
 
 ThunkAction<AppState> loadNewest() {
   return (Store<AppState> store) async {
-    store.dispatch(loadEntries("NEWEST", (page) => api.entries.getNewest(page),
+    store.dispatch(loadItems("NEWEST", (page) => api.entries.getNewest(page),
         store.state.mikroblogState.newestState.listState));
   };
 }
 
 ThunkAction<AppState> loadActive() {
   return (Store<AppState> store) async {
-    store.dispatch(loadEntries("ACTIVE", (page) => api.entries.getActive(page),
+    store.dispatch(loadItems("ACTIVE", (page) => api.entries.getActive(page),
         store.state.mikroblogState.activeState.listState));
   };
 }

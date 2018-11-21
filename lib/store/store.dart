@@ -17,9 +17,9 @@ export 'entities/entities_state.dart';
 export 'entities/actions.dart';
 export 'entities/reducer.dart';
 
-export 'entries/reducer.dart';
-export 'entries/entries_state.dart';
-export 'entries/actions.dart';
+export 'pagination/reducer.dart';
+export 'pagination/pagination_state.dart';
+export 'pagination/actions.dart';
 
 export 'entry/reducer.dart';
 export 'entry/actions.dart';

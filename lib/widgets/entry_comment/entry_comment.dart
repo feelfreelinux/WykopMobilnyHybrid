@@ -86,7 +86,7 @@ class EntryCommentWidget extends StatelessWidget {
                         color: Theme.of(context).textTheme.caption.color))
               ])),
               VoteButton(
-                  isSelected: true, count: comment.voteCount, onClicked: () {})
+                  isSelected: false, count: comment.voteCount, onClicked: () {})
             ]));
   }
 }
