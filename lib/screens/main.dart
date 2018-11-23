@@ -3,11 +3,23 @@ import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/owm_glyphs.dart';
 // import 'package:owmflutter/widgets/bottom_navigation_dot_bar.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
+
+  @override
+    State<StatefulWidget> createState() {
+      return _MainScreenState();
+    }
+}
+
+class _MainScreenState extends State<MainScreen> {
+  int _currentIndex = 0;
+  final List<Widget> _children = [HomeScreen(), Text('todo xD'), MikroblogScreen(), Text('TODO'), Text('TODO') ];
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: HomeScreen(),
+        body: _children[_currentIndex],
         floatingActionButton: new FloatingActionButton(
           child: const Icon(OwmGlyphs.ic_pen),
           onPressed: () {},
@@ -22,28 +34,28 @@ class MainScreen extends StatelessWidget {
             children: <Widget>[
               IconButton(
                 icon: Icon(OwmGlyphs.ic_navi_links),
-                onPressed: () {},
-                color: Color(0xff666666),
+                onPressed: () => this.setState(() { this._currentIndex = 0; }),
+                color: Color(_currentIndex == 0 ? 0xff3c84c1 : 0xff666666),
               ),
               IconButton(
                 icon: Icon(OwmGlyphs.ic_navi_my_wykop),
-                onPressed: () {},
-                color: Color(0xff666666),
+                onPressed: () => this.setState(() { this._currentIndex = 1; }),
+                color: Color(_currentIndex == 1 ? 0xff3c84c1 : 0xff666666),
               ),
               IconButton(
                 icon: Icon(OwmGlyphs.ic_navi_mirkoblog),
-                onPressed: () {},
-                color: Color(0xff3c84c1),
+                onPressed: () => this.setState(() { this._currentIndex = 2; }),
+                color: Color(_currentIndex == 2 ? 0xff3c84c1 : 0xff666666),
               ),
               IconButton(
                 icon: Icon(OwmGlyphs.ic_navi_favourite),
-                onPressed: () {},
-                color: Color(0xff666666),
+                onPressed: () => this.setState(() { this._currentIndex = 3; }),
+                color: Color(_currentIndex == 3 ? 0xff3c84c1 : 0xff666666),
               ),
               IconButton(
                 icon: Icon(OwmGlyphs.ic_navi_messages),
-                onPressed: () {},
-                color: Color(0xff666666),
+                onPressed: () => this.setState(() { this._currentIndex = 4; }),
+                color: Color(_currentIndex == 4 ? 0xff3c84c1 : 0xff666666),
               ),
             ],
           ),
