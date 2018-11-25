@@ -11,37 +11,40 @@ class EntryCommentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: EdgeInsets.only(bottom: 1.0),
-        child: Material(
-            color: Theme.of(context).cardColor,
-            child: StoreConnector<AppState, EntryComment>(
-                converter: (store) =>
-                    store.state.entitiesState.entryComments[commentId],
-                builder: (context, comment) {
-                  return Column(
-                      children: _buildEntryCommentBody(comment, context));
-                })));
+    return Material(
+        color: Theme.of(context).cardColor,
+        child: StoreConnector<AppState, EntryComment>(
+            converter: (store) =>
+                store.state.entitiesState.entryComments[commentId],
+            builder: (context, comment) {
+              return Column(children: _buildEntryCommentBody(comment, context));
+            }));
   }
 
   List<Widget> _buildEntryCommentBody(
       EntryComment comment, BuildContext context) {
     return [
-      //InkWell(
-      //child:
-      Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-        Padding(
-            padding: EdgeInsets.only(left: 12, top: 10, bottom: 10),
-            child: AvatarWidget(
-                author: comment.author, size: 44.0, genderVisibility: true)),
-        Expanded(
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-              _drawHeader(context, comment),
-              BodyWidget(body: comment.body, ellipsize: false),
-              _drawEmbed(comment)
-            ]))
+      //InkWell(child:
+      Column(children: <Widget>[
+        Row(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+          Padding(
+              padding: EdgeInsets.only(left: 12.0, top: 10.0, bottom: 10.0),
+              child: AvatarWidget(
+                  author: comment.author, size: 44.0, genderVisibility: true)),
+          Expanded(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                _drawHeader(context, comment),
+                BodyWidget(body: comment.body, ellipsize: false),
+                _drawEmbed(comment)
+              ]))
+        ]),
+        Container(
+          color: Color(0x1A7F7F7F),
+          height: 0.8,
+          margin: EdgeInsets.only(left: 70.0, right: 12.0),
+        )
       ]),
       //onTap: () {},
       //onDoubleTap: () {},
@@ -52,14 +55,12 @@ class EntryCommentWidget extends StatelessWidget {
   Widget _drawEmbed(EntryComment comment) {
     if (comment.embed != null) {
       return Container(
-        decoration: new BoxDecoration(
-        shape: BoxShape.rectangle,
-        color: const Color(0xFFFFFF),
-        borderRadius:
-            new BorderRadius.all(new Radius.circular(32.0)),
-        ),
-          //padding: EdgeInsets.only(left: 12, right: 12, bottom: 12),
-          child: EmbedWidget(embed: comment.embed, reducedWidth: 86.0));
+          padding: EdgeInsets.only(left: 12.0, right: 12.0, bottom: 18.0),
+          child: EmbedWidget(
+            embed: comment.embed,
+            reducedWidth: 84.0,
+            borderRadius: 10.0,
+          ));
     } else {
       return Container();
     }
@@ -67,7 +68,8 @@ class EntryCommentWidget extends StatelessWidget {
 
   Widget _drawHeader(BuildContext context, EntryComment comment) {
     return Padding(
-        padding: EdgeInsets.only(left: 12, top: 8, right: 12),
+        padding:
+            EdgeInsets.only(left: 12.0, top: 8.0, right: 12.0, bottom: 1.5),
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -81,18 +83,23 @@ class EntryCommentWidget extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
-                                fontSize: 13.0,
+                                fontSize: 13.5,
                                 color: Utils.getAuthorColor(
                                     comment.author, context))))),
                 Text("  •  " + Utils.getSimpleDate(comment.date),
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 10.5,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 11.5,
                         color: Theme.of(context).textTheme.caption.color))
               ])),
-              VoteButton(
-                  isSelected: false, count: comment.voteCount, onClicked: () {})
+              Padding(
+                padding: EdgeInsets.only(left: 8.0),
+                child: VoteButton(
+                    isSelected: false,
+                    count: comment.voteCount,
+                    onClicked: () {}),
+              )
             ]));
   }
 }

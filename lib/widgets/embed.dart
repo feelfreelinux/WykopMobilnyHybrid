@@ -5,9 +5,10 @@ import 'package:owmflutter/widgets/embed_full_screen.dart';
 import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
 
 class EmbedWidget extends StatefulWidget {
-  EmbedWidget({this.embed, this.reducedWidth: 0.0});
   final Embed embed;
   final double reducedWidth;
+  final double borderRadius;
+  EmbedWidget({this.embed, this.reducedWidth: 0.0, this.borderRadius: 0.0});
 
   _EmbedState createState() => _EmbedState();
 }
@@ -72,11 +73,10 @@ class _EmbedState extends State<EmbedWidget> {
       return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Expanded(child: Container()),
         Container(
-          padding: EdgeInsets.all(2.6),
-          color: Color(0xaaf0f0f0),
-          child: Text('••• pokaż cały obrazek •••',
-              style: TextStyle(fontSize: 10.5), textAlign: TextAlign.center),
-        )
+            padding: EdgeInsets.all(2.6),
+            color: Color(0xaaffffff),
+            child: Text('••• pokaż cały obrazek •••',
+                style: TextStyle(fontSize: 10.5), textAlign: TextAlign.center))
       ]);
     } else {
       return Container();
@@ -89,6 +89,8 @@ class _EmbedState extends State<EmbedWidget> {
       return BoxDecoration();
     }
     return BoxDecoration(
+        borderRadius: BorderRadius.circular(widget.borderRadius),
+        boxShadow: [BoxShadow(color: Color(0x33000000))],
         image: DecorationImage(
             image:
                 AdvancedNetworkImage(widget.embed.preview, useDiskCache: true),
@@ -128,10 +130,9 @@ class _EmbedState extends State<EmbedWidget> {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => EmbedFullScreen(
-              heroTag: heroTag,
-              imageProvider:
-                  AdvancedNetworkImage(widget.embed.url, useDiskCache: true)),
-        ));
+            builder: (context) => EmbedFullScreen(
+                heroTag: heroTag,
+                imageProvider: AdvancedNetworkImage(widget.embed.url,
+                    useDiskCache: true))));
   }
 }

@@ -14,15 +14,15 @@ class VoteButton extends StatelessWidget {
       @required this.isSelected,
       this.negativeIcon: false,
       this.fontSize: 14.0,
-      this.padding: const EdgeInsets.all(4)});
+      this.padding: const EdgeInsets.all(4.0)});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(30.0),
         child: Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(30.0),
                 gradient: LinearGradient(colors: stateGradientColor)),
             padding: padding,
             child: Row(children: <Widget>[
@@ -33,7 +33,7 @@ class VoteButton extends StatelessWidget {
                   size: fontSize * 1.19,
                   color: stateTextColor),
               Padding(
-                  padding: EdgeInsets.only(right: 4),
+                  padding: EdgeInsets.only(right: 4.0),
                   child: Text(count.toInt().toString(),
                       style: TextStyle(
                           color: stateTextColor,

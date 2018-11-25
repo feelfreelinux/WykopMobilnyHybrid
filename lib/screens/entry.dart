@@ -8,7 +8,6 @@ import 'package:owmflutter/owm_glyphs.dart';
 class EntryScreen extends StatelessWidget {
   final int entryId;
   final String screenId = Uuid().v4();
-
   EntryScreen({Key key, @required this.entryId}) : super(key: key);
 
   @override
@@ -16,12 +15,17 @@ class EntryScreen extends StatelessWidget {
     return Scaffold(
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(48.0),
-            child: AppBar(actions: <Widget>[
-              IconButton(
-                  icon: Icon(OwmGlyphs.ic_refresh),
-                  onPressed: () {},
-                  tooltip: "Odśwież")
-            ], elevation: 1.5)),
+            child: AppBar(
+                title: Text('WPIS', style: TextStyle(fontSize: 16.0)),
+                actions: <Widget>[
+                  IconButton(
+                      icon: Icon(OwmGlyphs.ic_refresh),
+                      onPressed: () {},
+                      tooltip: "Odśwież")
+                ],
+                elevation: 1.5,
+                centerTitle: true,
+                titleSpacing: 0.0)),
         body: Container(
             decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
             child: StoreConnector<AppState, List<int>>(

@@ -12,7 +12,7 @@ class AuthorWidget extends StatelessWidget {
   AuthorWidget(
       {@required this.author,
       @required this.date,
-      this.avatarSize: 38,
+      this.avatarSize: 38.0,
       this.fontSize: 13.0,
       this.padding: const EdgeInsets.only(
           left: 12.0, top: 10.0, right: 12.0, bottom: 8.0)});
@@ -40,8 +40,8 @@ class AuthorWidget extends StatelessWidget {
                     child: Text(Utils.getSimpleDate(date),
                         style: TextStyle(
                             color: Theme.of(context).textTheme.caption.color,
-                            fontSize: fontSize - 2.5,
-                            fontWeight: FontWeight.w300)))
+                            fontSize: fontSize - 2.0,
+                            fontWeight: FontWeight.w400)))
               ])
         ]));
   }

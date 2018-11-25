@@ -12,53 +12,49 @@ class EntryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(top: 0.0, bottom: 3.0),
+        padding: EdgeInsets.only(bottom: 4.0),
         child: Material(
             color: Theme.of(context).cardColor,
-            elevation: 0.5,
             child: StoreConnector<AppState, Entry>(
                 converter: (store) =>
                     store.state.entitiesState.entries[entryId],
                 builder: (context, entry) {
-                  return Column(
-                    children: _buildEntryBody(entry),
-                  );
+                  return Column(children: _buildEntryBody(entry));
                 })));
   }
 
   List<Widget> _buildEntryBody(Entry entry) {
-    if (entry.embed == null) {
-      return [
-        Row(
+    return [
+      Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            AuthorWidget(author: entry.author, date: entry.date),
-            Padding(padding: EdgeInsets.symmetric(horizontal: 12),
-                          child: VoteButton(
-                isSelected: false,
-                count: entry.voteCount,
-                onClicked: () {},
-              ),
-            )
-          ],
-        ),
-        BodyWidget(
-          body: entry.body,
-          ellipsize: ellipsize,
-        ),
-        EntryFooterWidget(entry: entry),
-      ];
+            AuthorWidget(
+                author: entry.author, date: entry.date, fontSize: 13.5),
+            Padding(
+                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                child: VoteButton(
+                    isSelected: false,
+                    count: entry.voteCount,
+                    onClicked: () {}))
+          ]),
+      BodyWidget(
+        body: entry.body,
+        ellipsize: ellipsize,
+        padding: EdgeInsets.only(left: 12.0, right: 12.0, bottom: 6.0),
+      ),
+      _drawEmbed(entry),
+      EntryFooterWidget(entry: entry)
+    ];
+  }
+
+  Widget _drawEmbed(Entry entry) {
+    if (entry.embed != null) {
+      return Container(
+          padding: EdgeInsets.only(top: 6.0),
+          child: EmbedWidget(embed: entry.embed));
     } else {
-      return [
-        AuthorWidget(author: entry.author, date: entry.date),
-        BodyWidget(
-          body: entry.body,
-          ellipsize: ellipsize,
-        ),
-        EmbedWidget(embed: entry.embed),
-        EntryFooterWidget(entry: entry),
-      ];
+      return Container();
     }
   }
 }

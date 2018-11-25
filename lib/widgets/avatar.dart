@@ -6,16 +6,21 @@ class AvatarWidget extends StatelessWidget {
   final Author author;
   final double size;
   final bool genderVisibility;
+  final List<BoxShadow> boxShadow;
   AvatarWidget(
       {@required this.author,
       @required this.size,
-      this.genderVisibility: true});
+      this.genderVisibility: true,
+      this.boxShadow: const [
+        BoxShadow(color: Color(0x33000000), blurRadius: 1.0)
+      ]});
 
   @override
   Widget build(BuildContext context) {
     return Stack(children: <Widget>[
       Container(
           decoration: BoxDecoration(
+              boxShadow: boxShadow,
               shape: BoxShape.circle,
               border: Border.all(
                   color: Theme.of(context).cardColor, width: size / 36)),
@@ -39,6 +44,7 @@ class AvatarWidget extends StatelessWidget {
           right: 0,
           child: Container(
               decoration: BoxDecoration(
+                  boxShadow: boxShadow,
                   shape: BoxShape.circle,
                   border: Border.all(
                       color: Theme.of(context).cardColor, width: size / 36)),
