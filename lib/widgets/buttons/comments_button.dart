@@ -17,17 +17,29 @@ class CommentsButton extends StatelessWidget {
               Padding(
                   padding: EdgeInsets.only(left: 4.0, right: 4.0, top: 1.5),
                   child: Icon(OwmGlyphs.ic_buttontoolbar_comment,
-                      size: 17.0,
+                      size: 14.0,
                       color: Theme.of(context).textTheme.caption.color)),
               Text(
-                count.toInt().toString(),
+                count.toInt().toString() + " " + _polishPlural(count.toInt()),
                 style: TextStyle(
-                    fontSize: 16.5,
+                    fontSize: 12.5,
                     color: Theme.of(context).textTheme.caption.color),
               ),
             ],
           )),
       onTap: this.onClicked,
     );
+  }
+
+  String _polishPlural(value) {
+    if (value == 1) {
+      return "komentarz";
+    } else if (value % 10 >= 2 &&
+        value % 10 <= 4 &&
+        (value % 100 < 10 || value % 100 >= 20)) {
+      return "komentarze";
+    } else {
+      return "komentarzy";
+    }
   }
 }

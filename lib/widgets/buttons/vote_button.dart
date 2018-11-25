@@ -23,7 +23,7 @@ class VoteButton extends StatelessWidget {
         child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
-                color: stateBackgroundColor),
+                gradient: LinearGradient(colors: stateGradientColor)),
             padding: padding,
             child: Row(children: <Widget>[
               Icon(
@@ -43,18 +43,18 @@ class VoteButton extends StatelessWidget {
         onTap: this.onClicked);
   }
 
-  Color get stateBackgroundColor {
+  List<Color> get stateGradientColor {
     if (isSelected) {
       if (negativeIcon) {
-        return Color(0xCCc0392b);
+        return [const Color(0xCCC0392B), const Color(0xCC8D3D77)];
       } else {
-        return Color(0xCC3b915f);
+        return [const Color(0xCC3B915F), const Color(0xCC007672)];
       }
     } else {
       if (negativeIcon) {
-        return Color(0x26c0392b);
+        return [const Color(0x26C0392B), const Color(0x268D3D77)];
       } else {
-        return Color(0x263b915f);
+        return [const Color(0x263B915F), const Color(0x26007672)];
       }
     }
   }

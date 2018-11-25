@@ -47,15 +47,6 @@ class EntryFooterWidget extends StatelessWidget {
                   ),
                 );
               },
-            ),
-            VoteButton(
-              count: entry.voteCount,
-              onClicked: () {},
-              isSelected: false,
-            ),
-            FooterIconButton(
-              icon: OwmGlyphs.ic_buttontoolbar_dots,
-              onClicked: () {},
             )
           ]),
     );

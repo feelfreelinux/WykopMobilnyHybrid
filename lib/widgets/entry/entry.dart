@@ -15,7 +15,7 @@ class EntryWidget extends StatelessWidget {
         padding: EdgeInsets.only(top: 0.0, bottom: 3.0),
         child: Material(
             color: Theme.of(context).cardColor,
-            elevation: 0.0,
+            elevation: 0.5,
             child: StoreConnector<AppState, Entry>(
                 converter: (store) =>
                     store.state.entitiesState.entries[entryId],
@@ -29,7 +29,20 @@ class EntryWidget extends StatelessWidget {
   List<Widget> _buildEntryBody(Entry entry) {
     if (entry.embed == null) {
       return [
-        AuthorWidget(author: entry.author, date: entry.date),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            AuthorWidget(author: entry.author, date: entry.date),
+            Padding(padding: EdgeInsets.symmetric(horizontal: 12),
+                          child: VoteButton(
+                isSelected: false,
+                count: entry.voteCount,
+                onClicked: () {},
+              ),
+            )
+          ],
+        ),
         BodyWidget(
           body: entry.body,
           ellipsize: ellipsize,

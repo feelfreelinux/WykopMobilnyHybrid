@@ -16,3 +16,4 @@ export 'buttons/text_button.dart';
 export 'buttons/comments_button.dart';
 export 'buttons/favorite_button.dart';
 export 'buttons/vote_button.dart';
+export 'appbar_tabs.dart';

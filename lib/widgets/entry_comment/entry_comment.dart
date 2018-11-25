@@ -52,7 +52,13 @@ class EntryCommentWidget extends StatelessWidget {
   Widget _drawEmbed(EntryComment comment) {
     if (comment.embed != null) {
       return Container(
-          padding: EdgeInsets.only(left: 12, right: 12, bottom: 12),
+        decoration: new BoxDecoration(
+        shape: BoxShape.rectangle,
+        color: const Color(0xFFFFFF),
+        borderRadius:
+            new BorderRadius.all(new Radius.circular(32.0)),
+        ),
+          //padding: EdgeInsets.only(left: 12, right: 12, bottom: 12),
           child: EmbedWidget(embed: comment.embed, reducedWidth: 86.0));
     } else {
       return Container();

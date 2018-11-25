@@ -9,30 +9,11 @@ class HomeScreen extends StatelessWidget {
     return DefaultTabController(
       length: 5,
       child: Scaffold(
-        appBar: AppBar(
-            leading: AppbarUserWidget(),
-            titleSpacing: 0.0,
-            centerTitle: true,
-            elevation: 1.5,
-            title: Text('Główna'),
-            actions: <Widget>[
-              IconButton(
-                icon: Icon(OwmGlyphs.ic_navi_search),
-                onPressed: () {},
-                tooltip: "Szukaj",
-              ),
-              IconButton(
-                icon: Icon(OwmGlyphs.ic_refresh),
-                onPressed: () {},
-                tooltip: "Odśwież",
-              )
-            ],
-            bottom: TabBar(
-              isScrollable: true,
-              tabs: [
-                Tab(text: 'Główna'),
-              ],
-            )),
+        appBar: AppbarTabsWidget(onPressetSearch: () {}, tabs: <Widget>[
+          Tab(text: 'GŁÓWNA'),
+          Tab(text: 'WYKOPALISKO'),
+          Tab(text: 'HITY')
+        ]),
         body: TabBarView(
           physics: NeverScrollableScrollPhysics(),
           children: [
@@ -41,6 +22,8 @@ class HomeScreen extends StatelessWidget {
                     store.state.linksState.promotedState,
                 loadDataCallback: (store, refresh) =>
                     store.dispatch(loadPromoted())),
+                    Text('todo xDDD'),
+                    Text('todo xDDD'),
           ],
         ),
       ),
