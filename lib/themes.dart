@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 class Themes {
   static ThemeData lightTheme() {
     return ThemeData(
-        platform: TargetPlatform.iOS,
         brightness: Brightness.light,
         accentColor: Color(0xff3c84c1),
         primaryColor: Color(0xffffffff),
@@ -15,7 +14,6 @@ class Themes {
 
   static ThemeData darkTheme() {
     return ThemeData(
-        platform: TargetPlatform.iOS,
         brightness: Brightness.dark,
         accentColor: Color(0xff3a80bc),
         primaryColor: Color(0xff292929),

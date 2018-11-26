@@ -34,11 +34,11 @@ Result normalizeLinksResponse(BuiltList<LinkResponse> links) {
 
 Result normalizeEntryCommentsResponse(BuiltList<EntryCommentResponse> comments) {
   var mappedComments = comments == null
-      ? Map.from({})
+      ? Iterable.empty()
       : comments.map((c) => EntryComment.mapFromResponse(c));
   var commentsMap = Map<int, EntryComment>.from(
       Map.fromIterable(mappedComments, key: (v) => v.id, value: (v) => v));
-  var ids = comments.map((e) => e.id);
+  var ids = comments != null ? comments.map((e) => e.id) : List<int>();
 
   return Result(
       result: ids.toList(),
