@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/store/store.dart';
+import 'package:owmflutter/api/api.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter/services.dart';
 
 class AppbarUserWidget extends StatelessWidget {
+  static const platform =
+      const MethodChannel('feelfreelinux.github.io/owmhybrid');
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -12,35 +16,28 @@ class AppbarUserWidget extends StatelessWidget {
             onInit: (store) => store.dispatch(syncStateWithApi()),
             converter: (store) => store.state.authState,
             builder: (context, authState) {
-              return InkWell(
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                            pageBuilder: (BuildContext context,
-                                Animation<double> animation,
-                                Animation<double> secondaryAnimation) {
-                              return LoginScreen();
-                            },
-                            transitionsBuilder:
-                                (context, animation1, animation2, child) {
-                              return FadeTransition(
-                                  opacity: Tween<double>(begin: 0, end: 1)
-                                      .animate(animation1),
-                                  child: child);
-                            },
-                            transitionDuration: Duration(milliseconds: 400)));
-                  },
-                  child: Container(
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                              fit: BoxFit.fill,
-                              image: NetworkImage(authState.loggedIn
-                                  ? authState.avatarUrl
-                                  : "https://www.wykop.pl/cdn/c3397992/avatar_def,q80.png")))));
+              return StoreConnector<AppState, LoginCallback>(
+                  converter: (store) =>
+                      (login, token) => store.dispatch(loginUser(token, login)),
+                  builder: (context, callback) {
+                    return InkWell(
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        onTap: () async {
+                          var result = await platform.invokeMethod(
+                              'openLoginScreen',
+                              Map.from({'appKey': api.getAppKey()}));
+                          callback(result['login'], result['token']);
+                        },
+                        child: Container(
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image: NetworkImage(authState.loggedIn
+                                        ? authState.avatarUrl
+                                        : "https://www.wykop.pl/cdn/c3397992/avatar_def,q80.png")))));
+                  });
             }));
   }
 }

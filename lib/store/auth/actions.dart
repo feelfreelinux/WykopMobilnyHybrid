@@ -13,10 +13,7 @@ class SaveAuthCredentialsAction {
 ThunkAction<AppState> loginUser(String token, String login) {
   return (Store<AppState> store) async {
     var creds = await api.users.login(login, token);
-
-    // Exit login screen
-    OwmKeys.navKey.currentState.pop();
-
+    
     store.dispatch(SaveAuthCredentialsAction(
         login: creds.login, avatarUrl: creds.avatarUrl));
   };
