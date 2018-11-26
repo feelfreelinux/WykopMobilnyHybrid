@@ -46,6 +46,12 @@ class _$EntryResponseSerializer implements StructuredSerializer<EntryResponse> {
       serializers.serialize(object.author,
           specifiedType: const FullType(AuthorResponse)),
     ];
+    if (object.userVote != null) {
+      result
+        ..add('user_vote')
+        ..add(serializers.serialize(object.userVote,
+            specifiedType: const FullType(int)));
+    }
     if (object.comments != null) {
       result
         ..add('comments')
@@ -88,6 +94,10 @@ class _$EntryResponseSerializer implements StructuredSerializer<EntryResponse> {
           result.date = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'user_vote':
+          result.userVote = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
         case 'comments':
           result.comments.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
@@ -127,6 +137,8 @@ class _$EntryResponse extends EntryResponse {
   @override
   final String date;
   @override
+  final int userVote;
+  @override
   final BuiltList<EntryCommentResponse> comments;
   @override
   final String body;
@@ -145,6 +157,7 @@ class _$EntryResponse extends EntryResponse {
   _$EntryResponse._(
       {this.id,
       this.date,
+      this.userVote,
       this.comments,
       this.body,
       this.voteCount,
@@ -182,6 +195,7 @@ class _$EntryResponse extends EntryResponse {
     return other is EntryResponse &&
         id == other.id &&
         date == other.date &&
+        userVote == other.userVote &&
         comments == other.comments &&
         body == other.body &&
         voteCount == other.voteCount &&
@@ -197,7 +211,9 @@ class _$EntryResponse extends EntryResponse {
             $jc(
                 $jc(
                     $jc(
-                        $jc($jc($jc(0, id.hashCode), date.hashCode),
+                        $jc(
+                            $jc($jc($jc(0, id.hashCode), date.hashCode),
+                                userVote.hashCode),
                             comments.hashCode),
                         body.hashCode),
                     voteCount.hashCode),
@@ -211,6 +227,7 @@ class _$EntryResponse extends EntryResponse {
     return (newBuiltValueToStringHelper('EntryResponse')
           ..add('id', id)
           ..add('date', date)
+          ..add('userVote', userVote)
           ..add('comments', comments)
           ..add('body', body)
           ..add('voteCount', voteCount)
@@ -232,6 +249,10 @@ class EntryResponseBuilder
   String _date;
   String get date => _$this._date;
   set date(String date) => _$this._date = date;
+
+  int _userVote;
+  int get userVote => _$this._userVote;
+  set userVote(int userVote) => _$this._userVote = userVote;
 
   ListBuilder<EntryCommentResponse> _comments;
   ListBuilder<EntryCommentResponse> get comments =>
@@ -267,6 +288,7 @@ class EntryResponseBuilder
     if (_$v != null) {
       _id = _$v.id;
       _date = _$v.date;
+      _userVote = _$v.userVote;
       _comments = _$v.comments?.toBuilder();
       _body = _$v.body;
       _voteCount = _$v.voteCount;
@@ -299,6 +321,7 @@ class EntryResponseBuilder
           new _$EntryResponse._(
               id: id,
               date: date,
+              userVote: userVote,
               comments: _comments?.build(),
               body: body,
               voteCount: voteCount,

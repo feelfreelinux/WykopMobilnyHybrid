@@ -10,7 +10,7 @@ class Result {
   Result({this.result, this.state});
 }
 
-Result normalizeEntries(BuiltList<EntryResponse> entries) {
+Result normalizeEntriesResponse(BuiltList<EntryResponse> entries) {
   var mappedEntries = entries.map((c) => Entry.mapFromResponse(c));
   var entriesMap = Map<int, Entry>.from(
       Map.fromIterable(mappedEntries, key: (v) => v.id, value: (v) => v));
@@ -21,7 +21,7 @@ Result normalizeEntries(BuiltList<EntryResponse> entries) {
       state: EntitiesState().rebuild((b) => b..entries.addAll(entriesMap)));
 }
 
-Result normalizeLinks(BuiltList<LinkResponse> links) {
+Result normalizeLinksResponse(BuiltList<LinkResponse> links) {
   var mappedLinks = links.map((c) => Link.mapFromResponse(c));
   var linksMap = Map<int, Link>.from(
       Map.fromIterable(mappedLinks, key: (v) => v.id, value: (v) => v));
@@ -32,7 +32,7 @@ Result normalizeLinks(BuiltList<LinkResponse> links) {
       state: EntitiesState().rebuild((b) => b..links.addAll(linksMap)));
 }
 
-Result normalizeEntryComments(BuiltList<EntryCommentResponse> comments) {
+Result normalizeEntryCommentsResponse(BuiltList<EntryCommentResponse> comments) {
   var mappedComments = comments == null
       ? Map.from({})
       : comments.map((c) => EntryComment.mapFromResponse(c));
@@ -46,13 +46,27 @@ Result normalizeEntryComments(BuiltList<EntryCommentResponse> comments) {
           EntitiesState().rebuild((b) => b..entryComments.addAll(commentsMap)));
 }
 
-Result normalizeEntry(EntryResponse entry) {
+Result normalizeEntryComment(EntryComment entryComment) {
+  return Result(
+      state: EntitiesState()
+          .rebuild((b) => b.entryComments.putIfAbsent(entryComment.id, () => entryComment)),
+      result: [entryComment.id]);
+}
+
+Result normalizeEntryResponse(EntryResponse entry) {
   var mappedEntry = Entry.mapFromResponse(entry);
-  var commentsResult = normalizeEntryComments(entry.comments);
+  var commentsResult = normalizeEntryCommentsResponse(entry.comments);
   var ids = commentsResult.result;
   ids.insert(0, entry.id);
   return Result(
       state: commentsResult.state
           .rebuild((b) => b.entries.putIfAbsent(entry.id, () => mappedEntry)),
       result: ids);
+}
+
+Result normalizeEntry(Entry entry) {
+  return Result(
+      state: EntitiesState()
+          .rebuild((b) => b.entries.putIfAbsent(entry.id, () => entry)),
+      result: [entry.id]);
 }

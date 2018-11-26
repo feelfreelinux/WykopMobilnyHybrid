@@ -95,10 +95,16 @@ class EntryCommentWidget extends StatelessWidget {
               ])),
               Padding(
                 padding: EdgeInsets.only(left: 8.0),
-                child: VoteButton(
-                    isSelected: false,
-                    count: comment.voteCount,
-                    onClicked: () {}),
+                child: StoreConnector<AppState, VoidCallback>(
+                  converter: (store) =>
+                      () => store.dispatch(voteEntryComment(comment.id)),
+                  builder: (context, callback) => VoteButton(
+                      isSelected: comment.isVoted,
+                      count: comment.voteCount,
+                      onClicked: () {
+                        callback();
+                      }),
+                ),
               )
             ]));
   }

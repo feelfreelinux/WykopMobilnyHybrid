@@ -29,6 +29,8 @@ class _$EntryComment extends EntryComment {
   @override
   final int voteCount;
   @override
+  final bool isVoted;
+  @override
   final Author author;
   @override
   final Embed embed;
@@ -37,7 +39,13 @@ class _$EntryComment extends EntryComment {
       (new EntryCommentBuilder()..update(updates)).build();
 
   _$EntryComment._(
-      {this.id, this.date, this.body, this.voteCount, this.author, this.embed})
+      {this.id,
+      this.date,
+      this.body,
+      this.voteCount,
+      this.isVoted,
+      this.author,
+      this.embed})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('EntryComment', 'id');
@@ -47,6 +55,9 @@ class _$EntryComment extends EntryComment {
     }
     if (voteCount == null) {
       throw new BuiltValueNullFieldError('EntryComment', 'voteCount');
+    }
+    if (isVoted == null) {
+      throw new BuiltValueNullFieldError('EntryComment', 'isVoted');
     }
     if (author == null) {
       throw new BuiltValueNullFieldError('EntryComment', 'author');
@@ -68,6 +79,7 @@ class _$EntryComment extends EntryComment {
         date == other.date &&
         body == other.body &&
         voteCount == other.voteCount &&
+        isVoted == other.isVoted &&
         author == other.author &&
         embed == other.embed;
   }
@@ -76,8 +88,10 @@ class _$EntryComment extends EntryComment {
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc($jc($jc($jc(0, id.hashCode), date.hashCode), body.hashCode),
-                voteCount.hashCode),
+            $jc(
+                $jc($jc($jc($jc(0, id.hashCode), date.hashCode), body.hashCode),
+                    voteCount.hashCode),
+                isVoted.hashCode),
             author.hashCode),
         embed.hashCode));
   }
@@ -89,6 +103,7 @@ class _$EntryComment extends EntryComment {
           ..add('date', date)
           ..add('body', body)
           ..add('voteCount', voteCount)
+          ..add('isVoted', isVoted)
           ..add('author', author)
           ..add('embed', embed))
         .toString();
@@ -115,6 +130,10 @@ class EntryCommentBuilder
   int get voteCount => _$this._voteCount;
   set voteCount(int voteCount) => _$this._voteCount = voteCount;
 
+  bool _isVoted;
+  bool get isVoted => _$this._isVoted;
+  set isVoted(bool isVoted) => _$this._isVoted = isVoted;
+
   AuthorBuilder _author;
   AuthorBuilder get author => _$this._author ??= new AuthorBuilder();
   set author(AuthorBuilder author) => _$this._author = author;
@@ -131,6 +150,7 @@ class EntryCommentBuilder
       _date = _$v.date;
       _body = _$v.body;
       _voteCount = _$v.voteCount;
+      _isVoted = _$v.isVoted;
       _author = _$v.author?.toBuilder();
       _embed = _$v.embed?.toBuilder();
       _$v = null;
@@ -161,6 +181,7 @@ class EntryCommentBuilder
               date: date,
               body: body,
               voteCount: voteCount,
+              isVoted: isVoted,
               author: author.build(),
               embed: _embed?.build());
     } catch (_) {

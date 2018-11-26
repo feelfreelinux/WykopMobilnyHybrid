@@ -33,10 +33,16 @@ class EntryWidget extends StatelessWidget {
                 author: entry.author, date: entry.date, fontSize: 13.5),
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 12.0),
-                child: VoteButton(
-                    isSelected: false,
-                    count: entry.voteCount,
-                    onClicked: () {}))
+                child: StoreConnector<AppState, VoidCallback>(
+                  converter: (state) =>
+                      () => state.dispatch(voteEntry(entryId)),
+                  builder: (context, callback) => VoteButton(
+                      isSelected: entry.isVoted,
+                      count: entry.voteCount,
+                      onClicked: () {
+                        callback();
+                      }),
+                ))
           ]),
       BodyWidget(
         body: entry.body,

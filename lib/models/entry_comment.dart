@@ -14,6 +14,8 @@ abstract class EntryComment
 
   int get voteCount;
 
+  bool get isVoted;
+
   Author get author;
 
   @nullable
@@ -26,6 +28,7 @@ abstract class EntryComment
         body: response.body,
         voteCount: response.voteCount,
         author: Author.fromResponse(response: response.author),
+        isVoted: response.userVote != null && response.userVote > 0,
         embed: (response.embed != null
             ? Embed.fromResponse(response: response.embed)
             : null));

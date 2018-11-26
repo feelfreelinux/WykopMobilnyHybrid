@@ -1,7 +1,7 @@
 import 'package:owmflutter/store/store.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:redux/redux.dart';
-import 'package:owmflutter/api/normalizers.dart';
+import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/api/api.dart';
 
 class SetEntryAction {
@@ -16,5 +16,31 @@ ThunkAction<AppState> loadEntry(String screenId, int entryId) {
 
     store.dispatch(AddEntitiesAction(entities: result.state));
     store.dispatch(SetEntryAction(ids: result.result, screenId: screenId));
+  };
+}
+
+ThunkAction<AppState> voteEntry(int id) {
+  return (Store<AppState> store) async {
+    var entry = store.state.entitiesState.entries[id];
+    if (entry.isVoted) {
+      var result = await api.entries.voteDown(entry);
+      store.dispatch(AddEntitiesAction(entities: result.state));
+    } else {
+      var result = await api.entries.voteUp(entry);
+      store.dispatch(AddEntitiesAction(entities: result.state)); 
+    }
+  };
+}
+
+ThunkAction<AppState> voteEntryComment(int id) {
+  return (Store<AppState> store) async {
+    var entry = store.state.entitiesState.entryComments[id];
+    if (entry.isVoted) {
+      var result = await api.entries.commentVoteDown(entry);
+      store.dispatch(AddEntitiesAction(entities: result.state));
+    } else {
+      var result = await api.entries.commentVoteUp(entry);
+      store.dispatch(AddEntitiesAction(entities: result.state)); 
+    }
   };
 }

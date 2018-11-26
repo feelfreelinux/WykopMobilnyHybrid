@@ -12,6 +12,10 @@ abstract class EntryResponse
   String get date;
 
   @nullable
+  @BuiltValueField(wireName: "user_vote")
+  int get userVote;
+
+  @nullable
   BuiltList<EntryCommentResponse> get comments;
 
   @nullable

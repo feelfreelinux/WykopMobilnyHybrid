@@ -53,6 +53,12 @@ class _$EntryCommentResponseSerializer
         ..add(serializers.serialize(object.body,
             specifiedType: const FullType(String)));
     }
+    if (object.userVote != null) {
+      result
+        ..add('user_vote')
+        ..add(serializers.serialize(object.userVote,
+            specifiedType: const FullType(int)));
+    }
     if (object.embed != null) {
       result
         ..add('embed')
@@ -86,6 +92,10 @@ class _$EntryCommentResponseSerializer
           result.body = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'user_vote':
+          result.userVote = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
         case 'vote_count':
           result.voteCount = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
@@ -113,6 +123,8 @@ class _$EntryCommentResponse extends EntryCommentResponse {
   @override
   final String body;
   @override
+  final int userVote;
+  @override
   final int voteCount;
   @override
   final AuthorResponse author;
@@ -124,7 +136,13 @@ class _$EntryCommentResponse extends EntryCommentResponse {
       (new EntryCommentResponseBuilder()..update(updates)).build();
 
   _$EntryCommentResponse._(
-      {this.id, this.date, this.body, this.voteCount, this.author, this.embed})
+      {this.id,
+      this.date,
+      this.body,
+      this.userVote,
+      this.voteCount,
+      this.author,
+      this.embed})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('EntryCommentResponse', 'id');
@@ -155,6 +173,7 @@ class _$EntryCommentResponse extends EntryCommentResponse {
         id == other.id &&
         date == other.date &&
         body == other.body &&
+        userVote == other.userVote &&
         voteCount == other.voteCount &&
         author == other.author &&
         embed == other.embed;
@@ -164,7 +183,9 @@ class _$EntryCommentResponse extends EntryCommentResponse {
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc($jc($jc($jc(0, id.hashCode), date.hashCode), body.hashCode),
+            $jc(
+                $jc($jc($jc($jc(0, id.hashCode), date.hashCode), body.hashCode),
+                    userVote.hashCode),
                 voteCount.hashCode),
             author.hashCode),
         embed.hashCode));
@@ -176,6 +197,7 @@ class _$EntryCommentResponse extends EntryCommentResponse {
           ..add('id', id)
           ..add('date', date)
           ..add('body', body)
+          ..add('userVote', userVote)
           ..add('voteCount', voteCount)
           ..add('author', author)
           ..add('embed', embed))
@@ -199,6 +221,10 @@ class EntryCommentResponseBuilder
   String get body => _$this._body;
   set body(String body) => _$this._body = body;
 
+  int _userVote;
+  int get userVote => _$this._userVote;
+  set userVote(int userVote) => _$this._userVote = userVote;
+
   int _voteCount;
   int get voteCount => _$this._voteCount;
   set voteCount(int voteCount) => _$this._voteCount = voteCount;
@@ -220,6 +246,7 @@ class EntryCommentResponseBuilder
       _id = _$v.id;
       _date = _$v.date;
       _body = _$v.body;
+      _userVote = _$v.userVote;
       _voteCount = _$v.voteCount;
       _author = _$v.author?.toBuilder();
       _embed = _$v.embed?.toBuilder();
@@ -250,6 +277,7 @@ class EntryCommentResponseBuilder
               id: id,
               date: date,
               body: body,
+              userVote: userVote,
               voteCount: voteCount,
               author: author.build(),
               embed: _embed?.build());

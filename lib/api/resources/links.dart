@@ -7,7 +7,7 @@ class LinksApi extends ApiResource {
   Future<Result> getPromoted(int page) async {
     var items = await client
         .request('links', 'promoted', named: {'page': page.toString()});
-    return normalizeLinks(
+    return normalizeLinksResponse(
         BuiltList.from(client.deserializeList(LinkResponse.serializer, items)));
   }
 }
