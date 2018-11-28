@@ -28,8 +28,8 @@ class LinksList extends StatelessWidget {
                 return () => loadDataCallback(store, false);
               }, builder: (context, callback) {
                 return InfiniteList(
-                    isLoading: state.listState.isLoading &&
-                        state.listState.haveReachedEnd,
+                    isLoading: state.listState.isLoading,
+                    hasReachedEnd: state.listState.haveReachedEnd,
                     loadData: callback,
                     itemCount: state.itemsState.itemIds.length,
                     itemBuilder: (context, index) {
