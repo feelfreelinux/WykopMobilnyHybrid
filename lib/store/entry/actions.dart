@@ -1,7 +1,7 @@
 import 'package:owmflutter/store/store.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:redux/redux.dart';
-import 'package:owmflutter/models/models.dart';
+import 'dart:async';
 import 'package:owmflutter/api/api.dart';
 
 class SetEntryAction {
@@ -10,12 +10,17 @@ class SetEntryAction {
   SetEntryAction({this.screenId, this.ids});
 }
 
-ThunkAction<AppState> loadEntry(String screenId, int entryId) {
+ThunkAction<AppState> loadEntry(String screenId, int entryId, Completer completer) {
   return (Store<AppState> store) async {
-    var result = await api.entries.getEntry(entryId);
+    try {
+      var result = await api.entries.getEntry(entryId);
 
-    store.dispatch(AddEntitiesAction(entities: result.state));
-    store.dispatch(SetEntryAction(ids: result.result, screenId: screenId));
+      store.dispatch(AddEntitiesAction(entities: result.state));
+      store.dispatch(SetEntryAction(ids: result.result, screenId: screenId));
+      completer.complete();
+    } catch (e) {
+      completer.completeError(e);
+    }
   };
 }
 
