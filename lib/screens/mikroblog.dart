@@ -19,28 +19,28 @@ class MikroblogScreen extends StatelessWidget {
               EntryList(
                   converterCallback: (store) =>
                       store.state.mikroblogState.newestState,
-                  loadDataCallback: (store, refresh) =>
-                      store.dispatch(loadNewest())),
+                  loadDataCallback: (store, refresh, completer) =>
+                      store.dispatch(loadNewest(refresh, completer))),
               EntryList(
                   converterCallback: (store) =>
                       store.state.mikroblogState.activeState,
-                  loadDataCallback: (store, refresh) =>
-                      store.dispatch(loadActive())),
+                  loadDataCallback: (store, refresh, completer) =>
+                      store.dispatch(loadActive(refresh, completer))),
               EntryList(
                   converterCallback: (store) =>
                       store.state.mikroblogState.hot6State,
-                  loadDataCallback: (store, refresh) =>
-                      store.dispatch(loadHot6())),
+                  loadDataCallback: (store, refresh, completer) =>
+                      store.dispatch(loadHot6(refresh, completer))),
               EntryList(
                   converterCallback: (store) =>
                       store.state.mikroblogState.hot12State,
-                  loadDataCallback: (store, refresh) =>
-                      store.dispatch(loadHot12())),
+                  loadDataCallback: (store, refresh, completer) =>
+                      store.dispatch(loadHot12(refresh, completer))),
               EntryList(
                   converterCallback: (store) =>
                       store.state.mikroblogState.hot24State,
-                  loadDataCallback: (store, refresh) =>
-                      store.dispatch(loadHot24()))
+                  loadDataCallback: (store, refresh, completer) =>
+                      store.dispatch(loadHot24(refresh, completer)))
             ], physics: NeverScrollableScrollPhysics())));
   }
 }

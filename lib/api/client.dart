@@ -90,7 +90,8 @@ class ApiClient {
     };
 
     _dio.interceptor.response.onError = (DioError error) async {
-      if (error.response.statusCode == 401) {
+      
+      if (error != null && error.response != null && error.response.statusCode == 401) {
         var authResponse = await this.request('login', 'index', post: {
           'login': credentials.login,
           'accountkey': credentials.token

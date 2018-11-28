@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/widgets/widgets.dart';
+import 'dart:async';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -19,7 +20,7 @@ class HomeScreen extends StatelessWidget {
                   converterCallback: (store) =>
                       store.state.linksState.promotedState,
                   loadDataCallback: (store, refresh) =>
-                      store.dispatch(loadPromoted())),
+                      store.dispatch(loadPromoted(Completer()))),
               Text('todo xDDD'),
               Text('todo xDDD')
             ])));
