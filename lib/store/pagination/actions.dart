@@ -21,6 +21,7 @@ ThunkAction<AppState> loadItems(
   return (Store<AppState> store) async {
     store.dispatch(SetLoading(type: type, isLoading: true));
     var results = await loadEntries(listState.page);
+    Stopwatch stopwatch = new Stopwatch()..start();
     store.dispatch(SetPageNumber(type: type, number: listState.page + 1));
     store.dispatch(SetLoading(type: type, isLoading: false));
 
@@ -33,5 +34,6 @@ ThunkAction<AppState> loadItems(
     }
     store.dispatch(
         AddItems(itemIds: results.result, type: type + "_ITEMS"));
+        print('doSomething() executed in ${stopwatch.elapsed}');
   };
 }

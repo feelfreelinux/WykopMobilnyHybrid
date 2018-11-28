@@ -45,3 +45,4 @@ flutter:
        - asset: fonts/OWMGlyphs.ttf
   assets:
     - secrets.json
+    - rogal.png
