@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:color/color.dart' as bColor;
 
 var colorCombinations = <List<Color>>[
   [Colors.black, Colors.blue],
