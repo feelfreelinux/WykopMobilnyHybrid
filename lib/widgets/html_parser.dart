@@ -3,6 +3,8 @@ import 'package:flutter/gestures.dart';
 
 import 'package:html/parser.dart' as html show parse;
 import 'package:html/dom.dart' as html;
+import 'package:owmflutter/widgets/spoiler.dart';
+import 'package:owmflutter/widgets/tag.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
@@ -200,44 +202,6 @@ class _HtmlParser {
   }
 }
 
-class TagWidget extends StatelessWidget {
-  final String tag;
-  TagWidget(this.tag);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-    gradient:               new LinearGradient(
-                colors: <Color>[Colors.red, Colors.blue]
-              ),  borderRadius: BorderRadius.circular(8.0)
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: Text('#' + this.tag, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12.0)),
-      ),
-    );
-  }
-}
-
-class SpoilerWidget extends StatelessWidget {
-  const SpoilerWidget({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.greenAccent,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: Text('Spoiler'),
-      ),
-    );
-  }
-}
 
 TextSpan _textLink({BuildContext context, String text, String href}) {
   final linkStyle =
