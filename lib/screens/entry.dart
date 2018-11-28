@@ -4,6 +4,7 @@ import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:uuid/uuid.dart';
 import 'package:owmflutter/owm_glyphs.dart';
+import 'dart:async';
 
 class EntryScreen extends StatelessWidget {
   final int entryId;
@@ -28,25 +29,37 @@ class EntryScreen extends StatelessWidget {
                 titleSpacing: 0.0)),
         body: Container(
             decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
-            child: StoreConnector<AppState, List<int>>(
-                converter: (store) =>
-                    store.state.entryScreensState.states[screenId] != null
-                        ? store.state.entryScreensState.states[screenId].ids
-                        : [],
-                onInit: (store) {
-                  store.dispatch(loadEntry(screenId, entryId));
-                },
-                builder: (context, ids) {
-                  return ListView.builder(
-                      itemCount: ids.length,
-                      itemBuilder: (context, index) {
-                        if (index == 0) {
-                          return EntryWidget(
-                              ellipsize: false, entryId: entryId);
-                        } else {
-                          return EntryCommentWidget(commentId: ids[index]);
-                        }
-                      });
-                })));
+            child: StoreConnector<AppState, dynamic>(
+              converter: (store) =>
+                  (completer) => store.dispatch(loadEntry(screenId, entryId, completer)),
+              builder: (context, callback) => StoreConnector<AppState,
+                      List<int>>(
+                  converter: (store) =>
+                      store.state.entryScreensState.states[screenId] != null
+                          ? store.state.entryScreensState.states[screenId].ids
+                          : [],
+                  onInit: (store) {
+                    store.dispatch(loadEntry(screenId, entryId, Completer()));
+                  },
+                  builder: (context, ids) {
+                    return RefreshIndicator(
+                      onRefresh: () {
+                        var completer = new Completer();
+                        callback(completer);
+                        return completer.future;
+                      },
+                                          child: ListView.builder(
+                          itemCount: ids.length,
+                          itemBuilder: (context, index) {
+                            if (index == 0) {
+                              return EntryWidget(
+                                  ellipsize: false, entryId: entryId);
+                            } else {
+                              return EntryCommentWidget(commentId: ids[index]);
+                            }
+                          }),
+                    );
+                  }),
+            )));
   }
 }
