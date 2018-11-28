@@ -18,7 +18,7 @@ var colorOverrides = {
     Colors.blue,
     Colors.purple
   ],
-  "neuropa": [Colors.red, Colors.white]
+  "neuropa": [Colors.red, Color.fromARGB(255, 240, 240, 240)]
 };
 
 /**
