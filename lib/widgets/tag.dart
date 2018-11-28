@@ -9,6 +9,18 @@ var colorCombinations = <List<Color>>[
   [Colors.red, Colors.grey.shade300]
 ];
 
+var colorOverrides = {
+  "4konserwy": [
+    Colors.red,
+    Colors.orange,
+    Colors.yellow,
+    Colors.green,
+    Colors.blue,
+    Colors.purple
+  ],
+  "neuropa": [Colors.red, Colors.white]
+};
+
 /**
  * Shows a tag in mikroblog text. Each tag has its own colors assigned.
  */
@@ -23,6 +35,10 @@ class TagWidget extends StatelessWidget {
         colorCombinations[(hc / 2).floor() % colorCombinations.length];
     if (hc % 2 == 1) {
       gradient = gradient.reversed.toList();
+    }
+
+    if (colorOverrides.containsKey(this.tag)) {
+      gradient = colorOverrides[this.tag];
     }
 
     return Container(
