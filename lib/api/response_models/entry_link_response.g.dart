@@ -19,6 +19,62 @@ part of 'entry_link_response.dart';
 // ignore_for_file: unnecessary_new
 // ignore_for_file: test_types_in_equals
 
+Serializer<EntryLinkResponse> _$entryLinkResponseSerializer =
+    new _$EntryLinkResponseSerializer();
+
+class _$EntryLinkResponseSerializer
+    implements StructuredSerializer<EntryLinkResponse> {
+  @override
+  final Iterable<Type> types = const [EntryLinkResponse, _$EntryLinkResponse];
+  @override
+  final String wireName = 'EntryLinkResponse';
+
+  @override
+  Iterable serialize(Serializers serializers, EntryLinkResponse object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[];
+    if (object.link != null) {
+      result
+        ..add('link')
+        ..add(serializers.serialize(object.link,
+            specifiedType: const FullType(LinkResponse)));
+    }
+    if (object.entry != null) {
+      result
+        ..add('entry')
+        ..add(serializers.serialize(object.entry,
+            specifiedType: const FullType(EntryResponse)));
+    }
+
+    return result;
+  }
+
+  @override
+  EntryLinkResponse deserialize(Serializers serializers, Iterable serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new EntryLinkResponseBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'link':
+          result.link.replace(serializers.deserialize(value,
+              specifiedType: const FullType(LinkResponse)) as LinkResponse);
+          break;
+        case 'entry':
+          result.entry.replace(serializers.deserialize(value,
+              specifiedType: const FullType(EntryResponse)) as EntryResponse);
+          break;
+      }
+    }
+
+    return result.build();
+  }
+}
+
 class _$EntryLinkResponse extends EntryLinkResponse {
   @override
   final LinkResponse link;

@@ -21,5 +21,7 @@ abstract class EntryLinkResponse
   @nullable
   EntryResponse get entry;
 
+  static Serializer<EntryLinkResponse> get serializer =>
+      _$entryLinkResponseSerializer;
   EntryLinkResponse._();
 }

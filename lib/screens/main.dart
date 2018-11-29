@@ -14,7 +14,7 @@ class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     HomeScreen(),
-    Text('todo xD'),
+    MyWykopScreen(),
     MikroblogScreen(),
     Text('TODO'),
     Text('TODO')

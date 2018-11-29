@@ -8,6 +8,7 @@ export 'author.dart';
 export 'body.dart';
 export 'linkslist.dart';
 export 'entrylist.dart';
+export 'entry_link_list.dart';
 export 'embed.dart';
 export 'appbar_user.dart';
 export 'infinite_list.dart';

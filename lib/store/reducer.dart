@@ -10,5 +10,6 @@ AppState appReducer(AppState state, action) {
     ..entryScreensState
         .replace(entryScreenReducer(state.entryScreensState, action))
     ..linksState.replace(linksReducer(state.linksState, action))
+    ..myWykopState.replace(myWykopReducer(state.myWykopState, action))
     ..mikroblogState.replace(mikroblogReducer(state.mikroblogState, action)));
 }

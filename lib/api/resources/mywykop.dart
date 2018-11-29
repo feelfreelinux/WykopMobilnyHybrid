@@ -8,15 +8,18 @@ class MyWykopApi extends ApiResource {
   Future<Result> getIndex(int page) async {
     var items = await client
         .request('mywykop', 'index', named: {'page': page.toString()});
-    return normalizeEntriesResponse(BuiltList.from(
-        client.deserializeList(EntryResponse.serializer, items)));
+    var dd =  normalizeEntryLinkResponse(BuiltList.from(
+        client.deserializeList(EntryLinkResponse.serializer, items)));
+
+    print(dd.result.length);
+    return dd;
   }
 
   Future<Result> getTags(int page) async {
     var items = await client
         .request('mywykop', 'tags', named: {'page': page.toString()});
-    return normalizeEntriesResponse(BuiltList.from(
-        client.deserializeList(EntryResponse.serializer, items)));
+    return normalizeEntryLinkResponse(BuiltList.from(
+        client.deserializeList(EntryLinkResponse.serializer, items)));
   }
 
   Future<Result> getUsers(int page) async {
