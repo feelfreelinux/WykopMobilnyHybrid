@@ -11,11 +11,9 @@ abstract class MyWykopState
   EntrylistState get indexState;
 
   factory MyWykopState() {
-    return _$MyWykopState._(
-        indexState: EntrylistState());
+    return _$MyWykopState._(indexState: EntrylistState());
   }
 
   MyWykopState._();
-  static Serializer<MyWykopState> get serializer =>
-      _$myWykopStateSerializer;
+  static Serializer<MyWykopState> get serializer => _$myWykopStateSerializer;
 }

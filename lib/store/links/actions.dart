@@ -6,7 +6,11 @@ import 'dart:async';
 
 ThunkAction<AppState> loadPromoted(Completer completer) {
   return (Store<AppState> store) async {
-    store.dispatch(loadItems("PROMOTED", false, (page) => api.links.getPromoted(page),
-        store.state.linksState.promotedState.listState, completer));
+    store.dispatch(loadItems(
+        "PROMOTED",
+        false,
+        (page) => api.links.getPromoted(page),
+        store.state.linksState.promotedState.listState,
+        completer));
   };
 }

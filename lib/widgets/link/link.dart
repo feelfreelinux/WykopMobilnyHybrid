@@ -29,14 +29,14 @@ class LinkWidget extends StatelessWidget {
                             Container(
                               width: 100,
                               height: 70,
-                              child: link.preview != null ? Image(
-                                fit: BoxFit.contain,
-                                  image: AdvancedNetworkImage(
-                                  
-                                link.preview,
-                                
-                                useDiskCache: true,
-                              )) : Container(),
+                              child: link.preview != null
+                                  ? Image(
+                                      fit: BoxFit.contain,
+                                      image: AdvancedNetworkImage(
+                                        link.preview,
+                                        useDiskCache: true,
+                                      ))
+                                  : Container(),
                             ),
                             Expanded(
                               child: Padding(
@@ -62,11 +62,25 @@ class LinkWidget extends StatelessWidget {
                               ),
                             ),
                           ]),
-
-                          Row(children: <Widget>[
-                            Image.network('http://s2.googleusercontent.com/s2/favicons?domain_url=' + link.sourceUrl, height: 15, width: 15,),
-                            Padding(padding: EdgeInsets.only(left: 4.0), child: Text(link.sourceUrl.replaceAll('https://', '').replaceAll('http://', '').split('/')[0], style: TextStyle(color: Colors.grey),))
-                          ],)
+                          Row(
+                            children: <Widget>[
+                              Image.network(
+                                'http://s2.googleusercontent.com/s2/favicons?domain_url=' +
+                                    link.sourceUrl,
+                                height: 15,
+                                width: 15,
+                              ),
+                              Padding(
+                                  padding: EdgeInsets.only(left: 4.0),
+                                  child: Text(
+                                    link.sourceUrl
+                                        .replaceAll('https://', '')
+                                        .replaceAll('http://', '')
+                                        .split('/')[0],
+                                    style: TextStyle(color: Colors.grey),
+                                  ))
+                            ],
+                          )
                         ],
                       ),
                     ),

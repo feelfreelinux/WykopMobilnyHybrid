@@ -81,18 +81,17 @@ Result normalizeEntry(Entry entry) {
       result: [entry.id]);
 }
 
-Result normalizeEntryLinkResponse(
-    BuiltList<EntryLinkResponse> response) {
-  var mappedLinks = linkResponseListToMap(
-      BuiltList.from(response.where((r) => r.link != null).map((r) => r.link).toList()));
+Result normalizeEntryLinkResponse(BuiltList<EntryLinkResponse> response) {
+  var mappedLinks = linkResponseListToMap(BuiltList.from(
+      response.where((r) => r.link != null).map((r) => r.link).toList()));
 
-  var mappedEntries = entryResponseListToMap(
-      BuiltList.from(response.where((r) => r.entry != null).map((r) => r.entry).toList()));
+  var mappedEntries = entryResponseListToMap(BuiltList.from(
+      response.where((r) => r.entry != null).map((r) => r.entry).toList()));
 
   return Result(
-      result: response.map((r) => r.entry == null
-          ? r.link.id
-          : r.entry.id * 1000).toList(),
+      result: response
+          .map((r) => r.entry == null ? r.link.id : r.entry.id * 1000)
+          .toList(),
       state: EntitiesState().rebuild((b) {
         b.links.addAll(mappedLinks);
         b.entries.addAll(mappedEntries);

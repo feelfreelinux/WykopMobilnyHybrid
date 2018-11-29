@@ -5,7 +5,8 @@ import 'package:owmflutter/store/store.dart';
 
 EntrylistState entriesReducer(String type, EntrylistState state, action) {
   var newState = state.rebuild((b) => b
-    ..entriesState.replace(createItemsReducer(state.entriesState, type + "_ITEMS", action))
+    ..entriesState.replace(
+        createItemsReducer(state.entriesState, type + "_ITEMS", action))
     ..listState.replace(createListReducer(state.listState, type, action)));
   return combineReducers<EntrylistState>([])(newState, action);
 }

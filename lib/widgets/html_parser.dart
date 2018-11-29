@@ -22,7 +22,8 @@ class HtmlWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return (new _HtmlParser(context)).parseFromStr(html.replaceAll("#<a href=", "<a href=").replaceAll('\n', '<br/>'));
+    return (new _HtmlParser(context)).parseFromStr(
+        html.replaceAll("#<a href=", "<a href=").replaceAll('\n', '<br/>'));
   }
 }
 
@@ -106,15 +107,11 @@ class _HtmlParser {
       case 'a':
         if (element.attributes['href'].startsWith('spoiler:')) {
           _tryCloseCurrentTextSpan();
-          _widgets.add(Wrap(children: [
-            new SpoilerWidget()
-          ]));
+          _widgets.add(Wrap(children: [new SpoilerWidget()]));
           return;
         } else if (element.attributes['href'].startsWith('#')) {
           _tryCloseCurrentTextSpan();
-          _widgets.add(Wrap(children: [
-            new TagWidget(element.text)
-          ]));
+          _widgets.add(Wrap(children: [new TagWidget(element.text)]));
           return;
         } else if (element.hasContent() &&
             (element.nodes.length == 1) &&
@@ -172,11 +169,12 @@ class _HtmlParser {
       return;
     }
 
-    _widgets.add(new RichText(
-            text: new TextSpan(
-                style: TextStyle(color: Colors.black),
-                children: new List.from(_currentTextSpans))),
-      );
+    _widgets.add(
+      new RichText(
+          text: new TextSpan(
+              style: TextStyle(color: Colors.black),
+              children: new List.from(_currentTextSpans))),
+    );
 
     _currentTextSpans.clear();
   }
@@ -201,7 +199,6 @@ class _HtmlParser {
     }
   }
 }
-
 
 TextSpan _textLink({BuildContext context, String text, String href}) {
   final linkStyle =

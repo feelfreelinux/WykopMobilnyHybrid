@@ -8,50 +8,53 @@ import 'dart:async';
 
 class EntryScreen extends StatelessWidget {
   final int entryId;
-  final String screenId = Uuid().v4();
   EntryScreen({Key key, @required this.entryId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(48.0),
-            child: AppBar(
-                title: Text('WPIS', style: TextStyle(fontSize: 16.0)),
-                actions: <Widget>[
-                  IconButton(
-                      icon: Icon(OwmGlyphs.ic_refresh),
-                      onPressed: () {},
-                      tooltip: "Odśwież")
-                ],
-                elevation: 1.5,
-                centerTitle: true,
-                titleSpacing: 0.0)),
-        body: Container(
-            decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
-            child: StoreConnector<AppState, dynamic>(
-              converter: (store) => (completer) =>
-                  store.dispatch(loadEntry(screenId, entryId, completer)),
-              builder: (context, callback) => StoreConnector<AppState,
-                      List<int>>(
-                  converter: (store) =>
-                      store.state.entryScreensState.states[screenId] != null
-                          ? store.state.entryScreensState.states[screenId].ids
-                          : [],
-                  onInit: (store) {
-                    store.dispatch(loadEntry(screenId, entryId, Completer()));
-                  },
-                  builder: (context, ids) {
-                    return RefreshIndicator(
-                      onRefresh: () {
-                        var completer = new Completer();
-                        callback(completer);
-                        return completer.future;
-                      },
-                      child: ScrollConfiguration(
-                        behavior: NotSuddenJumpScrollBehavior(),
+    return _SystemPadding(
+      child: Scaffold(
+          bottomNavigationBar: InputBarWidget(),
+          resizeToAvoidBottomPadding: false,
+          appBar: PreferredSize(
+              preferredSize: Size.fromHeight(48.0),
+              child: AppBar(
+                  title: Text('WPIS', style: TextStyle(fontSize: 16.0)),
+                  actions: <Widget>[
+                    IconButton(
+                        icon: Icon(OwmGlyphs.ic_refresh),
+                        onPressed: () {},
+                        tooltip: "Odśwież")
+                  ],
+                  elevation: 1.5,
+                  centerTitle: true,
+                  titleSpacing: 0.0)),
+          body: Container(
+              decoration:
+                  BoxDecoration(color: Theme.of(context).backgroundColor),
+              child: StoreConnector<AppState, dynamic>(
+                converter: (store) => (completer) => store.dispatch(
+                    loadEntry(entryId.toString(), entryId, completer)),
+                builder: (context, callback) => StoreConnector<AppState,
+                        List<int>>(
+                    converter: (store) => store.state.entryScreensState
+                                .states[entryId.toString()] !=
+                            null
+                        ? store.state.entryScreensState
+                            .states[entryId.toString()].ids
+                        : [],
+                    onInit: (store) {
+                      store.dispatch(
+                          loadEntry(entryId.toString(), entryId, Completer()));
+                    },
+                    builder: (context, ids) {
+                      return RefreshIndicator(
+                        onRefresh: () {
+                          var completer = new Completer();
+                          callback(completer);
+                          return completer.future;
+                        },
                         child: ListView.builder(
-                            physics: NotSuddenJumpPhysics(),
                             itemCount: ids.length,
                             itemBuilder: (context, index) {
                               if (index == 0) {
@@ -62,9 +65,24 @@ class EntryScreen extends StatelessWidget {
                                     commentId: ids[index]);
                               }
                             }),
-                      ),
-                    );
-                  }),
-            )));
+                      );
+                    }),
+              ))),
+    );
+  }
+}
+
+class _SystemPadding extends StatelessWidget {
+  final Widget child;
+
+  _SystemPadding({Key key, this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var mediaQuery = MediaQuery.of(context);
+    return new AnimatedContainer(
+        padding: mediaQuery.viewInsets,
+        duration: const Duration(milliseconds: 300),
+        child: child);
   }
 }

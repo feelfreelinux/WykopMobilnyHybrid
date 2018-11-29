@@ -6,7 +6,8 @@ import 'package:redux/redux.dart';
 import 'dart:async';
 
 typedef EntrylistState ConverterCallback(Store<AppState> store);
-typedef void LoadDataCallback(Store<AppState> store, bool refresh, Completer completer);
+typedef void LoadDataCallback(
+    Store<AppState> store, bool refresh, Completer completer);
 typedef void ListRefreshCallback(bool refresh, Completer completer);
 
 class EntryList extends StatelessWidget {
@@ -26,17 +27,18 @@ class EntryList extends StatelessWidget {
               if (state.listState.isLoading && state.listState.page == 1) {
                 return Center(child: CircularProgressIndicator());
               }
-              return StoreConnector<AppState, ListRefreshCallback>(converter: (store) {
-                return (bool refresh, Completer completer) => loadDataCallback(store, refresh, completer);
+              return StoreConnector<AppState, ListRefreshCallback>(
+                  converter: (store) {
+                return (bool refresh, Completer completer) =>
+                    loadDataCallback(store, refresh, completer);
               }, builder: (context, callback) {
                 return RefreshIndicator(
                   onRefresh: () {
                     var completer = Completer();
                     callback(true, completer);
                     return completer.future;
-
                   },
-                                  child: InfiniteList(
+                  child: InfiniteList(
                       isLoading: state.listState.isLoading,
                       hasReachedEnd: state.listState.haveReachedEnd,
                       loadData: () => callback(false, Completer()),
