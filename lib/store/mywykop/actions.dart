@@ -10,7 +10,7 @@ ThunkAction<AppState> loadIndex(bool refresh, Completer completer) {
         "MYWYKOP_INDEX",
         refresh,
         (page) => api.mywykop.getIndex(page),
-        store.state.mikroblogState.hot6State.listState,
+        store.state.myWykopState.indexState.listState,
         completer));
   };
 }
