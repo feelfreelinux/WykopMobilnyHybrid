@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 /**
  * Works around flutter#20495
  */
-class _Physics extends ClampingScrollPhysics {
+class NotSuddenJumpPhysics extends ClampingScrollPhysics {
   @override
   double get dragStartDistanceMotionThreshold => 3.5;
 }
 
-class _ScrollBehavior extends ScrollBehavior {
+class NotSuddenJumpScrollBehavior extends ScrollBehavior {
   @override
   ScrollPhysics getScrollPhysics(BuildContext context) {
     switch (getPlatform(context)) {
@@ -16,7 +16,7 @@ class _ScrollBehavior extends ScrollBehavior {
         return const BouncingScrollPhysics();
       case TargetPlatform.android:
       case TargetPlatform.fuchsia:
-        return _Physics();
+        return NotSuddenJumpPhysics();
     }
     return null;
   }
@@ -55,9 +55,9 @@ class _InfiniteListState extends State<InfiniteList> {
   @override
   Widget build(BuildContext context) {
     return ScrollConfiguration(
-        behavior: _ScrollBehavior(),
+        behavior: NotSuddenJumpScrollBehavior(),
         child: ListView.builder(
-          physics: _Physics(),
+          physics: NotSuddenJumpPhysics(),
           itemCount: widget.itemCount + 1,
           itemBuilder: (context, index) {
             if (index == widget.itemCount) {

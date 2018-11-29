@@ -30,8 +30,8 @@ class EntryScreen extends StatelessWidget {
         body: Container(
             decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
             child: StoreConnector<AppState, dynamic>(
-              converter: (store) =>
-                  (completer) => store.dispatch(loadEntry(screenId, entryId, completer)),
+              converter: (store) => (completer) =>
+                  store.dispatch(loadEntry(screenId, entryId, completer)),
               builder: (context, callback) => StoreConnector<AppState,
                       List<int>>(
                   converter: (store) =>
@@ -48,16 +48,21 @@ class EntryScreen extends StatelessWidget {
                         callback(completer);
                         return completer.future;
                       },
-                                          child: ListView.builder(
-                          itemCount: ids.length,
-                          itemBuilder: (context, index) {
-                            if (index == 0) {
-                              return EntryWidget(
-                                  ellipsize: false, entryId: entryId);
-                            } else {
-                              return EntryCommentWidget(commentId: ids[index]);
-                            }
-                          }),
+                      child: ScrollConfiguration(
+                        behavior: NotSuddenJumpScrollBehavior(),
+                        child: ListView.builder(
+                            physics: NotSuddenJumpPhysics(),
+                            itemCount: ids.length,
+                            itemBuilder: (context, index) {
+                              if (index == 0) {
+                                return EntryWidget(
+                                    ellipsize: false, entryId: entryId);
+                              } else {
+                                return EntryCommentWidget(
+                                    commentId: ids[index]);
+                              }
+                            }),
+                      ),
                     );
                   }),
             )));
