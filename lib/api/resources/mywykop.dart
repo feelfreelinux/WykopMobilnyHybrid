@@ -8,7 +8,7 @@ class MyWykopApi extends ApiResource {
   Future<Result> getIndex(int page) async {
     var items = await client
         .request('mywykop', 'index', named: {'page': page.toString()});
-    var dd =  normalizeEntryLinkResponse(BuiltList.from(
+    var dd = normalizeEntryLinkResponse(BuiltList.from(
         client.deserializeList(EntryLinkResponse.serializer, items)));
 
     print(dd.result.length);

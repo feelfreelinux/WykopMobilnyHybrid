@@ -17,7 +17,7 @@ abstract class EntryCommentResponse
   @nullable
   @BuiltValueField(wireName: "user_vote")
   int get userVote;
-  
+
   @BuiltValueField(wireName: "vote_count")
   int get voteCount;
 

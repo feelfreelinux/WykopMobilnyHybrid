@@ -13,5 +13,6 @@ abstract class PaginationState
   }
 
   PaginationState._();
-  static Serializer<PaginationState> get serializer => _$paginationStateSerializer;
+  static Serializer<PaginationState> get serializer =>
+      _$paginationStateSerializer;
 }

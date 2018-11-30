@@ -6,16 +6,13 @@ import 'package:owmflutter/store/store.dart';
 
 part 'links_state.g.dart';
 
-abstract class LinksState
-    implements Built<LinksState, LinksStateBuilder> {
+abstract class LinksState implements Built<LinksState, LinksStateBuilder> {
   LinksListState get promotedState;
 
   factory LinksState() {
-    return _$LinksState._(
-        promotedState: LinksListState());
+    return _$LinksState._(promotedState: LinksListState());
   }
 
   LinksState._();
-  static Serializer<LinksState> get serializer =>
-      _$linksStateSerializer;
+  static Serializer<LinksState> get serializer => _$linksStateSerializer;
 }

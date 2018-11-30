@@ -28,8 +28,9 @@ ThunkAction<AppState> loadItems(String type, bool refresh,
     try {
       var results = await loadEntries(refresh ? 1 : listState.page);
 
-      if (!refresh) store.dispatch(SetPageNumber(type: type, number: listState.page + 1));
-      
+      if (!refresh)
+        store.dispatch(SetPageNumber(type: type, number: listState.page + 1));
+
       store.dispatch(SetLoading(type: type, isLoading: false));
 
       store.dispatch(AddEntitiesAction(entities: results.state));

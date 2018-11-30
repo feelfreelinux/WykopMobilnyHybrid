@@ -39,8 +39,7 @@ class EntryListState extends State<EntryList> {
               }
               return StoreConnector<AppState, ListRefreshCallback>(
                   converter: (store) {
-                return (bool refresh, Completer completer) =>
-                    widget.loadDataCallback(store, refresh, completer);
+                return (bool refresh, Completer completer) => widget.loadDataCallback(store, refresh, completer);
               }, builder: (context, callback) {
                 return RefreshIndicator(
                   onRefresh: () {

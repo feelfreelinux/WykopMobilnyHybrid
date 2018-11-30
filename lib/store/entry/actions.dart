@@ -10,7 +10,8 @@ class SetEntryAction {
   SetEntryAction({this.screenId, this.ids});
 }
 
-ThunkAction<AppState> loadEntry(String screenId, int entryId, Completer completer) {
+ThunkAction<AppState> loadEntry(
+    String screenId, int entryId, Completer completer) {
   return (Store<AppState> store) async {
     try {
       var result = await api.entries.getEntry(entryId);
@@ -32,7 +33,7 @@ ThunkAction<AppState> voteEntry(int id) {
       store.dispatch(AddEntitiesAction(entities: result.state));
     } else {
       var result = await api.entries.voteUp(entry);
-      store.dispatch(AddEntitiesAction(entities: result.state)); 
+      store.dispatch(AddEntitiesAction(entities: result.state));
     }
   };
 }
@@ -45,7 +46,7 @@ ThunkAction<AppState> voteEntryComment(int id) {
       store.dispatch(AddEntitiesAction(entities: result.state));
     } else {
       var result = await api.entries.commentVoteUp(entry);
-      store.dispatch(AddEntitiesAction(entities: result.state)); 
+      store.dispatch(AddEntitiesAction(entities: result.state));
     }
   };
 }

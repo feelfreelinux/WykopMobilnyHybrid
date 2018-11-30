@@ -9,7 +9,7 @@ part 'entry_link_response.g.dart';
 /// Original kotlin source:
 /// https://github.com/feelfreelinux/WykopMobilny/blob/33768ade308a7c065848ab1d9cc84240f8568d7d/app/src/main/kotlin/io/github/feelfreelinux/wykopmobilny/models/mapper/apiv2/EntryLinkMapper.kt
 /// https://github.com/feelfreelinux/WykopMobilny/blob/dcbdd2ee45b7c534b0c4d3abe760d44874da3ac7/app/src/main/kotlin/io/github/feelfreelinux/wykopmobilny/models/dataclass/EntryLink.kt
-/// 
+///
 abstract class EntryLinkResponse
     implements Built<EntryLinkResponse, EntryLinkResponseBuilder> {
   factory EntryLinkResponse([updates(EntryLinkResponseBuilder b)]) =

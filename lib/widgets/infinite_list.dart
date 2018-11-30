@@ -31,7 +31,11 @@ class InfiniteList extends StatefulWidget {
   final bool isLoading;
   final VoidCallback loadData;
   InfiniteList(
-      {this.itemBuilder, this.hasReachedEnd, this.itemCount, this.isLoading, this.loadData});
+      {this.itemBuilder,
+      this.hasReachedEnd,
+      this.itemCount,
+      this.isLoading,
+      this.loadData});
 
   @override
   _InfiniteListState createState() => _InfiniteListState();
@@ -44,7 +48,8 @@ class _InfiniteListState extends State<InfiniteList> {
   void initState() {
     super.initState();
     _scrollController.addListener(() {
-      if (!widget.isLoading && !widget.hasReachedEnd &&
+      if (!widget.isLoading &&
+          !widget.hasReachedEnd &&
           _scrollController.position.pixels ==
               _scrollController.position.maxScrollExtent) {
         widget.loadData();
@@ -64,10 +69,16 @@ class _InfiniteListState extends State<InfiniteList> {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
-                  child: widget.hasReachedEnd ? Column(
-                    children: [
-                      Text('To jest już koniec :)'),
-                      Image.asset('rogal.png', width: 100, height: 100,)]) : CircularProgressIndicator(),
+                  child: widget.hasReachedEnd
+                      ? Column(children: [
+                          Text('To jest już koniec :)'),
+                          Image.asset(
+                            'rogal.png',
+                            width: 100,
+                            height: 100,
+                          )
+                        ])
+                      : CircularProgressIndicator(),
                 ),
               );
             }

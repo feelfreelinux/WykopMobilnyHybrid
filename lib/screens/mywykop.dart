@@ -17,7 +17,6 @@ class MyWykopScreen extends StatelessWidget {
                       store.state.myWykopState.indexState,
                   loadDataCallback: (store, refresh, completer) =>
                       store.dispatch(loadIndex(refresh, completer))),
-    
             ], physics: NeverScrollableScrollPhysics())));
   }
 }
