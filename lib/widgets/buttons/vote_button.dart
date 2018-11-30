@@ -29,6 +29,10 @@ class VoteButtonState extends State<VoteButton> {
   Widget build(BuildContext context) {
     var not = ScrollNotifier.of(context);
 
+    var offset = 0.0;
+    if (not != null) {
+      offset = (not.pixels / 30) % 4 - 2;
+    }
     return InkWell(
         borderRadius: BorderRadius.circular(30.0),
         child: ClipRRect(
@@ -43,13 +47,13 @@ class VoteButtonState extends State<VoteButton> {
                 child: Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                        colors: List.from(stateGradientColor)
-                          ..addAll(stateGradientColor.reversed.toList()),
-                        stops: [0, 0.50, 0.50, 1],
-                        begin: Alignment.topCenter
-                            .add(Alignment(0, (not.pixels / 30) % 4 - 2)),
-                        end: Alignment.bottomCenter
-                            .add(Alignment(0, (not.pixels / 30) % 4 - 2))),
+                      colors: List.from(stateGradientColor)
+                        ..addAll(stateGradientColor.reversed.toList()),
+                      stops: [0, 0.50, 0.50, 1],
+                      begin: Alignment.topLeft.add(Alignment(offset, 0)),
+                      end: Alignment.bottomCenter
+                          .add(Alignment(offset, 0)),
+                    ),
                   ),
                 ),
               ),
