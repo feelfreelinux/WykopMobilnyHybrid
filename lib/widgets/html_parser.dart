@@ -22,8 +22,8 @@ class HtmlWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return (new _HtmlParser(context)).parseFromStr(
-        html.replaceAll("#<a href=", "<a href=").replaceAll('\n', '<br/>'));
+    return DefaultTextStyle(style: Theme.of(context).textTheme.body1, child: (new _HtmlParser(context)).parseFromStr(
+        html.replaceAll("#<a href=", "<a href=").replaceAll('\n', '<br/>')));
   }
 }
 

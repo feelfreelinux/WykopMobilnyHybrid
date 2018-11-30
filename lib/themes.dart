@@ -15,6 +15,7 @@ class Themes {
   static ThemeData darkTheme() {
     return ThemeData(
         brightness: Brightness.dark,
+        textTheme: TextTheme(body1: TextStyle(color: Colors.white)),
         accentColor: Color(0xff3a80bc),
         primaryColor: Color(0xff292929),
         primaryColorDark: Color(0xff212121),

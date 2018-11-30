@@ -54,17 +54,20 @@ class EntryScreen extends StatelessWidget {
                           callback(completer);
                           return completer.future;
                         },
-                        child: ListView.builder(
-                            itemCount: ids.length,
-                            itemBuilder: (context, index) {
-                              if (index == 0) {
-                                return EntryWidget(
-                                    ellipsize: false, entryId: entryId);
-                              } else {
-                                return EntryCommentWidget(
-                                    commentId: ids[index]);
-                              }
-                            }),
+                        child: ScrollConfiguration(
+                          behavior: NotSuddenJumpScrollBehavior(),
+                          child: ListView.builder(
+                              itemCount: ids.length,
+                              itemBuilder: (context, index) {
+                                if (index == 0) {
+                                  return EntryWidget(
+                                      ellipsize: false, entryId: entryId);
+                                } else {
+                                  return EntryCommentWidget(
+                                      commentId: ids[index]);
+                                }
+                              }),
+                        ),
                       );
                     }),
               ))),
@@ -82,7 +85,7 @@ class _SystemPadding extends StatelessWidget {
     var mediaQuery = MediaQuery.of(context);
     return new AnimatedContainer(
         padding: mediaQuery.viewInsets,
-        duration: const Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 150),
         child: child);
   }
 }

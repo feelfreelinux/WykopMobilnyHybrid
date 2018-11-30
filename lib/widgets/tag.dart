@@ -42,9 +42,7 @@ class TagWidget extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-          gradient: new LinearGradient(
-            colors: gradient,
-          ),
+          color: Colors.blueAccent,
           borderRadius: BorderRadius.circular(8.0)),
       child: Padding(
         padding: const EdgeInsets.all(2.0),
