@@ -43,13 +43,14 @@ class VoteButtonState extends State<VoteButton> {
                 child: Container(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                        colors: List.from(stateGradientColor)
-                          ..addAll(stateGradientColor.reversed.toList()),
-                        stops: [0, 0.50, 0.50, 1],
-                        begin: Alignment.topCenter
-                            .add(Alignment(0, (not.pixels / 30) % 4 - 2)),
-                        end: Alignment.bottomCenter
-                            .add(Alignment(0, (not.pixels / 30) % 4 - 2))),
+                      colors: List.from(stateGradientColor)
+                        ..addAll(stateGradientColor.reversed.toList()),
+                      stops: [0, 0.50, 0.50, 1],
+                      begin: Alignment.topLeft
+                          .add(Alignment((not.pixels / 30) % 4 - 2, 0)),
+                      end: Alignment.bottomCenter
+                          .add(Alignment((not.pixels / 30) % 4 - 2, 0)),
+                    ),
                   ),
                 ),
               ),
