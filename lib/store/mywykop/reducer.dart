@@ -8,5 +8,6 @@ import 'package:built_collection/built_collection.dart';
 **/
 MyWykopState myWykopReducer(MyWykopState state, action) {
   return state.rebuild((b) => b
-    ..indexState.replace(entriesReducer("MYWYKOP_INDEX", state.indexState, action)));
+    ..indexState
+        .replace(entriesReducer("MYWYKOP_INDEX", state.indexState, action)));
 }

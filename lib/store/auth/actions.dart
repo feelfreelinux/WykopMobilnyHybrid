@@ -13,7 +13,7 @@ class SaveAuthCredentialsAction {
 ThunkAction<AppState> loginUser(String token, String login) {
   return (Store<AppState> store) async {
     var creds = await api.users.login(login, token);
-    
+
     store.dispatch(SaveAuthCredentialsAction(
         login: creds.login, avatarUrl: creds.avatarUrl));
   };

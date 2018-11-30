@@ -34,41 +34,41 @@ class EntriesApi extends ApiResource {
   }
 
   Future<Result> voteUp(Entry entry) async {
-    var voteCount = await client.request('entries', 'voteup', api: [entry.id.toString()]);
-    var updatedEntry = entry.rebuild((b) =>
-      b..voteCount = int.parse(voteCount["vote_count"])
-      ..isVoted = true
-    );
+    var voteCount =
+        await client.request('entries', 'voteup', api: [entry.id.toString()]);
+    var updatedEntry = entry.rebuild((b) => b
+      ..voteCount = int.parse(voteCount["vote_count"])
+      ..isVoted = true);
 
     return normalizeEntry(updatedEntry);
   }
 
   Future<Result> voteDown(Entry entry) async {
-    var voteCount = await client.request('entries', 'voteremove', api: [entry.id.toString()]);
-    var updatedEntry = entry.rebuild((b) =>
-      b..voteCount = int.parse(voteCount["vote_count"])
-      ..isVoted = false
-    );
+    var voteCount = await client
+        .request('entries', 'voteremove', api: [entry.id.toString()]);
+    var updatedEntry = entry.rebuild((b) => b
+      ..voteCount = int.parse(voteCount["vote_count"])
+      ..isVoted = false);
 
     return normalizeEntry(updatedEntry);
   }
 
-    Future<Result> commentVoteUp(EntryComment entry) async {
-    var voteCount = await client.request('entries', 'commentvoteup', api: [entry.id.toString()]);
-    var updatedEntry = entry.rebuild((b) =>
-      b..voteCount = int.parse(voteCount["vote_count"])
-      ..isVoted = true
-    );
+  Future<Result> commentVoteUp(EntryComment entry) async {
+    var voteCount = await client
+        .request('entries', 'commentvoteup', api: [entry.id.toString()]);
+    var updatedEntry = entry.rebuild((b) => b
+      ..voteCount = int.parse(voteCount["vote_count"])
+      ..isVoted = true);
 
     return normalizeEntryComment(updatedEntry);
   }
 
   Future<Result> commentVoteDown(EntryComment entry) async {
-    var voteCount = await client.request('entries', 'commentvoteremove', api: [entry.id.toString()]);
-    var updatedEntry = entry.rebuild((b) =>
-      b..voteCount = int.parse(voteCount["vote_count"])
-      ..isVoted = false
-    );
+    var voteCount = await client
+        .request('entries', 'commentvoteremove', api: [entry.id.toString()]);
+    var updatedEntry = entry.rebuild((b) => b
+      ..voteCount = int.parse(voteCount["vote_count"])
+      ..isVoted = false);
 
     return normalizeEntryComment(updatedEntry);
   }

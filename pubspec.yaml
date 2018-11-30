@@ -23,7 +23,6 @@ dependencies:
   redux_thunk: ^0.2.1
   timeago: ^2.0.9
   font_awesome_flutter: ^8.1.0
-  cached_network_image: ^0.5.0
   transparent_image: ^0.1.0
   photo_view: ^0.0.10
   uuid: ^1.0.3
