@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/owm_glyphs.dart';
-import 'package:owmflutter/widgets/scroll_notifier.dart';
+import 'package:owmflutter/widgets/shiny_backdrop.dart';
 
 class VoteButton extends StatefulWidget {
   final VoidCallback onClicked;
@@ -27,12 +27,6 @@ class VoteButtonState extends State<VoteButton> {
   double scrollPosition = 0;
   @override
   Widget build(BuildContext context) {
-    var not = ScrollNotifier.of(context);
-
-    var offset = 0.0;
-    if (not != null) {
-      offset = (not.pixels / 30) % 4 - 2;
-    }
     return InkWell(
         borderRadius: BorderRadius.circular(30.0),
         child: ClipRRect(
@@ -40,23 +34,24 @@ class VoteButtonState extends State<VoteButton> {
           child: Stack(
             children: <Widget>[
               Positioned(
-                top: 0,
-                bottom: 0,
-                right: 0,
-                left: 0,
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: List.from(stateGradientColor)
-                        ..addAll(stateGradientColor.reversed.toList()),
-                      stops: [0, 0.50, 0.50, 1],
-                      begin: Alignment.topLeft.add(Alignment(offset, 0)),
-                      end: Alignment.bottomCenter
-                          .add(Alignment(offset, 0)),
-                    ),
-                  ),
-                ),
-              ),
+                  top: 0,
+                  bottom: 0,
+                  right: 0,
+                  left: 0,
+                  child: ShinyBackdrop(
+                    extent: 100.0,
+                    child: Container(),
+                    gradientCreator: (double parallaxValue) {
+                      var offset = Alignment(parallaxValue, 0);
+                      return LinearGradient(
+                        colors: List.from(stateGradientColor)
+                          ..addAll(stateGradientColor.reversed.toList()),
+                        stops: [0, 0.50, 0.50, 1],
+                        begin: Alignment.topLeft.add(offset),
+                        end: Alignment.bottomCenter.add(offset),
+                      );
+                    },
+                  )),
               Container(
                   padding: widget.padding,
                   child: Row(children: <Widget>[

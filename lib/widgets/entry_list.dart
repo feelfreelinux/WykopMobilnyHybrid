@@ -1,10 +1,9 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/store/store.dart';
-import 'package:owmflutter/widgets/scroll_notifier.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:redux/redux.dart';
-import 'dart:async';
 
 typedef EntrylistState ConverterCallback(Store<AppState> store);
 typedef void LoadDataCallback(
@@ -39,7 +38,8 @@ class EntryListState extends State<EntryList> {
               }
               return StoreConnector<AppState, ListRefreshCallback>(
                   converter: (store) {
-                return (bool refresh, Completer completer) => widget.loadDataCallback(store, refresh, completer);
+                return (bool refresh, Completer completer) =>
+                    widget.loadDataCallback(store, refresh, completer);
               }, builder: (context, callback) {
                 return RefreshIndicator(
                   onRefresh: () {
@@ -47,26 +47,16 @@ class EntryListState extends State<EntryList> {
                     callback(true, completer);
                     return completer.future;
                   },
-                  child: NotificationListener<ScrollUpdateNotification>(
-                    onNotification: (ScrollUpdateNotification notif) {
-                      setState(() {
-                        this.scrollPixels = notif.metrics.pixels;
-                      });
-                    },
-                    child: ScrollNotifier( // notifier for plus buttons with cool parallax animated gradients
-                      pixels: this.scrollPixels,
-                      child: InfiniteList(
-                          isLoading: state.listState.isLoading,
-                          hasReachedEnd: state.listState.haveReachedEnd,
-                          loadData: () => callback(false, Completer()),
-                          itemCount: state.entriesState.itemIds.length,
-                          itemBuilder: (context, index) {
-                            return EntryWidget(
-                                entryId: state.entriesState.itemIds[index],
-                                ellipsize: true);
-                          }),
-                    ),
-                  ),
+                  child: InfiniteList(
+                      isLoading: state.listState.isLoading,
+                      hasReachedEnd: state.listState.haveReachedEnd,
+                      loadData: () => callback(false, Completer()),
+                      itemCount: state.entriesState.itemIds.length,
+                      itemBuilder: (context, index) {
+                        return EntryWidget(
+                            entryId: state.entriesState.itemIds[index],
+                            ellipsize: true);
+                      }),
                 );
               });
             }));
