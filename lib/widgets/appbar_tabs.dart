@@ -30,7 +30,7 @@ class AppbarTabsWidget extends PreferredSize {
                 indicatorSize: TabBarIndicatorSize.tab,
                 labelColor: Colors.white,
                 labelStyle:
-                    TextStyle(fontSize: 11.0, fontWeight: FontWeight.w600),
+                    TextStyle(fontSize: 11.0, color: Colors.white, fontWeight: FontWeight.w600),
                 labelPadding:
                     EdgeInsets.symmetric(vertical: 18.0, horizontal: 14.0),
                 unselectedLabelColor: Colors.grey[600])),

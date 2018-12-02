@@ -11,5 +11,6 @@ AppState appReducer(AppState state, action) {
         .replace(entryScreenReducer(state.entryScreensState, action))
     ..linksState.replace(linksReducer(state.linksState, action))
     ..myWykopState.replace(myWykopReducer(state.myWykopState, action))
+    ..tagsState.replace(tagReducer(state.tagsState, action))
     ..mikroblogState.replace(mikroblogReducer(state.mikroblogState, action)));
 }

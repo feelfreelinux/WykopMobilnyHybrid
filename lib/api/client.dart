@@ -136,7 +136,7 @@ class ApiClient {
 
     path += api.join('/');
 
-    if (api.isNotEmpty) {
+    if (api.isNotEmpty && named.isEmpty) {
       path += '/';
     }
 

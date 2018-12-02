@@ -13,6 +13,10 @@ export 'mywykop/mywykop_state.dart';
 export 'mywykop/reducer.dart';
 export 'mywykop/actions.dart';
 
+export 'tags/tags_state.dart';
+export 'tags/reducer.dart';
+export 'tags/actions.dart';
+
 export 'list/list_state.dart';
 export 'list/actions.dart';
 export 'list/reducer.dart';

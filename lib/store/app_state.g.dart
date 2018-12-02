@@ -49,6 +49,9 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
       'entryScreensState',
       serializers.serialize(object.entryScreensState,
           specifiedType: const FullType(EntryScreensState)),
+      'tagsState',
+      serializers.serialize(object.tagsState,
+          specifiedType: const FullType(TagsState)),
     ];
 
     return result;
@@ -90,6 +93,10 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
                   specifiedType: const FullType(EntryScreensState))
               as EntryScreensState);
           break;
+        case 'tagsState':
+          result.tagsState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(TagsState)) as TagsState);
+          break;
       }
     }
 
@@ -110,6 +117,8 @@ class _$AppState extends AppState {
   final MikroblogState mikroblogState;
   @override
   final EntryScreensState entryScreensState;
+  @override
+  final TagsState tagsState;
 
   factory _$AppState([void updates(AppStateBuilder b)]) =>
       (new AppStateBuilder()..update(updates)).build();
@@ -120,7 +129,8 @@ class _$AppState extends AppState {
       this.linksState,
       this.myWykopState,
       this.mikroblogState,
-      this.entryScreensState})
+      this.entryScreensState,
+      this.tagsState})
       : super._() {
     if (authState == null) {
       throw new BuiltValueNullFieldError('AppState', 'authState');
@@ -140,6 +150,9 @@ class _$AppState extends AppState {
     if (entryScreensState == null) {
       throw new BuiltValueNullFieldError('AppState', 'entryScreensState');
     }
+    if (tagsState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'tagsState');
+    }
   }
 
   @override
@@ -158,7 +171,8 @@ class _$AppState extends AppState {
         linksState == other.linksState &&
         myWykopState == other.myWykopState &&
         mikroblogState == other.mikroblogState &&
-        entryScreensState == other.entryScreensState;
+        entryScreensState == other.entryScreensState &&
+        tagsState == other.tagsState;
   }
 
   @override
@@ -166,11 +180,13 @@ class _$AppState extends AppState {
     return $jf($jc(
         $jc(
             $jc(
-                $jc($jc($jc(0, authState.hashCode), entitiesState.hashCode),
-                    linksState.hashCode),
-                myWykopState.hashCode),
-            mikroblogState.hashCode),
-        entryScreensState.hashCode));
+                $jc(
+                    $jc($jc($jc(0, authState.hashCode), entitiesState.hashCode),
+                        linksState.hashCode),
+                    myWykopState.hashCode),
+                mikroblogState.hashCode),
+            entryScreensState.hashCode),
+        tagsState.hashCode));
   }
 
   @override
@@ -181,7 +197,8 @@ class _$AppState extends AppState {
           ..add('linksState', linksState)
           ..add('myWykopState', myWykopState)
           ..add('mikroblogState', mikroblogState)
-          ..add('entryScreensState', entryScreensState))
+          ..add('entryScreensState', entryScreensState)
+          ..add('tagsState', tagsState))
         .toString();
   }
 }
@@ -224,6 +241,11 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   set entryScreensState(EntryScreensStateBuilder entryScreensState) =>
       _$this._entryScreensState = entryScreensState;
 
+  TagsStateBuilder _tagsState;
+  TagsStateBuilder get tagsState =>
+      _$this._tagsState ??= new TagsStateBuilder();
+  set tagsState(TagsStateBuilder tagsState) => _$this._tagsState = tagsState;
+
   AppStateBuilder();
 
   AppStateBuilder get _$this {
@@ -234,6 +256,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _myWykopState = _$v.myWykopState?.toBuilder();
       _mikroblogState = _$v.mikroblogState?.toBuilder();
       _entryScreensState = _$v.entryScreensState?.toBuilder();
+      _tagsState = _$v.tagsState?.toBuilder();
       _$v = null;
     }
     return this;
@@ -263,7 +286,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
               linksState: linksState.build(),
               myWykopState: myWykopState.build(),
               mikroblogState: mikroblogState.build(),
-              entryScreensState: entryScreensState.build());
+              entryScreensState: entryScreensState.build(),
+              tagsState: tagsState.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -279,6 +303,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
         mikroblogState.build();
         _$failedField = 'entryScreensState';
         entryScreensState.build();
+        _$failedField = 'tagsState';
+        tagsState.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'AppState', _$failedField, e.toString());

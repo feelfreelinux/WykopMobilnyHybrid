@@ -9,5 +9,5 @@ import 'package:built_collection/built_collection.dart';
 LinksState linksReducer(LinksState state, action) {
   return state.rebuild((b) => b
     ..promotedState
-        .replace(linksListReducer("PROMOTED", state.promotedState, action)));
+        .replace(entriesReducer("PROMOTED", state.promotedState, action)));
 }

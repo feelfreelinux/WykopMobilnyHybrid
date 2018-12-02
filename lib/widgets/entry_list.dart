@@ -31,9 +31,9 @@ class EntryListState extends State<EntryList> {
         child: StoreConnector<AppState, EntrylistState>(
             converter: (store) => widget.converterCallback(store),
             onInit: (store) =>
-                widget.loadDataCallback(store, false, Completer()),
+                widget.loadDataCallback(store, true, Completer()),
             builder: (context, state) {
-              if (state.listState.isLoading && state.listState.page == 1) {
+              if (state == null || state.listState.isLoading && state.listState.page == 1) {
                 return Center(child: CircularProgressIndicator());
               }
               return StoreConnector<AppState, ListRefreshCallback>(

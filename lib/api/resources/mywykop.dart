@@ -11,7 +11,6 @@ class MyWykopApi extends ApiResource {
     var dd = normalizeEntryLinkResponse(BuiltList.from(
         client.deserializeList(EntryLinkResponse.serializer, items)));
 
-    print(dd.result.length);
     return dd;
   }
 

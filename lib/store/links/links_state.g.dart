@@ -33,7 +33,7 @@ class _$LinksStateSerializer implements StructuredSerializer<LinksState> {
     final result = <Object>[
       'promotedState',
       serializers.serialize(object.promotedState,
-          specifiedType: const FullType(LinksListState)),
+          specifiedType: const FullType(EntrylistState)),
     ];
 
     return result;
@@ -52,7 +52,7 @@ class _$LinksStateSerializer implements StructuredSerializer<LinksState> {
       switch (key) {
         case 'promotedState':
           result.promotedState.replace(serializers.deserialize(value,
-              specifiedType: const FullType(LinksListState)) as LinksListState);
+              specifiedType: const FullType(EntrylistState)) as EntrylistState);
           break;
       }
     }
@@ -63,7 +63,7 @@ class _$LinksStateSerializer implements StructuredSerializer<LinksState> {
 
 class _$LinksState extends LinksState {
   @override
-  final LinksListState promotedState;
+  final EntrylistState promotedState;
 
   factory _$LinksState([void updates(LinksStateBuilder b)]) =>
       (new LinksStateBuilder()..update(updates)).build();
@@ -103,10 +103,10 @@ class _$LinksState extends LinksState {
 class LinksStateBuilder implements Builder<LinksState, LinksStateBuilder> {
   _$LinksState _$v;
 
-  LinksListStateBuilder _promotedState;
-  LinksListStateBuilder get promotedState =>
-      _$this._promotedState ??= new LinksListStateBuilder();
-  set promotedState(LinksListStateBuilder promotedState) =>
+  EntrylistStateBuilder _promotedState;
+  EntrylistStateBuilder get promotedState =>
+      _$this._promotedState ??= new EntrylistStateBuilder();
+  set promotedState(EntrylistStateBuilder promotedState) =>
       _$this._promotedState = promotedState;
 
   LinksStateBuilder();

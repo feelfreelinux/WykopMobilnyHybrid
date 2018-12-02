@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:owmflutter/screens/screens.dart';
 
 var colorCombinations = <List<Color>>[
   [Colors.black, Colors.blue],
@@ -40,17 +41,34 @@ class TagWidget extends StatelessWidget {
       gradient = colorOverrides[this.tag];
     }
 
-    return Container(
-      decoration: BoxDecoration(
-          color: Colors.blueAccent,
-          borderRadius: BorderRadius.circular(8.0)),
-      child: Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: Text('#' + this.tag,
-            style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 12.0)),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            PageRouteBuilder(
+                pageBuilder: (BuildContext context, Animation<double> animation,
+                    Animation<double> secondaryAnimation) {
+                  return TagScreen(tag: tag);
+                },
+                transitionsBuilder: (context, animation1, animation2, child) {
+                  return FadeTransition(
+                      opacity: Tween<double>(begin: 0.0, end: 1.0)
+                          .animate(animation1),
+                      child: child);
+                },
+                transitionDuration: Duration(milliseconds: 400)));
+      },
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.blueAccent, borderRadius: BorderRadius.circular(8.0)),
+        child: Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: Text('#' + this.tag,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12.0)),
+        ),
       ),
     );
   }

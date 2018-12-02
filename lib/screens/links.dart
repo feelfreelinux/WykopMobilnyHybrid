@@ -19,8 +19,8 @@ class HomeScreen extends StatelessWidget {
               LinksList(
                   converterCallback: (store) =>
                       store.state.linksState.promotedState,
-                  loadDataCallback: (store, refresh) =>
-                      store.dispatch(loadPromoted(Completer()))),
+                  loadDataCallback: (store, refresh, completer) =>
+                      store.dispatch(loadPromoted(refresh, completer))),
               Text('todo xDDD'),
               Text('todo xDDD')
             ])));
