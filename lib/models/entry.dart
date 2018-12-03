@@ -12,11 +12,11 @@ abstract class Entry implements Built<Entry, EntryBuilder> {
   @nullable
   String get body;
 
-  @BuiltValueField(wireName: "vote_count")
   int get voteCount;
 
-  @BuiltValueField(wireName: "comments_count")
   int get commentsCount;
+
+  bool get isVoted;
 
   BuiltList<EntryComment> get comments;
 
@@ -37,6 +37,7 @@ abstract class Entry implements Built<Entry, EntryBuilder> {
             : BuiltList.from(response.comments.map((el) {
                 return EntryComment.mapFromResponse(el);
               })),
+        isVoted: response.userVote != null && response.userVote > 0,
         author: Author.fromResponse(response: response.author),
         embed: (response.embed != null
             ? Embed.fromResponse(response: response.embed)

@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'html_parser.dart';
+import 'package:html/dom.dart' as dom;
+import 'package:flutter_html_view/flutter_html_view.dart';
 
 class BodyWidget extends StatelessWidget {
   final String body;
   final bool ellipsize;
-  BodyWidget({this.body, this.ellipsize});
+  final EdgeInsets padding;
+  BodyWidget(
+      {this.body,
+      this.ellipsize,
+      this.padding: const EdgeInsets.only(left: 12, right: 12, bottom: 14)});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 4.0),
-        child: Html(
-            data: body != null
+        padding: padding,
+        child: HtmlWidget(
+            html: body != null
                 ? body.length > 300 && ellipsize
                     ? body.substring(0, 200) + '...'
                     : body
-                : ''),
-      ),
-    );
+                : ''));
   }
 }

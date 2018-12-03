@@ -1,101 +1,65 @@
 export 'response_models/entry_response.dart';
+export 'response_models/link_response.dart';
 export 'response_models/author_response.dart';
 export 'response_models/embed_response.dart';
+export 'response_models/entry_link_response.dart';
 export 'response_models/entry_comment_response.dart';
 export 'response_models/serializers.dart';
+export 'normalizers.dart';
+export 'client.dart';
+export 'resources/api_resource.dart';
+export 'resources/entries.dart';
+export 'resources/users.dart';
+export 'resources/links.dart';
+export 'resources/mywykop.dart';
+export 'resources/tags.dart';
 
-import 'package:http/http.dart';
 import 'dart:async';
-import 'package:built_value/serializer.dart';
-import 'package:built_value/built_value.dart';
-import 'package:built_collection/built_collection.dart';
+import 'package:owmflutter/api/client.dart';
 import 'package:owmflutter/api/api.dart';
 import 'dart:convert';
 import 'dart:async' show Future;
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart' as crypto;
 
-class BaseWykopHttpClient extends BaseClient {
-  final String baseUrl = 'https://a2.wykop.pl';
-  final Client _inner = Client();
-  ApiSecrets _secrets;
+String generateMd5(String data) {
+  var content = Utf8Encoder().convert(data);
+  var md5 = crypto.md5;
+  var digest = md5.convert(content);
 
-  BaseWykopHttpClient();
+  return hex.encode(digest.bytes);
+}
 
-  @override
-  Future<StreamedResponse> send(BaseRequest request) {
-    return _inner.send(request);
+class WykopApiClient {
+  final ApiClient _client = ApiClient();
+
+  String getAppKey() => _client.secrets.appkey;
+  String getAppSecret() => _client.secrets.secret;
+
+  LinksApi links;
+  EntriesApi entries;
+  UsersApi users;
+  MyWykopApi mywykop;
+  TagsApi tags;
+
+  AuthCredentials get credentials => _client.credentials;
+
+  void setUserToken(AuthCredentials credentials) {
+    _client.credentials = credentials;
   }
 
-  String generateMd5(String data) {
-    var content = Utf8Encoder().convert(data);
-    var md5 = crypto.md5;
-    var digest = md5.convert(content);
-    return hex.encode(digest.bytes);
+  Future<void> ensureSynced() async {
+    await this._client.syncCredsFromStorage();
   }
 
-  String signRequest(String url) {
-    return generateMd5(_secrets.secret + url);
-  }
-
-  Future<dynamic> _wykopGet(String url) async {
-    if (_secrets == null) {
-      _secrets = await loadSecrets();
-    }
-    var appkey = _secrets.appkey;
-    var httpResponse = await _inner.get("$url/appkey/$appkey",
-        headers: {'apisign': signRequest("$url/appkey/$appkey")});
-    var decoded = json.decode(httpResponse.body) as Map;
-    if (decoded.containsKey("error")) {
-      throw ("TODO");
-    } else {
-      return decoded["data"];
-    }
-  }
-
-  Future<List<T>> wykopGetList<T>(Serializer<T> serializer, String url) async {
-    var list = await _wykopGet(url) as List<dynamic>;
-    return list.map((el) {
-      return serializers.deserializeWith(serializer, el);
-    }).toList();
-  }
-
-  Future<T> wykopGet<T>(Serializer<T> serializer, String url) async {
-    var map = await _wykopGet(url) as Map;
-    return serializers.deserializeWith(serializer, map);
+  WykopApiClient() {
+    _client.initialize();
+    this.entries = EntriesApi(_client);
+    this.users = UsersApi(_client);
+    this.links = LinksApi(_client);
+    this.tags = TagsApi(_client);
+    this.mywykop = MyWykopApi(_client);
   }
 }
 
-class BaseWykopClient {
-  final BaseWykopHttpClient _httpClient = BaseWykopHttpClient();
-
-  BaseWykopClient();
-
-  Future<BuiltList<EntryResponse>> getHot(int page) async {
-    var items = await _httpClient.wykopGetList(EntryResponse.serializer,
-        "http://a2.wykop.pl/entries/hot/period/12/page/${page.toString()}");
-    return BuiltList.from(items);
-  }
-
-  Future<EntryResponse> getEntry(int id) async {
-    var item = await _httpClient.wykopGet(EntryResponse.serializer,
-        "http://a2.wykop.pl/entries/entry/${id.toString()}");
-    return item;
-  }
-}
-
-class WykopApi {}
-
-class ApiSecrets {
-  final String secret;
-  final String appkey;
-  ApiSecrets({this.secret, this.appkey});
-}
-
-Future<ApiSecrets> loadSecrets() async {
-  var rawJson = await rootBundle.loadString('assets/secrets.json');
-  var decoded = json.decode(rawJson);
-  return ApiSecrets(
-      appkey: decoded["wykop_key"], secret: decoded["wykop_secret"]);
-}
+var api = WykopApiClient();

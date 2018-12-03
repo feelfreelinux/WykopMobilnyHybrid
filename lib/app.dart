@@ -4,6 +4,7 @@ import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/themes.dart';
+import 'package:owmflutter/keys.dart';
 
 class OwmApp extends StatelessWidget {
   final Store<AppState> store;
@@ -16,9 +17,10 @@ class OwmApp extends StatelessWidget {
         store: store,
         child: MaterialApp(
           title: 'Wykop Mobilny',
+          navigatorKey: OwmKeys.navKey,
           theme: Themes.lightTheme(),
           routes: {
-            '/': (context) => MikroblogScreen(),
+            '/': (context) => MainScreen(),
           },
         ));
   }

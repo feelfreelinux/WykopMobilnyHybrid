@@ -10,7 +10,7 @@ class EntryCommentFooterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 36.0,
+      height: 40.0,
       child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.end,
@@ -25,8 +25,9 @@ class EntryCommentFooterWidget extends StatelessWidget {
             ),
             Expanded(child: Container()),
             VoteButton(
-              count: comment.voteCount,
               onClicked: () {},
+              count: comment.voteCount,
+              isSelected: false,
             ),
             FooterIconButton(
               icon: OwmGlyphs.ic_buttontoolbar_dots,

@@ -1,53 +1,60 @@
 import 'package:owmflutter/api/api.dart';
-import 'package:built_collection/built_collection.dart';
-import 'package:owmflutter/models/models.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:owmflutter/store/store.dart';
 import 'package:redux/redux.dart';
+import 'dart:async';
 
-class LoadHotAction {}
-
-class LoadEntry {
-  final int entryId;
-  LoadEntry({this.entryId});
-}
-
-class UpdateEntryAction {
-  final Entry entry;
-  UpdateEntryAction({this.entry});
-}
-
-class SetEntriesAction {
-  final BuiltList<Entry> entries;
-  SetEntriesAction({this.entries});
-}
-
-class AddEntriesAction {
-  final BuiltList<Entry> entries;
-  AddEntriesAction({this.entries});
-}
-
-ThunkAction<AppState> loadHotPeriod(String period) {
+ThunkAction<AppState> loadHot6(bool refresh, Completer completer) {
   return (Store<AppState> store) async {
-    store.dispatch(SetLoading(type: "MIKROBLOG", isLoading: true));
-    var results = await api.getHot(store.state.mikroblogState.listState.page);
-    store.dispatch(
-        SetPageNumber(type: "MIKROBLOG", number: store.state.mikroblogState.listState.page + 1));
-    store.dispatch(SetLoading(type: "MIKROBLOG", isLoading: false));
+    store.dispatch(loadItems(
+        "HOT6",
+        refresh,
+        (page) => api.entries.getHot(page, "6"),
+        store.state.mikroblogState.hot6State.listState,
+        completer));
+  };
+}
 
-    if (results.length == 0) {
-      store.dispatch(SetHaveReachedEnd(type: "MIKROBLOG", haveReachedEnd: true));
-    }
-    if (store.state.mikroblogState.listState.page == 2) {
-      store.dispatch(SetEntriesAction(
-          entries: BuiltList.from(results.map((el) {
-        return Entry.mapFromResponse(el);
-      }).toList())));
-    } else {
-      store.dispatch(AddEntriesAction(
-          entries: BuiltList.from(results.map((el) {
-        return Entry.mapFromResponse(el);
-      }).toList())));
-    }
+ThunkAction<AppState> loadHot12(bool refresh, Completer completer) {
+  return (Store<AppState> store) async {
+    store.dispatch(loadItems(
+        "HOT12",
+        refresh,
+        (page) => api.entries.getHot(page, "12"),
+        store.state.mikroblogState.hot12State.listState,
+        completer));
+  };
+}
+
+ThunkAction<AppState> loadHot24(bool refresh, Completer complater) {
+  return (Store<AppState> store) async {
+    store.dispatch(loadItems(
+        "HOT24",
+        refresh,
+        (page) => api.entries.getHot(page, "24"),
+        store.state.mikroblogState.hot24State.listState,
+        complater));
+  };
+}
+
+ThunkAction<AppState> loadNewest(bool refresh, Completer completer) {
+  return (Store<AppState> store) async {
+    store.dispatch(loadItems(
+        "NEWEST",
+        refresh,
+        (page) => api.entries.getNewest(page),
+        store.state.mikroblogState.newestState.listState,
+        completer));
+  };
+}
+
+ThunkAction<AppState> loadActive(bool refresh, Completer completer) {
+  return (Store<AppState> store) async {
+    store.dispatch(loadItems(
+        "ACTIVE",
+        refresh,
+        (page) => api.entries.getActive(page),
+        store.state.mikroblogState.activeState.listState,
+        completer));
   };
 }
