@@ -32,7 +32,7 @@ class EntryWidget extends StatelessWidget {
             AuthorWidget(
                 author: entry.author, date: entry.date, fontSize: 13.5),
             Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.0),
+                padding: EdgeInsets.only(right: 12.0),
                 child: StoreConnector<AppState, VoidCallback>(
                   converter: (state) =>
                       () => state.dispatch(voteEntry(entryId)),
@@ -44,14 +44,23 @@ class EntryWidget extends StatelessWidget {
                       }),
                 ))
           ]),
-      BodyWidget(
-        body: entry.body,
-        ellipsize: ellipsize,
-        padding: EdgeInsets.only(left: 12.0, right: 12.0, bottom: 6.0),
-      ),
+      _drawBody(entry),
       _drawEmbed(entry),
       EntryFooterWidget(entry: entry)
     ];
+  }
+
+  Widget _drawBody(Entry entry) {
+    if (entry.body != null) {
+      return BodyWidget(
+        body: entry.body,
+        ellipsize: ellipsize,
+        padding:
+            EdgeInsets.only(left: 12.0, right: 12.0, bottom: 4.0, top: 4.0),
+      );
+    } else {
+      return Container();
+    }
   }
 
   Widget _drawEmbed(Entry entry) {

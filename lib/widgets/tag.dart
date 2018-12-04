@@ -42,34 +42,32 @@ class TagWidget extends StatelessWidget {
     }
 
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-            context,
-            PageRouteBuilder(
-                pageBuilder: (BuildContext context, Animation<double> animation,
-                    Animation<double> secondaryAnimation) {
-                  return TagScreen(tag: tag);
-                },
-                transitionsBuilder: (context, animation1, animation2, child) {
-                  return FadeTransition(
-                      opacity: Tween<double>(begin: 0.0, end: 1.0)
-                          .animate(animation1),
-                      child: child);
-                },
-                transitionDuration: Duration(milliseconds: 400)));
-      },
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.blueAccent, borderRadius: BorderRadius.circular(8.0)),
-        child: Padding(
-          padding: const EdgeInsets.all(2.0),
-          child: Text('#' + this.tag,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12.0)),
-        ),
-      ),
-    );
+        onTap: () {
+          Navigator.push(
+              context,
+              PageRouteBuilder(
+                  pageBuilder: (BuildContext context,
+                      Animation<double> animation,
+                      Animation<double> secondaryAnimation) {
+                    return TagScreen(tag: tag);
+                  },
+                  transitionsBuilder: (context, animation1, animation2, child) {
+                    return FadeTransition(
+                        opacity: Tween<double>(begin: 0.0, end: 1.0)
+                            .animate(animation1),
+                        child: child);
+                  },
+                  transitionDuration: Duration(milliseconds: 400)));
+        },
+        child: Container(
+            margin: EdgeInsets.only(top: 0.4, bottom: 1.0),
+            padding:
+                EdgeInsets.only(left: 5.5, top: 1.0, right: 5.5, bottom: 2.0),
+            decoration: BoxDecoration(
+                gradient:
+                    LinearGradient(colors: [Colors.blueAccent, Colors.blue]),
+                borderRadius: BorderRadius.circular(20.0)),
+            child: Text('#' + this.tag,
+                style: TextStyle(color: Colors.white, fontSize: 13.0))));
   }
 }

@@ -135,17 +135,14 @@ class _HtmlParser {
           _tryCloseCurrentTextSpan();
           _widgets.add(Wrap(children: [
             Container(
-              decoration: BoxDecoration(
-                color: Colors.amber,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(4.0),
+                padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+                decoration: BoxDecoration(
+                    color: Color(0x80f0f0f0),
+                    borderRadius: BorderRadius.circular(4)),
                 child: !nested
                     ? (new _HtmlParser(context, nested: true))
                         .parseFromElement(element)
-                    : Text(element.text),
-              ),
-            )
+                    : Text(element.text))
           ]));
           // for (var subNode in element.nodes) { _parseNode(subNode); }
 
@@ -172,7 +169,7 @@ class _HtmlParser {
     _widgets.add(
       new RichText(
           text: new TextSpan(
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(color: Colors.black, height: 1.1),
               children: new List.from(_currentTextSpans))),
     );
 

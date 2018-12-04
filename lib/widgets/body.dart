@@ -10,7 +10,7 @@ class BodyWidget extends StatelessWidget {
   BodyWidget(
       {this.body,
       this.ellipsize,
-      this.padding: const EdgeInsets.only(left: 12, right: 12, bottom: 14)});
+      this.padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12)});
 
   @override
   Widget build(BuildContext context) {
