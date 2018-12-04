@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/owm_glyphs.dart';
-import 'photo_bottomSheet.dart';
+//import 'photo_bottomSheet.dart';
 
 class InputBarWidget extends StatefulWidget {
   _InputBarWidgetState createState() => _InputBarWidgetState();
@@ -155,7 +155,7 @@ class _InputBarWidgetState extends State<InputBarWidget> {
         padding: EdgeInsets.only(bottom: 6.0),
         child: InkWell(
             onTap: () {
-              PhotoBottomSheetWidget();
+              // PhotoBottomSheetWidget();
             },
             borderRadius: BorderRadius.circular(100.0),
             child: Padding(
