@@ -36,7 +36,7 @@ class EntryCommentWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                 _drawHeader(context, comment),
-                BodyWidget(body: comment.body, ellipsize: false),
+                _drawBody(comment),
                 _drawEmbed(comment)
               ]))
         ]),
@@ -52,10 +52,22 @@ class EntryCommentWidget extends StatelessWidget {
     ];
   }
 
+  Widget _drawBody(EntryComment comment) {
+    if (comment.body != null) {
+      return BodyWidget(body: comment.body, ellipsize: false);
+    } else {
+      return Container();
+    }
+  }
+
   Widget _drawEmbed(EntryComment comment) {
     if (comment.embed != null) {
       return Container(
-          padding: EdgeInsets.only(left: 12.0, right: 12.0, bottom: 18.0),
+          padding: EdgeInsets.only(
+              left: 12.0,
+              right: 12.0,
+              bottom: 18.0,
+              top: (comment.body != null ? 0.0 : 10.0)),
           child: EmbedWidget(
             embed: comment.embed,
             reducedWidth: 84.0,
@@ -89,7 +101,6 @@ class EntryCommentWidget extends StatelessWidget {
                 Text("  •  " + Utils.getSimpleDate(comment.date),
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                        fontWeight: FontWeight.w400,
                         fontSize: 11.5,
                         color: Theme.of(context).textTheme.caption.color))
               ])),

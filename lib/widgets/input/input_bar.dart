@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/owm_glyphs.dart';
-import 'package:owmflutter/widgets/widgets.dart';
+import 'photo_bottomSheet.dart';
 
 class InputBarWidget extends StatefulWidget {
   _InputBarWidgetState createState() => _InputBarWidgetState();
@@ -9,24 +8,20 @@ class InputBarWidget extends StatefulWidget {
 
 class _InputBarWidgetState extends State<InputBarWidget> {
   bool showMarkdownBar = false;
+  bool showMediaButton = true;
+  bool clickTextField = false;
   bool isEmpty = true;
   TextEditingController textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: Duration(milliseconds: 300),
-          child: Container(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _drawButtons(),
-            _drawInputBar(),
-          ],
-        ),
-      ),
-    );
+        duration: Duration(milliseconds: 300),
+        child: BottomAppBar(
+            child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [_drawInputBar(), _drawButtons()])));
   }
 
   @override
@@ -41,50 +36,8 @@ class _InputBarWidgetState extends State<InputBarWidget> {
     super.dispose();
   }
 
-  Widget _drawInputBar() {
-    return Row(children: [
-      Expanded(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-                border: Border.all(color: Colors.grey[200], width: 1),
-                borderRadius:
-                    new BorderRadius.all(const Radius.circular(10.0))),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
-              child: TextField(
-                  maxLines: null,
-                  controller: this.textController,
-                  keyboardType: TextInputType.multiline,
-                  onTap: () {
-                    setState(() {
-                      showMarkdownBar = true;
-                    });
-                  },
-                  decoration: InputDecoration(
-                      border: InputBorder.none, hintText: 'Treść komentarza')),
-            ),
-          ),
-        ),
-      ),
-      InkWell(
-        onTap: () {},
-        child: Padding(
-          padding:
-              const EdgeInsets.only(left: 8.0, top: 8, right: 16, bottom: 8),
-          child: Icon(
-            Icons.send,
-            color: isEmpty ? Colors.grey : Colors.black,
-          ),
-        ),
-      ),
-    ]);
-  }
-
   _watchTextChanges() {
-    if (textController.text != null && textController.text.length > 3) {
+    if (textController.text != null && textController.text.length >= 3) {
       if (isEmpty) {
         setState(() {
           isEmpty = false;
@@ -97,47 +50,158 @@ class _InputBarWidgetState extends State<InputBarWidget> {
     }
   }
 
+  Widget _drawInputBar() {
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 6.0),
+        child: Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
+          _drawShowMarkdownButton(),
+          _drawMediaButton(),
+          Expanded(
+              child: Container(
+                  margin: const EdgeInsets.symmetric(
+                      vertical: 8.0, horizontal: 6.0),
+                  padding: const EdgeInsets.only(
+                      left: 12.0, top: 1.0, right: 1.0, bottom: 1.0),
+                  decoration: BoxDecoration(
+                      color: Color(0x267f7f7f),
+                      borderRadius:
+                          BorderRadius.all(const Radius.circular(16.0))),
+                  child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Flexible(
+                            child: ConstrainedBox(
+                                constraints: BoxConstraints(maxHeight: 90.0),
+                                child: Scrollbar(
+                                    child: SingleChildScrollView(
+                                        reverse: true,
+                                        child: TextField(
+                                            cursorWidth: 1.5,
+                                            cursorRadius: Radius.circular(20.0),
+                                            style: DefaultTextStyle.of(context)
+                                                .style
+                                                .merge(
+                                                    TextStyle(fontSize: 14.0)),
+                                            maxLines: null,
+                                            controller: this.textController,
+                                            keyboardType:
+                                                TextInputType.multiline,
+                                            onTap: () {
+                                              setState(() {
+                                                showMediaButton = false;
+                                                clickTextField = true;
+                                              });
+                                            },
+                                            decoration: InputDecoration(
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                        vertical: 8.0),
+                                                border: InputBorder.none,
+                                                hintText:
+                                                    'Treść komentarza')))))),
+                        _drawEmoticonButton()
+                      ]))),
+          _drawSendButton()
+        ]));
+  }
+
   Widget _drawButtons() {
     if (showMarkdownBar) {
-      return Padding(
-        padding: const EdgeInsets.only(left: 8.0, right: 16.0, top: 8.0),
-        child: Row(children: [
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      return Container(
+          //color: Theme.of(context).backgroundColor,
+          padding: const EdgeInsets.only(bottom: 8.0, left: 6.0, right: 6.0),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                _drawIcon(OwmGlyphs.ic_markdowntoolbar_bold, () {}),
-                _drawIcon(OwmGlyphs.ic_markdowntoolbar_code, () {}),
-                _drawIcon(OwmGlyphs.ic_markdowntoolbar_italic, () {}),
-                _drawIcon(OwmGlyphs.ic_markdowntoolbar_link, () {}),
-                _drawIcon(OwmGlyphs.ic_markdowntoolbar_quote, () {}),
-                _drawIcon(OwmGlyphs.ic_markdowntoolbar_photo, () {}),
-                _drawIcon(OwmGlyphs.ic_markdowntoolbar_spoiler, () => {}),
-              ],
-            ),
-          ),
-          _drawIcon(Icons.close, () {
+                _drawIconRound(Icons.format_bold, () {}),
+                _drawIconRound(Icons.format_italic, () {}),
+                _drawIconRound(Icons.format_quote, () {}),
+                _drawIconRound(Icons.link, () {}),
+                _drawIconRound(Icons.code, () {}),
+                _drawIconRound(OwmGlyphs.ic_markdowntoolbar_spoiler, () => {}),
+                _drawIconRound(Icons.format_list_bulleted, () => {}),
+                _drawIconRound(Icons.image, () {}),
+                _drawIconRound(Icons.fullscreen, () {})
+              ]));
+    } else {
+      return Container();
+    }
+  }
+
+  Widget _drawShowMarkdownButton() {
+    return Container(
+      padding: EdgeInsets.only(bottom: 6.0),
+      child: InkWell(
+          onTap: () {
             setState(() {
-              showMarkdownBar = false;
+              showMarkdownBar = showMarkdownBar ? false : true;
+              showMediaButton =
+                  showMarkdownBar ? false : clickTextField ? false : true;
             });
-          }),
-        ]),
+          },
+          borderRadius: BorderRadius.circular(100.0),
+          child: Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: Icon(
+                  showMarkdownBar ? Icons.remove_circle : Icons.add_circle,
+                  size: 26.0,
+                  color: Colors.blueAccent))),
+    );
+  }
+
+  Widget _drawMediaButton() {
+    if (showMediaButton) {
+      return Container(
+        padding: EdgeInsets.only(bottom: 6.0),
+        child: InkWell(
+            onTap: () {
+              PhotoBottomSheetWidget();
+            },
+            borderRadius: BorderRadius.circular(100.0),
+            child: Padding(
+                padding: const EdgeInsets.all(6.0),
+                child:
+                    Icon(Icons.image, size: 26.0, color: Colors.blueAccent))),
       );
     } else {
       return Container();
     }
   }
 
-  Widget _drawIcon(IconData iconData, VoidCallback onClick) {
+  Widget _drawEmoticonButton() {
     return InkWell(
-      onTap: onClick,
-      child: Padding(
-        padding: const EdgeInsets.all(3.0),
-        child: Icon(
-          iconData,
-          size: 26,
-        ),
-      ),
+        onTap: () {},
+        borderRadius: BorderRadius.circular(100.0),
+        child: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: Icon(Icons.mood, color: Colors.blueAccent)));
+  }
+
+  Widget _drawSendButton() {
+    return Container(
+      padding: EdgeInsets.only(bottom: 6.0),
+      child: InkWell(
+          onTap: () {},
+          borderRadius: BorderRadius.circular(100.0),
+          child: Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: Icon(Icons.send,
+                  size: 26.0,
+                  color: isEmpty ? Colors.grey : Colors.blueAccent))),
     );
+  }
+
+  Widget _drawIconRound(IconData iconData, VoidCallback onClick) {
+    return Container(
+        decoration: BoxDecoration(
+            color: Theme.of(context).cardColor,
+            borderRadius: BorderRadius.circular(30),
+            border: Border.all(color: Color(0x337f7f7f), width: 1.0)),
+        child: InkWell(
+            onTap: onClick,
+            borderRadius: BorderRadius.circular(100.0),
+            child: Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: Icon(iconData, size: 18.0))));
   }
 }
