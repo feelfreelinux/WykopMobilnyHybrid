@@ -2,7 +2,7 @@
 
 Hybrid port of [WykopMobilny](https://github.com/feelfreelinux/WykopMobilny)
 
-## Getting Started
+# Setting up
 
 1. Requirements:
     - For this app you need to install [flutter](https://flutter.io/docs/get-started/install).
