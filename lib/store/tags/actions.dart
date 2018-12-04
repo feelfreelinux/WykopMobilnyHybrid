@@ -4,35 +4,44 @@ import 'package:owmflutter/store/store.dart';
 import 'package:redux/redux.dart';
 import 'dart:async';
 
-ThunkAction<AppState> loadTagIndex(String tag, bool refresh, Completer completer) {
+ThunkAction<AppState> loadTagIndex(
+    String tag, bool refresh, Completer completer) {
   return (Store<AppState> store) async {
     store.dispatch(loadItems(
         "TAG_" + tag + "_INDEX",
         refresh,
         (page) => api.tags.getIndex(tag, page),
-        store.state.tagsState.states[tag] == null ? ListState() : store.state.tagsState.states[tag].indexState.listState,
+        store.state.tagsState.states[tag] == null
+            ? ListState()
+            : store.state.tagsState.states[tag].indexState.listState,
         completer));
   };
 }
 
-ThunkAction<AppState> loadTagLinks(String tag, bool refresh, Completer completer) {
+ThunkAction<AppState> loadTagLinks(
+    String tag, bool refresh, Completer completer) {
   return (Store<AppState> store) async {
     store.dispatch(loadItems(
         "TAG_" + tag + "_LINKS",
         refresh,
         (page) => api.tags.getLinks(tag, page),
-        store.state.tagsState.states[tag] == null ? ListState() : store.state.tagsState.states[tag].linksState.listState,
+        store.state.tagsState.states[tag] == null
+            ? ListState()
+            : store.state.tagsState.states[tag].linksState.listState,
         completer));
   };
 }
 
-ThunkAction<AppState> loadTagEntries(String tag, bool refresh, Completer completer) {
+ThunkAction<AppState> loadTagEntries(
+    String tag, bool refresh, Completer completer) {
   return (Store<AppState> store) async {
     store.dispatch(loadItems(
         "TAG_" + tag + "_ENTRIES",
         refresh,
         (page) => api.tags.getEntries(tag, page),
-        store.state.tagsState.states[tag] == null ? ListState() : store.state.tagsState.states[tag].entriesState.listState,
+        store.state.tagsState.states[tag] == null
+            ? ListState()
+            : store.state.tagsState.states[tag].entriesState.listState,
         completer));
   };
 }

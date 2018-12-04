@@ -48,7 +48,7 @@ flutter:
   fonts:
     - family: OWMGlyphs
       fonts:
-       - asset: fonts/OWMGlyphs.ttf
+       - asset: assets/fonts/OWMGlyphs.ttf
   assets:
     - secrets.json
     - rogal.png

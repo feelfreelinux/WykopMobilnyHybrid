@@ -19,7 +19,8 @@ class LinksList extends StatelessWidget {
             converter: (store) => converterCallback(store),
             onInit: (store) => loadDataCallback(store, true, Completer()),
             builder: (context, state) {
-              if (state == null || state.listState.isLoading && state.listState.page == 1) {
+              if (state == null ||
+                  state.listState.isLoading && state.listState.page == 1) {
                 return Center(child: CircularProgressIndicator());
               }
               return StoreConnector<AppState, dynamic>(converter: (store) {

@@ -10,18 +10,18 @@ class TagsApi extends ApiResource {
         .request('tags', 'index', api: [tag], named: {'page': page.toString()});
     return normalizeEntryLinkResponse(BuiltList.from(
         client.deserializeList(EntryLinkResponse.serializer, items)));
-    }
+  }
 
   Future<Result> getLinks(String tag, int page) async {
     var items = await client
         .request('tags', 'links', api: [tag], named: {'page': page.toString()});
-    return normalizeLinksResponse(BuiltList.from(
-        client.deserializeList(LinkResponse.serializer, items)));
+    return normalizeLinksResponse(
+        BuiltList.from(client.deserializeList(LinkResponse.serializer, items)));
   }
 
   Future<Result> getEntries(String tag, int page) async {
-    var items = await client
-        .request('tags', 'entries', api: [tag], named: {'page': page.toString()});
+    var items = await client.request('tags', 'entries',
+        api: [tag], named: {'page': page.toString()});
     print(items);
     return normalizeEntriesResponse(BuiltList.from(
         client.deserializeList(EntryResponse.serializer, items)));

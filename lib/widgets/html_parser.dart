@@ -125,13 +125,11 @@ class _HtmlParser {
         } else if (element.hasContent() &&
             (element.nodes.length == 1) &&
             (element.firstChild.nodeType == html.Node.TEXT_NODE)) {
-
           _tryCloseCurrentTextSpan();
-          _widgets.add(
-            GestureDetector(
-               child: Text(element.text, style: TextStyle(color: Colors.blueAccent)),
-            )
-          );
+          _widgets.add(GestureDetector(
+            child:
+                Text(element.text, style: TextStyle(color: Colors.blueAccent)),
+          ));
 
           return;
         }

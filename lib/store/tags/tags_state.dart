@@ -5,8 +5,7 @@ import 'package:owmflutter/store/store.dart';
 
 part 'tags_state.g.dart';
 
-abstract class TagsState
-    implements Built<TagsState, TagsStateBuilder> {
+abstract class TagsState implements Built<TagsState, TagsStateBuilder> {
   BuiltMap<String, TagState> get states;
 
   factory TagsState() {
@@ -14,21 +13,21 @@ abstract class TagsState
   }
 
   TagsState._();
-  static Serializer<TagsState> get serializer =>
-      _$tagsStateSerializer;
+  static Serializer<TagsState> get serializer => _$tagsStateSerializer;
 }
 
-abstract class TagState
-    implements Built<TagState, TagStateBuilder> {
+abstract class TagState implements Built<TagState, TagStateBuilder> {
   EntrylistState get indexState;
   EntrylistState get entriesState;
   EntrylistState get linksState;
 
   factory TagState() {
-    return _$TagState._(indexState: EntrylistState(), entriesState: EntrylistState(), linksState: EntrylistState());
+    return _$TagState._(
+        indexState: EntrylistState(),
+        entriesState: EntrylistState(),
+        linksState: EntrylistState());
   }
 
   TagState._();
-  static Serializer<TagState> get serializer =>
-      _$tagStateSerializer;
+  static Serializer<TagState> get serializer => _$tagStateSerializer;
 }
