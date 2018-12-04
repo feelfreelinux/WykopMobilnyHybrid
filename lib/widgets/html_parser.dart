@@ -8,13 +8,15 @@ import 'package:owmflutter/widgets/tag.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
+import 'dart:ui';
+import 'dart:math';
+
 /**
  * HtmlWidget 
  * 
  * Specialized html parser that utilizes both widgets and RichText for fancy views support.
  * Base from `wiki-flutter` client. Thanks a lot!
 */
-
 class HtmlWidget extends StatelessWidget {
   const HtmlWidget({Key key, this.html}) : super(key: key);
 
@@ -58,19 +60,24 @@ class _HtmlParser {
         _parseElement(node as html.Element);
         return;
       case html.Node.TEXT_NODE:
-        // Remove all unnesesary blank lines, we're handling them via <br/> widget
-        final trimmedText = node.text.replaceAll('\n', '');
-
-        if (trimmedText.length == 0) {
-          _tryCloseCurrentTextSpan();
-          return;
-        }
-
-        _appendToCurrentTextSpans(trimmedText);
+        _tokenizeBody(node.text);
         return;
       default:
         break;
     }
+  }
+
+  void _tokenizeBody(String body,
+      {style = const TextStyle(color: Colors.black)}) {
+    final trimmedText = body.replaceAll('\n', '');
+
+    _tryCloseCurrentTextSpan();
+
+    var words = trimmedText.split(' ');
+    trimmedText.split(' ').asMap().forEach((index, value) {
+      _widgets
+          .add(Text(index == words.length ? value : value + ' ', style: style));
+    });
   }
 
   Widget parseFromElement(html.Element element) {
@@ -84,43 +91,47 @@ class _HtmlParser {
     switch (element.localName) {
       case 'span':
       case 'em':
-        _appendToCurrentTextSpans(TextSpan(
-            text: element.text, style: TextStyle(fontStyle: FontStyle.italic)));
+        _tokenizeBody(element.text,
+            style: TextStyle(fontStyle: FontStyle.italic));
+
         break;
       case 'br':
         _tryCloseCurrentTextSpan();
         _widgets.add(Container(
+          color: Colors.amberAccent,
           width: MediaQuery.of(context).size.width,
           height: 4,
         ));
         return;
       case 'strong':
-        _appendToCurrentTextSpans(TextSpan(
-            text: element.text, style: TextStyle(fontWeight: FontWeight.bold)));
+        _tokenizeBody(element.text,
+            style: TextStyle(fontWeight: FontWeight.bold));
+
         // for (var subNode in element.nodes) { _parseNode(subNode); }
         return;
       case 'code':
-        _appendToCurrentTextSpans(TextSpan(
-            text: element.text, style: TextStyle(fontFamily: 'Monospace')));
+        _tokenizeBody(element.text, style: TextStyle(fontFamily: 'Monospace'));
         // for (var subNode in element.nodes) { _parseNode(subNode); }
         return;
       case 'a':
         if (element.attributes['href'].startsWith('spoiler:')) {
           _tryCloseCurrentTextSpan();
-          _widgets.add(Wrap(children: [new SpoilerWidget()]));
+          _widgets.add(new SpoilerWidget());
           return;
         } else if (element.attributes['href'].startsWith('#')) {
           _tryCloseCurrentTextSpan();
-          _widgets.add(Wrap(children: [new TagWidget(element.text)]));
+          _widgets.add(new TagWidget(element.text));
           return;
         } else if (element.hasContent() &&
             (element.nodes.length == 1) &&
             (element.firstChild.nodeType == html.Node.TEXT_NODE)) {
-          final text = element.text;
-          final href = element.attributes['href'];
 
-          _appendToCurrentTextSpans(
-              _textLink(context: context, text: text, href: href));
+          _tryCloseCurrentTextSpan();
+          _widgets.add(
+            GestureDetector(
+               child: Text(element.text, style: TextStyle(color: Colors.blueAccent)),
+            )
+          );
 
           return;
         }
@@ -167,10 +178,15 @@ class _HtmlParser {
     }
 
     _widgets.add(
-      new RichText(
-          text: new TextSpan(
-              style: TextStyle(color: Colors.black, height: 1.1),
-              children: new List.from(_currentTextSpans))),
+      Container(
+        color: Colors.red,
+        child: new RichText(
+            overflow: TextOverflow.clip,
+            softWrap: true,
+            text: new TextSpan(
+                style: TextStyle(color: Colors.black),
+                children: new List.from(_currentTextSpans))),
+      ),
     );
 
     _currentTextSpans.clear();
