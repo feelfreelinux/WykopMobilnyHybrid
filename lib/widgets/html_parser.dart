@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter/services.dart';
 
 import 'package:html/parser.dart' as html show parse;
 import 'package:html/dom.dart' as html;
 import 'package:owmflutter/widgets/spoiler.dart';
 import 'package:owmflutter/widgets/tag.dart';
+import 'package:owmflutter/widgets/user_widget.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
@@ -24,8 +26,8 @@ class HtmlWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new _HtmlParser(context).parseFromStr(
-        html.replaceAll("#<a href=", "<a href=").replaceAll('\n', '<br/>'));
+    return new _HtmlParser(context)
+        .parseFromStr(html.replaceAll("#<a href=", "<a href=").replaceAll("@<a href=", "<a href="));
   }
 }
 
@@ -93,20 +95,17 @@ class _HtmlParser {
       case 'em':
         _tokenizeBody(element.text,
             style: TextStyle(fontStyle: FontStyle.italic));
-
         break;
       case 'br':
         _tryCloseCurrentTextSpan();
         _widgets.add(Container(
-          color: Colors.amberAccent,
           width: MediaQuery.of(context).size.width,
-          height: 4,
+          height: 0,
         ));
         return;
       case 'strong':
         _tokenizeBody(element.text,
             style: TextStyle(fontWeight: FontWeight.bold));
-
         // for (var subNode in element.nodes) { _parseNode(subNode); }
         return;
       case 'code':
@@ -122,11 +121,27 @@ class _HtmlParser {
           _tryCloseCurrentTextSpan();
           _widgets.add(new TagWidget(element.text));
           return;
+        } else if (element.attributes['href'].startsWith('@')) {
+          _tryCloseCurrentTextSpan();
+          _widgets.add(new UserWidget(element.text));
+          return;
         } else if (element.hasContent() &&
             (element.nodes.length == 1) &&
             (element.firstChild.nodeType == html.Node.TEXT_NODE)) {
+          var url = element.attributes['href'];
           _tryCloseCurrentTextSpan();
           _widgets.add(GestureDetector(
+            onLongPress: () {
+              Clipboard.setData(ClipboardData(text: url));
+              Scaffold.of(context).showSnackBar(new SnackBar(
+                content: new Text("Skopiowano url do schowka"),
+              ));
+            },
+            onTap: () async {
+              if (await canLaunch(url)) {
+                launch(url);
+              }
+            },
             child:
                 Text(element.text, style: TextStyle(color: Colors.blueAccent)),
           ));
