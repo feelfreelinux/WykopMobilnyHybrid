@@ -27,7 +27,10 @@ class HtmlWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new _HtmlParser(context)
-        .parseFromStr(html.replaceAll("#<a href=", "<a href=").replaceAll("@<a href=", "<a href="));
+        .parseFromStr(html.replaceAll("#<a href=", "<a href=")
+        .replaceAll('<cite> ', '<cite>')
+        .replaceAll("@<a href=", "<a href=")
+        .replaceAll('<br /> ', '<br/>'));
   }
 }
 
