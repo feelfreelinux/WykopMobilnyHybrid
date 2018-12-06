@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/owm_glyphs.dart';
-//import 'photo_bottomSheet.dart';
+import 'package:owmflutter/models/models.dart';
+import 'dart:async';
+
+typedef Future InputBarCallback(InputData inputData);
 
 class InputBarWidget extends StatefulWidget {
+  final InputBarCallback callback;
+  InputBarWidget(this.callback);
   _InputBarWidgetState createState() => _InputBarWidgetState();
 }
 
@@ -11,6 +16,7 @@ class _InputBarWidgetState extends State<InputBarWidget> {
   bool showMediaButton = true;
   bool clickTextField = false;
   bool isEmpty = true;
+  bool sending = false;
   TextEditingController textController = TextEditingController();
 
   @override
@@ -128,6 +134,19 @@ class _InputBarWidgetState extends State<InputBarWidget> {
     }
   }
 
+  void _sendButtonClicked() {
+    setState(() {
+      this.sending = true;
+    });
+    this
+        .widget
+        .callback(InputData(body: this.textController.text))
+        .then((_) => setState(() {
+              this.sending = false;
+              this.textController.clear();
+            }));
+  }
+
   Widget _drawShowMarkdownButton() {
     return Container(
       padding: EdgeInsets.only(bottom: 6.0),
@@ -181,13 +200,17 @@ class _InputBarWidgetState extends State<InputBarWidget> {
     return Container(
       padding: EdgeInsets.only(bottom: 6.0),
       child: InkWell(
-          onTap: () {},
+          onTap: () {
+            this._sendButtonClicked();
+          },
           borderRadius: BorderRadius.circular(100.0),
           child: Padding(
               padding: const EdgeInsets.all(6.0),
-              child: Icon(Icons.send,
-                  size: 26.0,
-                  color: isEmpty ? Colors.grey : Colors.blueAccent))),
+              child: sending
+                  ? CircularProgressIndicator()
+                  : Icon(Icons.send,
+                      size: 26.0,
+                      color: isEmpty ? Colors.grey : Colors.blueAccent))),
     );
   }
 

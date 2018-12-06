@@ -3,6 +3,7 @@ import 'package:redux_thunk/redux_thunk.dart';
 import 'package:redux/redux.dart';
 import 'dart:async';
 import 'package:owmflutter/api/api.dart';
+import 'package:owmflutter/models/models.dart';
 
 class SetEntryAction {
   final List<int> ids;
@@ -48,5 +49,16 @@ ThunkAction<AppState> voteEntryComment(int id) {
       var result = await api.entries.commentVoteUp(entry);
       store.dispatch(AddEntitiesAction(entities: result.state));
     }
+  };
+}
+
+ThunkAction<AppState> addEntryComment(int id, InputData inputData, Completer completer) {
+  return (Store<AppState> store) async {
+    var entry = store.state.entitiesState.entries[id];
+    await api.entries.addEntryComment(entry, inputData);
+    var entryCompltr = Completer();
+    store.dispatch(loadEntry(id.toString(), id, entryCompltr));
+    await entryCompltr.future;
+        completer.complete();
   };
 }

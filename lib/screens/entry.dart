@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/widgets/widgets.dart';
-import 'package:uuid/uuid.dart';
+import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/owm_glyphs.dart';
 import 'dart:async';
 
@@ -14,7 +14,15 @@ class EntryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return _SystemPadding(
       child: Scaffold(
-          bottomNavigationBar: InputBarWidget(),
+          bottomNavigationBar: StoreConnector<AppState, dynamic>(
+              converter: (store) =>
+                  (Completer completer, InputData inputData) => store
+                      .dispatch(addEntryComment(entryId, inputData, completer)),
+              builder: (context, callback) => InputBarWidget((inputData) {
+                    var completer = Completer();
+                    callback(completer, inputData);
+                    return completer.future;
+                  })),
           resizeToAvoidBottomPadding: false,
           appBar: PreferredSize(
               preferredSize: Size.fromHeight(48.0),
