@@ -15,7 +15,6 @@ class _MainScreenState extends State<MainScreen> {
     HomeScreen(),
     MyWykopScreen(),
     MikroblogScreen(),
-    Text('TODO'),
     NotificationsScreen(),
   ];
 
@@ -39,8 +38,7 @@ class _MainScreenState extends State<MainScreen> {
               _iconButton(FontAwesomeIcons.home, 0, "Strona główna"),
               _iconButton(FontAwesomeIcons.userTag, 1, "Mój Wykop"),
               _iconButton(FontAwesomeIcons.solidPlusSquare, 2, "Mikroblog"),
-              _iconButton(FontAwesomeIcons.solidHeart, 3, "Ulubione"),
-              _iconButton(FontAwesomeIcons.solidEnvelope, 4, "Powiadomienia"),
+              _iconButton(FontAwesomeIcons.solidEnvelope, 3, "Powiadomienia"),
             ],
           ),
         ),
