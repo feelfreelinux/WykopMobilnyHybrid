@@ -3,7 +3,7 @@ import 'package:owmflutter/models/models.dart' as Models;
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/store/store.dart';
-import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
+import 'package:owmflutter/utils/utils.dart';
 
 class NotificationWidget extends StatelessWidget {
   final int notificationId;
@@ -20,7 +20,43 @@ class NotificationWidget extends StatelessWidget {
                 converter: (store) =>
                     store.state.entitiesState.notifications[notificationId],
                 builder: (context, notification) {
-                  return Text(notification.body);
+                  return Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child:
+                            AvatarWidget(author: notification.author, size: 40),
+                      ),
+                      new Flexible(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: new Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              RichText(
+                                  softWrap: true,
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                          text: notification.body.substring(0,
+                                              notification.body.indexOf(' ')),
+                                          style: TextStyle(
+                                              color: Utils.getAuthorColor(
+                                                  notification.author,
+                                                  context))),
+                                      TextSpan(
+                                          text: notification.body.substring(
+                                              notification.body.indexOf(' '),
+                                              notification.body.length),
+                                          style: TextStyle(color: Colors.black))
+                                    ],
+                                  ))
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  );
                 })));
   }
 }

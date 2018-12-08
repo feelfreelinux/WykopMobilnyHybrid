@@ -10,6 +10,7 @@ export 'link/link.dart';
 export 'avatar.dart';
 export 'author.dart';
 export 'body.dart';
+export 'html_parser.dart';
 export 'user_widget.dart';
 export 'links_list.dart';
 export 'entry_list.dart';
