@@ -7,6 +7,7 @@ export 'notification/notifications_list.dart';
 
 export 'input/input_bar.dart';
 export 'link/link.dart';
+export 'link/link_footer.dart';
 export 'avatar.dart';
 export 'author.dart';
 export 'body.dart';
