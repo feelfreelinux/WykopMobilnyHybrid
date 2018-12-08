@@ -8,19 +8,19 @@ part 'mikroblog_state.g.dart';
 
 abstract class MikroblogState
     implements Built<MikroblogState, MikroblogStateBuilder> {
-  EntrylistState get hot12State;
-  EntrylistState get hot24State;
-  EntrylistState get hot6State;
-  EntrylistState get activeState;
-  EntrylistState get newestState;
+  ItemListState get hot12State;
+  ItemListState get hot24State;
+  ItemListState get hot6State;
+  ItemListState get activeState;
+  ItemListState get newestState;
 
   factory MikroblogState() {
     return _$MikroblogState._(
-        hot12State: EntrylistState(),
-        hot6State: EntrylistState(),
-        hot24State: EntrylistState(),
-        newestState: EntrylistState(),
-        activeState: EntrylistState());
+        hot12State: ItemListState(),
+        hot6State: ItemListState(),
+        hot24State: ItemListState(),
+        newestState: ItemListState(),
+        activeState: ItemListState());
   }
 
   MikroblogState._();

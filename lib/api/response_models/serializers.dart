@@ -12,6 +12,7 @@ part 'serializers.g.dart';
   EmbedResponse,
   EntryCommentResponse,
   LinkResponse,
+  NotificationResponse,
   EntryLinkResponse
 ])
 final Serializers serializers =

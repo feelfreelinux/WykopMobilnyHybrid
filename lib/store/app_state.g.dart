@@ -43,6 +43,9 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
       'myWykopState',
       serializers.serialize(object.myWykopState,
           specifiedType: const FullType(MyWykopState)),
+      'notificationsState',
+      serializers.serialize(object.notificationsState,
+          specifiedType: const FullType(NotificationsState)),
       'mikroblogState',
       serializers.serialize(object.mikroblogState,
           specifiedType: const FullType(MikroblogState)),
@@ -84,6 +87,11 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
           result.myWykopState.replace(serializers.deserialize(value,
               specifiedType: const FullType(MyWykopState)) as MyWykopState);
           break;
+        case 'notificationsState':
+          result.notificationsState.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(NotificationsState))
+              as NotificationsState);
+          break;
         case 'mikroblogState':
           result.mikroblogState.replace(serializers.deserialize(value,
               specifiedType: const FullType(MikroblogState)) as MikroblogState);
@@ -114,6 +122,8 @@ class _$AppState extends AppState {
   @override
   final MyWykopState myWykopState;
   @override
+  final NotificationsState notificationsState;
+  @override
   final MikroblogState mikroblogState;
   @override
   final EntryScreensState entryScreensState;
@@ -128,6 +138,7 @@ class _$AppState extends AppState {
       this.entitiesState,
       this.linksState,
       this.myWykopState,
+      this.notificationsState,
       this.mikroblogState,
       this.entryScreensState,
       this.tagsState})
@@ -143,6 +154,9 @@ class _$AppState extends AppState {
     }
     if (myWykopState == null) {
       throw new BuiltValueNullFieldError('AppState', 'myWykopState');
+    }
+    if (notificationsState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'notificationsState');
     }
     if (mikroblogState == null) {
       throw new BuiltValueNullFieldError('AppState', 'mikroblogState');
@@ -170,6 +184,7 @@ class _$AppState extends AppState {
         entitiesState == other.entitiesState &&
         linksState == other.linksState &&
         myWykopState == other.myWykopState &&
+        notificationsState == other.notificationsState &&
         mikroblogState == other.mikroblogState &&
         entryScreensState == other.entryScreensState &&
         tagsState == other.tagsState;
@@ -181,9 +196,13 @@ class _$AppState extends AppState {
         $jc(
             $jc(
                 $jc(
-                    $jc($jc($jc(0, authState.hashCode), entitiesState.hashCode),
-                        linksState.hashCode),
-                    myWykopState.hashCode),
+                    $jc(
+                        $jc(
+                            $jc($jc(0, authState.hashCode),
+                                entitiesState.hashCode),
+                            linksState.hashCode),
+                        myWykopState.hashCode),
+                    notificationsState.hashCode),
                 mikroblogState.hashCode),
             entryScreensState.hashCode),
         tagsState.hashCode));
@@ -196,6 +215,7 @@ class _$AppState extends AppState {
           ..add('entitiesState', entitiesState)
           ..add('linksState', linksState)
           ..add('myWykopState', myWykopState)
+          ..add('notificationsState', notificationsState)
           ..add('mikroblogState', mikroblogState)
           ..add('entryScreensState', entryScreensState)
           ..add('tagsState', tagsState))
@@ -229,6 +249,12 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   set myWykopState(MyWykopStateBuilder myWykopState) =>
       _$this._myWykopState = myWykopState;
 
+  NotificationsStateBuilder _notificationsState;
+  NotificationsStateBuilder get notificationsState =>
+      _$this._notificationsState ??= new NotificationsStateBuilder();
+  set notificationsState(NotificationsStateBuilder notificationsState) =>
+      _$this._notificationsState = notificationsState;
+
   MikroblogStateBuilder _mikroblogState;
   MikroblogStateBuilder get mikroblogState =>
       _$this._mikroblogState ??= new MikroblogStateBuilder();
@@ -254,6 +280,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _entitiesState = _$v.entitiesState?.toBuilder();
       _linksState = _$v.linksState?.toBuilder();
       _myWykopState = _$v.myWykopState?.toBuilder();
+      _notificationsState = _$v.notificationsState?.toBuilder();
       _mikroblogState = _$v.mikroblogState?.toBuilder();
       _entryScreensState = _$v.entryScreensState?.toBuilder();
       _tagsState = _$v.tagsState?.toBuilder();
@@ -285,6 +312,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
               entitiesState: entitiesState.build(),
               linksState: linksState.build(),
               myWykopState: myWykopState.build(),
+              notificationsState: notificationsState.build(),
               mikroblogState: mikroblogState.build(),
               entryScreensState: entryScreensState.build(),
               tagsState: tagsState.build());
@@ -299,6 +327,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
         linksState.build();
         _$failedField = 'myWykopState';
         myWykopState.build();
+        _$failedField = 'notificationsState';
+        notificationsState.build();
         _$failedField = 'mikroblogState';
         mikroblogState.build();
         _$failedField = 'entryScreensState';

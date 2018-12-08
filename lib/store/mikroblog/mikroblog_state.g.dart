@@ -35,19 +35,19 @@ class _$MikroblogStateSerializer
     final result = <Object>[
       'hot12State',
       serializers.serialize(object.hot12State,
-          specifiedType: const FullType(EntrylistState)),
+          specifiedType: const FullType(ItemListState)),
       'hot24State',
       serializers.serialize(object.hot24State,
-          specifiedType: const FullType(EntrylistState)),
+          specifiedType: const FullType(ItemListState)),
       'hot6State',
       serializers.serialize(object.hot6State,
-          specifiedType: const FullType(EntrylistState)),
+          specifiedType: const FullType(ItemListState)),
       'activeState',
       serializers.serialize(object.activeState,
-          specifiedType: const FullType(EntrylistState)),
+          specifiedType: const FullType(ItemListState)),
       'newestState',
       serializers.serialize(object.newestState,
-          specifiedType: const FullType(EntrylistState)),
+          specifiedType: const FullType(ItemListState)),
     ];
 
     return result;
@@ -66,23 +66,23 @@ class _$MikroblogStateSerializer
       switch (key) {
         case 'hot12State':
           result.hot12State.replace(serializers.deserialize(value,
-              specifiedType: const FullType(EntrylistState)) as EntrylistState);
+              specifiedType: const FullType(ItemListState)) as ItemListState);
           break;
         case 'hot24State':
           result.hot24State.replace(serializers.deserialize(value,
-              specifiedType: const FullType(EntrylistState)) as EntrylistState);
+              specifiedType: const FullType(ItemListState)) as ItemListState);
           break;
         case 'hot6State':
           result.hot6State.replace(serializers.deserialize(value,
-              specifiedType: const FullType(EntrylistState)) as EntrylistState);
+              specifiedType: const FullType(ItemListState)) as ItemListState);
           break;
         case 'activeState':
           result.activeState.replace(serializers.deserialize(value,
-              specifiedType: const FullType(EntrylistState)) as EntrylistState);
+              specifiedType: const FullType(ItemListState)) as ItemListState);
           break;
         case 'newestState':
           result.newestState.replace(serializers.deserialize(value,
-              specifiedType: const FullType(EntrylistState)) as EntrylistState);
+              specifiedType: const FullType(ItemListState)) as ItemListState);
           break;
       }
     }
@@ -93,15 +93,15 @@ class _$MikroblogStateSerializer
 
 class _$MikroblogState extends MikroblogState {
   @override
-  final EntrylistState hot12State;
+  final ItemListState hot12State;
   @override
-  final EntrylistState hot24State;
+  final ItemListState hot24State;
   @override
-  final EntrylistState hot6State;
+  final ItemListState hot6State;
   @override
-  final EntrylistState activeState;
+  final ItemListState activeState;
   @override
-  final EntrylistState newestState;
+  final ItemListState newestState;
 
   factory _$MikroblogState([void updates(MikroblogStateBuilder b)]) =>
       (new MikroblogStateBuilder()..update(updates)).build();
@@ -175,34 +175,34 @@ class MikroblogStateBuilder
     implements Builder<MikroblogState, MikroblogStateBuilder> {
   _$MikroblogState _$v;
 
-  EntrylistStateBuilder _hot12State;
-  EntrylistStateBuilder get hot12State =>
-      _$this._hot12State ??= new EntrylistStateBuilder();
-  set hot12State(EntrylistStateBuilder hot12State) =>
+  ItemListStateBuilder _hot12State;
+  ItemListStateBuilder get hot12State =>
+      _$this._hot12State ??= new ItemListStateBuilder();
+  set hot12State(ItemListStateBuilder hot12State) =>
       _$this._hot12State = hot12State;
 
-  EntrylistStateBuilder _hot24State;
-  EntrylistStateBuilder get hot24State =>
-      _$this._hot24State ??= new EntrylistStateBuilder();
-  set hot24State(EntrylistStateBuilder hot24State) =>
+  ItemListStateBuilder _hot24State;
+  ItemListStateBuilder get hot24State =>
+      _$this._hot24State ??= new ItemListStateBuilder();
+  set hot24State(ItemListStateBuilder hot24State) =>
       _$this._hot24State = hot24State;
 
-  EntrylistStateBuilder _hot6State;
-  EntrylistStateBuilder get hot6State =>
-      _$this._hot6State ??= new EntrylistStateBuilder();
-  set hot6State(EntrylistStateBuilder hot6State) =>
+  ItemListStateBuilder _hot6State;
+  ItemListStateBuilder get hot6State =>
+      _$this._hot6State ??= new ItemListStateBuilder();
+  set hot6State(ItemListStateBuilder hot6State) =>
       _$this._hot6State = hot6State;
 
-  EntrylistStateBuilder _activeState;
-  EntrylistStateBuilder get activeState =>
-      _$this._activeState ??= new EntrylistStateBuilder();
-  set activeState(EntrylistStateBuilder activeState) =>
+  ItemListStateBuilder _activeState;
+  ItemListStateBuilder get activeState =>
+      _$this._activeState ??= new ItemListStateBuilder();
+  set activeState(ItemListStateBuilder activeState) =>
       _$this._activeState = activeState;
 
-  EntrylistStateBuilder _newestState;
-  EntrylistStateBuilder get newestState =>
-      _$this._newestState ??= new EntrylistStateBuilder();
-  set newestState(EntrylistStateBuilder newestState) =>
+  ItemListStateBuilder _newestState;
+  ItemListStateBuilder get newestState =>
+      _$this._newestState ??= new ItemListStateBuilder();
+  set newestState(ItemListStateBuilder newestState) =>
       _$this._newestState = newestState;
 
   MikroblogStateBuilder();

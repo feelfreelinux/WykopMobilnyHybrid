@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'entrylist_state.dart';
+part of 'item_list_state.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
@@ -19,22 +19,21 @@ part of 'entrylist_state.dart';
 // ignore_for_file: unnecessary_new
 // ignore_for_file: test_types_in_equals
 
-Serializer<EntrylistState> _$entrylistStateSerializer =
-    new _$EntrylistStateSerializer();
+Serializer<ItemListState> _$itemListStateSerializer =
+    new _$ItemListStateSerializer();
 
-class _$EntrylistStateSerializer
-    implements StructuredSerializer<EntrylistState> {
+class _$ItemListStateSerializer implements StructuredSerializer<ItemListState> {
   @override
-  final Iterable<Type> types = const [EntrylistState, _$EntrylistState];
+  final Iterable<Type> types = const [ItemListState, _$ItemListState];
   @override
-  final String wireName = 'EntrylistState';
+  final String wireName = 'ItemListState';
 
   @override
-  Iterable serialize(Serializers serializers, EntrylistState object,
+  Iterable serialize(Serializers serializers, ItemListState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'entriesState',
-      serializers.serialize(object.entriesState,
+      'paginationState',
+      serializers.serialize(object.paginationState,
           specifiedType: const FullType(PaginationState)),
       'listState',
       serializers.serialize(object.listState,
@@ -45,9 +44,9 @@ class _$EntrylistStateSerializer
   }
 
   @override
-  EntrylistState deserialize(Serializers serializers, Iterable serialized,
+  ItemListState deserialize(Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new EntrylistStateBuilder();
+    final result = new ItemListStateBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -55,8 +54,8 @@ class _$EntrylistStateSerializer
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'entriesState':
-          result.entriesState.replace(serializers.deserialize(value,
+        case 'paginationState':
+          result.paginationState.replace(serializers.deserialize(value,
                   specifiedType: const FullType(PaginationState))
               as PaginationState);
           break;
@@ -71,74 +70,73 @@ class _$EntrylistStateSerializer
   }
 }
 
-class _$EntrylistState extends EntrylistState {
+class _$ItemListState extends ItemListState {
   @override
-  final PaginationState entriesState;
+  final PaginationState paginationState;
   @override
   final ListState listState;
 
-  factory _$EntrylistState([void updates(EntrylistStateBuilder b)]) =>
-      (new EntrylistStateBuilder()..update(updates)).build();
+  factory _$ItemListState([void updates(ItemListStateBuilder b)]) =>
+      (new ItemListStateBuilder()..update(updates)).build();
 
-  _$EntrylistState._({this.entriesState, this.listState}) : super._() {
-    if (entriesState == null) {
-      throw new BuiltValueNullFieldError('EntrylistState', 'entriesState');
+  _$ItemListState._({this.paginationState, this.listState}) : super._() {
+    if (paginationState == null) {
+      throw new BuiltValueNullFieldError('ItemListState', 'paginationState');
     }
     if (listState == null) {
-      throw new BuiltValueNullFieldError('EntrylistState', 'listState');
+      throw new BuiltValueNullFieldError('ItemListState', 'listState');
     }
   }
 
   @override
-  EntrylistState rebuild(void updates(EntrylistStateBuilder b)) =>
+  ItemListState rebuild(void updates(ItemListStateBuilder b)) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  EntrylistStateBuilder toBuilder() =>
-      new EntrylistStateBuilder()..replace(this);
+  ItemListStateBuilder toBuilder() => new ItemListStateBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is EntrylistState &&
-        entriesState == other.entriesState &&
+    return other is ItemListState &&
+        paginationState == other.paginationState &&
         listState == other.listState;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, entriesState.hashCode), listState.hashCode));
+    return $jf($jc($jc(0, paginationState.hashCode), listState.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('EntrylistState')
-          ..add('entriesState', entriesState)
+    return (newBuiltValueToStringHelper('ItemListState')
+          ..add('paginationState', paginationState)
           ..add('listState', listState))
         .toString();
   }
 }
 
-class EntrylistStateBuilder
-    implements Builder<EntrylistState, EntrylistStateBuilder> {
-  _$EntrylistState _$v;
+class ItemListStateBuilder
+    implements Builder<ItemListState, ItemListStateBuilder> {
+  _$ItemListState _$v;
 
-  PaginationStateBuilder _entriesState;
-  PaginationStateBuilder get entriesState =>
-      _$this._entriesState ??= new PaginationStateBuilder();
-  set entriesState(PaginationStateBuilder entriesState) =>
-      _$this._entriesState = entriesState;
+  PaginationStateBuilder _paginationState;
+  PaginationStateBuilder get paginationState =>
+      _$this._paginationState ??= new PaginationStateBuilder();
+  set paginationState(PaginationStateBuilder paginationState) =>
+      _$this._paginationState = paginationState;
 
   ListStateBuilder _listState;
   ListStateBuilder get listState =>
       _$this._listState ??= new ListStateBuilder();
   set listState(ListStateBuilder listState) => _$this._listState = listState;
 
-  EntrylistStateBuilder();
+  ItemListStateBuilder();
 
-  EntrylistStateBuilder get _$this {
+  ItemListStateBuilder get _$this {
     if (_$v != null) {
-      _entriesState = _$v.entriesState?.toBuilder();
+      _paginationState = _$v.paginationState?.toBuilder();
       _listState = _$v.listState?.toBuilder();
       _$v = null;
     }
@@ -146,35 +144,36 @@ class EntrylistStateBuilder
   }
 
   @override
-  void replace(EntrylistState other) {
+  void replace(ItemListState other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$EntrylistState;
+    _$v = other as _$ItemListState;
   }
 
   @override
-  void update(void updates(EntrylistStateBuilder b)) {
+  void update(void updates(ItemListStateBuilder b)) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$EntrylistState build() {
-    _$EntrylistState _$result;
+  _$ItemListState build() {
+    _$ItemListState _$result;
     try {
       _$result = _$v ??
-          new _$EntrylistState._(
-              entriesState: entriesState.build(), listState: listState.build());
+          new _$ItemListState._(
+              paginationState: paginationState.build(),
+              listState: listState.build());
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'entriesState';
-        entriesState.build();
+        _$failedField = 'paginationState';
+        paginationState.build();
         _$failedField = 'listState';
         listState.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'EntrylistState', _$failedField, e.toString());
+            'ItemListState', _$failedField, e.toString());
       }
       rethrow;
     }

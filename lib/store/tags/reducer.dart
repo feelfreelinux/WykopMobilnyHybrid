@@ -16,13 +16,13 @@ TagsState tagReducer(TagsState state, action) {
           tag,
           (tagState) => tagState.rebuild(
                 (k) => k
-                  ..indexState.replace(entriesReducer("TAG_" + tag + "_INDEX",
+                  ..indexState.replace(itemListReducer("TAG_" + tag + "_INDEX",
                       newState.states[tag].indexState, action))
-                  ..entriesState.replace(entriesReducer(
+                  ..entriesState.replace(itemListReducer(
                       "TAG_" + tag + "_ENTRIES",
                       newState.states[tag].entriesState,
                       action))
-                  ..linksState.replace(entriesReducer("TAG_" + tag + "_LINKS",
+                  ..linksState.replace(itemListReducer("TAG_" + tag + "_LINKS",
                       newState.states[tag].linksState, action)),
               )));
   } else {

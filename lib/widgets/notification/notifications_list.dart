@@ -5,11 +5,11 @@ import 'package:owmflutter/widgets/widgets.dart';
 import 'package:redux/redux.dart';
 import 'dart:async';
 
-class LinksList extends StatelessWidget {
+class NotificationsList extends StatelessWidget {
   final ConverterCallback converterCallback;
   final LoadDataCallback loadDataCallback;
 
-  LinksList({this.converterCallback, this.loadDataCallback});
+  NotificationsList({this.converterCallback, this.loadDataCallback});
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +39,8 @@ class LinksList extends StatelessWidget {
                         loadData: () => callback(false, Completer()),
                         itemCount: state.paginationState.itemIds.length,
                         itemBuilder: (context, index) {
-                          return LinkWidget(
-                              linkId: state.paginationState.itemIds[index]);
+                          return NotificationWidget(
+                              notificationId: state.paginationState.itemIds[index]);
                         }));
               });
             }));

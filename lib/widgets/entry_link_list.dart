@@ -14,7 +14,7 @@ class EntryLinkList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
-        child: StoreConnector<AppState, EntrylistState>(
+        child: StoreConnector<AppState, ItemListState>(
             converter: (store) => converterCallback(store),
             onInit: (store) => loadDataCallback(store, true, Completer()),
             builder: (context, state) {
@@ -37,16 +37,16 @@ class EntryLinkList extends StatelessWidget {
                       isLoading: state.listState.isLoading,
                       hasReachedEnd: state.listState.haveReachedEnd,
                       loadData: () => callback(false, Completer()),
-                      itemCount: state.entriesState.itemIds.length,
+                      itemCount: state.paginationState.itemIds.length,
                       itemBuilder: (context, index) {
-                        if (state.entriesState.itemIds[index] > 99999999) {
+                        if (state.paginationState.itemIds[index] > 99999999) {
                           return EntryWidget(
                               entryId:
-                                  state.entriesState.itemIds[index] ~/ 1000,
+                                  state.paginationState.itemIds[index] ~/ 1000,
                               ellipsize: true);
                         } else {
                           return LinkWidget(
-                              linkId: state.entriesState.itemIds[index]);
+                              linkId: state.paginationState.itemIds[index]);
                         }
                       }),
                 );

@@ -78,13 +78,13 @@ class _$TagStateSerializer implements StructuredSerializer<TagState> {
     final result = <Object>[
       'indexState',
       serializers.serialize(object.indexState,
-          specifiedType: const FullType(EntrylistState)),
+          specifiedType: const FullType(ItemListState)),
       'entriesState',
       serializers.serialize(object.entriesState,
-          specifiedType: const FullType(EntrylistState)),
+          specifiedType: const FullType(ItemListState)),
       'linksState',
       serializers.serialize(object.linksState,
-          specifiedType: const FullType(EntrylistState)),
+          specifiedType: const FullType(ItemListState)),
     ];
 
     return result;
@@ -103,15 +103,15 @@ class _$TagStateSerializer implements StructuredSerializer<TagState> {
       switch (key) {
         case 'indexState':
           result.indexState.replace(serializers.deserialize(value,
-              specifiedType: const FullType(EntrylistState)) as EntrylistState);
+              specifiedType: const FullType(ItemListState)) as ItemListState);
           break;
         case 'entriesState':
           result.entriesState.replace(serializers.deserialize(value,
-              specifiedType: const FullType(EntrylistState)) as EntrylistState);
+              specifiedType: const FullType(ItemListState)) as ItemListState);
           break;
         case 'linksState':
           result.linksState.replace(serializers.deserialize(value,
-              specifiedType: const FullType(EntrylistState)) as EntrylistState);
+              specifiedType: const FullType(ItemListState)) as ItemListState);
           break;
       }
     }
@@ -212,11 +212,11 @@ class TagsStateBuilder implements Builder<TagsState, TagsStateBuilder> {
 
 class _$TagState extends TagState {
   @override
-  final EntrylistState indexState;
+  final ItemListState indexState;
   @override
-  final EntrylistState entriesState;
+  final ItemListState entriesState;
   @override
-  final EntrylistState linksState;
+  final ItemListState linksState;
 
   factory _$TagState([void updates(TagStateBuilder b)]) =>
       (new TagStateBuilder()..update(updates)).build();
@@ -269,22 +269,22 @@ class _$TagState extends TagState {
 class TagStateBuilder implements Builder<TagState, TagStateBuilder> {
   _$TagState _$v;
 
-  EntrylistStateBuilder _indexState;
-  EntrylistStateBuilder get indexState =>
-      _$this._indexState ??= new EntrylistStateBuilder();
-  set indexState(EntrylistStateBuilder indexState) =>
+  ItemListStateBuilder _indexState;
+  ItemListStateBuilder get indexState =>
+      _$this._indexState ??= new ItemListStateBuilder();
+  set indexState(ItemListStateBuilder indexState) =>
       _$this._indexState = indexState;
 
-  EntrylistStateBuilder _entriesState;
-  EntrylistStateBuilder get entriesState =>
-      _$this._entriesState ??= new EntrylistStateBuilder();
-  set entriesState(EntrylistStateBuilder entriesState) =>
+  ItemListStateBuilder _entriesState;
+  ItemListStateBuilder get entriesState =>
+      _$this._entriesState ??= new ItemListStateBuilder();
+  set entriesState(ItemListStateBuilder entriesState) =>
       _$this._entriesState = entriesState;
 
-  EntrylistStateBuilder _linksState;
-  EntrylistStateBuilder get linksState =>
-      _$this._linksState ??= new EntrylistStateBuilder();
-  set linksState(EntrylistStateBuilder linksState) =>
+  ItemListStateBuilder _linksState;
+  ItemListStateBuilder get linksState =>
+      _$this._linksState ??= new ItemListStateBuilder();
+  set linksState(ItemListStateBuilder linksState) =>
       _$this._linksState = linksState;
 
   TagStateBuilder();

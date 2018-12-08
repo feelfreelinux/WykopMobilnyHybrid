@@ -34,7 +34,7 @@ class _$MyWykopStateSerializer implements StructuredSerializer<MyWykopState> {
     final result = <Object>[
       'indexState',
       serializers.serialize(object.indexState,
-          specifiedType: const FullType(EntrylistState)),
+          specifiedType: const FullType(ItemListState)),
     ];
 
     return result;
@@ -53,7 +53,7 @@ class _$MyWykopStateSerializer implements StructuredSerializer<MyWykopState> {
       switch (key) {
         case 'indexState':
           result.indexState.replace(serializers.deserialize(value,
-              specifiedType: const FullType(EntrylistState)) as EntrylistState);
+              specifiedType: const FullType(ItemListState)) as ItemListState);
           break;
       }
     }
@@ -64,7 +64,7 @@ class _$MyWykopStateSerializer implements StructuredSerializer<MyWykopState> {
 
 class _$MyWykopState extends MyWykopState {
   @override
-  final EntrylistState indexState;
+  final ItemListState indexState;
 
   factory _$MyWykopState([void updates(MyWykopStateBuilder b)]) =>
       (new MyWykopStateBuilder()..update(updates)).build();
@@ -105,10 +105,10 @@ class MyWykopStateBuilder
     implements Builder<MyWykopState, MyWykopStateBuilder> {
   _$MyWykopState _$v;
 
-  EntrylistStateBuilder _indexState;
-  EntrylistStateBuilder get indexState =>
-      _$this._indexState ??= new EntrylistStateBuilder();
-  set indexState(EntrylistStateBuilder indexState) =>
+  ItemListStateBuilder _indexState;
+  ItemListStateBuilder get indexState =>
+      _$this._indexState ??= new ItemListStateBuilder();
+  set indexState(ItemListStateBuilder indexState) =>
       _$this._indexState = indexState;
 
   MyWykopStateBuilder();

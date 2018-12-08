@@ -1,8 +1,12 @@
 export 'app_state.dart';
 export 'reducer.dart';
 
-export 'entrylist/entrylist_state.dart';
-export 'entrylist/reducer.dart';
+export 'item_list_state/item_list_state.dart';
+export 'item_list_state/reducer.dart';
+
+export 'notifications/notifications_state.dart';
+export 'notifications/reducer.dart';
+export 'notifications/actions.dart';
 
 export 'mikroblog/mikroblog_state.dart';
 export 'mikroblog/reducer.dart';

@@ -16,7 +16,7 @@ class _MainScreenState extends State<MainScreen> {
     HomeScreen(),
     MyWykopScreen(),
     MikroblogScreen(),
-    Text('TODO'),
+    NotificationsScreen(),
     Text('TODO')
   ];
 
@@ -55,7 +55,7 @@ class _MainScreenState extends State<MainScreen> {
                           color: Color(
                               _currentIndex == 2 ? 0xff3c84c1 : 0xff666666)),
                       IconButton(
-                          icon: Icon(OwmGlyphs.ic_navi_favourite),
+                          icon: Icon(Icons.notifications),
                           onPressed: () => this.setState(() {
                                 this._currentIndex = 3;
                               }),

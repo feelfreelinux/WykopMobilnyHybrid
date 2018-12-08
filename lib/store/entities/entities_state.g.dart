@@ -44,6 +44,10 @@ class _$EntitiesStateSerializer implements StructuredSerializer<EntitiesState> {
       serializers.serialize(object.links,
           specifiedType: const FullType(
               BuiltMap, const [const FullType(int), const FullType(Link)])),
+      'notifications',
+      serializers.serialize(object.notifications,
+          specifiedType: const FullType(BuiltMap,
+              const [const FullType(int), const FullType(Notification)])),
     ];
 
     return result;
@@ -81,6 +85,13 @@ class _$EntitiesStateSerializer implements StructuredSerializer<EntitiesState> {
                 const FullType(Link)
               ])) as BuiltMap);
           break;
+        case 'notifications':
+          result.notifications.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltMap, const [
+                const FullType(int),
+                const FullType(Notification)
+              ])) as BuiltMap);
+          break;
       }
     }
 
@@ -95,11 +106,14 @@ class _$EntitiesState extends EntitiesState {
   final BuiltMap<int, EntryComment> entryComments;
   @override
   final BuiltMap<int, Link> links;
+  @override
+  final BuiltMap<int, Notification> notifications;
 
   factory _$EntitiesState([void updates(EntitiesStateBuilder b)]) =>
       (new EntitiesStateBuilder()..update(updates)).build();
 
-  _$EntitiesState._({this.entries, this.entryComments, this.links})
+  _$EntitiesState._(
+      {this.entries, this.entryComments, this.links, this.notifications})
       : super._() {
     if (entries == null) {
       throw new BuiltValueNullFieldError('EntitiesState', 'entries');
@@ -109,6 +123,9 @@ class _$EntitiesState extends EntitiesState {
     }
     if (links == null) {
       throw new BuiltValueNullFieldError('EntitiesState', 'links');
+    }
+    if (notifications == null) {
+      throw new BuiltValueNullFieldError('EntitiesState', 'notifications');
     }
   }
 
@@ -125,13 +142,16 @@ class _$EntitiesState extends EntitiesState {
     return other is EntitiesState &&
         entries == other.entries &&
         entryComments == other.entryComments &&
-        links == other.links;
+        links == other.links &&
+        notifications == other.notifications;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc(0, entries.hashCode), entryComments.hashCode), links.hashCode));
+        $jc($jc($jc(0, entries.hashCode), entryComments.hashCode),
+            links.hashCode),
+        notifications.hashCode));
   }
 
   @override
@@ -139,7 +159,8 @@ class _$EntitiesState extends EntitiesState {
     return (newBuiltValueToStringHelper('EntitiesState')
           ..add('entries', entries)
           ..add('entryComments', entryComments)
-          ..add('links', links))
+          ..add('links', links)
+          ..add('notifications', notifications))
         .toString();
   }
 }
@@ -164,6 +185,12 @@ class EntitiesStateBuilder
       _$this._links ??= new MapBuilder<int, Link>();
   set links(MapBuilder<int, Link> links) => _$this._links = links;
 
+  MapBuilder<int, Notification> _notifications;
+  MapBuilder<int, Notification> get notifications =>
+      _$this._notifications ??= new MapBuilder<int, Notification>();
+  set notifications(MapBuilder<int, Notification> notifications) =>
+      _$this._notifications = notifications;
+
   EntitiesStateBuilder();
 
   EntitiesStateBuilder get _$this {
@@ -171,6 +198,7 @@ class EntitiesStateBuilder
       _entries = _$v.entries?.toBuilder();
       _entryComments = _$v.entryComments?.toBuilder();
       _links = _$v.links?.toBuilder();
+      _notifications = _$v.notifications?.toBuilder();
       _$v = null;
     }
     return this;
@@ -197,7 +225,8 @@ class EntitiesStateBuilder
           new _$EntitiesState._(
               entries: entries.build(),
               entryComments: entryComments.build(),
-              links: links.build());
+              links: links.build(),
+              notifications: notifications.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -207,6 +236,8 @@ class EntitiesStateBuilder
         entryComments.build();
         _$failedField = 'links';
         links.build();
+        _$failedField = 'notifications';
+        notifications.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'EntitiesState', _$failedField, e.toString());

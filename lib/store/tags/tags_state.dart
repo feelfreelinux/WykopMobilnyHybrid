@@ -17,15 +17,15 @@ abstract class TagsState implements Built<TagsState, TagsStateBuilder> {
 }
 
 abstract class TagState implements Built<TagState, TagStateBuilder> {
-  EntrylistState get indexState;
-  EntrylistState get entriesState;
-  EntrylistState get linksState;
+  ItemListState get indexState;
+  ItemListState get entriesState;
+  ItemListState get linksState;
 
   factory TagState() {
     return _$TagState._(
-        indexState: EntrylistState(),
-        entriesState: EntrylistState(),
-        linksState: EntrylistState());
+        indexState: ItemListState(),
+        entriesState: ItemListState(),
+        linksState: ItemListState());
   }
 
   TagState._();

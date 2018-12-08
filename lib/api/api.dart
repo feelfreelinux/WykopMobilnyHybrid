@@ -3,6 +3,7 @@ export 'response_models/link_response.dart';
 export 'response_models/author_response.dart';
 export 'response_models/embed_response.dart';
 export 'response_models/entry_link_response.dart';
+export 'response_models/notification_response.dart';
 export 'response_models/entry_comment_response.dart';
 export 'response_models/serializers.dart';
 export 'normalizers.dart';
@@ -13,6 +14,7 @@ export 'resources/users.dart';
 export 'resources/links.dart';
 export 'resources/mywykop.dart';
 export 'resources/tags.dart';
+export 'resources/notifications.dart';
 
 import 'dart:async';
 import 'package:owmflutter/api/client.dart';
@@ -41,6 +43,7 @@ class WykopApiClient {
   UsersApi users;
   MyWykopApi mywykop;
   TagsApi tags;
+  NotificationsApi notifications;
 
   AuthCredentials get credentials => _client.credentials;
 
@@ -58,6 +61,7 @@ class WykopApiClient {
     this.users = UsersApi(_client);
     this.links = LinksApi(_client);
     this.tags = TagsApi(_client);
+    this.notifications = NotificationsApi(_client);
     this.mywykop = MyWykopApi(_client);
   }
 }

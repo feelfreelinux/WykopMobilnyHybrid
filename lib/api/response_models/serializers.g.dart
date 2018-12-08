@@ -26,6 +26,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(EntryLinkResponse.serializer)
       ..add(EntryResponse.serializer)
       ..add(LinkResponse.serializer)
+      ..add(NotificationResponse.serializer)
       ..addBuilderFactory(
           const FullType(
               BuiltList, const [const FullType(EntryCommentResponse)]),
