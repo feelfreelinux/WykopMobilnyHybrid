@@ -70,14 +70,33 @@ class _EmbedState extends State<EmbedWidget> {
 
   Widget _drawFooter() {
     if (!this.loading && !this.resized) {
-      return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        Expanded(child: Container()),
-        Container(
-            padding: EdgeInsets.all(2.6),
-            color: Color(0xaaffffff),
-            child: Text('••• pokaż cały obrazek •••',
-                style: TextStyle(fontSize: 10.5), textAlign: TextAlign.center))
-      ]);
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: Container(),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: Color(0xcc7f7f7f),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(widget.borderRadius),
+                bottomRight: Radius.circular(widget.borderRadius),
+              ),
+            ),
+            padding: EdgeInsets.all(4.0),
+            child: Text(
+              '••• pokaż cały obrazek •••',
+              style: TextStyle(
+                fontSize: 11.0,
+                color: Colors.white,
+                shadows: [Shadow(blurRadius: 1.5)],
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      );
     } else {
       return Container();
     }
