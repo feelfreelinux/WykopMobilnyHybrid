@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/screens/screens.dart';
-import 'package:owmflutter/owm_glyphs.dart';
-// import 'package:owmflutter/widgets/bottom_navigation_dot_bar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -16,72 +15,48 @@ class _MainScreenState extends State<MainScreen> {
     HomeScreen(),
     MyWykopScreen(),
     MikroblogScreen(),
+    Text('TODO'),
     NotificationsScreen(),
-    Text('TODO')
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: _children[_currentIndex],
-        floatingActionButton: FloatingActionButton(
-            child: const Icon(OwmGlyphs.ic_pen), onPressed: () {}),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        bottomNavigationBar: BottomAppBar(
-            child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 12.0),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      IconButton(
-                          icon: Icon(OwmGlyphs.ic_navi_links),
-                          onPressed: () => this.setState(() {
-                                this._currentIndex = 0;
-                              }),
-                          color: Color(
-                              _currentIndex == 0 ? 0xff3c84c1 : 0xff666666)),
-                      IconButton(
-                          icon: Icon(OwmGlyphs.ic_navi_my_wykop),
-                          onPressed: () => this.setState(() {
-                                this._currentIndex = 1;
-                              }),
-                          color: Color(
-                              _currentIndex == 1 ? 0xff3c84c1 : 0xff666666)),
-                      IconButton(
-                          icon: Icon(OwmGlyphs.ic_navi_mirkoblog),
-                          onPressed: () => this.setState(() {
-                                this._currentIndex = 2;
-                              }),
-                          color: Color(
-                              _currentIndex == 2 ? 0xff3c84c1 : 0xff666666)),
-                      IconButton(
-                          icon: Icon(Icons.notifications),
-                          onPressed: () => this.setState(() {
-                                this._currentIndex = 3;
-                              }),
-                          color: Color(
-                              _currentIndex == 3 ? 0xff3c84c1 : 0xff666666)),
-                      IconButton(
-                          icon: Icon(OwmGlyphs.ic_navi_messages),
-                          onPressed: () => this.setState(() {
-                                this._currentIndex = 4;
-                              }),
-                          color: Color(
-                              _currentIndex == 4 ? 0xff3c84c1 : 0xff666666))
-                    ]))));
-    //         bottomNavigationBar:
-    //     BottomNavigationDotBar(items: <BottomNavigationDotBarItem>[
-    //   BottomNavigationDotBarItem(
-    //     icon: OwmGlyphs.ic_navi_links,
-    //   ),
-    //   BottomNavigationDotBarItem(
-    //       icon: OwmGlyphs.ic_navi_my_wykop, onTap: () {}),
-    //   BottomNavigationDotBarItem(
-    //       icon: OwmGlyphs.ic_navi_mirkoblog, onTap: () {}),
-    //   BottomNavigationDotBarItem(
-    //       icon: OwmGlyphs.ic_navi_favourite, onTap: () {}),
-    //   BottomNavigationDotBarItem(
-    //       icon: OwmGlyphs.ic_navi_messages, onTap: () {}),
-    // ]));
+      body: _children[_currentIndex],
+      floatingActionButton: FloatingActionButton(
+        child: Icon(FontAwesomeIcons.pen, size: 20.0,),
+        onPressed: () {},
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      bottomNavigationBar: BottomAppBar(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 12.0,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              _iconButton(FontAwesomeIcons.home, 0, "Strona główna"),
+              _iconButton(FontAwesomeIcons.userTag, 1, "Mój Wykop"),
+              _iconButton(FontAwesomeIcons.solidPlusSquare, 2, "Mikroblog"),
+              _iconButton(FontAwesomeIcons.solidHeart, 3, "Ulubione"),
+              _iconButton(FontAwesomeIcons.solidEnvelope, 4, "Powiadomienia"),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _iconButton(IconData icon, num index, String tooltip) {
+    return IconButton(
+      iconSize: 20.0,
+      icon: Icon(icon),
+      color: Color(_currentIndex == index ? 0xff3c84c1 : 0xff666666),
+      onPressed: () => this.setState(() {
+            this._currentIndex = index;
+          }),
+      tooltip: tooltip,
+    );
   }
 }
