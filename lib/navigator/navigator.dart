@@ -15,9 +15,9 @@ class WykopNavigator {
 
   static Widget getWidgetForUrl(String url) {
     var domain = Uri.parse(url).host.replaceAll("www.", "");
-
+    print(domain);
     switch (domain) {
-      case "wykop":
+      case "wykop.pl":
         var resource = url.split("wykop.pl/")[1];
         switch (resource.split(DELIMITER)[0]) {
           case ENTRY_MATCHER:
