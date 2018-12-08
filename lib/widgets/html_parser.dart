@@ -7,6 +7,7 @@ import 'package:html/dom.dart' as html;
 import 'package:owmflutter/widgets/spoiler.dart';
 import 'package:owmflutter/widgets/tag.dart';
 import 'package:owmflutter/widgets/user_widget.dart';
+import 'package:owmflutter/navigator/navigator.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
@@ -141,9 +142,7 @@ class _HtmlParser {
               ));
             },
             onTap: () async {
-              if (await canLaunch(url)) {
-                launch(url);
-              }
+              WykopNavigator.handleUrl(context, url);
             },
             child:
                 Text(element.text, style: TextStyle(color: Colors.blueAccent)),
