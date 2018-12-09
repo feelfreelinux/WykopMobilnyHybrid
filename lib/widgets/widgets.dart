@@ -17,6 +17,7 @@ export 'links_list.dart';
 export 'entry_list.dart';
 export 'entry_link_list.dart';
 export 'embed.dart';
+export 'search_results.dart';
 export 'appbar_user.dart';
 export 'infinite_list.dart';
 export 'buttons/icon_button.dart';
