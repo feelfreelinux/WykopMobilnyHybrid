@@ -14,7 +14,7 @@ class TagScreen extends StatelessWidget {
             Tab(text: 'WSZYSTKO'),
             Tab(text: 'ZNALEZISKA'),
             Tab(text: 'WPISY'),
-          ], onPressetSearch: () {}),
+          ]),
           body: TabBarView(children: [
             EntryLinkList(
                 converterCallback: (store) =>

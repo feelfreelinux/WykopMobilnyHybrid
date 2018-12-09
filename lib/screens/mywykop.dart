@@ -10,7 +10,7 @@ class MyWykopScreen extends StatelessWidget {
         child: Scaffold(
             appBar: AppbarTabsWidget(tabs: <Widget>[
               Tab(text: 'Indeks'),
-            ], onPressetSearch: () {}),
+            ]),
             body: TabBarView(children: [
               EntryLinkList(
                   converterCallback: (store) =>

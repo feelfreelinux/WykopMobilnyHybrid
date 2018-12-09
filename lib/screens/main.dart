@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:owmflutter/keys.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -21,6 +22,8 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
+      key: OwmKeys.mainScaffoldKey,
       body: _children[_currentIndex],
       floatingActionButton: FloatingActionButton(
         child: Icon(FontAwesomeIcons.pen, size: 20.0,),

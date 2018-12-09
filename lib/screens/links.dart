@@ -9,7 +9,7 @@ class HomeScreen extends StatelessWidget {
     return DefaultTabController(
         length: 5,
         child: Scaffold(
-            appBar: AppbarTabsWidget(onPressetSearch: () {}, tabs: <Widget>[
+            appBar: AppbarTabsWidget(tabs: <Widget>[
               Tab(text: 'GŁÓWNA'),
               Tab(text: 'WYKOPALISKO'),
               Tab(text: 'HITY')
