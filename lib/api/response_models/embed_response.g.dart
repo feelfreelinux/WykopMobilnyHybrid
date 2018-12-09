@@ -38,6 +38,12 @@ class _$EmbedResponseSerializer implements StructuredSerializer<EmbedResponse> {
       serializers.serialize(object.preview,
           specifiedType: const FullType(String)),
     ];
+    if (object.plus18 != null) {
+      result
+        ..add('plus18')
+        ..add(serializers.serialize(object.plus18,
+            specifiedType: const FullType(bool)));
+    }
 
     return result;
   }
@@ -61,6 +67,10 @@ class _$EmbedResponseSerializer implements StructuredSerializer<EmbedResponse> {
           result.preview = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'plus18':
+          result.plus18 = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
       }
     }
 
@@ -73,11 +83,13 @@ class _$EmbedResponse extends EmbedResponse {
   final String url;
   @override
   final String preview;
+  @override
+  final bool plus18;
 
   factory _$EmbedResponse([void updates(EmbedResponseBuilder b)]) =>
       (new EmbedResponseBuilder()..update(updates)).build();
 
-  _$EmbedResponse._({this.url, this.preview}) : super._() {
+  _$EmbedResponse._({this.url, this.preview, this.plus18}) : super._() {
     if (url == null) {
       throw new BuiltValueNullFieldError('EmbedResponse', 'url');
     }
@@ -98,19 +110,22 @@ class _$EmbedResponse extends EmbedResponse {
     if (identical(other, this)) return true;
     return other is EmbedResponse &&
         url == other.url &&
-        preview == other.preview;
+        preview == other.preview &&
+        plus18 == other.plus18;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, url.hashCode), preview.hashCode));
+    return $jf(
+        $jc($jc($jc(0, url.hashCode), preview.hashCode), plus18.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('EmbedResponse')
           ..add('url', url)
-          ..add('preview', preview))
+          ..add('preview', preview)
+          ..add('plus18', plus18))
         .toString();
   }
 }
@@ -127,12 +142,17 @@ class EmbedResponseBuilder
   String get preview => _$this._preview;
   set preview(String preview) => _$this._preview = preview;
 
+  bool _plus18;
+  bool get plus18 => _$this._plus18;
+  set plus18(bool plus18) => _$this._plus18 = plus18;
+
   EmbedResponseBuilder();
 
   EmbedResponseBuilder get _$this {
     if (_$v != null) {
       _url = _$v.url;
       _preview = _$v.preview;
+      _plus18 = _$v.plus18;
       _$v = null;
     }
     return this;
@@ -153,7 +173,8 @@ class EmbedResponseBuilder
 
   @override
   _$EmbedResponse build() {
-    final _$result = _$v ?? new _$EmbedResponse._(url: url, preview: preview);
+    final _$result = _$v ??
+        new _$EmbedResponse._(url: url, preview: preview, plus18: plus18);
     replace(_$result);
     return _$result;
   }
