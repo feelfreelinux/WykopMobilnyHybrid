@@ -15,45 +15,43 @@ class EntryScreen extends StatelessWidget {
     return _SystemPadding(
       child: Scaffold(
           bottomNavigationBar: StoreConnector<AppState, dynamic>(
-              converter: (store) =>
-                  (Completer completer, InputData inputData) => store
-                      .dispatch(addEntryComment(entryId, inputData, completer)),
-              builder: (context, callback) => InputBarWidget((inputData) {
-                    var completer = Completer();
-                    callback(completer, inputData);
-                    return completer.future;
-                  })),
+            converter: (store) => (Completer completer, InputData inputData)
+              => store.dispatch(addEntryComment(entryId, inputData, completer)),
+            builder: (context, callback) => InputBarWidget((inputData) 
+                { 
+                  var completer = Completer();
+                  callback(completer, inputData);
+                  return completer.future;
+                }
+              )
+            ),
           resizeToAvoidBottomPadding: false,
           appBar: PreferredSize(
-              preferredSize: Size.fromHeight(48.0),
-              child: AppBar(
-                  title: Text('WPIS', style: TextStyle(fontSize: 16.0)),
-                  actions: <Widget>[
-                    IconButton(
-                        icon: Icon(OwmGlyphs.ic_refresh),
-                        onPressed: () {},
-                        tooltip: "Odśwież")
-                  ],
-                  elevation: 1.5,
-                  centerTitle: true,
-                  titleSpacing: 0.0)),
+            preferredSize: Size.fromHeight(48.0),
+            child: AppBar(
+                title: Text('WPIS', style: TextStyle(fontSize: 16.0)),
+                actions: <Widget>[
+                  IconButton(
+                    icon: Icon(OwmGlyphs.ic_refresh),
+                    onPressed: () {},
+                    tooltip: "Odśwież")
+                ],
+                elevation: 1.5,
+                centerTitle: true,
+                titleSpacing: 0.0
+              ),
+            ),
           body: Container(
-              decoration:
-                  BoxDecoration(color: Theme.of(context).backgroundColor),
+              decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
               child: StoreConnector<AppState, dynamic>(
                 converter: (store) => (completer) => store.dispatch(
                     loadEntry(entryId.toString(), entryId, completer)),
-                builder: (context, callback) => StoreConnector<AppState,
-                        List<int>>(
-                    converter: (store) => store.state.entryScreensState
-                                .states[entryId.toString()] !=
-                            null
-                        ? store.state.entryScreensState
-                            .states[entryId.toString()].ids
-                        : [],
+                builder: (context, callback) => StoreConnector<AppState, List<int> >(
+                    converter: (store) => store.state.entryScreensState.states[entryId.toString()] != null
+                      ? store.state.entryScreensState.states[entryId.toString()].ids
+                      : [],
                     onInit: (store) {
-                      store.dispatch(
-                          loadEntry(entryId.toString(), entryId, Completer()));
+                      store.dispatch(loadEntry(entryId.toString(), entryId, Completer()));
                     },
                     builder: (context, ids) {
                       return RefreshIndicator(
@@ -65,20 +63,22 @@ class EntryScreen extends StatelessWidget {
                         child: ScrollConfiguration(
                           behavior: NotSuddenJumpScrollBehavior(),
                           child: ListView.builder(
-                              itemCount: ids.length,
-                              itemBuilder: (context, index) {
-                                if (index == 0) {
-                                  return EntryWidget(
-                                      ellipsize: false, entryId: entryId);
-                                } else {
-                                  return EntryCommentWidget(
-                                      commentId: ids[index]);
-                                }
-                              }),
+                            itemCount: ids.length,
+                            itemBuilder: (context, index) {
+                              if (index == 0) {
+                                return EntryWidget(ellipsize: false, entryId: entryId);
+                              } else {
+                                return EntryCommentWidget(commentId: ids[index]);
+                              }
+                            }
+                          ),
                         ),
                       );
-                    }),
-              ))),
+                    },
+                  ),
+              ),
+            ),
+          ),
     );
   }
 }
@@ -92,8 +92,9 @@ class _SystemPadding extends StatelessWidget {
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
     return new AnimatedContainer(
-        padding: mediaQuery.viewInsets,
-        duration: const Duration(milliseconds: 150),
-        child: child);
+      padding: mediaQuery.viewInsets,
+      duration: const Duration(milliseconds: 150),
+      child: child
+    );
   }
 }

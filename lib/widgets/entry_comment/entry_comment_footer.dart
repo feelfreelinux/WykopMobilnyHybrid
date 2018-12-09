@@ -24,11 +24,11 @@ class EntryCommentFooterWidget extends StatelessWidget {
               onClicked: () {},
             ),
             Expanded(child: Container()),
-            VoteButton(
-              onClicked: () {},
-              count: comment.voteCount,
-              isSelected: false,
-            ),
+            // VoteButton(
+            //   callback: () {},
+            //   count: comment.voteCount,
+            //   isSelected: false,
+            // ),
             FooterIconButton(
               icon: OwmGlyphs.ic_buttontoolbar_dots,
               onClicked: () {},

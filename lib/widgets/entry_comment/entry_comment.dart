@@ -104,19 +104,17 @@ class EntryCommentWidget extends StatelessWidget {
                         fontSize: 11.5,
                         color: Theme.of(context).textTheme.caption.color))
               ])),
-              Padding(
-                padding: EdgeInsets.only(left: 8.0),
-                child: StoreConnector<AppState, VoidCallback>(
-                  converter: (store) =>
-                      () => store.dispatch(voteEntryComment(comment.id)),
-                  builder: (context, callback) => VoteButton(
-                      isSelected: comment.isVoted,
-                      count: comment.voteCount,
-                      onClicked: () {
-                        callback();
-                      }),
-                ),
-              )
+              // Padding(
+              //   padding: EdgeInsets.only(left: 8.0),
+              //   child: StoreConnector<AppState, VoidCallback>(
+              //     converter: (store) =>
+              //         () => store.dispatch(voteEntryComment(comment.id)),
+              //     builder: (context, callback) => VoteButton(
+              //         isSelected: comment.isVoted,
+              //         count: comment.voteCount,
+              //         callback: callback,
+              //   )),
+              // )
             ]));
   }
 }

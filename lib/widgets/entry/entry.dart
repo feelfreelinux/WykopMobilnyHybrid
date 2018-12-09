@@ -3,6 +3,7 @@ import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/store/store.dart';
+import 'dart:async';
 
 class EntryWidget extends StatelessWidget {
   final int entryId;
@@ -26,24 +27,26 @@ class EntryWidget extends StatelessWidget {
   List<Widget> _buildEntryBody(Entry entry) {
     return [
       Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            AuthorWidget(
-                author: entry.author, date: entry.date, fontSize: 13.5),
-            Padding(
-                padding: EdgeInsets.only(right: 12.0),
-                child: StoreConnector<AppState, VoidCallback>(
-                  converter: (state) =>
-                      () => state.dispatch(voteEntry(entryId)),
-                  builder: (context, callback) => VoteButton(
-                      isSelected: entry.isVoted,
-                      count: entry.voteCount,
-                      onClicked: () {
-                        callback();
-                      }),
-                ))
-          ]),
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          AuthorWidget(
+              author: entry.author, date: entry.date, fontSize: 13.5),
+          Padding(
+            padding: EdgeInsets.only(right: 12.0),
+            child: StoreConnector<AppState, dynamic>(
+              converter: (state) => () => state.dispatch(voteEntry(entryId)),
+              builder: (context, callback) => VoteButton(entry, ()
+                {
+                  var completer = Completer();
+                  callback(completer);
+                  return completer.future;
+                }
+              ),
+            ),
+          ),
+        ],
+      ),
       _drawBody(entry),
       _drawEmbed(entry),
       EntryFooterWidget(entry: entry)

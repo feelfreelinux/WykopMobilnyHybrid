@@ -14,14 +14,15 @@ class OwmApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreProvider<AppState>(
-        store: store,
-        child: MaterialApp(
-          title: 'Wykop Mobilny',
-          navigatorKey: OwmKeys.navKey,
-          theme: Themes.lightTheme(),
-          routes: {
-            '/': (context) => MainScreen(),
-          },
-        ));
+      store: store,
+      child: MaterialApp(
+        title: 'Wykop Mobilny',
+        navigatorKey: OwmKeys.navKey,
+        theme: Themes.lightTheme(),
+        routes: {
+          '/': (context) => MainScreen(),
+        },
+      )
+    );
   }
 }

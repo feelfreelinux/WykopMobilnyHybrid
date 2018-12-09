@@ -5,12 +5,12 @@ import 'package:redux_thunk/redux_thunk.dart' show thunkMiddleware;
 import 'package:owmflutter/app.dart';
 
 void main() {
-  final store =
-      Store<AppState>(appReducer, initialState: AppState(), middleware: [
-    thunkMiddleware,
-  ]);
+  final store = Store<AppState>(
+    appReducer,
+    initialState: AppState(),
+    middleware: [
+      thunkMiddleware
+    ]);
 
-  runApp(OwmApp(
-    store: store,
-  ));
+  runApp(OwmApp(store: store));
 }
