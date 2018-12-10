@@ -1,0 +1,43 @@
+{
+
+  "patrons": [
+
+    {
+
+      "badge": "Platynowy supporter",
+
+      "color": "pink",
+
+      "tier": "1zl",
+
+      "username": "alufers"
+
+    },
+
+    {
+
+      "badge": "Niewolnik",
+
+      "color": "yellow",
+
+      "tier": "darmowa praca",
+
+      "username": "Kroguc"
+
+    },
+
+    {
+
+      "badge": "lewak",
+
+      "color": "magenta",
+
+      "tier": "socjalizm krul",
+
+      "username": "rnickson"
+
+    }
+
+  ]
+
+}
