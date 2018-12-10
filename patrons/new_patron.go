@@ -86,13 +86,35 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	patrons["patrons"] = append(patrons["patrons"].([]J), J{
+	patrons["patrons"] = append(patrons["patrons"].([]interface{}), J{
 		"username": "rnickson",
 		"color":    "magenta",
 		"tier":     "socjalizm krul",
 		"badge":    "lewak",
 	})
-
+	newData, _ := json.Marshal(patrons)
+	// commitName := "otwarty-bot-pullujacy"
+	// commitEmail := "ddd@bjorn.ml"
+	commitMessage := "ddd"
+	branch := "develop"
+	sha := fileContent.GetSHA()
+	_, _, err = client.Repositories.UpdateFile(ctx, "otwarty-bot-pullujacy", "WykopMobilnyHybrid", "patrons/patrons.json", &github.RepositoryContentFileOptions{
+		// Author: &github.CommitAuthor{
+		// 	Name:  &commitName,
+		// 	Email: &commitEmail,
+		// },
+		Branch:  &branch,
+		Content: newData,
+		Message: &commitMessage,
+		SHA:     &sha,
+	})
+	if err != nil {
+		fmt.Println("Failed to write patrons.json", err.Error())
+		writeJSON(w, 500, J{
+			"message": "Failed to write patrons.json",
+		})
+		return
+	}
 	writeJSON(w, 200, J{
 		"message": "Success!",
 		"data":    patrons,
