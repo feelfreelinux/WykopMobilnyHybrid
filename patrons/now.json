@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "patrons.json", "use": "@now/static" },
+    { "src": "*.go", "use": "@now/go" }
+  ],
+  "env": {
+    "GITHUB_API_KEY": "@github-api-key"
+  }
+}

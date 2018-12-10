@@ -1,0 +1,16 @@
+{
+  "patrons": [
+    {
+      "username": "alufers",
+      "color": "pink",
+      "tier": "1zl",
+      "badge": "Platynowy supporter"
+    },
+    {
+      "username": "Kroguc",
+      "color": "yellow",
+      "tier": "darmowa praca",
+      "badge": "Niewolnik"
+    }
+  ]
+}
