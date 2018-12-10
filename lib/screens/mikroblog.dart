@@ -45,25 +45,18 @@ class _MikroblogScreenState extends State<MikroblogScreen> {
                 });
               }),
           body: showingResults
-              ? WillPopScope(
-                  onWillPop: () {
-                    setState(() {
-                      hasData = false;
-                      showingResults = false;
-                    });
-                  },
-                  child: StoreConnector<AppState, VoidCallback>(
-                    converter: (store) => () {},
-                    onInit: (store) => store.dispatch(clearEntries()),
-                    builder: (context, callback) => hasData
-                        ? EntryList(
-                            converterCallback: (store) =>
-                                store.state.searchState.entriesSearchState,
-                            loadDataCallback: (store, refresh, completer) =>
-                                store.dispatch(searchEntries(
-                                    searchQuery, refresh, completer)))
-                        : Center(child: Text('Wyszukaj najpierw')),
-                  ))
+              ? StoreConnector<AppState, VoidCallback>(
+                  converter: (store) => () {},
+                  onInit: (store) => store.dispatch(clearEntries()),
+                  builder: (context, callback) => hasData
+                      ? EntryList(
+                          converterCallback: (store) =>
+                              store.state.searchState.entriesSearchState,
+                          loadDataCallback: (store, refresh, completer) =>
+                              store.dispatch(searchEntries(
+                                  searchQuery, refresh, completer)))
+                      : Center(child: Text('Wyszukaj najpierw')),
+                )
               : TabBarView(children: [
                   EntryList(
                       converterCallback: (store) =>

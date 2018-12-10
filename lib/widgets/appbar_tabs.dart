@@ -49,6 +49,7 @@ class _SearchableAppbarTabsWidgetState
                 highlightColor: Colors.transparent,
                 splashColor: Colors.transparent,
                 onPressed: () {
+                  searchInputController.clear();
                   widget.closeCallback();
                   setState(() {
                     isSearching = false;
@@ -66,33 +67,42 @@ class _SearchableAppbarTabsWidgetState
   TextEditingController searchInputController = TextEditingController();
 
   Widget _renderSearchInput() {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 1.0,
-        horizontal: 12.0,
-      ),
-      decoration: BoxDecoration(
-        color: Color(0x267f7f7f),
-        borderRadius: BorderRadius.circular(16.0),
-      ),
-      child: TextField(
-        cursorWidth: 1.5,
-        cursorRadius: Radius.circular(20.0),
-        style:
-            DefaultTextStyle.of(context).style.merge(TextStyle(fontSize: 14.0)),
-        maxLines: 1,
-        controller: searchInputController,
-        onSubmitted: (text) {
-          widget.searchCallback(text);
-          searchInputController.clear();
-        },
-        keyboardType: TextInputType.text,
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(
-            vertical: 8.0,
+    return WillPopScope(
+      onWillPop: () {
+        widget.closeCallback();
+        searchInputController.clear();
+        setState(() {
+          isSearching = false;
+        });
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          vertical: 1.0,
+          horizontal: 12.0,
+        ),
+        decoration: BoxDecoration(
+          color: Color(0x267f7f7f),
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        child: TextField(
+          cursorWidth: 1.5,
+          cursorRadius: Radius.circular(20.0),
+          style: DefaultTextStyle.of(context)
+              .style
+              .merge(TextStyle(fontSize: 14.0)),
+          maxLines: 1,
+          controller: searchInputController,
+          onSubmitted: (text) {
+            widget.searchCallback(text);
+          },
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.symmetric(
+              vertical: 8.0,
+            ),
+            border: InputBorder.none,
+            hintText: 'Szukaj',
           ),
-          border: InputBorder.none,
-          hintText: 'Szukaj',
         ),
       ),
     );
@@ -147,6 +157,11 @@ class AppbarTabsWidget extends PreferredSize {
 
   @override
   Widget build(BuildContext context) {
-    return SearchableAppbarTabsWidget(tabs: tabs, searchCallback: onSearch, closeCallback: this.closeCallback, openCallback: this.openCallback,);
+    return SearchableAppbarTabsWidget(
+      tabs: tabs,
+      searchCallback: onSearch,
+      closeCallback: this.closeCallback,
+      openCallback: this.openCallback,
+    );
   }
 }
