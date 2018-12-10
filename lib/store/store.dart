@@ -12,6 +12,10 @@ export 'mikroblog/mikroblog_state.dart';
 export 'mikroblog/reducer.dart';
 export 'mikroblog/actions.dart';
 
+export 'search/search_state.dart';
+export 'search/reducer.dart';
+export 'search/actions.dart';
+
 export 'mywykop/mywykop_state.dart';
 export 'mywykop/reducer.dart';
 export 'mywykop/actions.dart';

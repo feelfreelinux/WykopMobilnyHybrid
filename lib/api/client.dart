@@ -90,6 +90,7 @@ class ApiClient {
     };
 
     _dio.interceptor.response.onError = (DioError error) async {
+      print(error.response.data);
       if (error != null &&
           error.response != null &&
           error.response.statusCode == 401) {

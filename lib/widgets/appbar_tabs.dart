@@ -6,8 +6,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class SearchableAppbarTabsWidget extends StatefulWidget {
   final List<Widget> tabs;
   final SearchCallback searchCallback;
+  final VoidCallback closeCallback;
+  final VoidCallback openCallback;
 
-  SearchableAppbarTabsWidget({this.tabs, this.searchCallback});
+  SearchableAppbarTabsWidget(
+      {this.tabs, this.searchCallback, this.closeCallback, this.openCallback});
 
   _SearchableAppbarTabsWidgetState createState() =>
       _SearchableAppbarTabsWidgetState();
@@ -33,6 +36,7 @@ class _SearchableAppbarTabsWidgetState
                 highlightColor: Colors.transparent,
                 splashColor: Colors.transparent,
                 onPressed: () {
+                  widget.openCallback();
                   setState(() {
                     isSearching = true;
                   });
@@ -45,6 +49,7 @@ class _SearchableAppbarTabsWidgetState
                 highlightColor: Colors.transparent,
                 splashColor: Colors.transparent,
                 onPressed: () {
+                  widget.closeCallback();
                   setState(() {
                     isSearching = false;
                   });
@@ -57,6 +62,8 @@ class _SearchableAppbarTabsWidgetState
       titleSpacing: 0.0,
     );
   }
+
+  TextEditingController searchInputController = TextEditingController();
 
   Widget _renderSearchInput() {
     return Container(
@@ -74,11 +81,10 @@ class _SearchableAppbarTabsWidgetState
         style:
             DefaultTextStyle.of(context).style.merge(TextStyle(fontSize: 14.0)),
         maxLines: 1,
+        controller: searchInputController,
         onSubmitted: (text) {
           widget.searchCallback(text);
-          setState(() {
-            isSearching = false;
-          });
+          searchInputController.clear();
         },
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
@@ -125,8 +131,14 @@ typedef void SearchCallback(String query);
 class AppbarTabsWidget extends PreferredSize {
   final List<Widget> tabs;
   final SearchCallback onSearch;
+  final VoidCallback openCallback;
+  final VoidCallback closeCallback;
 
-  AppbarTabsWidget({@required this.tabs, this.onSearch});
+  AppbarTabsWidget(
+      {@required this.tabs,
+      this.onSearch,
+      this.closeCallback,
+      this.openCallback});
 
   @override
   Size get preferredSize {
@@ -135,6 +147,6 @@ class AppbarTabsWidget extends PreferredSize {
 
   @override
   Widget build(BuildContext context) {
-    return SearchableAppbarTabsWidget(tabs: tabs, searchCallback: onSearch);
+    return SearchableAppbarTabsWidget(tabs: tabs, searchCallback: onSearch, closeCallback: this.closeCallback, openCallback: this.openCallback,);
   }
 }

@@ -37,6 +37,9 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
       'entitiesState',
       serializers.serialize(object.entitiesState,
           specifiedType: const FullType(EntitiesState)),
+      'searchState',
+      serializers.serialize(object.searchState,
+          specifiedType: const FullType(SearchState)),
       'linksState',
       serializers.serialize(object.linksState,
           specifiedType: const FullType(LinksState)),
@@ -79,6 +82,10 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
           result.entitiesState.replace(serializers.deserialize(value,
               specifiedType: const FullType(EntitiesState)) as EntitiesState);
           break;
+        case 'searchState':
+          result.searchState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(SearchState)) as SearchState);
+          break;
         case 'linksState':
           result.linksState.replace(serializers.deserialize(value,
               specifiedType: const FullType(LinksState)) as LinksState);
@@ -118,6 +125,8 @@ class _$AppState extends AppState {
   @override
   final EntitiesState entitiesState;
   @override
+  final SearchState searchState;
+  @override
   final LinksState linksState;
   @override
   final MyWykopState myWykopState;
@@ -136,6 +145,7 @@ class _$AppState extends AppState {
   _$AppState._(
       {this.authState,
       this.entitiesState,
+      this.searchState,
       this.linksState,
       this.myWykopState,
       this.notificationsState,
@@ -148,6 +158,9 @@ class _$AppState extends AppState {
     }
     if (entitiesState == null) {
       throw new BuiltValueNullFieldError('AppState', 'entitiesState');
+    }
+    if (searchState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'searchState');
     }
     if (linksState == null) {
       throw new BuiltValueNullFieldError('AppState', 'linksState');
@@ -182,6 +195,7 @@ class _$AppState extends AppState {
     return other is AppState &&
         authState == other.authState &&
         entitiesState == other.entitiesState &&
+        searchState == other.searchState &&
         linksState == other.linksState &&
         myWykopState == other.myWykopState &&
         notificationsState == other.notificationsState &&
@@ -198,8 +212,10 @@ class _$AppState extends AppState {
                 $jc(
                     $jc(
                         $jc(
-                            $jc($jc(0, authState.hashCode),
-                                entitiesState.hashCode),
+                            $jc(
+                                $jc($jc(0, authState.hashCode),
+                                    entitiesState.hashCode),
+                                searchState.hashCode),
                             linksState.hashCode),
                         myWykopState.hashCode),
                     notificationsState.hashCode),
@@ -213,6 +229,7 @@ class _$AppState extends AppState {
     return (newBuiltValueToStringHelper('AppState')
           ..add('authState', authState)
           ..add('entitiesState', entitiesState)
+          ..add('searchState', searchState)
           ..add('linksState', linksState)
           ..add('myWykopState', myWykopState)
           ..add('notificationsState', notificationsState)
@@ -236,6 +253,12 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _$this._entitiesState ??= new EntitiesStateBuilder();
   set entitiesState(EntitiesStateBuilder entitiesState) =>
       _$this._entitiesState = entitiesState;
+
+  SearchStateBuilder _searchState;
+  SearchStateBuilder get searchState =>
+      _$this._searchState ??= new SearchStateBuilder();
+  set searchState(SearchStateBuilder searchState) =>
+      _$this._searchState = searchState;
 
   LinksStateBuilder _linksState;
   LinksStateBuilder get linksState =>
@@ -278,6 +301,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
     if (_$v != null) {
       _authState = _$v.authState?.toBuilder();
       _entitiesState = _$v.entitiesState?.toBuilder();
+      _searchState = _$v.searchState?.toBuilder();
       _linksState = _$v.linksState?.toBuilder();
       _myWykopState = _$v.myWykopState?.toBuilder();
       _notificationsState = _$v.notificationsState?.toBuilder();
@@ -310,6 +334,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
           new _$AppState._(
               authState: authState.build(),
               entitiesState: entitiesState.build(),
+              searchState: searchState.build(),
               linksState: linksState.build(),
               myWykopState: myWykopState.build(),
               notificationsState: notificationsState.build(),
@@ -323,6 +348,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
         authState.build();
         _$failedField = 'entitiesState';
         entitiesState.build();
+        _$failedField = 'searchState';
+        searchState.build();
         _$failedField = 'linksState';
         linksState.build();
         _$failedField = 'myWykopState';
