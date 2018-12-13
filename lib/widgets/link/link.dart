@@ -15,6 +15,7 @@ class LinkWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
+      key: Key(linkId.toString()),
       padding: EdgeInsets.only(
         bottom: 8.0,
       ),

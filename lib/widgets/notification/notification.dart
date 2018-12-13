@@ -13,6 +13,7 @@ class NotificationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
+        key: Key(notificationId.toString()),
         padding: EdgeInsets.only(top: 0.0, bottom: 3.0),
         child: Material(
             color: Theme.of(context).cardColor,

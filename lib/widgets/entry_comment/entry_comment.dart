@@ -12,6 +12,7 @@ class EntryCommentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
+        key: Key(commentId.toString()),
         color: Theme.of(context).cardColor,
         child: StoreConnector<AppState, EntryComment>(
             converter: (store) =>
