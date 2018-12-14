@@ -9,7 +9,9 @@ class NotificationsScreen extends StatelessWidget {
     return DefaultTabController(
         length: 5,
         child: Scaffold(
-            appBar: AppbarTabsWidget(tabs: <Widget>[
+            appBar: AppbarTabsWidget(
+              onPressedSearch: () {},
+              tabs: <Widget>[
               Tab(text: 'Powiadomienia'),
               Tab(text: 'Obserwowane tagi'),
             ]),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/widgets/widgets.dart';
-import 'package:owmflutter/keys.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 class MikroblogScreen extends StatefulWidget {
@@ -9,7 +8,7 @@ class MikroblogScreen extends StatefulWidget {
 }
 
 class _MikroblogScreenState extends State<MikroblogScreen> {
-  bool searching = false;
+  bool isSearching = false;
   String searchQuery = "";
   @override
   Widget build(BuildContext context) {
@@ -17,18 +16,22 @@ class _MikroblogScreenState extends State<MikroblogScreen> {
         length: 6,
         child: Scaffold(
           resizeToAvoidBottomPadding: false,
-          appBar: searching
-              ? SeachAppbarWidget(
+          appBar: isSearching
+              ? SearchAppbarWidget(
                   onClosedSearch: () {
                     setState(() {
-                      searching = false;
+                      isSearching = false;
                       searchQuery = "";
                     });
                   },
-                  searchCallback: (q, store, completer) =>
-                      store.dispatch(searchEntries(q, true, completer)),
+                  searchCallback: (q, store, completer) {
+                    setState(() {
+                      searchQuery = q;
+                    });
+                    store.dispatch(searchEntries(q, true, completer));
+                  },
                 )
-              : AppbarTabsWidget2(
+              : AppbarTabsWidget(
                   tabs: <Widget>[
                       Tab(text: 'NOWE'),
                       Tab(text: 'AKTYWNE'),
@@ -38,10 +41,10 @@ class _MikroblogScreenState extends State<MikroblogScreen> {
                     ],
                   onPressedSearch: () {
                     setState(() {
-                      searching = true;
+                      isSearching = true;
                     });
                   }),
-          body: searching
+          body: isSearching
               ? StoreConnector<AppState, ItemListState>(
                   onInit: (store) => store.dispatch(clearEntries()),
                   converter: (store) =>
