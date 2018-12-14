@@ -9,8 +9,7 @@ class MikroblogScreen extends StatefulWidget {
 }
 
 class _MikroblogScreenState extends State<MikroblogScreen> {
-  bool showingResults = false;
-  bool hasData = false;
+  bool searching = false;
   String searchQuery = "";
   @override
   Widget build(BuildContext context) {
@@ -18,44 +17,44 @@ class _MikroblogScreenState extends State<MikroblogScreen> {
         length: 6,
         child: Scaffold(
           resizeToAvoidBottomPadding: false,
-          appBar: AppbarTabsWidget(
-              tabs: <Widget>[
-                Tab(text: 'NOWE'),
-                Tab(text: 'AKTYWNE'),
-                Tab(text: 'GORĄCE 6H'),
-                Tab(text: 'GORĄCE 12H'),
-                Tab(text: 'GORĄCE 24H')
-              ],
-              closeCallback: () {
-                setState(() {
-                  showingResults = false;
-                  hasData = false;
-                });
-              },
-              openCallback: () {
-                setState(() {
-                  showingResults = true;
-                });
-              },
-              onSearch: (q) {
-                setState(() {
-                  searchQuery = q;
-                  hasData = true;
-                  showingResults = true;
-                });
-              }),
-          body: showingResults
-              ? StoreConnector<AppState, VoidCallback>(
-                  converter: (store) => () {},
+          appBar: searching
+              ? SeachAppbarWidget(
+                  onClosedSearch: () {
+                    setState(() {
+                      searching = false;
+                      searchQuery = "";
+                    });
+                  },
+                  searchCallback: (q, store, completer) =>
+                      store.dispatch(searchEntries(q, true, completer)),
+                )
+              : AppbarTabsWidget2(
+                  tabs: <Widget>[
+                      Tab(text: 'NOWE'),
+                      Tab(text: 'AKTYWNE'),
+                      Tab(text: 'GORĄCE 6H'),
+                      Tab(text: 'GORĄCE 12H'),
+                      Tab(text: 'GORĄCE 24H')
+                    ],
+                  onPressedSearch: () {
+                    setState(() {
+                      searching = true;
+                    });
+                  }),
+          body: searching
+              ? StoreConnector<AppState, ItemListState>(
                   onInit: (store) => store.dispatch(clearEntries()),
-                  builder: (context, callback) => hasData
-                      ? EntryList(
-                          converterCallback: (store) =>
-                              store.state.searchState.entriesSearchState,
-                          loadDataCallback: (store, refresh, completer) =>
-                              store.dispatch(searchEntries(
-                                  searchQuery, refresh, completer)))
-                      : Center(child: Text('Wyszukaj najpierw')),
+                  converter: (store) =>
+                      store.state.searchState.entriesSearchState,
+                  builder: (context, state) =>
+                      state.paginationState.itemIds.isNotEmpty
+                          ? EntryList(
+                              converterCallback: (store) =>
+                                  store.state.searchState.entriesSearchState,
+                              loadDataCallback: (store, refresh, completer) =>
+                                  store.dispatch(searchEntries(
+                                      searchQuery, refresh, completer)))
+                          : Center(child: Text('Wyszukaj najpierw')),
                 )
               : TabBarView(children: [
                   EntryList(
