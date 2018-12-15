@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 /**
  * Works around flutter#20495
@@ -7,6 +8,8 @@ class NotSuddenJumpPhysics extends ClampingScrollPhysics {
   @override
   double get dragStartDistanceMotionThreshold => 3.5;
 }
+
+typedef void LoadMoreDataCallback(Completer completer);
 
 class NotSuddenJumpScrollBehavior extends ScrollBehavior {
   @override
@@ -28,14 +31,9 @@ class InfiniteList extends StatefulWidget {
   final int itemCount;
   final bool hasReachedEnd;
   final ItemBuilder itemBuilder;
-  final bool isLoading;
-  final VoidCallback loadData;
+  final LoadMoreDataCallback loadData;
   InfiniteList(
-      {this.itemBuilder,
-      this.hasReachedEnd,
-      this.itemCount,
-      this.isLoading,
-      this.loadData});
+      {this.itemBuilder, this.hasReachedEnd, this.itemCount, this.loadData});
 
   @override
   _InfiniteListState createState() => _InfiniteListState();
@@ -43,16 +41,26 @@ class InfiniteList extends StatefulWidget {
 
 class _InfiniteListState extends State<InfiniteList> {
   ScrollController _scrollController = ScrollController();
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(() {
-      if (!widget.isLoading &&
+      if (!isLoading &&
           !widget.hasReachedEnd &&
           _scrollController.position.pixels ==
               _scrollController.position.maxScrollExtent) {
-        widget.loadData();
+        var completer = Completer();
+        setState(() {
+          isLoading = true;
+        });
+        completer.future.then((e) {
+          setState(() {
+            isLoading = false;
+          });
+        });
+        widget.loadData(completer);
       }
     });
   }

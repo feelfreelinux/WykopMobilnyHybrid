@@ -34,9 +34,8 @@ class NotificationsList extends StatelessWidget {
                       return completer.future;
                     },
                     child: InfiniteList(
-                        isLoading: state.listState.isLoading,
                         hasReachedEnd: state.listState.haveReachedEnd,
-                        loadData: () => callback(false, Completer()),
+                        loadData: (completer) => callback(false, completer),
                         itemCount: state.paginationState.itemIds.length,
                         itemBuilder: (context, index) {
                           return NotificationWidget(
