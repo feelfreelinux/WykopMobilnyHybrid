@@ -69,7 +69,7 @@ class LinkScreen extends StatelessWidget {
                                 if (index == 0) {
                                   return LinkWidget(linkId: linkId);
                                 } else {
-                                  return LinkCommentWidget(commentId: ids[index]);
+                                  return TopLinkCommentWidget(commentId: ids[index]);
                                 }
                               }),
                         ),

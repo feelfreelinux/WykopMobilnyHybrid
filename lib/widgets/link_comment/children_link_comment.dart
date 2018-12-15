@@ -5,9 +5,9 @@ import 'package:owmflutter/widgets/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/utils/utils.dart';
 
-class LinkCommentWidget extends StatelessWidget {
+class ChildrenLinkCommentWidget extends StatelessWidget {
   final int commentId;
-  LinkCommentWidget({this.commentId});
+  ChildrenLinkCommentWidget({this.commentId});
 
   @override
   Widget build(BuildContext context) {
