@@ -12,11 +12,13 @@ abstract class EntitiesState
   BuiltMap<int, Entry> get entries;
   BuiltMap<int, EntryComment> get entryComments;
   BuiltMap<int, Link> get links;
+  BuiltMap<int, LinkComment> get linkComments;
   BuiltMap<int, Notification> get notifications;
 
   factory EntitiesState() {
     return _$EntitiesState._(
         entries: new BuiltMap<int, Entry>(),
+        linkComments: new BuiltMap<int, LinkComment>(),
         links: new BuiltMap<int, Link>(),
         notifications: new BuiltMap<int, Notification>(),
         entryComments: new BuiltMap<int, EntryComment>());

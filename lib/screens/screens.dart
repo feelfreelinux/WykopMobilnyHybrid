@@ -4,5 +4,6 @@ export 'main.dart';
 export 'login.dart';
 export 'tag.dart';
 export 'links.dart';
+export 'link.dart';
 export 'notifications.dart';
 export 'mywykop.dart';

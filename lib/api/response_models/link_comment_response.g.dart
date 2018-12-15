@@ -1,26 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'entry_comment_response.dart';
+part of 'link_comment_response.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<EntryCommentResponse> _$entryCommentResponseSerializer =
-    new _$EntryCommentResponseSerializer();
+Serializer<LinkCommentResponse> _$linkCommentResponseSerializer =
+    new _$LinkCommentResponseSerializer();
 
-class _$EntryCommentResponseSerializer
-    implements StructuredSerializer<EntryCommentResponse> {
+class _$LinkCommentResponseSerializer
+    implements StructuredSerializer<LinkCommentResponse> {
   @override
   final Iterable<Type> types = const [
-    EntryCommentResponse,
-    _$EntryCommentResponse
+    LinkCommentResponse,
+    _$LinkCommentResponse
   ];
   @override
-  final String wireName = 'EntryCommentResponse';
+  final String wireName = 'LinkCommentResponse';
 
   @override
-  Iterable serialize(Serializers serializers, EntryCommentResponse object,
+  Iterable serialize(Serializers serializers, LinkCommentResponse object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'id',
@@ -30,6 +30,15 @@ class _$EntryCommentResponseSerializer
       'vote_count',
       serializers.serialize(object.voteCount,
           specifiedType: const FullType(int)),
+      'vote_count_plus',
+      serializers.serialize(object.voteCountPlus,
+          specifiedType: const FullType(int)),
+      'parent_id',
+      serializers.serialize(object.parentId,
+          specifiedType: const FullType(int)),
+      'blocked',
+      serializers.serialize(object.isBlocked,
+          specifiedType: const FullType(bool)),
       'author',
       serializers.serialize(object.author,
           specifiedType: const FullType(AuthorResponse)),
@@ -57,9 +66,9 @@ class _$EntryCommentResponseSerializer
   }
 
   @override
-  EntryCommentResponse deserialize(Serializers serializers, Iterable serialized,
+  LinkCommentResponse deserialize(Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new EntryCommentResponseBuilder();
+    final result = new LinkCommentResponseBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -87,6 +96,18 @@ class _$EntryCommentResponseSerializer
           result.voteCount = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
+        case 'vote_count_plus':
+          result.voteCountPlus = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
+        case 'parent_id':
+          result.parentId = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
+        case 'blocked':
+          result.isBlocked = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
         case 'author':
           result.author.replace(serializers.deserialize(value,
               specifiedType: const FullType(AuthorResponse)) as AuthorResponse);
@@ -102,7 +123,7 @@ class _$EntryCommentResponseSerializer
   }
 }
 
-class _$EntryCommentResponse extends EntryCommentResponse {
+class _$LinkCommentResponse extends LinkCommentResponse {
   @override
   final int id;
   @override
@@ -114,54 +135,75 @@ class _$EntryCommentResponse extends EntryCommentResponse {
   @override
   final int voteCount;
   @override
+  final int voteCountPlus;
+  @override
+  final int parentId;
+  @override
+  final bool isBlocked;
+  @override
   final AuthorResponse author;
   @override
   final EmbedResponse embed;
 
-  factory _$EntryCommentResponse(
-          [void updates(EntryCommentResponseBuilder b)]) =>
-      (new EntryCommentResponseBuilder()..update(updates)).build();
+  factory _$LinkCommentResponse([void updates(LinkCommentResponseBuilder b)]) =>
+      (new LinkCommentResponseBuilder()..update(updates)).build();
 
-  _$EntryCommentResponse._(
+  _$LinkCommentResponse._(
       {this.id,
       this.date,
       this.body,
       this.userVote,
       this.voteCount,
+      this.voteCountPlus,
+      this.parentId,
+      this.isBlocked,
       this.author,
       this.embed})
       : super._() {
     if (id == null) {
-      throw new BuiltValueNullFieldError('EntryCommentResponse', 'id');
+      throw new BuiltValueNullFieldError('LinkCommentResponse', 'id');
     }
     if (date == null) {
-      throw new BuiltValueNullFieldError('EntryCommentResponse', 'date');
+      throw new BuiltValueNullFieldError('LinkCommentResponse', 'date');
     }
     if (voteCount == null) {
-      throw new BuiltValueNullFieldError('EntryCommentResponse', 'voteCount');
+      throw new BuiltValueNullFieldError('LinkCommentResponse', 'voteCount');
+    }
+    if (voteCountPlus == null) {
+      throw new BuiltValueNullFieldError(
+          'LinkCommentResponse', 'voteCountPlus');
+    }
+    if (parentId == null) {
+      throw new BuiltValueNullFieldError('LinkCommentResponse', 'parentId');
+    }
+    if (isBlocked == null) {
+      throw new BuiltValueNullFieldError('LinkCommentResponse', 'isBlocked');
     }
     if (author == null) {
-      throw new BuiltValueNullFieldError('EntryCommentResponse', 'author');
+      throw new BuiltValueNullFieldError('LinkCommentResponse', 'author');
     }
   }
 
   @override
-  EntryCommentResponse rebuild(void updates(EntryCommentResponseBuilder b)) =>
+  LinkCommentResponse rebuild(void updates(LinkCommentResponseBuilder b)) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  EntryCommentResponseBuilder toBuilder() =>
-      new EntryCommentResponseBuilder()..replace(this);
+  LinkCommentResponseBuilder toBuilder() =>
+      new LinkCommentResponseBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is EntryCommentResponse &&
+    return other is LinkCommentResponse &&
         id == other.id &&
         date == other.date &&
         body == other.body &&
         userVote == other.userVote &&
         voteCount == other.voteCount &&
+        voteCountPlus == other.voteCountPlus &&
+        parentId == other.parentId &&
+        isBlocked == other.isBlocked &&
         author == other.author &&
         embed == other.embed;
   }
@@ -171,30 +213,41 @@ class _$EntryCommentResponse extends EntryCommentResponse {
     return $jf($jc(
         $jc(
             $jc(
-                $jc($jc($jc($jc(0, id.hashCode), date.hashCode), body.hashCode),
-                    userVote.hashCode),
-                voteCount.hashCode),
+                $jc(
+                    $jc(
+                        $jc(
+                            $jc(
+                                $jc($jc($jc(0, id.hashCode), date.hashCode),
+                                    body.hashCode),
+                                userVote.hashCode),
+                            voteCount.hashCode),
+                        voteCountPlus.hashCode),
+                    parentId.hashCode),
+                isBlocked.hashCode),
             author.hashCode),
         embed.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('EntryCommentResponse')
+    return (newBuiltValueToStringHelper('LinkCommentResponse')
           ..add('id', id)
           ..add('date', date)
           ..add('body', body)
           ..add('userVote', userVote)
           ..add('voteCount', voteCount)
+          ..add('voteCountPlus', voteCountPlus)
+          ..add('parentId', parentId)
+          ..add('isBlocked', isBlocked)
           ..add('author', author)
           ..add('embed', embed))
         .toString();
   }
 }
 
-class EntryCommentResponseBuilder
-    implements Builder<EntryCommentResponse, EntryCommentResponseBuilder> {
-  _$EntryCommentResponse _$v;
+class LinkCommentResponseBuilder
+    implements Builder<LinkCommentResponse, LinkCommentResponseBuilder> {
+  _$LinkCommentResponse _$v;
 
   int _id;
   int get id => _$this._id;
@@ -216,6 +269,18 @@ class EntryCommentResponseBuilder
   int get voteCount => _$this._voteCount;
   set voteCount(int voteCount) => _$this._voteCount = voteCount;
 
+  int _voteCountPlus;
+  int get voteCountPlus => _$this._voteCountPlus;
+  set voteCountPlus(int voteCountPlus) => _$this._voteCountPlus = voteCountPlus;
+
+  int _parentId;
+  int get parentId => _$this._parentId;
+  set parentId(int parentId) => _$this._parentId = parentId;
+
+  bool _isBlocked;
+  bool get isBlocked => _$this._isBlocked;
+  set isBlocked(bool isBlocked) => _$this._isBlocked = isBlocked;
+
   AuthorResponseBuilder _author;
   AuthorResponseBuilder get author =>
       _$this._author ??= new AuthorResponseBuilder();
@@ -226,15 +291,18 @@ class EntryCommentResponseBuilder
       _$this._embed ??= new EmbedResponseBuilder();
   set embed(EmbedResponseBuilder embed) => _$this._embed = embed;
 
-  EntryCommentResponseBuilder();
+  LinkCommentResponseBuilder();
 
-  EntryCommentResponseBuilder get _$this {
+  LinkCommentResponseBuilder get _$this {
     if (_$v != null) {
       _id = _$v.id;
       _date = _$v.date;
       _body = _$v.body;
       _userVote = _$v.userVote;
       _voteCount = _$v.voteCount;
+      _voteCountPlus = _$v.voteCountPlus;
+      _parentId = _$v.parentId;
+      _isBlocked = _$v.isBlocked;
       _author = _$v.author?.toBuilder();
       _embed = _$v.embed?.toBuilder();
       _$v = null;
@@ -243,29 +311,32 @@ class EntryCommentResponseBuilder
   }
 
   @override
-  void replace(EntryCommentResponse other) {
+  void replace(LinkCommentResponse other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$EntryCommentResponse;
+    _$v = other as _$LinkCommentResponse;
   }
 
   @override
-  void update(void updates(EntryCommentResponseBuilder b)) {
+  void update(void updates(LinkCommentResponseBuilder b)) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$EntryCommentResponse build() {
-    _$EntryCommentResponse _$result;
+  _$LinkCommentResponse build() {
+    _$LinkCommentResponse _$result;
     try {
       _$result = _$v ??
-          new _$EntryCommentResponse._(
+          new _$LinkCommentResponse._(
               id: id,
               date: date,
               body: body,
               userVote: userVote,
               voteCount: voteCount,
+              voteCountPlus: voteCountPlus,
+              parentId: parentId,
+              isBlocked: isBlocked,
               author: author.build(),
               embed: _embed?.build());
     } catch (_) {
@@ -277,7 +348,7 @@ class EntryCommentResponseBuilder
         _embed?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'EntryCommentResponse', _$failedField, e.toString());
+            'LinkCommentResponse', _$failedField, e.toString());
       }
       rethrow;
     }

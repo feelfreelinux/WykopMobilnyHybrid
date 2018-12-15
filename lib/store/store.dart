@@ -32,9 +32,6 @@ export 'links/actions.dart';
 export 'links/links_state.dart';
 export 'links/reducer.dart';
 
-export 'links_list/links_list_state.dart';
-export 'links_list/reducer.dart';
-
 export 'entities/entities_state.dart';
 export 'entities/actions.dart';
 export 'entities/reducer.dart';
@@ -46,6 +43,10 @@ export 'pagination/actions.dart';
 export 'entry/reducer.dart';
 export 'entry/actions.dart';
 export 'entry/entry_state.dart';
+
+export 'link/reducer.dart';
+export 'link/actions.dart';
+export 'link/link_state.dart';
 
 export 'auth/reducer.dart';
 export 'auth/actions.dart';

@@ -1,42 +1,40 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'entry_state.dart';
+part of 'link_state.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<EntryScreensState> _$entryScreensStateSerializer =
-    new _$EntryScreensStateSerializer();
-Serializer<EntryScreenState> _$entryScreenStateSerializer =
-    new _$EntryScreenStateSerializer();
+Serializer<LinkScreensState> _$linkScreensStateSerializer =
+    new _$LinkScreensStateSerializer();
+Serializer<LinkScreenState> _$linkScreenStateSerializer =
+    new _$LinkScreenStateSerializer();
 
-class _$EntryScreensStateSerializer
-    implements StructuredSerializer<EntryScreensState> {
+class _$LinkScreensStateSerializer
+    implements StructuredSerializer<LinkScreensState> {
   @override
-  final Iterable<Type> types = const [EntryScreensState, _$EntryScreensState];
+  final Iterable<Type> types = const [LinkScreensState, _$LinkScreensState];
   @override
-  final String wireName = 'EntryScreensState';
+  final String wireName = 'LinkScreensState';
 
   @override
-  Iterable serialize(Serializers serializers, EntryScreensState object,
+  Iterable serialize(Serializers serializers, LinkScreensState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'states',
       serializers.serialize(object.states,
-          specifiedType: const FullType(BuiltMap, const [
-            const FullType(String),
-            const FullType(EntryScreenState)
-          ])),
+          specifiedType: const FullType(BuiltMap,
+              const [const FullType(int), const FullType(LinkScreenState)])),
     ];
 
     return result;
   }
 
   @override
-  EntryScreensState deserialize(Serializers serializers, Iterable serialized,
+  LinkScreensState deserialize(Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new EntryScreensStateBuilder();
+    final result = new LinkScreensStateBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -47,8 +45,8 @@ class _$EntryScreensStateSerializer
         case 'states':
           result.states.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
-                const FullType(String),
-                const FullType(EntryScreenState)
+                const FullType(int),
+                const FullType(LinkScreenState)
               ])) as BuiltMap);
           break;
       }
@@ -58,15 +56,15 @@ class _$EntryScreensStateSerializer
   }
 }
 
-class _$EntryScreenStateSerializer
-    implements StructuredSerializer<EntryScreenState> {
+class _$LinkScreenStateSerializer
+    implements StructuredSerializer<LinkScreenState> {
   @override
-  final Iterable<Type> types = const [EntryScreenState, _$EntryScreenState];
+  final Iterable<Type> types = const [LinkScreenState, _$LinkScreenState];
   @override
-  final String wireName = 'EntryScreenState';
+  final String wireName = 'LinkScreenState';
 
   @override
-  Iterable serialize(Serializers serializers, EntryScreenState object,
+  Iterable serialize(Serializers serializers, LinkScreenState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'ids',
@@ -78,9 +76,9 @@ class _$EntryScreenStateSerializer
   }
 
   @override
-  EntryScreenState deserialize(Serializers serializers, Iterable serialized,
+  LinkScreenState deserialize(Serializers serializers, Iterable serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new EntryScreenStateBuilder();
+    final result = new LinkScreenStateBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -101,31 +99,31 @@ class _$EntryScreenStateSerializer
   }
 }
 
-class _$EntryScreensState extends EntryScreensState {
+class _$LinkScreensState extends LinkScreensState {
   @override
-  final BuiltMap<String, EntryScreenState> states;
+  final BuiltMap<int, LinkScreenState> states;
 
-  factory _$EntryScreensState([void updates(EntryScreensStateBuilder b)]) =>
-      (new EntryScreensStateBuilder()..update(updates)).build();
+  factory _$LinkScreensState([void updates(LinkScreensStateBuilder b)]) =>
+      (new LinkScreensStateBuilder()..update(updates)).build();
 
-  _$EntryScreensState._({this.states}) : super._() {
+  _$LinkScreensState._({this.states}) : super._() {
     if (states == null) {
-      throw new BuiltValueNullFieldError('EntryScreensState', 'states');
+      throw new BuiltValueNullFieldError('LinkScreensState', 'states');
     }
   }
 
   @override
-  EntryScreensState rebuild(void updates(EntryScreensStateBuilder b)) =>
+  LinkScreensState rebuild(void updates(LinkScreensStateBuilder b)) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  EntryScreensStateBuilder toBuilder() =>
-      new EntryScreensStateBuilder()..replace(this);
+  LinkScreensStateBuilder toBuilder() =>
+      new LinkScreensStateBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is EntryScreensState && states == other.states;
+    return other is LinkScreensState && states == other.states;
   }
 
   @override
@@ -135,25 +133,25 @@ class _$EntryScreensState extends EntryScreensState {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('EntryScreensState')
+    return (newBuiltValueToStringHelper('LinkScreensState')
           ..add('states', states))
         .toString();
   }
 }
 
-class EntryScreensStateBuilder
-    implements Builder<EntryScreensState, EntryScreensStateBuilder> {
-  _$EntryScreensState _$v;
+class LinkScreensStateBuilder
+    implements Builder<LinkScreensState, LinkScreensStateBuilder> {
+  _$LinkScreensState _$v;
 
-  MapBuilder<String, EntryScreenState> _states;
-  MapBuilder<String, EntryScreenState> get states =>
-      _$this._states ??= new MapBuilder<String, EntryScreenState>();
-  set states(MapBuilder<String, EntryScreenState> states) =>
+  MapBuilder<int, LinkScreenState> _states;
+  MapBuilder<int, LinkScreenState> get states =>
+      _$this._states ??= new MapBuilder<int, LinkScreenState>();
+  set states(MapBuilder<int, LinkScreenState> states) =>
       _$this._states = states;
 
-  EntryScreensStateBuilder();
+  LinkScreensStateBuilder();
 
-  EntryScreensStateBuilder get _$this {
+  LinkScreensStateBuilder get _$this {
     if (_$v != null) {
       _states = _$v.states?.toBuilder();
       _$v = null;
@@ -162,23 +160,23 @@ class EntryScreensStateBuilder
   }
 
   @override
-  void replace(EntryScreensState other) {
+  void replace(LinkScreensState other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$EntryScreensState;
+    _$v = other as _$LinkScreensState;
   }
 
   @override
-  void update(void updates(EntryScreensStateBuilder b)) {
+  void update(void updates(LinkScreensStateBuilder b)) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$EntryScreensState build() {
-    _$EntryScreensState _$result;
+  _$LinkScreensState build() {
+    _$LinkScreensState _$result;
     try {
-      _$result = _$v ?? new _$EntryScreensState._(states: states.build());
+      _$result = _$v ?? new _$LinkScreensState._(states: states.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -186,7 +184,7 @@ class EntryScreensStateBuilder
         states.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'EntryScreensState', _$failedField, e.toString());
+            'LinkScreensState', _$failedField, e.toString());
       }
       rethrow;
     }
@@ -195,31 +193,31 @@ class EntryScreensStateBuilder
   }
 }
 
-class _$EntryScreenState extends EntryScreenState {
+class _$LinkScreenState extends LinkScreenState {
   @override
   final List<int> ids;
 
-  factory _$EntryScreenState([void updates(EntryScreenStateBuilder b)]) =>
-      (new EntryScreenStateBuilder()..update(updates)).build();
+  factory _$LinkScreenState([void updates(LinkScreenStateBuilder b)]) =>
+      (new LinkScreenStateBuilder()..update(updates)).build();
 
-  _$EntryScreenState._({this.ids}) : super._() {
+  _$LinkScreenState._({this.ids}) : super._() {
     if (ids == null) {
-      throw new BuiltValueNullFieldError('EntryScreenState', 'ids');
+      throw new BuiltValueNullFieldError('LinkScreenState', 'ids');
     }
   }
 
   @override
-  EntryScreenState rebuild(void updates(EntryScreenStateBuilder b)) =>
+  LinkScreenState rebuild(void updates(LinkScreenStateBuilder b)) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  EntryScreenStateBuilder toBuilder() =>
-      new EntryScreenStateBuilder()..replace(this);
+  LinkScreenStateBuilder toBuilder() =>
+      new LinkScreenStateBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is EntryScreenState && ids == other.ids;
+    return other is LinkScreenState && ids == other.ids;
   }
 
   @override
@@ -229,22 +227,22 @@ class _$EntryScreenState extends EntryScreenState {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('EntryScreenState')..add('ids', ids))
+    return (newBuiltValueToStringHelper('LinkScreenState')..add('ids', ids))
         .toString();
   }
 }
 
-class EntryScreenStateBuilder
-    implements Builder<EntryScreenState, EntryScreenStateBuilder> {
-  _$EntryScreenState _$v;
+class LinkScreenStateBuilder
+    implements Builder<LinkScreenState, LinkScreenStateBuilder> {
+  _$LinkScreenState _$v;
 
   List<int> _ids;
   List<int> get ids => _$this._ids;
   set ids(List<int> ids) => _$this._ids = ids;
 
-  EntryScreenStateBuilder();
+  LinkScreenStateBuilder();
 
-  EntryScreenStateBuilder get _$this {
+  LinkScreenStateBuilder get _$this {
     if (_$v != null) {
       _ids = _$v.ids;
       _$v = null;
@@ -253,21 +251,21 @@ class EntryScreenStateBuilder
   }
 
   @override
-  void replace(EntryScreenState other) {
+  void replace(LinkScreenState other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$EntryScreenState;
+    _$v = other as _$LinkScreenState;
   }
 
   @override
-  void update(void updates(EntryScreenStateBuilder b)) {
+  void update(void updates(LinkScreenStateBuilder b)) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$EntryScreenState build() {
-    final _$result = _$v ?? new _$EntryScreenState._(ids: ids);
+  _$LinkScreenState build() {
+    final _$result = _$v ?? new _$LinkScreenState._(ids: ids);
     replace(_$result);
     return _$result;
   }

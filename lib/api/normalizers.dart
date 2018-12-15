@@ -47,6 +47,12 @@ Map<int, Link> linkResponseListToMap(BuiltList<LinkResponse> links) {
       Map.fromIterable(mappedLinks, key: (v) => v.id, value: (v) => v));
 }
 
+Map<int, LinkComment> linkCommentResponseListToMap(BuiltList<LinkCommentResponse> linkComments) {
+  var mappedLinkComments = linkComments.map((c) => LinkComment.mapFromResponse(c, linkComments.where((d) => d.parentId == c.id && d.id != c.id).map((d) => d.id).toList())).toList();
+  return Map<int, LinkComment>.from(
+      Map.fromIterable(mappedLinkComments, key: (v) => v.id, value: (v) => v));
+}
+
 Result normalizeLinksResponse(BuiltList<LinkResponse> links) {
   var linksMap = linkResponseListToMap(links);
   var ids = links.map((e) => e.id);
@@ -54,6 +60,15 @@ Result normalizeLinksResponse(BuiltList<LinkResponse> links) {
   return Result(
       result: ids.toList(),
       state: EntitiesState().rebuild((b) => b..links.addAll(linksMap)));
+}
+
+Result normalizeLinkCommentsResponse(BuiltList<LinkCommentResponse> linkComments) {
+  var linkCommentsMap = linkCommentResponseListToMap(linkComments);
+  var ids = linkCommentsMap.values.toList().where((c) => c.id == c.parentId).map((e) => e.id);
+
+  return Result(
+      result: ids.toList(),
+      state: EntitiesState().rebuild((b) => b..linkComments.addAll(linkCommentsMap)));
 }
 
 Result normalizeEntryCommentsResponse(

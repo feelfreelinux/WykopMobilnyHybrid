@@ -5,6 +5,7 @@ export 'response_models/embed_response.dart';
 export 'response_models/entry_link_response.dart';
 export 'response_models/notification_response.dart';
 export 'response_models/entry_comment_response.dart';
+export 'response_models/link_comment_response.dart';
 export 'response_models/serializers.dart';
 export 'normalizers.dart';
 export 'client.dart';

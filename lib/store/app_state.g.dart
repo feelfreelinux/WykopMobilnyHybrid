@@ -6,19 +6,6 @@ part of 'app_state.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-// ignore_for_file: always_put_control_body_on_new_line
-// ignore_for_file: annotate_overrides
-// ignore_for_file: avoid_annotating_with_dynamic
-// ignore_for_file: avoid_catches_without_on_clauses
-// ignore_for_file: avoid_returning_this
-// ignore_for_file: lines_longer_than_80_chars
-// ignore_for_file: omit_local_variable_types
-// ignore_for_file: prefer_expression_function_bodies
-// ignore_for_file: sort_constructors_first
-// ignore_for_file: unnecessary_const
-// ignore_for_file: unnecessary_new
-// ignore_for_file: test_types_in_equals
-
 Serializer<AppState> _$appStateSerializer = new _$AppStateSerializer();
 
 class _$AppStateSerializer implements StructuredSerializer<AppState> {
@@ -55,6 +42,9 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
       'entryScreensState',
       serializers.serialize(object.entryScreensState,
           specifiedType: const FullType(EntryScreensState)),
+      'linkScreensState',
+      serializers.serialize(object.linkScreensState,
+          specifiedType: const FullType(LinkScreensState)),
       'tagsState',
       serializers.serialize(object.tagsState,
           specifiedType: const FullType(TagsState)),
@@ -108,6 +98,11 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
                   specifiedType: const FullType(EntryScreensState))
               as EntryScreensState);
           break;
+        case 'linkScreensState':
+          result.linkScreensState.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(LinkScreensState))
+              as LinkScreensState);
+          break;
         case 'tagsState':
           result.tagsState.replace(serializers.deserialize(value,
               specifiedType: const FullType(TagsState)) as TagsState);
@@ -137,6 +132,8 @@ class _$AppState extends AppState {
   @override
   final EntryScreensState entryScreensState;
   @override
+  final LinkScreensState linkScreensState;
+  @override
   final TagsState tagsState;
 
   factory _$AppState([void updates(AppStateBuilder b)]) =>
@@ -151,6 +148,7 @@ class _$AppState extends AppState {
       this.notificationsState,
       this.mikroblogState,
       this.entryScreensState,
+      this.linkScreensState,
       this.tagsState})
       : super._() {
     if (authState == null) {
@@ -177,6 +175,9 @@ class _$AppState extends AppState {
     if (entryScreensState == null) {
       throw new BuiltValueNullFieldError('AppState', 'entryScreensState');
     }
+    if (linkScreensState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'linkScreensState');
+    }
     if (tagsState == null) {
       throw new BuiltValueNullFieldError('AppState', 'tagsState');
     }
@@ -201,6 +202,7 @@ class _$AppState extends AppState {
         notificationsState == other.notificationsState &&
         mikroblogState == other.mikroblogState &&
         entryScreensState == other.entryScreensState &&
+        linkScreensState == other.linkScreensState &&
         tagsState == other.tagsState;
   }
 
@@ -213,14 +215,16 @@ class _$AppState extends AppState {
                     $jc(
                         $jc(
                             $jc(
-                                $jc($jc(0, authState.hashCode),
-                                    entitiesState.hashCode),
-                                searchState.hashCode),
-                            linksState.hashCode),
-                        myWykopState.hashCode),
-                    notificationsState.hashCode),
-                mikroblogState.hashCode),
-            entryScreensState.hashCode),
+                                $jc(
+                                    $jc($jc(0, authState.hashCode),
+                                        entitiesState.hashCode),
+                                    searchState.hashCode),
+                                linksState.hashCode),
+                            myWykopState.hashCode),
+                        notificationsState.hashCode),
+                    mikroblogState.hashCode),
+                entryScreensState.hashCode),
+            linkScreensState.hashCode),
         tagsState.hashCode));
   }
 
@@ -235,6 +239,7 @@ class _$AppState extends AppState {
           ..add('notificationsState', notificationsState)
           ..add('mikroblogState', mikroblogState)
           ..add('entryScreensState', entryScreensState)
+          ..add('linkScreensState', linkScreensState)
           ..add('tagsState', tagsState))
         .toString();
   }
@@ -290,6 +295,12 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   set entryScreensState(EntryScreensStateBuilder entryScreensState) =>
       _$this._entryScreensState = entryScreensState;
 
+  LinkScreensStateBuilder _linkScreensState;
+  LinkScreensStateBuilder get linkScreensState =>
+      _$this._linkScreensState ??= new LinkScreensStateBuilder();
+  set linkScreensState(LinkScreensStateBuilder linkScreensState) =>
+      _$this._linkScreensState = linkScreensState;
+
   TagsStateBuilder _tagsState;
   TagsStateBuilder get tagsState =>
       _$this._tagsState ??= new TagsStateBuilder();
@@ -307,6 +318,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _notificationsState = _$v.notificationsState?.toBuilder();
       _mikroblogState = _$v.mikroblogState?.toBuilder();
       _entryScreensState = _$v.entryScreensState?.toBuilder();
+      _linkScreensState = _$v.linkScreensState?.toBuilder();
       _tagsState = _$v.tagsState?.toBuilder();
       _$v = null;
     }
@@ -340,6 +352,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
               notificationsState: notificationsState.build(),
               mikroblogState: mikroblogState.build(),
               entryScreensState: entryScreensState.build(),
+              linkScreensState: linkScreensState.build(),
               tagsState: tagsState.build());
     } catch (_) {
       String _$failedField;
@@ -360,6 +373,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
         mikroblogState.build();
         _$failedField = 'entryScreensState';
         entryScreensState.build();
+        _$failedField = 'linkScreensState';
+        linkScreensState.build();
         _$failedField = 'tagsState';
         tagsState.build();
       } catch (e) {
@@ -372,3 +387,5 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
     return _$result;
   }
 }
+
+// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

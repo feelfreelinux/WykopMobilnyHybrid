@@ -17,6 +17,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   NotificationsState get notificationsState;
   MikroblogState get mikroblogState;
   EntryScreensState get entryScreensState;
+  LinkScreensState get linkScreensState;
   TagsState get tagsState;
 
   factory AppState() {
@@ -29,6 +30,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
         tagsState: TagsState(),
         notificationsState: NotificationsState(),
         entitiesState: EntitiesState(),
+        linkScreensState: LinkScreensState(),
         entryScreensState: EntryScreensState());
   }
 
