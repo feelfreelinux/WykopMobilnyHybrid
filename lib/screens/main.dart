@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/owm_glyphs.dart';
-// import 'package:owmflutter/widgets/bottom_navigation_dot_bar.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -69,19 +68,5 @@ class _MainScreenState extends State<MainScreen> {
                           color: Color(
                               _currentIndex == 4 ? 0xff3c84c1 : 0xff666666))
                     ]))));
-    //         bottomNavigationBar:
-    //     BottomNavigationDotBar(items: <BottomNavigationDotBarItem>[
-    //   BottomNavigationDotBarItem(
-    //     icon: OwmGlyphs.ic_navi_links,
-    //   ),
-    //   BottomNavigationDotBarItem(
-    //       icon: OwmGlyphs.ic_navi_my_wykop, onTap: () {}),
-    //   BottomNavigationDotBarItem(
-    //       icon: OwmGlyphs.ic_navi_mirkoblog, onTap: () {}),
-    //   BottomNavigationDotBarItem(
-    //       icon: OwmGlyphs.ic_navi_favourite, onTap: () {}),
-    //   BottomNavigationDotBarItem(
-    //       icon: OwmGlyphs.ic_navi_messages, onTap: () {}),
-    // ]));
   }
 }
