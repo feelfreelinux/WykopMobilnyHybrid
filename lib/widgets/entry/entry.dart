@@ -12,6 +12,7 @@ class EntryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
+        key: Key(entryId.toString()),
         padding: EdgeInsets.only(bottom: 4.0),
         child: Material(
             color: Theme.of(context).cardColor,

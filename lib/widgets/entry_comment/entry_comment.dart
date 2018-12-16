@@ -4,6 +4,7 @@ import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/utils/utils.dart';
+import 'package:owmflutter/keys.dart';
 
 class EntryCommentWidget extends StatelessWidget {
   final int commentId;
@@ -11,14 +12,29 @@ class EntryCommentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-        color: Theme.of(context).cardColor,
-        child: StoreConnector<AppState, EntryComment>(
-            converter: (store) =>
-                store.state.entitiesState.entryComments[commentId],
-            builder: (context, comment) {
-              return Column(children: _buildEntryCommentBody(comment, context));
-            }));
+    return StoreConnector<AppState, EntryComment>(
+        converter: (store) =>
+            store.state.entitiesState.entryComments[commentId],
+        builder: (context, comment) {
+          return Material(
+                  key: Key(commentId.toString()),
+                  color: Theme.of(context).cardColor,
+                  child: InkWell(
+              onDoubleTap: () {
+                // Quote action
+                OwmKeys.inputBarKey.currentState
+                    .quoteText(comment.author, comment.body);
+              },
+              onTap: () {
+                // Reply action
+                OwmKeys.inputBarKey.currentState.replyToUser(comment.author);
+              },
+              onLongPress: () {
+                // Show delete /add actions @TODO
+              },
+              child: Column(
+                      children: _buildEntryCommentBody(comment, context))));
+        });
   }
 
   List<Widget> _buildEntryCommentBody(

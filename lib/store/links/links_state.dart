@@ -7,10 +7,10 @@ import 'package:owmflutter/store/store.dart';
 part 'links_state.g.dart';
 
 abstract class LinksState implements Built<LinksState, LinksStateBuilder> {
-  EntrylistState get promotedState;
+  ItemListState get promotedState;
 
   factory LinksState() {
-    return _$LinksState._(promotedState: EntrylistState());
+    return _$LinksState._(promotedState: ItemListState());
   }
 
   LinksState._();

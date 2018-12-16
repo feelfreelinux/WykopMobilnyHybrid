@@ -8,6 +8,7 @@ abstract class EmbedResponse
   factory EmbedResponse([updates(EmbedResponseBuilder b)]) = _$EmbedResponse;
   String get url;
   String get preview;
+  @nullable bool get plus18;
 
   EmbedResponse._();
   static Serializer<EmbedResponse> get serializer => _$embedResponseSerializer;

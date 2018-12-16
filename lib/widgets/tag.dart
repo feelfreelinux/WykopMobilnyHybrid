@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/screens/screens.dart';
+import 'package:owmflutter/utils/utils.dart';
 
 var colorCombinations = <List<Color>>[
   [Colors.black, Colors.blue],
@@ -45,19 +46,7 @@ class TagWidget extends StatelessWidget {
         onTap: () {
           Navigator.push(
               context,
-              PageRouteBuilder(
-                  pageBuilder: (BuildContext context,
-                      Animation<double> animation,
-                      Animation<double> secondaryAnimation) {
-                    return TagScreen(tag: tag);
-                  },
-                  transitionsBuilder: (context, animation1, animation2, child) {
-                    return FadeTransition(
-                        opacity: Tween<double>(begin: 0.0, end: 1.0)
-                            .animate(animation1),
-                        child: child);
-                  },
-                  transitionDuration: Duration(milliseconds: 400)));
+              Utils.getPageTransition(TagScreen(tag: tag)));
         },
         child: Container(
             margin: EdgeInsets.only(top: 0.4, bottom: 1.0),

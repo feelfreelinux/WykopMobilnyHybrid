@@ -5,7 +5,7 @@ import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:redux/redux.dart';
 
-typedef EntrylistState ConverterCallback(Store<AppState> store);
+typedef ItemListState ConverterCallback(Store<AppState> store);
 typedef void LoadDataCallback(
     Store<AppState> store, bool refresh, Completer completer);
 typedef void ListRefreshCallback(bool refresh, Completer completer);
@@ -28,7 +28,7 @@ class EntryListState extends State<EntryList> {
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
-        child: StoreConnector<AppState, EntrylistState>(
+        child: StoreConnector<AppState, ItemListState>(
             converter: (store) => widget.converterCallback(store),
             onInit: (store) =>
                 widget.loadDataCallback(store, true, Completer()),
@@ -49,13 +49,12 @@ class EntryListState extends State<EntryList> {
                     return completer.future;
                   },
                   child: InfiniteList(
-                      isLoading: state.listState.isLoading,
                       hasReachedEnd: state.listState.haveReachedEnd,
-                      loadData: () => callback(false, Completer()),
-                      itemCount: state.entriesState.itemIds.length,
+                      loadData: (completer) => callback(false, completer),
+                      itemCount: state.paginationState.itemIds.length,
                       itemBuilder: (context, index) {
                         return EntryWidget(
-                            entryId: state.entriesState.itemIds[index],
+                            entryId: state.paginationState.itemIds[index],
                             ellipsize: true);
                       }),
                 );

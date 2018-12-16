@@ -6,28 +6,19 @@ part of 'serializers.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-// ignore_for_file: always_put_control_body_on_new_line
-// ignore_for_file: annotate_overrides
-// ignore_for_file: avoid_annotating_with_dynamic
-// ignore_for_file: avoid_catches_without_on_clauses
-// ignore_for_file: avoid_returning_this
-// ignore_for_file: lines_longer_than_80_chars
-// ignore_for_file: omit_local_variable_types
-// ignore_for_file: prefer_expression_function_bodies
-// ignore_for_file: sort_constructors_first
-// ignore_for_file: unnecessary_const
-// ignore_for_file: unnecessary_new
-// ignore_for_file: test_types_in_equals
-
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(AuthorResponse.serializer)
       ..add(EmbedResponse.serializer)
       ..add(EntryCommentResponse.serializer)
       ..add(EntryLinkResponse.serializer)
       ..add(EntryResponse.serializer)
+      ..add(LinkCommentResponse.serializer)
       ..add(LinkResponse.serializer)
+      ..add(NotificationResponse.serializer)
       ..addBuilderFactory(
           const FullType(
               BuiltList, const [const FullType(EntryCommentResponse)]),
           () => new ListBuilder<EntryCommentResponse>()))
     .build();
+
+// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

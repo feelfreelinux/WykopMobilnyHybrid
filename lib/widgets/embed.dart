@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:owmflutter/models/models.dart';
@@ -8,7 +10,11 @@ class EmbedWidget extends StatefulWidget {
   final Embed embed;
   final double reducedWidth;
   final double borderRadius;
-  EmbedWidget({this.embed, this.reducedWidth: 0.0, this.borderRadius: 0.0});
+  EmbedWidget({
+    this.embed,
+    this.reducedWidth: 0.0,
+    this.borderRadius: 0.0,
+  });
 
   _EmbedState createState() => _EmbedState();
 }
@@ -17,6 +23,7 @@ class _EmbedState extends State<EmbedWidget> {
   double _imageFactor = 0.0;
   bool loading = true;
   bool resized = false;
+  bool nsfw = false;
   var imageResolver;
   var imageSizeListener;
 
@@ -43,6 +50,7 @@ class _EmbedState extends State<EmbedWidget> {
       loading = false;
       _imageFactor = image.image.height / image.image.width;
       resized = false;
+      nsfw = widget.embed.plus18;
     });
   }
 
@@ -50,34 +58,70 @@ class _EmbedState extends State<EmbedWidget> {
   Widget build(BuildContext context) {
     String heroTag = 'embedImage${widget.embed.hashCode}';
     return GestureDetector(
-        // @TODO Handle NSFW
-        onTap: () {
-          if (!resized && !loading) {
-            this.setState(() {
-              resized = true;
-            });
-          } else {
-            this.openFullscreen();
-          }
-        },
-        child: Hero(
-            tag: heroTag,
-            child: Container(
-                decoration: this.getDecoration(),
-                constraints: this.currentConstraints(),
-                child: _drawFooter())));
+      onTap: () {
+        if (!resized && !loading) {
+          this.setState(() {
+            resized = true;
+            nsfw = false;
+          });
+        } else if (nsfw && widget.reducedWidth == 0.0) {
+          this.setState(() {
+            nsfw = false;
+          });
+        } else {
+          this.openFullscreen();
+        }
+      },
+      child: Hero(
+        tag: heroTag,
+        child: Container(
+          decoration: this.getDecoration(),
+          constraints: this.currentConstraints(),
+          child: nsfw && widget.reducedWidth == 0.0
+              ? BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0),
+                    ),
+                    child: _drawFooter(),
+                  ),
+                )
+              : _drawFooter(),
+        ),
+      ),
+    );
   }
 
   Widget _drawFooter() {
     if (!this.loading && !this.resized) {
-      return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-        Expanded(child: Container()),
-        Container(
-            padding: EdgeInsets.all(2.6),
-            color: Color(0xaaffffff),
-            child: Text('••• pokaż cały obrazek •••',
-                style: TextStyle(fontSize: 10.5), textAlign: TextAlign.center))
-      ]);
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: Container(),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: Color(0xcc7f7f7f),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(widget.borderRadius),
+                bottomRight: Radius.circular(widget.borderRadius),
+              ),
+            ),
+            padding: EdgeInsets.all(4.0),
+            child: Text(
+              '••• pokaż cały obrazek •••',
+              style: TextStyle(
+                fontSize: 11.0,
+                color: Colors.white,
+                shadows: [Shadow(blurRadius: 1.5)],
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ],
+      );
     } else {
       return Container();
     }
@@ -89,13 +133,17 @@ class _EmbedState extends State<EmbedWidget> {
       return BoxDecoration();
     }
     return BoxDecoration(
-        borderRadius: BorderRadius.circular(widget.borderRadius),
-        boxShadow: [BoxShadow(color: Color(0x33000000))],
-        image: DecorationImage(
-            image:
-                AdvancedNetworkImage(widget.embed.preview, useDiskCache: true),
-            alignment: FractionalOffset.topCenter,
-            fit: BoxFit.fitWidth));
+      borderRadius: BorderRadius.circular(widget.borderRadius),
+      boxShadow: [BoxShadow(color: Color(0x33000000))],
+      image: DecorationImage(
+        image: AdvancedNetworkImage(
+          widget.embed.preview,
+          useDiskCache: true,
+        ),
+        alignment: FractionalOffset.topCenter,
+        fit: BoxFit.fitWidth,
+      ),
+    );
   }
 
   // Returns size - default height for loading and unresized image, full for resized image
@@ -128,11 +176,16 @@ class _EmbedState extends State<EmbedWidget> {
     String heroTag = 'embedImage${widget.embed.hashCode}';
 
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => EmbedFullScreen(
-                heroTag: heroTag,
-                imageProvider: AdvancedNetworkImage(widget.embed.url,
-                    useDiskCache: true))));
+      context,
+      MaterialPageRoute(
+        builder: (context) => EmbedFullScreen(
+              heroTag: heroTag,
+              imageProvider: AdvancedNetworkImage(
+                widget.embed.url,
+                useDiskCache: true,
+              ),
+            ),
+      ),
+    );
   }
 }

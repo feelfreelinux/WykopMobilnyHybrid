@@ -8,10 +8,10 @@ part 'mywykop_state.g.dart';
 
 abstract class MyWykopState
     implements Built<MyWykopState, MyWykopStateBuilder> {
-  EntrylistState get indexState;
+  ItemListState get indexState;
 
   factory MyWykopState() {
-    return _$MyWykopState._(indexState: EntrylistState());
+    return _$MyWykopState._(indexState: ItemListState());
   }
 
   MyWykopState._();

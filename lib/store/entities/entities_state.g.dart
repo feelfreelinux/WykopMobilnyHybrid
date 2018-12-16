@@ -6,19 +6,6 @@ part of 'entities_state.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-// ignore_for_file: always_put_control_body_on_new_line
-// ignore_for_file: annotate_overrides
-// ignore_for_file: avoid_annotating_with_dynamic
-// ignore_for_file: avoid_catches_without_on_clauses
-// ignore_for_file: avoid_returning_this
-// ignore_for_file: lines_longer_than_80_chars
-// ignore_for_file: omit_local_variable_types
-// ignore_for_file: prefer_expression_function_bodies
-// ignore_for_file: sort_constructors_first
-// ignore_for_file: unnecessary_const
-// ignore_for_file: unnecessary_new
-// ignore_for_file: test_types_in_equals
-
 Serializer<EntitiesState> _$entitiesStateSerializer =
     new _$EntitiesStateSerializer();
 
@@ -44,6 +31,14 @@ class _$EntitiesStateSerializer implements StructuredSerializer<EntitiesState> {
       serializers.serialize(object.links,
           specifiedType: const FullType(
               BuiltMap, const [const FullType(int), const FullType(Link)])),
+      'linkComments',
+      serializers.serialize(object.linkComments,
+          specifiedType: const FullType(BuiltMap,
+              const [const FullType(int), const FullType(LinkComment)])),
+      'notifications',
+      serializers.serialize(object.notifications,
+          specifiedType: const FullType(BuiltMap,
+              const [const FullType(int), const FullType(Notification)])),
     ];
 
     return result;
@@ -81,6 +76,20 @@ class _$EntitiesStateSerializer implements StructuredSerializer<EntitiesState> {
                 const FullType(Link)
               ])) as BuiltMap);
           break;
+        case 'linkComments':
+          result.linkComments.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltMap, const [
+                const FullType(int),
+                const FullType(LinkComment)
+              ])) as BuiltMap);
+          break;
+        case 'notifications':
+          result.notifications.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltMap, const [
+                const FullType(int),
+                const FullType(Notification)
+              ])) as BuiltMap);
+          break;
       }
     }
 
@@ -95,11 +104,20 @@ class _$EntitiesState extends EntitiesState {
   final BuiltMap<int, EntryComment> entryComments;
   @override
   final BuiltMap<int, Link> links;
+  @override
+  final BuiltMap<int, LinkComment> linkComments;
+  @override
+  final BuiltMap<int, Notification> notifications;
 
   factory _$EntitiesState([void updates(EntitiesStateBuilder b)]) =>
       (new EntitiesStateBuilder()..update(updates)).build();
 
-  _$EntitiesState._({this.entries, this.entryComments, this.links})
+  _$EntitiesState._(
+      {this.entries,
+      this.entryComments,
+      this.links,
+      this.linkComments,
+      this.notifications})
       : super._() {
     if (entries == null) {
       throw new BuiltValueNullFieldError('EntitiesState', 'entries');
@@ -109,6 +127,12 @@ class _$EntitiesState extends EntitiesState {
     }
     if (links == null) {
       throw new BuiltValueNullFieldError('EntitiesState', 'links');
+    }
+    if (linkComments == null) {
+      throw new BuiltValueNullFieldError('EntitiesState', 'linkComments');
+    }
+    if (notifications == null) {
+      throw new BuiltValueNullFieldError('EntitiesState', 'notifications');
     }
   }
 
@@ -125,13 +149,19 @@ class _$EntitiesState extends EntitiesState {
     return other is EntitiesState &&
         entries == other.entries &&
         entryComments == other.entryComments &&
-        links == other.links;
+        links == other.links &&
+        linkComments == other.linkComments &&
+        notifications == other.notifications;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc(0, entries.hashCode), entryComments.hashCode), links.hashCode));
+        $jc(
+            $jc($jc($jc(0, entries.hashCode), entryComments.hashCode),
+                links.hashCode),
+            linkComments.hashCode),
+        notifications.hashCode));
   }
 
   @override
@@ -139,7 +169,9 @@ class _$EntitiesState extends EntitiesState {
     return (newBuiltValueToStringHelper('EntitiesState')
           ..add('entries', entries)
           ..add('entryComments', entryComments)
-          ..add('links', links))
+          ..add('links', links)
+          ..add('linkComments', linkComments)
+          ..add('notifications', notifications))
         .toString();
   }
 }
@@ -164,6 +196,18 @@ class EntitiesStateBuilder
       _$this._links ??= new MapBuilder<int, Link>();
   set links(MapBuilder<int, Link> links) => _$this._links = links;
 
+  MapBuilder<int, LinkComment> _linkComments;
+  MapBuilder<int, LinkComment> get linkComments =>
+      _$this._linkComments ??= new MapBuilder<int, LinkComment>();
+  set linkComments(MapBuilder<int, LinkComment> linkComments) =>
+      _$this._linkComments = linkComments;
+
+  MapBuilder<int, Notification> _notifications;
+  MapBuilder<int, Notification> get notifications =>
+      _$this._notifications ??= new MapBuilder<int, Notification>();
+  set notifications(MapBuilder<int, Notification> notifications) =>
+      _$this._notifications = notifications;
+
   EntitiesStateBuilder();
 
   EntitiesStateBuilder get _$this {
@@ -171,6 +215,8 @@ class EntitiesStateBuilder
       _entries = _$v.entries?.toBuilder();
       _entryComments = _$v.entryComments?.toBuilder();
       _links = _$v.links?.toBuilder();
+      _linkComments = _$v.linkComments?.toBuilder();
+      _notifications = _$v.notifications?.toBuilder();
       _$v = null;
     }
     return this;
@@ -197,7 +243,9 @@ class EntitiesStateBuilder
           new _$EntitiesState._(
               entries: entries.build(),
               entryComments: entryComments.build(),
-              links: links.build());
+              links: links.build(),
+              linkComments: linkComments.build(),
+              notifications: notifications.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -207,6 +255,10 @@ class EntitiesStateBuilder
         entryComments.build();
         _$failedField = 'links';
         links.build();
+        _$failedField = 'linkComments';
+        linkComments.build();
+        _$failedField = 'notifications';
+        notifications.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'EntitiesState', _$failedField, e.toString());
@@ -217,3 +269,5 @@ class EntitiesStateBuilder
     return _$result;
   }
 }
+
+// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

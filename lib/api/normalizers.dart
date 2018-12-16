@@ -26,10 +26,31 @@ Result normalizeEntriesResponse(BuiltList<EntryResponse> entries) {
       state: EntitiesState().rebuild((b) => b..entries.addAll(entriesMap)));
 }
 
+Result normalizeNotificationsResponse(BuiltList<NotificationResponse> notifications) {
+  var notificationsMap = notificationResponseListToMap(notifications);
+  var ids = notifications.map((e) => e.id);
+
+  return Result(
+      result: ids.toList(),
+      state: EntitiesState().rebuild((b) => b..notifications.addAll(notificationsMap)));
+}
+
+Map<int, Notification> notificationResponseListToMap(BuiltList<NotificationResponse> notifications) {
+  var mappedNotifications = notifications.map((c) => Notification.mapFromResponse(c));
+  return Map<int, Notification>.from(
+      Map.fromIterable(mappedNotifications, key: (v) => v.id, value: (v) => v));
+}
+
 Map<int, Link> linkResponseListToMap(BuiltList<LinkResponse> links) {
   var mappedLinks = links.map((c) => Link.mapFromResponse(c)).toList();
   return Map<int, Link>.from(
       Map.fromIterable(mappedLinks, key: (v) => v.id, value: (v) => v));
+}
+
+Map<int, LinkComment> linkCommentResponseListToMap(BuiltList<LinkCommentResponse> linkComments) {
+  var mappedLinkComments = linkComments.map((c) => LinkComment.mapFromResponse(c, linkComments.where((d) => d.parentId == c.id && d.id != c.id).map((d) => d.id).toList())).toList();
+  return Map<int, LinkComment>.from(
+      Map.fromIterable(mappedLinkComments, key: (v) => v.id, value: (v) => v));
 }
 
 Result normalizeLinksResponse(BuiltList<LinkResponse> links) {
@@ -39,6 +60,15 @@ Result normalizeLinksResponse(BuiltList<LinkResponse> links) {
   return Result(
       result: ids.toList(),
       state: EntitiesState().rebuild((b) => b..links.addAll(linksMap)));
+}
+
+Result normalizeLinkCommentsResponse(BuiltList<LinkCommentResponse> linkComments) {
+  var linkCommentsMap = linkCommentResponseListToMap(linkComments);
+  var ids = linkCommentsMap.values.toList().where((c) => c.id == c.parentId).map((e) => e.id);
+
+  return Result(
+      result: ids.toList(),
+      state: EntitiesState().rebuild((b) => b..linkComments.addAll(linkCommentsMap)));
 }
 
 Result normalizeEntryCommentsResponse(

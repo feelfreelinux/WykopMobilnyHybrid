@@ -15,7 +15,7 @@ class LinksList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
-        child: StoreConnector<AppState, EntrylistState>(
+        child: StoreConnector<AppState, ItemListState>(
             converter: (store) => converterCallback(store),
             onInit: (store) => loadDataCallback(store, true, Completer()),
             builder: (context, state) {
@@ -34,13 +34,12 @@ class LinksList extends StatelessWidget {
                       return completer.future;
                     },
                     child: InfiniteList(
-                        isLoading: state.listState.isLoading,
                         hasReachedEnd: state.listState.haveReachedEnd,
-                        loadData: () => callback(false, Completer()),
-                        itemCount: state.entriesState.itemIds.length,
+                        loadData: (completer) => callback(false, completer),
+                        itemCount: state.paginationState.itemIds.length,
                         itemBuilder: (context, index) {
                           return LinkWidget(
-                              linkId: state.entriesState.itemIds[index]);
+                              linkId: state.paginationState.itemIds[index]);
                         }));
               });
             }));

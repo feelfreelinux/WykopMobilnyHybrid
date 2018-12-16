@@ -1,0 +1,16 @@
+{
+  "name": "Jasny motyw",
+  "author": "Autorzy OWM",
+  "version": "0.0.1",
+  "theme": {
+      "materialData": {
+        "brightness": "light",
+        "accentColor": "#ff3c84c1",
+        "primaryColor": "#ffffffff",
+        "primaryColorDark": "#fff0f0f0",
+        "backgroundColor": "#fff5f5f5",
+        "cardColor": "#ffffffff",
+        "bottomAppBarColor": "#ffffffff"
+      }
+  }
+}

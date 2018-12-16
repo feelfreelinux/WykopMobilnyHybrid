@@ -12,5 +12,8 @@ AppState appReducer(AppState state, action) {
     ..linksState.replace(linksReducer(state.linksState, action))
     ..myWykopState.replace(myWykopReducer(state.myWykopState, action))
     ..tagsState.replace(tagReducer(state.tagsState, action))
+    ..notificationsState.replace(notificationsReducer(state.notificationsState, action))
+    ..searchState.replace(searchReducer(state.searchState, action))
+    ..linkScreensState.replace(linkScreenReducer(state.linkScreensState, action))
     ..mikroblogState.replace(mikroblogReducer(state.mikroblogState, action)));
 }

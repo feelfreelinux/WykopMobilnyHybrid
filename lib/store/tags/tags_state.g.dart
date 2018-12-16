@@ -6,19 +6,6 @@ part of 'tags_state.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-// ignore_for_file: always_put_control_body_on_new_line
-// ignore_for_file: annotate_overrides
-// ignore_for_file: avoid_annotating_with_dynamic
-// ignore_for_file: avoid_catches_without_on_clauses
-// ignore_for_file: avoid_returning_this
-// ignore_for_file: lines_longer_than_80_chars
-// ignore_for_file: omit_local_variable_types
-// ignore_for_file: prefer_expression_function_bodies
-// ignore_for_file: sort_constructors_first
-// ignore_for_file: unnecessary_const
-// ignore_for_file: unnecessary_new
-// ignore_for_file: test_types_in_equals
-
 Serializer<TagsState> _$tagsStateSerializer = new _$TagsStateSerializer();
 Serializer<TagState> _$tagStateSerializer = new _$TagStateSerializer();
 
@@ -78,13 +65,13 @@ class _$TagStateSerializer implements StructuredSerializer<TagState> {
     final result = <Object>[
       'indexState',
       serializers.serialize(object.indexState,
-          specifiedType: const FullType(EntrylistState)),
+          specifiedType: const FullType(ItemListState)),
       'entriesState',
       serializers.serialize(object.entriesState,
-          specifiedType: const FullType(EntrylistState)),
+          specifiedType: const FullType(ItemListState)),
       'linksState',
       serializers.serialize(object.linksState,
-          specifiedType: const FullType(EntrylistState)),
+          specifiedType: const FullType(ItemListState)),
     ];
 
     return result;
@@ -103,15 +90,15 @@ class _$TagStateSerializer implements StructuredSerializer<TagState> {
       switch (key) {
         case 'indexState':
           result.indexState.replace(serializers.deserialize(value,
-              specifiedType: const FullType(EntrylistState)) as EntrylistState);
+              specifiedType: const FullType(ItemListState)) as ItemListState);
           break;
         case 'entriesState':
           result.entriesState.replace(serializers.deserialize(value,
-              specifiedType: const FullType(EntrylistState)) as EntrylistState);
+              specifiedType: const FullType(ItemListState)) as ItemListState);
           break;
         case 'linksState':
           result.linksState.replace(serializers.deserialize(value,
-              specifiedType: const FullType(EntrylistState)) as EntrylistState);
+              specifiedType: const FullType(ItemListState)) as ItemListState);
           break;
       }
     }
@@ -212,11 +199,11 @@ class TagsStateBuilder implements Builder<TagsState, TagsStateBuilder> {
 
 class _$TagState extends TagState {
   @override
-  final EntrylistState indexState;
+  final ItemListState indexState;
   @override
-  final EntrylistState entriesState;
+  final ItemListState entriesState;
   @override
-  final EntrylistState linksState;
+  final ItemListState linksState;
 
   factory _$TagState([void updates(TagStateBuilder b)]) =>
       (new TagStateBuilder()..update(updates)).build();
@@ -269,22 +256,22 @@ class _$TagState extends TagState {
 class TagStateBuilder implements Builder<TagState, TagStateBuilder> {
   _$TagState _$v;
 
-  EntrylistStateBuilder _indexState;
-  EntrylistStateBuilder get indexState =>
-      _$this._indexState ??= new EntrylistStateBuilder();
-  set indexState(EntrylistStateBuilder indexState) =>
+  ItemListStateBuilder _indexState;
+  ItemListStateBuilder get indexState =>
+      _$this._indexState ??= new ItemListStateBuilder();
+  set indexState(ItemListStateBuilder indexState) =>
       _$this._indexState = indexState;
 
-  EntrylistStateBuilder _entriesState;
-  EntrylistStateBuilder get entriesState =>
-      _$this._entriesState ??= new EntrylistStateBuilder();
-  set entriesState(EntrylistStateBuilder entriesState) =>
+  ItemListStateBuilder _entriesState;
+  ItemListStateBuilder get entriesState =>
+      _$this._entriesState ??= new ItemListStateBuilder();
+  set entriesState(ItemListStateBuilder entriesState) =>
       _$this._entriesState = entriesState;
 
-  EntrylistStateBuilder _linksState;
-  EntrylistStateBuilder get linksState =>
-      _$this._linksState ??= new EntrylistStateBuilder();
-  set linksState(EntrylistStateBuilder linksState) =>
+  ItemListStateBuilder _linksState;
+  ItemListStateBuilder get linksState =>
+      _$this._linksState ??= new ItemListStateBuilder();
+  set linksState(ItemListStateBuilder linksState) =>
       _$this._linksState = linksState;
 
   TagStateBuilder();
@@ -340,3 +327,5 @@ class TagStateBuilder implements Builder<TagState, TagStateBuilder> {
     return _$result;
   }
 }
+
+// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

@@ -41,7 +41,8 @@ abstract class Link implements Built<Link, LinkBuilder> {
       commentsCount: response.commentsCount,
       author: Author.fromResponse(response: response.author),
       isHot: response.isHot,
-      preview: response.preview,
+      preview: // Makes link previews load in full resolution
+        response.preview != null ? response.preview.split(',')[0] + '.' + response.preview.split(',')[1].split('.')[1] : null,
       sourceUrl: response.sourceUrl,
       canVote: response.canVote,
       description: response.description,
