@@ -4,6 +4,7 @@ import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/owm_glyphs.dart';
+import 'package:owmflutter/keys.dart';
 import 'dart:async';
 
 class LinkScreen extends StatelessWidget {
@@ -21,7 +22,7 @@ class LinkScreen extends StatelessWidget {
                     var completer = Completer();
                     callback(completer, inputData);
                     return completer.future;
-                  })),
+                  }, key: OwmKeys.inputBarKey)),
           resizeToAvoidBottomPadding: false,
           appBar: PreferredSize(
               preferredSize: Size.fromHeight(48.0),

@@ -1,23 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/owm_glyphs.dart';
 import 'package:owmflutter/models/models.dart';
+import 'package:owmflutter/keys.dart';
 import 'dart:async';
 
 typedef Future InputBarCallback(InputData inputData);
 
 class InputBarWidget extends StatefulWidget {
   final InputBarCallback callback;
-  InputBarWidget(this.callback);
-  _InputBarWidgetState createState() => _InputBarWidgetState();
+  InputBarWidget(this.callback, {@required Key key}) : super(key: key);
+  InputBarWidgetState createState() => InputBarWidgetState();
 }
 
-class _InputBarWidgetState extends State<InputBarWidget> {
+class InputBarWidgetState extends State<InputBarWidget> {
   bool showMarkdownBar = false;
   bool showMediaButton = true;
   bool clickTextField = false;
   bool isEmpty = true;
   bool sending = false;
+  final FocusNode focusNode = FocusNode();
   TextEditingController textController = TextEditingController();
+
+  void replyToUser(Author author) {
+    _ensureFocus();
+    setState(() {
+      textController.text += "@" + author.login + ": ";
+      textController.selection = TextSelection.fromPosition(
+          TextPosition(offset: textController.text.length));
+    });
+  }
+
+  void _ensureFocus() {
+    if (!focusNode.hasFocus) {
+      FocusScope.of(context).requestFocus(focusNode);
+    }
+  }
+
+  void quoteText(Author author, String body) {
+    _ensureFocus();
+    setState(() {
+      textController.text += "@" + author.login + ": \n" + "> " + body + "\n";
+      textController.selection = TextSelection.fromPosition(
+          TextPosition(offset: textController.text.length));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +65,7 @@ class _InputBarWidgetState extends State<InputBarWidget> {
   @override
   void dispose() {
     textController.dispose();
+    focusNode.dispose();
     super.dispose();
   }
 
@@ -82,6 +109,7 @@ class _InputBarWidgetState extends State<InputBarWidget> {
                                     child: SingleChildScrollView(
                                         reverse: true,
                                         child: TextField(
+                                            focusNode: focusNode,
                                             cursorWidth: 1.5,
                                             cursorRadius: Radius.circular(20.0),
                                             style: DefaultTextStyle.of(context)

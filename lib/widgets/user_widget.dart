@@ -17,14 +17,7 @@ class UserWidget extends StatelessWidget {
             padding:
                 EdgeInsets.only(left: 5.5, top: 1.0, right: 5.5, bottom: 2.0),
             decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-                  Colors.red,
-                  Colors.orange,
-                  Colors.yellow,
-                  Colors.green,
-                  Colors.blue,
-                  Colors.purple
-                ]),
+                color: Colors.blueGrey,
                 borderRadius: BorderRadius.circular(20.0)),
             child: Text('@' + this.user,
                 style: TextStyle(color: Colors.white, fontSize: 13.0))));

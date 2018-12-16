@@ -1,7 +1,6 @@
 export 'entry/entry.dart';
 export 'entry/entry_footer.dart';
 export 'entry_comment/entry_comment.dart';
-export 'entry_comment/entry_comment_footer.dart';
 export 'notification/notification.dart';
 export 'notification/notifications_list.dart';
 
