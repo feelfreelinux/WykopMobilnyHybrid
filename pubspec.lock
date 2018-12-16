@@ -253,6 +253,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.5.10"
+  flutter_html_widget:
+    dependency: "direct main"
+    description:
+      name: flutter_html_widget
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
   flutter_inappbrowser:
     dependency: "direct main"
     description:
