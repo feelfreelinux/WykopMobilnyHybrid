@@ -45,6 +45,32 @@ class InputBarWidgetState extends State<InputBarWidget> {
     });
   }
 
+  // Returns currently selected text or placeholder for markdown actions
+  String getSelectedText() {
+    if (textController.selection.start != textController.selection.end) {
+      return textController.text.substring(
+          textController.selection.start, textController.selection.end);
+    } else {
+      return "tekst";
+    }
+  }
+
+  void boldenSelection() {
+    _ensureFocus();
+    var initialSelectionEnd = textController.selection.end;
+    setState(() {
+      textController.text =
+          textController.text.substring(0, textController.selection.start) +
+              "**" +
+              getSelectedText() +
+              "**" +
+              textController.text.substring(
+                  textController.selection.end, textController.text.length);
+      textController.selection =
+          TextSelection.fromPosition(TextPosition(offset: initialSelectionEnd));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
@@ -147,7 +173,9 @@ class InputBarWidgetState extends State<InputBarWidget> {
           child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                _drawIconRound(Icons.format_bold, () {}),
+                _drawIconRound(Icons.format_bold, () {
+                  boldenSelection();
+                }),
                 _drawIconRound(Icons.format_italic, () {}),
                 _drawIconRound(Icons.format_quote, () {}),
                 _drawIconRound(Icons.link, () {}),
