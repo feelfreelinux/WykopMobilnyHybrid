@@ -55,19 +55,22 @@ class InputBarWidgetState extends State<InputBarWidget> {
     }
   }
 
-  void boldenSelection() {
+  // Inserts given prefix and suffix to currently selected text
+  void insertSelectedText(String prefix, {String suffix = ""}) {
     _ensureFocus();
-    var initialSelectionEnd = textController.selection.end;
+    var initialSelectionStart = textController.selection.start;
+    var text = getSelectedText();
     setState(() {
       textController.text =
           textController.text.substring(0, textController.selection.start) +
-              "**" +
-              getSelectedText() +
-              "**" +
+              prefix +
+              text +
+              suffix +
               textController.text.substring(
                   textController.selection.end, textController.text.length);
-      textController.selection =
-          TextSelection.fromPosition(TextPosition(offset: initialSelectionEnd));
+      textController.selection = TextSelection(
+          baseOffset: initialSelectionStart + prefix.length,
+          extentOffset: initialSelectionStart + text.length + prefix.length);
     });
   }
 
@@ -174,13 +177,20 @@ class InputBarWidgetState extends State<InputBarWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 _drawIconRound(Icons.format_bold, () {
-                  boldenSelection();
+                  insertSelectedText("**", suffix: "**");
                 }),
-                _drawIconRound(Icons.format_italic, () {}),
-                _drawIconRound(Icons.format_quote, () {}),
-                _drawIconRound(Icons.link, () {}),
-                _drawIconRound(Icons.code, () {}),
-                _drawIconRound(OwmGlyphs.ic_markdowntoolbar_spoiler, () => {}),
+                _drawIconRound(Icons.format_italic,
+                    () => insertSelectedText("_", suffix: "_")),
+                _drawIconRound(Icons.format_quote,
+                    () => insertSelectedText("\n> ", suffix: "\n")),
+                _drawIconRound(
+                    Icons.link,
+                    () =>
+                        insertSelectedText("[", suffix: "](https://wykop.pl)")),
+                _drawIconRound(
+                    Icons.code, () => insertSelectedText("`", suffix: "`")),
+                _drawIconRound(OwmGlyphs.ic_markdowntoolbar_spoiler,
+                    () => insertSelectedText("\n! ", suffix: "\n")),
                 _drawIconRound(Icons.format_list_bulleted, () => {}),
                 _drawIconRound(Icons.image, () {}),
                 _drawIconRound(Icons.fullscreen, () {})
