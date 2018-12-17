@@ -31,7 +31,8 @@ class HtmlWidget extends StatelessWidget {
         .replaceAll("#<a href=", "<a href=")
         .replaceAll('<cite> ', '<cite>')
         .replaceAll("@<a href=", "<a href=")
-        .replaceAll('<br /> ', '<br/>'));
+        .replaceAll('<br /> ', '<br/>')
+        .replaceAll('&quot;', ''));
   }
 }
 
