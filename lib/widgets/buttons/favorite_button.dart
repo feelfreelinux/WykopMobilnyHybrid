@@ -21,7 +21,7 @@ class FavoriteButton extends StatelessWidget {
                   ),
                   Text(" ulubiony",
                       style: TextStyle(
-                          fontSize: 13.5,
+                          fontSize: 14,
                           color: Theme.of(context).textTheme.caption.color))
                 ])),
         onTap: this.onClicked);

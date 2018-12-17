@@ -4,7 +4,8 @@ import 'package:owmflutter/store/store.dart';
 import 'package:redux/redux.dart';
 import 'dart:async';
 
-ThunkAction<AppState> loadHashTagNotifications(bool refresh, Completer completer) {
+ThunkAction<AppState> loadHashTagNotifications(
+    bool refresh, Completer completer) {
   return (Store<AppState> store) async {
     store.dispatch(loadItems(
         "NOTIFICATIONS_HASH_TAGS",

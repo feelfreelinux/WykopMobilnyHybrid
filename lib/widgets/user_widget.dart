@@ -20,6 +20,6 @@ class UserWidget extends StatelessWidget {
                 color: Colors.blueGrey,
                 borderRadius: BorderRadius.circular(20.0)),
             child: Text('@' + this.user,
-                style: TextStyle(color: Colors.white, fontSize: 13.0))));
+                style: TextStyle(color: Colors.white, fontSize: 14.0))));
   }
 }

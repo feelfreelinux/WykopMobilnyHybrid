@@ -7,7 +7,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/store/store.dart';
 import 'package:redux/redux.dart';
 
-typedef void SearchCallback(String query, Store<AppState> store, Completer completer);
+typedef void SearchCallback(
+    String query, Store<AppState> store, Completer completer);
 
 class AppbarTabsWidget extends PreferredSize {
   final List<Widget> tabs;
@@ -51,7 +52,7 @@ class AppbarTabsWidget extends PreferredSize {
               onPressed: onPressedSearch,
               tooltip: "Szukaj")
         ],
-        elevation: 1.5,
+        elevation: 2,
         centerTitle: true,
         titleSpacing: 0.0);
   }
@@ -93,7 +94,7 @@ class SearchAppbarWidget extends PreferredSize {
                   converter: (store) =>
                       (query) => searchCallback(query, store, Completer()),
                   builder: (context, callback) => TextField(
-                        cursorWidth: 1.5,
+                        cursorWidth: 2,
                         cursorRadius: Radius.circular(20.0),
                         style: DefaultTextStyle.of(context)
                             .style
@@ -124,7 +125,7 @@ class SearchAppbarWidget extends PreferredSize {
               onPressed: onClosedSearch,
               tooltip: "Zamknij wyszukiwarkę")
         ],
-        elevation: 1.5,
+        elevation: 2,
         centerTitle: true,
         titleSpacing: 0.0);
   }

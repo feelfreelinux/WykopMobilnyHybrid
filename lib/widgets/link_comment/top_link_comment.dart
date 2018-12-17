@@ -46,7 +46,7 @@ class TopLinkCommentWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             AuthorWidget(
-                author: comment.author, date: comment.date, fontSize: 13.5),
+                author: comment.author, date: comment.date, fontSize: 14),
             Padding(
                 padding: EdgeInsets.only(right: 12.0),
                 child: StoreConnector<AppState, VoidCallback>(

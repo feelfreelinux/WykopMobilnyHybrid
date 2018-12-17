@@ -41,41 +41,40 @@ class LinkScreen extends StatelessWidget {
               decoration:
                   BoxDecoration(color: Theme.of(context).backgroundColor),
               child: StoreConnector<AppState, dynamic>(
-                converter: (store) => (completer) => store.dispatch(
-                    loadLinkComments(linkId, completer)),
-                builder: (context, callback) => StoreConnector<AppState,
-                        List<int>>(
-                    converter: (store) => store.state.linkScreensState
-                                .states[linkId] !=
-                            null
-                        ? store.state.linkScreensState
-                            .states[linkId].ids
-                        : [],
-                    onInit: (store) {
-                      store.dispatch(
-                          loadLinkComments(linkId, Completer()));
-                    },
-                    builder: (context, ids) {
-                      return RefreshIndicator(
-                        onRefresh: () {
-                          var completer = new Completer();
-                          callback(completer);
-                          return completer.future;
+                converter: (store) => (completer) =>
+                    store.dispatch(loadLinkComments(linkId, completer)),
+                builder: (context, callback) =>
+                    StoreConnector<AppState, List<int>>(
+                        converter: (store) =>
+                            store.state.linkScreensState.states[linkId] != null
+                                ? store
+                                    .state.linkScreensState.states[linkId].ids
+                                : [],
+                        onInit: (store) {
+                          store.dispatch(loadLinkComments(linkId, Completer()));
                         },
-                        child: ScrollConfiguration(
-                          behavior: NotSuddenJumpScrollBehavior(),
-                          child: ListView.builder(
-                              itemCount: ids.length,
-                              itemBuilder: (context, index) {
-                                if (index == 0) {
-                                  return LinkWidget(linkId: linkId);
-                                } else {
-                                  return TopLinkCommentWidget(commentId: ids[index]);
-                                }
-                              }),
-                        ),
-                      );
-                    }),
+                        builder: (context, ids) {
+                          return RefreshIndicator(
+                            onRefresh: () {
+                              var completer = new Completer();
+                              callback(completer);
+                              return completer.future;
+                            },
+                            child: ScrollConfiguration(
+                              behavior: NotSuddenJumpScrollBehavior(),
+                              child: ListView.builder(
+                                  itemCount: ids.length,
+                                  itemBuilder: (context, index) {
+                                    if (index == 0) {
+                                      return LinkWidget(linkId: linkId);
+                                    } else {
+                                      return TopLinkCommentWidget(
+                                          commentId: ids[index]);
+                                    }
+                                  }),
+                            ),
+                          );
+                        }),
               ))),
     );
   }

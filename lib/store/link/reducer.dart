@@ -5,7 +5,8 @@ Reducer<LinkScreensState> linkScreenReducer = combineReducers([
   TypedReducer<LinkScreensState, SetLinkComments>(_setLinkComments),
 ]);
 
-LinkScreensState _setLinkComments(LinkScreensState state, SetLinkComments action) {
+LinkScreensState _setLinkComments(
+    LinkScreensState state, SetLinkComments action) {
   return state.rebuild((b) => b
     ..states.putIfAbsent(action.linkId, () => LinkScreenState())
     ..states.updateValue(

@@ -4,8 +4,7 @@ import 'package:owmflutter/api/api.dart';
 
 part 'link_comment.g.dart';
 
-abstract class LinkComment
-    implements Built<LinkComment, LinkCommentBuilder> {
+abstract class LinkComment implements Built<LinkComment, LinkCommentBuilder> {
   int get id;
   String get date;
 
@@ -29,7 +28,8 @@ abstract class LinkComment
   @nullable
   Embed get embed;
 
-  factory LinkComment.mapFromResponse(LinkCommentResponse response, List<int> childrenIds) {
+  factory LinkComment.mapFromResponse(
+      LinkCommentResponse response, List<int> childrenIds) {
     return _$LinkComment._(
         id: response.id,
         date: response.date,

@@ -10,9 +10,7 @@ class TagScreen extends StatelessWidget {
     return DefaultTabController(
       length: 6,
       child: Scaffold(
-          appBar: AppbarTabsWidget(
-            onPressedSearch: () {},
-            tabs: <Widget>[
+          appBar: AppbarTabsWidget(onPressedSearch: () {}, tabs: <Widget>[
             Tab(text: 'WSZYSTKO'),
             Tab(text: 'ZNALEZISKA'),
             Tab(text: 'WPISY'),

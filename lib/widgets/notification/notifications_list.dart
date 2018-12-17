@@ -39,7 +39,8 @@ class NotificationsList extends StatelessWidget {
                         itemCount: state.paginationState.itemIds.length,
                         itemBuilder: (context, index) {
                           return NotificationWidget(
-                              notificationId: state.paginationState.itemIds[index]);
+                              notificationId:
+                                  state.paginationState.itemIds[index]);
                         }));
               });
             }));

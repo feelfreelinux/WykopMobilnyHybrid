@@ -22,7 +22,7 @@ class TextButton extends StatelessWidget {
                           color: Theme.of(context).textTheme.caption.color)),
                   Text(text,
                       style: TextStyle(
-                          fontSize: 13.5,
+                          fontSize: 14,
                           color: Theme.of(context).textTheme.caption.color))
                 ])),
         onTap: this.onClicked);

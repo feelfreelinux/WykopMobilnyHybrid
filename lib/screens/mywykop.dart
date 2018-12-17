@@ -8,9 +8,7 @@ class MyWykopScreen extends StatelessWidget {
     return DefaultTabController(
         length: 6,
         child: Scaffold(
-            appBar: AppbarTabsWidget(
-              onPressedSearch: () {},
-              tabs: <Widget>[
+            appBar: AppbarTabsWidget(onPressedSearch: () {}, tabs: <Widget>[
               Tab(text: 'Indeks'),
             ]),
             body: TabBarView(children: [

@@ -7,10 +7,12 @@ part 'embed.g.dart';
 abstract class Embed implements Built<Embed, EmbedBuilder> {
   String get preview;
   String get url;
-  @nullable bool get plus18;
+  @nullable
+  bool get plus18;
 
   factory Embed.fromResponse({EmbedResponse response}) {
-    return _$Embed._(preview: response.preview, url: response.url, plus18: response.plus18);
+    return _$Embed._(
+        preview: response.preview, url: response.url, plus18: response.plus18);
   }
 
   Embed._();

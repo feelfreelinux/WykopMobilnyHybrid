@@ -14,7 +14,7 @@ class FooterIconButton extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Icon(icon,
-                  size: 19.0, color: Theme.of(context).textTheme.caption.color),
+                  size: 18.0, color: Theme.of(context).textTheme.caption.color),
             ],
           )),
       onTap: this.onClicked,

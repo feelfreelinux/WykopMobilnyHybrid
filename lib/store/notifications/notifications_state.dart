@@ -12,9 +12,11 @@ abstract class NotificationsState
   ItemListState get notificationsState;
 
   factory NotificationsState() {
-    return _$NotificationsState._(hashTagsState: ItemListState(), notificationsState: ItemListState());
+    return _$NotificationsState._(
+        hashTagsState: ItemListState(), notificationsState: ItemListState());
   }
 
   NotificationsState._();
-  static Serializer<NotificationsState> get serializer => _$notificationsStateSerializer;
+  static Serializer<NotificationsState> get serializer =>
+      _$notificationsStateSerializer;
 }

@@ -7,15 +7,15 @@ class NotificationsApi extends ApiResource {
 
   Future<Result> getHashtagNotifications(int page) async {
     var items = await client
-      .request('notifications', 'HashTags', named: {'page': page.toString()});
+        .request('notifications', 'HashTags', named: {'page': page.toString()});
     return normalizeNotificationsResponse(BuiltList.from(
-      client.deserializeList(NotificationResponse.serializer, items)));
+        client.deserializeList(NotificationResponse.serializer, items)));
   }
 
   Future<Result> getNotifications(int page) async {
-    var items = await client
-      .request('notifications', 'Notifications', named: {'page': page.toString()});
+    var items = await client.request('notifications', 'Notifications',
+        named: {'page': page.toString()});
     return normalizeNotificationsResponse(BuiltList.from(
-      client.deserializeList(NotificationResponse.serializer, items)));
+        client.deserializeList(NotificationResponse.serializer, items)));
   }
 }

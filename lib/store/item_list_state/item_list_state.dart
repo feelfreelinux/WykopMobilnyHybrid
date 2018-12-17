@@ -18,6 +18,5 @@ abstract class ItemListState
   }
 
   ItemListState._();
-  static Serializer<ItemListState> get serializer =>
-      _$itemListStateSerializer;
+  static Serializer<ItemListState> get serializer => _$itemListStateSerializer;
 }

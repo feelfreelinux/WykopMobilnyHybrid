@@ -34,10 +34,11 @@ class EntriesApi extends ApiResource {
   }
 
   Future<Result> addEntryComment(Entry entry, InputData data) async {
-    await client.request('entries', 'commentadd', api: [entry.id.toString()], post: { 'body': data.body });
+    await client.request('entries', 'commentadd',
+        api: [entry.id.toString()], post: {'body': data.body});
     return normalizeEntry(entry);
   }
-  
+
   Future<Result> voteUp(Entry entry) async {
     var voteCount =
         await client.request('entries', 'voteup', api: [entry.id.toString()]);

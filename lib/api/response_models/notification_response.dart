@@ -7,7 +7,8 @@ part 'notification_response.g.dart';
 
 abstract class NotificationResponse
     implements Built<NotificationResponse, NotificationResponseBuilder> {
-  factory NotificationResponse([updates(NotificationResponseBuilder b)]) = _$NotificationResponse;
+  factory NotificationResponse([updates(NotificationResponseBuilder b)]) =
+      _$NotificationResponse;
   int get id;
 
   String get date;
@@ -31,5 +32,6 @@ abstract class NotificationResponse
   AuthorResponse get author;
 
   NotificationResponse._();
-  static Serializer<NotificationResponse> get serializer => _$notificationResponseSerializer;
+  static Serializer<NotificationResponse> get serializer =>
+      _$notificationResponseSerializer;
 }

@@ -14,7 +14,7 @@ class VoteCounterWidget extends StatelessWidget {
     @required this.voteState,
     @required this.count,
     @required this.isHot,
-    this.size: 50.0,
+    this.size: 48.0,
     this.padding: const EdgeInsets.all(0.0),
   });
 
@@ -35,14 +35,14 @@ class VoteCounterWidget extends StatelessWidget {
             _hotIcon(context),
             Padding(
               padding: EdgeInsets.only(
-                left: (size / 33.33),
-                top: (size / 25.00),
+                left: (size / 32),
+                top: (size / 24),
               ),
               child: Text(
                 count.toString(),
                 style: TextStyle(
                   letterSpacing: -(size / 100.00),
-                  fontSize: (size / 3.57),
+                  fontSize: (size / 4),
                   fontWeight: FontWeight.w700,
                   color: Color(0xffff5917),
                 ),
@@ -57,19 +57,19 @@ class VoteCounterWidget extends StatelessWidget {
   Widget _hotIcon(BuildContext context) {
     if (isHot) {
       return Positioned(
-        top: (size / 25),
+        top: (size / 24),
         right: 0,
         child: Container(
           padding: EdgeInsets.only(
-            bottom: (size / 33.33),
+            bottom: (size / 32),
           ),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(8),
             color: Theme.of(context).cardColor,
           ),
           child: Icon(
             OwmGlyphs.ic_hot,
-            size: (size / 3.33),
+            size: (size / 4),
             color: Colors.red,
           ),
         ),

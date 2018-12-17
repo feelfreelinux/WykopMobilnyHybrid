@@ -27,7 +27,7 @@ class LinkWidget extends StatelessWidget {
               context, Utils.getPageTransition(LinkScreen(linkId: linkId)));
         },
         child: Material(
-          elevation: 0.5,
+          elevation: 1,
           shadowColor: Color(0x80000000),
           color: Theme.of(context).cardColor,
           child: StoreConnector<AppState, Link>(
@@ -43,8 +43,8 @@ class LinkWidget extends StatelessWidget {
                         date: link.date,
                         avatarSize: 38.0,
                         padding: EdgeInsets.symmetric(
-                          vertical: 10.0,
-                          horizontal: 12.0,
+                          vertical: 8.0,
+                          horizontal: 8.0,
                         ),
                       ),
                       VoteCounterWidget(
@@ -54,7 +54,7 @@ class LinkWidget extends StatelessWidget {
                         isHot: link.isHot,
                         size: 48.0,
                         padding: EdgeInsets.symmetric(
-                          horizontal: 12.0,
+                          horizontal: 8.0,
                         ),
                       ),
                     ],
@@ -89,7 +89,7 @@ class LinkWidget extends StatelessWidget {
                             children: [
                               Padding(
                                 padding: EdgeInsets.symmetric(
-                                  horizontal: 12.0,
+                                  horizontal: 8.0,
                                 ),
                                 child: Row(
                                   children: <Widget>[
@@ -115,7 +115,7 @@ class LinkWidget extends StatelessWidget {
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 11.0,
-                                          shadows: [Shadow(blurRadius: 1.5)],
+                                          shadows: [Shadow(blurRadius: 2)],
                                         ),
                                       ),
                                     ),
@@ -124,10 +124,10 @@ class LinkWidget extends StatelessWidget {
                               ),
                               Padding(
                                 padding: EdgeInsets.only(
-                                  left: 12.0,
+                                  left: 8.0,
                                   top: 8.0,
-                                  bottom: 14.0,
-                                  right: 12.0,
+                                  bottom: 12.0,
+                                  right: 8.0,
                                 ),
                                 child: Text(
                                   link.title.replaceAll('&quot;', ''),
@@ -139,7 +139,7 @@ class LinkWidget extends StatelessWidget {
                                     fontWeight: FontWeight.w700,
                                     shadows: [
                                       Shadow(
-                                        blurRadius: 1.5,
+                                        blurRadius: 2,
                                       ),
                                     ],
                                   ),
@@ -154,8 +154,8 @@ class LinkWidget extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(
                       left: 12.0,
-                      top: 12.0,
-                      right: 12.0,
+                      top: 8.0,
+                      right: 8.0,
                       bottom: 4.0,
                     ),
                     child: Text(

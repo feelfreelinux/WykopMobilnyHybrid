@@ -136,7 +136,7 @@ class InputBarWidgetState extends State<InputBarWidget> {
                                         reverse: true,
                                         child: TextField(
                                             focusNode: focusNode,
-                                            cursorWidth: 1.5,
+                                            cursorWidth: 2,
                                             cursorRadius: Radius.circular(20.0),
                                             style: DefaultTextStyle.of(context)
                                                 .style

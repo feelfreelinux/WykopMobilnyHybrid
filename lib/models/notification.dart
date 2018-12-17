@@ -41,7 +41,6 @@ abstract class Notification
       isNew: response.isNew,
       itemId: response.itemId,
       author: Author.fromResponse(response: response.author),
-
     );
   }
 

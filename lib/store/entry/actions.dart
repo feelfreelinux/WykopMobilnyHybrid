@@ -52,13 +52,14 @@ ThunkAction<AppState> voteEntryComment(int id) {
   };
 }
 
-ThunkAction<AppState> addEntryComment(int id, InputData inputData, Completer completer) {
+ThunkAction<AppState> addEntryComment(
+    int id, InputData inputData, Completer completer) {
   return (Store<AppState> store) async {
     var entry = store.state.entitiesState.entries[id];
     await api.entries.addEntryComment(entry, inputData);
     var entryCompltr = Completer();
     store.dispatch(loadEntry(id.toString(), id, entryCompltr));
     await entryCompltr.future;
-        completer.complete();
+    completer.complete();
   };
 }

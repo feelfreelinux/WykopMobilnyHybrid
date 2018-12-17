@@ -8,6 +8,8 @@ import 'package:built_collection/built_collection.dart';
 **/
 SearchState searchReducer(SearchState state, action) {
   return state.rebuild((b) => b
-    ..entriesSearchState.replace(itemListReducer("SEARCH_ENTRIES", state.entriesSearchState, action))
-    ..linksSearchState.replace(itemListReducer("SEARCH_LINKS", state.linksSearchState, action)));
+    ..entriesSearchState.replace(
+        itemListReducer("SEARCH_ENTRIES", state.entriesSearchState, action))
+    ..linksSearchState.replace(
+        itemListReducer("SEARCH_LINKS", state.linksSearchState, action)));
 }

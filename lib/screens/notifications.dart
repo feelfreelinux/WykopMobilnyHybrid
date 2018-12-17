@@ -9,9 +9,7 @@ class NotificationsScreen extends StatelessWidget {
     return DefaultTabController(
         length: 5,
         child: Scaffold(
-            appBar: AppbarTabsWidget(
-              onPressedSearch: () {},
-              tabs: <Widget>[
+            appBar: AppbarTabsWidget(onPressedSearch: () {}, tabs: <Widget>[
               Tab(text: 'Powiadomienia'),
               Tab(text: 'Obserwowane tagi'),
             ]),
@@ -25,9 +23,8 @@ class NotificationsScreen extends StatelessWidget {
               NotificationsList(
                   converterCallback: (store) =>
                       store.state.notificationsState.hashTagsState,
-                  loadDataCallback: (store, refresh, completer) =>
-                      store.dispatch(loadHashTagNotifications(refresh, completer))),
-
+                  loadDataCallback: (store, refresh, completer) => store
+                      .dispatch(loadHashTagNotifications(refresh, completer))),
             ])));
   }
 }

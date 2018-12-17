@@ -15,13 +15,13 @@ class CommentsButton extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Padding(
-                      padding: EdgeInsets.only(left: 4.0, right: 4.0, top: 1.5),
+                      padding: EdgeInsets.only(left: 4.0, right: 4.0, top: 2),
                       child: Icon(OwmGlyphs.ic_buttontoolbar_comment,
                           size: 16.0,
                           color: Theme.of(context).textTheme.caption.color)),
                   Text(count.toInt().toString() + _polishPlural(count.toInt()),
                       style: TextStyle(
-                          fontSize: 13.5,
+                          fontSize: 14,
                           color: Theme.of(context).textTheme.caption.color))
                 ])),
         onTap: this.onClicked);

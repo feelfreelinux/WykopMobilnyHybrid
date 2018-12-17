@@ -30,8 +30,7 @@ class EntryWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            AuthorWidget(
-                author: entry.author, date: entry.date, fontSize: 13.5),
+            AuthorWidget(author: entry.author, date: entry.date, fontSize: 14),
             Padding(
                 padding: EdgeInsets.only(right: 12.0),
                 child: StoreConnector<AppState, VoidCallback>(

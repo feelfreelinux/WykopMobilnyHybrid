@@ -22,8 +22,7 @@ class ChildrenLinkCommentWidget extends StatelessWidget {
             }));
   }
 
-  List<Widget> _buildLinkComment(
-      LinkComment comment, BuildContext context) {
+  List<Widget> _buildLinkComment(LinkComment comment, BuildContext context) {
     return [
       //InkWell(child:
       Column(children: <Widget>[
@@ -81,8 +80,7 @@ class ChildrenLinkCommentWidget extends StatelessWidget {
 
   Widget _drawHeader(BuildContext context, LinkComment comment) {
     return Padding(
-        padding:
-            EdgeInsets.only(left: 12.0, top: 8.0, right: 12.0, bottom: 1.5),
+        padding: EdgeInsets.only(left: 12.0, top: 8.0, right: 12.0, bottom: 2),
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -96,20 +94,19 @@ class ChildrenLinkCommentWidget extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
-                                fontSize: 13.5,
+                                fontSize: 14,
                                 color: Utils.getAuthorColor(
                                     comment.author, context))))),
                 Text("  •  " + Utils.getSimpleDate(comment.date),
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                        fontSize: 11.5,
+                        fontSize: 12,
                         color: Theme.of(context).textTheme.caption.color))
               ])),
               Padding(
                 padding: EdgeInsets.only(left: 8.0),
                 child: StoreConnector<AppState, VoidCallback>(
-                  converter: (store) =>
-                      () => {},
+                  converter: (store) => () => {},
                   builder: (context, callback) => VoteButton(
                       isSelected: comment.isVoted,
                       count: comment.voteCount,

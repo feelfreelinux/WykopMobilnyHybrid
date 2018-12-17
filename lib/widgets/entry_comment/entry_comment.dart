@@ -17,22 +17,23 @@ class EntryCommentWidget extends StatelessWidget {
             store.state.entitiesState.entryComments[commentId],
         builder: (context, comment) {
           return Material(
-                  key: Key(commentId.toString()),
-                  color: Theme.of(context).cardColor,
-                  child: InkWell(
-              onDoubleTap: () {
-                // Quote action
-                OwmKeys.inputBarKey.currentState
-                    .quoteText(comment.author, comment.body);
-              },
-              onTap: () {
-                // Reply action
-                OwmKeys.inputBarKey.currentState.replyToUser(comment.author);
-              },
-              onLongPress: () {
-                // Show delete /add actions @TODO
-              },
-              child: Column(
+              key: Key(commentId.toString()),
+              color: Theme.of(context).cardColor,
+              child: InkWell(
+                  onDoubleTap: () {
+                    // Quote action
+                    OwmKeys.inputBarKey.currentState
+                        .quoteText(comment.author, comment.body);
+                  },
+                  onTap: () {
+                    // Reply action
+                    OwmKeys.inputBarKey.currentState
+                        .replyToUser(comment.author);
+                  },
+                  onLongPress: () {
+                    // Show delete /add actions @TODO
+                  },
+                  child: Column(
                       children: _buildEntryCommentBody(comment, context))));
         });
   }
