@@ -23,9 +23,10 @@ class LinkWidget extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () {
-          Navigator.push(context, Utils.getPageTransition(LinkScreen(linkId: linkId)));
+          Navigator.push(
+              context, Utils.getPageTransition(LinkScreen(linkId: linkId)));
         },
-              child: Material(
+        child: Material(
           elevation: 0.5,
           shadowColor: Color(0x80000000),
           color: Theme.of(context).cardColor,
@@ -92,9 +93,12 @@ class LinkWidget extends StatelessWidget {
                                 ),
                                 child: Row(
                                   children: <Widget>[
-                                    Image.network(
-                                      'http://s2.googleusercontent.com/s2/favicons?domain_url=' +
-                                          link.sourceUrl,
+                                    Image(
+                                      image: AdvancedNetworkImage(
+                                        'http://s2.googleusercontent.com/s2/favicons?domain_url=' +
+                                            link.sourceUrl,
+                                        useDiskCache: true,
+                                      ),
                                       height: 12.0,
                                       width: 12.0,
                                     ),
