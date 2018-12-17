@@ -126,7 +126,7 @@ class LinkWidget extends StatelessWidget {
                                   right: 12.0,
                                 ),
                                 child: Text(
-                                  link.title,
+                                  link.title.replaceAll('&quot;', ''),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 3,
                                   style: TextStyle(
