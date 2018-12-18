@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class FavoriteButton extends StatelessWidget {
-  final bool isFavorite;
+class ShareButton extends StatelessWidget {
   final VoidCallback onClicked;
-  FavoriteButton({@required this.isFavorite, @required this.onClicked});
+  ShareButton({@required this.onClicked});
 
   @override
   Widget build(BuildContext context) {
@@ -20,15 +19,13 @@ class FavoriteButton extends StatelessWidget {
                 right: 6.0,
               ),
               child: Icon(
-                isFavorite
-                    ? Icons.favorite
-                    : Icons.favorite_border,
-                size: 20.0,
+                Icons.share,
+                size: 18.0,
                 color: Theme.of(context).textTheme.caption.color,
               ),
             ),
             Text(
-              "ulubiony",
+              "udostępnij",
               style: TextStyle(
                 fontSize: 13.0,
                 color: Theme.of(context).textTheme.caption.color,

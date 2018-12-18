@@ -1,41 +1,53 @@
 import 'package:flutter/material.dart';
-import 'package:owmflutter/owm_glyphs.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CommentsButton extends StatelessWidget {
   final num count;
   final VoidCallback onClicked;
-
   CommentsButton({@required this.count, this.onClicked});
+
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-        child: Padding(
-            padding: EdgeInsets.only(left: 6.0, right: 10.0),
-            child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.only(left: 4.0, right: 4.0, top: 2),
-                      child: Icon(OwmGlyphs.ic_buttontoolbar_comment,
-                          size: 16.0,
-                          color: Theme.of(context).textTheme.caption.color)),
-                  Text(count.toInt().toString() + _polishPlural(count.toInt()),
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: Theme.of(context).textTheme.caption.color))
-                ])),
-        onTap: this.onClicked);
+    return GestureDetector(
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: 10.0,
+        ),
+        child: Row(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(
+                right: 6.0,
+              ),
+              child: Icon(
+                FontAwesomeIcons.comment,
+                size: 16.0,
+                color: Theme.of(context).textTheme.caption.color,
+              ),
+            ),
+            Text(
+              count.toString() + " " + _polishPlural(count),
+              style: TextStyle(
+                fontSize: 13.0,
+                color: Theme.of(context).textTheme.caption.color,
+              ),
+            ),
+          ],
+        ),
+      ),
+      onTap: this.onClicked,
+    );
   }
 
-  String _polishPlural(value) {
+  String _polishPlural(num value) {
     if (value == 1) {
-      return " komentarz";
+      return "komentarz";
     } else if (value % 10 >= 2 &&
         value % 10 <= 4 &&
         (value % 100 < 10 || value % 100 >= 20)) {
-      return " komentarze";
+      return "komentarze";
     } else {
-      return " komentarzy";
+      return "komentarzy";
     }
   }
 }
