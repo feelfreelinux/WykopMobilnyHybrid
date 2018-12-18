@@ -7,56 +7,68 @@ export 'normalizers.dart';
 
 import 'dart:async';
 import 'package:built_value/serializer.dart';
-import 'dart:io';
-import 'package:built_collection/built_collection.dart';
 import 'package:owmflutter/api/api.dart';
-import 'package:owmflutter/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'dart:async' show Future;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart' as crypto;
-import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 
-String generateMd5(String data) {
-  var content = Utf8Encoder().convert(data);
-  var md5 = crypto.md5;
-  var digest = md5.convert(content);
+/**
+ * Handles request signing, retrying, deserializing, saving auth tokens,
+ * logging in and all sort of things 
+ */
+class ApiClient extends http.BaseClient {
+  final http.Client _inner = http.Client();
 
-  return hex.encode(digest.bytes);
-}
+  Future<http.StreamedResponse> send(http.BaseRequest request) async {
+    var toSign = _secrets.secret + request.url.toString();
 
-class AuthCredentials {
-  final String token;
-  final String login;
-  final String avatarUrl;
-  String refreshToken;
-  AuthCredentials({this.token, this.avatarUrl, this.login, this.refreshToken});
-}
+    if (request is http.MultipartRequest) {
+      toSign = _secrets.secret +
+          request.url.toString() +
+          request.fields.values.join(',');
+    }
 
-class ApiSecrets {
-  final String secret;
-  final String appkey;
-  ApiSecrets({this.secret, this.appkey});
-}
+    print(toSign);
+    request.headers['apisign'] = generateMd5(toSign);
+    request.headers['User-Agent'] = 'OWMHYBRID';
 
-Future<ApiSecrets> loadSecrets() async {
-  var rawJson = await rootBundle.loadString('assets/secrets.json');
-  var decoded = json.decode(rawJson);
-  return ApiSecrets(
-      appkey: decoded["wykop_key"], secret: decoded["wykop_secret"]);
-}
+    http.StreamedResponse response = await _inner.send(request);
 
-class ApiClient {
+    if (response != null && response.statusCode == 401) {
+      var authResponse = await this.request('login', 'index',
+          post: {'login': credentials.login, 'accountkey': credentials.token});
+
+      var originalPath = request.url.toString();
+
+      originalPath =
+          originalPath.substring(0, originalPath.indexOf("/userkey/")) +
+              "/userkey/" +
+              authResponse["userkey"];
+      print(originalPath);
+
+      this.credentials.refreshToken = authResponse["userkey"];
+      await saveAuthCreds(this.credentials);
+      if (request is http.MultipartRequest) {
+        var newRequest =
+            http.MultipartRequest(request.method, Uri.parse(originalPath));
+        request.fields.forEach((key, value) => newRequest.fields[key] = value);
+        return await send(
+            http.Request(request.method, Uri.parse(originalPath)));
+      }
+      return await send(http.Request(request.method, Uri.parse(originalPath)));
+    }
+    return response;
+  }
+
+  void close() => _inner.close();
+
   ApiSecrets _secrets;
   AuthCredentials credentials;
   get secrets => _secrets;
-  var _dio = new Dio(Options(
-    baseUrl: "https://a2.wykop.pl",
-    connectTimeout: 5000,
-    receiveTimeout: 5000,
-  ));
   var checkedCreds = false;
 
   Future<void> syncCredsFromStorage() async {
@@ -70,51 +82,8 @@ class ApiClient {
     }
   }
 
-  ApiClient() {}
-
   void initialize() {
     loadSecrets().then((keys) => this._secrets = keys);
-
-    // Signing interceptor
-    _dio.interceptor.request.onSend = (Options options) async {
-      var toSign = _secrets.secret + "https://a2.wykop.pl" + options.path;
-      if (options.method == "POST") {
-        toSign += (options.data).values.join(',');
-        print(options.data);
-      }
-
-      print(toSign);
-      options.headers['apisign'] = generateMd5(toSign);
-      options.headers['User-Agent'] = 'OWMHYBRID';
-      return options;
-    };
-
-    _dio.interceptor.response.onError = (DioError error) async {
-      print(error.response.data);
-      if (error != null &&
-          error.response != null &&
-          error.response.statusCode == 401) {
-        var authResponse = await this.request('login', 'index', post: {
-          'login': credentials.login,
-          'accountkey': credentials.token
-        });
-
-        var originalPath = error.response.request.path;
-
-        originalPath =
-            originalPath.substring(0, originalPath.indexOf("/userkey/")) +
-                "/userkey/" +
-                authResponse["userkey"];
-        print(originalPath);
-
-        this.credentials.refreshToken = authResponse["userkey"];
-        await saveAuthCreds(this.credentials);
-        return await _dio.request(originalPath,
-            options: error.response.request);
-      }
-
-      return error;
-    };
   }
 
   Future<dynamic> request(String endpoint, String resource,
@@ -153,18 +122,17 @@ class ApiClient {
       path += '/userkey/' + credentials.refreshToken;
     }
 
-    Response response;
+    http.Response response;
     if (post.containsKey('owm-get')) {
-      response = await _dio.get(path);
+      response = await get("https://a2.wykop.pl" + path);
     } else {
-      response = await _dio.post(path,
-          data: (post),
-          options: new Options(
-              contentType:
-                  ContentType.parse("application/x-www-form-urlencoded")));
+      var multipartRequest = http.MultipartRequest(
+          "POST", Uri.parse("https://a2.wykop.pl" + path));
+      post.forEach((key, value) => multipartRequest.fields[key] = value);
+      response = await http.Response.fromStream(await send(multipartRequest));
     }
 
-    return response.data["data"];
+    return json.decode(response.body)["data"];
   }
 
   List<T> deserializeList<T>(Serializer<T> serializer, map) {
@@ -177,6 +145,35 @@ class ApiClient {
   T deserializeElement<T>(Serializer<T> serializer, map) {
     return serializers.deserializeWith(serializer, (map));
   }
+}
+
+String generateMd5(String data) {
+  var content = Utf8Encoder().convert(data);
+  var md5 = crypto.md5;
+  var digest = md5.convert(content);
+
+  return hex.encode(digest.bytes);
+}
+
+class AuthCredentials {
+  final String token;
+  final String login;
+  final String avatarUrl;
+  String refreshToken;
+  AuthCredentials({this.token, this.avatarUrl, this.login, this.refreshToken});
+}
+
+class ApiSecrets {
+  final String secret;
+  final String appkey;
+  ApiSecrets({this.secret, this.appkey});
+}
+
+Future<ApiSecrets> loadSecrets() async {
+  var rawJson = await rootBundle.loadString('assets/secrets.json');
+  var decoded = json.decode(rawJson);
+  return ApiSecrets(
+      appkey: decoded["wykop_key"], secret: decoded["wykop_secret"]);
 }
 
 Future<void> saveAuthCreds(AuthCredentials credentials) async {
