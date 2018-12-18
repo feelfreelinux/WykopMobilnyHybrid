@@ -36,7 +36,7 @@ class _MainScreenState extends State<MainScreen> {
         color: Theme.of(context).primaryColor,
         child: Row(
           mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             _iconButton(Icons.home, 0, "Strona główna"),
             _iconButton(Icons.add_box, 1, "Mikroblog"),
