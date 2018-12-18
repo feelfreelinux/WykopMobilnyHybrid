@@ -45,8 +45,8 @@ class AppbarTabsWidget extends PreferredSize {
                 unselectedLabelColor: Colors.grey[600])),
         actions: <Widget>[
           IconButton(
-              iconSize: 22.0,
-              icon: Icon(FontAwesomeIcons.search),
+              iconSize: 26.0,
+              icon: Icon(Icons.search),
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
               onPressed: onPressedSearch,
@@ -118,8 +118,8 @@ class SearchAppbarWidget extends PreferredSize {
             )),
         actions: <Widget>[
           IconButton(
-              iconSize: 22.0,
-              icon: Icon(FontAwesomeIcons.times),
+              iconSize: 26.0,
+              icon: Icon(Icons.close),
               highlightColor: Colors.transparent,
               splashColor: Colors.transparent,
               onPressed: onClosedSearch,

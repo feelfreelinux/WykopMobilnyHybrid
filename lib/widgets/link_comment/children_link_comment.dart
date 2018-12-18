@@ -109,7 +109,21 @@ class ChildrenLinkCommentWidget extends StatelessWidget {
                   converter: (store) => () => {},
                   builder: (context, callback) => VoteButton(
                       isSelected: comment.isVoted,
-                      count: comment.voteCount,
+                      count: comment.voteCountPlus,
+                      onClicked: () {
+                        callback();
+                      }),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 8.0),
+                child: StoreConnector<AppState, VoidCallback>(
+                  converter: (store) =>
+                      () => {},
+                  builder: (context, callback) => VoteButton(
+                    negativeIcon: true,
+                      isSelected: comment.isVoted,
+                      count: -(comment.voteCount - comment.voteCountPlus),
                       onClicked: () {
                         callback();
                       }),

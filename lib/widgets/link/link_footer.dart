@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/models/models.dart';
-import 'package:owmflutter/owm_glyphs.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/screens/screens.dart';
+import 'package:owmflutter/utils/utils.dart';
 
 class LinkFooterWidget extends StatelessWidget {
   final Link link;
-  LinkFooterWidget({this.link});
+  final int linkId;
+  LinkFooterWidget({this.link, this.linkId});
 
   @override
   Widget build(BuildContext context) {
@@ -14,23 +15,20 @@ class LinkFooterWidget extends StatelessWidget {
       height: 38.0,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          TextButton(
-            text: " udostępnij",
-            icon: OwmGlyphs.ic_buttontoolbar_share,
-            onClicked: () {},
-          ),
           FavoriteButton(
+            isFavorite: false,
             onClicked: () {},
-          ),
-          Expanded(
-            child: Container(),
           ),
           CommentsButton(
             count: link.commentsCount,
-            onClicked: () {},
+            onClicked: () {
+              Navigator.push(
+                  context, Utils.getPageTransition(LinkScreen(linkId: linkId)));
+            },
           ),
+          ShareButton(onClicked: () {}),
         ],
       ),
     );

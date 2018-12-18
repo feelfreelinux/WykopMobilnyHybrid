@@ -13,8 +13,9 @@ class EntryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
         key: Key(entryId.toString()),
-        padding: EdgeInsets.only(bottom: 4.0),
+        padding: EdgeInsets.only(bottom: 8.0),
         child: Material(
+          elevation: 0.3,
             color: Theme.of(context).cardColor,
             child: StoreConnector<AppState, Entry>(
                 converter: (store) =>

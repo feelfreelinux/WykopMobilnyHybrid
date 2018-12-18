@@ -27,25 +27,26 @@ class VoteCounterWidget extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: <Widget>[
-            Icon(
-              OwmGlyphs.ic_frame_votes,
-              size: size,
-              color: _frameColor,
+            Container(
+              margin: EdgeInsets.all(1.0),
+              width: size,
+              height: size / 1.28,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: _frameColor,
+                  width: 3.5,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
             _hotIcon(context),
-            Padding(
-              padding: EdgeInsets.only(
-                left: (size / 32),
-                top: (size / 24),
-              ),
-              child: Text(
-                count.toString(),
-                style: TextStyle(
-                  letterSpacing: -(size / 100.00),
-                  fontSize: (size / 4),
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xffff5917),
-                ),
+            Text(
+              count.toString(),
+              style: TextStyle(
+                letterSpacing: -(size / 100.00),
+                fontSize: (size / 3.45),
+                fontWeight: FontWeight.w700,
+                color: Color(0xffff5917),
               ),
             ),
           ],
@@ -57,7 +58,7 @@ class VoteCounterWidget extends StatelessWidget {
   Widget _hotIcon(BuildContext context) {
     if (isHot) {
       return Positioned(
-        top: (size / 24),
+        top: 0,
         right: 0,
         child: Container(
           padding: EdgeInsets.only(
@@ -69,7 +70,7 @@ class VoteCounterWidget extends StatelessWidget {
           ),
           child: Icon(
             OwmGlyphs.ic_hot,
-            size: (size / 4),
+            size: (size / 3.7),
             color: Colors.red,
           ),
         ),

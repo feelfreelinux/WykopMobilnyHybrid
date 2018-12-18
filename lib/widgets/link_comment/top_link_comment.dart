@@ -3,7 +3,6 @@ import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:owmflutter/utils/utils.dart';
 
 class TopLinkCommentWidget extends StatelessWidget {
   final int commentId;
@@ -53,7 +52,19 @@ class TopLinkCommentWidget extends StatelessWidget {
                   converter: (state) => () => {},
                   builder: (context, callback) => VoteButton(
                       isSelected: comment.isVoted,
-                      count: comment.voteCount,
+                      count: comment.voteCountPlus,
+                      onClicked: () {
+                        callback();
+                      }),
+                )),
+            Padding(
+                padding: EdgeInsets.only(right: 12.0),
+                child: StoreConnector<AppState, VoidCallback>(
+                  converter: (state) => () => {},
+                  builder: (context, callback) => VoteButton(
+                      negativeIcon: true,
+                      isSelected: comment.isVoted,
+                      count: -(comment.voteCount - comment.voteCountPlus),
                       onClicked: () {
                         callback();
                       }),
