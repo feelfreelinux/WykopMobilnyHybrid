@@ -30,7 +30,7 @@ class _MainScreenState extends State<MainScreen> {
         tooltip: "Dodaj nowy",
         onPressed: () {},
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+// what should we dooo      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
         color: Theme.of(context).primaryColor,

@@ -7,7 +7,9 @@ import 'package:owmflutter/keys.dart';
 class SaveAuthCredentialsAction {
   final String login;
   final String avatarUrl;
-  SaveAuthCredentialsAction({this.login, this.avatarUrl});
+  final int color;
+  final String backgroundUrl;
+  SaveAuthCredentialsAction({this.login, this.avatarUrl, this.color, this.backgroundUrl});
 }
 
 ThunkAction<AppState> loginUser(String token, String login) {
@@ -15,7 +17,7 @@ ThunkAction<AppState> loginUser(String token, String login) {
     var creds = await api.users.login(login, token);
 
     store.dispatch(SaveAuthCredentialsAction(
-        login: creds.login, avatarUrl: creds.avatarUrl));
+        login: creds.login, avatarUrl: creds.avatarUrl, color: creds.color, backgroundUrl: creds.backgroundUrl));
   };
 }
 
@@ -26,7 +28,7 @@ ThunkAction<AppState> syncStateWithApi() {
 
     if (creds != null) {
       store.dispatch(SaveAuthCredentialsAction(
-          login: creds.login, avatarUrl: creds.avatarUrl));
+          login: creds.login, avatarUrl: creds.avatarUrl, backgroundUrl: creds.backgroundUrl, color: creds.color));
     }
   };
 }

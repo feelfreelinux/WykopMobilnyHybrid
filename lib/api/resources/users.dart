@@ -13,6 +13,8 @@ class UsersApi extends ApiResource {
         avatarUrl: result["profile"]["avatar"],
         login: login,
         token: accountKey,
+        backgroundUrl: result["profile"]["background"],
+        color: result["profile"]["color"],
         refreshToken: result["userkey"]);
     await saveAuthCreds(credentials);
     client.credentials = credentials;

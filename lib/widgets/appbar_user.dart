@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/api/api.dart';
+import 'package:owmflutter/utils/utils.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter/services.dart';
 
@@ -24,10 +25,14 @@ class AppbarUserWidget extends StatelessWidget {
                         splashColor: Colors.transparent,
                         highlightColor: Colors.transparent,
                         onTap: () async {
-                          var result = await platform.invokeMethod(
-                              'openLoginScreen',
-                              Map.from({'appKey': api.getAppKey()}));
-                          callback(result['login'], result['token']);
+                          if (authState.loggedIn) {
+                            Navigator.of(context).push(Utils.getPageTransition(MainSettingsScreen()));
+                          } else {
+                            var result = await platform.invokeMethod(
+                                'openLoginScreen',
+                                Map.from({'appKey': api.getAppKey()}));
+                            callback(result['login'], result['token']);
+                          }
                         },
                         child: Container(
                             decoration: BoxDecoration(

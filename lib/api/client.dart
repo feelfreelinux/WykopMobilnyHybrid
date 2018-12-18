@@ -159,8 +159,10 @@ class AuthCredentials {
   final String token;
   final String login;
   final String avatarUrl;
+  final String backgroundUrl;
+  final int color;
   String refreshToken;
-  AuthCredentials({this.token, this.avatarUrl, this.login, this.refreshToken});
+  AuthCredentials({this.token, this.avatarUrl, this.login, this.refreshToken, this.color, this.backgroundUrl});
 }
 
 class ApiSecrets {
@@ -182,6 +184,9 @@ Future<void> saveAuthCreds(AuthCredentials credentials) async {
   await prefs.setString('accountkey', credentials.token);
   await prefs.setString('login', credentials.login);
   await prefs.setString('avatarUrl', credentials.avatarUrl);
+  await prefs.setString('backgroundUrl', credentials.backgroundUrl);
+  await prefs.setInt('color', credentials.color);
+
   return;
 }
 
@@ -191,6 +196,8 @@ Future<AuthCredentials> loadAuthCreds() async {
       refreshToken: prefs.getString('userkey'),
       token: prefs.getString('accountkey'),
       login: prefs.getString('login'),
+      backgroundUrl: prefs.getString('backgroundUrl'),
+      color: prefs.getInt('color'),
       avatarUrl: prefs.getString('avatarUrl'));
   return creds;
 }

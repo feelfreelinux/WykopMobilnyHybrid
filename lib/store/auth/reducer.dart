@@ -13,5 +13,7 @@ AuthState _saveLoginCredentials(
     ..loggedIn = true
     ..avatarUrl = action.avatarUrl
     ..login = action.login
+    ..backgroundUrl = action.backgroundUrl
+    ..color = action.color
     ..avatarUrl = action.avatarUrl);
 }

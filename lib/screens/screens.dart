@@ -7,3 +7,4 @@ export 'links.dart';
 export 'link.dart';
 export 'notifications.dart';
 export 'mywykop.dart';
+export 'main_settings.dart';
