@@ -35,7 +35,7 @@ class EntriesApi extends ApiResource {
 
   Future<Result> addEntryComment(Entry entry, InputData data) async {
     await client.request('entries', 'commentadd',
-        api: [entry.id.toString()], post: {'body': data.body});
+        api: [entry.id.toString()], post: {'body': data.body}, image: data.file);
     return normalizeEntry(entry);
   }
 

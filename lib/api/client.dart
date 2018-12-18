@@ -15,6 +15,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:http/http.dart' as http;
+import 'dart:io';
 
 /**
  * Handles request signing, retrying, deserializing, saving auth tokens,
@@ -89,7 +90,8 @@ class ApiClient extends http.BaseClient {
   Future<dynamic> request(String endpoint, String resource,
       {List<String> api: const [],
       Map<String, String> named: const {},
-      Map<String, String> post: const {'owm-get': 'yes'}}) async {
+      Map<String, String> post: const {'owm-get': 'yes'},
+      File image}) async {
     if (this._secrets == null) {
       this._secrets = await loadSecrets();
     }
@@ -129,6 +131,9 @@ class ApiClient extends http.BaseClient {
       var multipartRequest = http.MultipartRequest(
           "POST", Uri.parse("https://a2.wykop.pl" + path));
       post.forEach((key, value) => multipartRequest.fields[key] = value);
+      if (image != null) {
+        multipartRequest.files.add(await http.MultipartFile.fromPath("embed", image.path));
+      }
       response = await http.Response.fromStream(await send(multipartRequest));
     }
 

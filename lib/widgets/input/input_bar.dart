@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/models/models.dart';
-import 'package:owmflutter/keys.dart';
+import 'dart:io';
 import 'dart:async';
 import 'send_button.dart';
+import 'package:image_picker/image_picker.dart';
 
 typedef Future InputBarCallback(InputData inputData);
 
@@ -19,6 +20,8 @@ class InputBarWidgetState extends State<InputBarWidget> {
   bool clickTextField = false;
   bool isEmpty = true;
   bool sending = false;
+  File image;
+
   final FocusNode focusNode = FocusNode();
   TextEditingController textController = TextEditingController();
 
@@ -28,6 +31,13 @@ class InputBarWidgetState extends State<InputBarWidget> {
       textController.text += "@" + author.login + ": ";
       textController.selection = TextSelection.fromPosition(
           TextPosition(offset: textController.text.length));
+    });
+  }
+
+  void pickImage(ImageSource source) async {
+    var image = await ImagePicker.pickImage(source: source);
+    setState(() {
+      this.image = image;
     });
   }
 
@@ -228,8 +238,12 @@ class InputBarWidgetState extends State<InputBarWidget> {
                   _drawIconRound(Icons.visibility_off,
                       () => insertSelectedText("\n! ", suffix: "\n")),
                   _drawIconRound(Icons.list, () => {}),
-                  _drawIconRound(Icons.image, () {}),
+                  _drawIconRound(
+                      Icons.image, () => this.pickImage(ImageSource.gallery)),
+                  _drawIconRound(
+                      Icons.camera, () => this.pickImage(ImageSource.camera)),
                   _drawIconRound(Icons.fullscreen, () {}),
+                  this.image != null ? Image.file(this.image, width: 40, height: 30, fit: BoxFit.contain) : Container()
                 ]
               : <Widget>[
                   _drawIconRound(Icons.arrow_back, () {
@@ -259,8 +273,9 @@ class InputBarWidgetState extends State<InputBarWidget> {
     });
     this
         .widget
-        .callback(InputData(body: this.textController.text))
+        .callback(InputData(body: this.textController.text, file: this.image))
         .then((_) => setState(() {
+              this.image = null;
               this.sending = false;
               this.textController.clear();
             }));

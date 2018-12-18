@@ -5,6 +5,7 @@ import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter/services.dart';
+typedef void LoginCallback(String login, String token);
 
 class AppbarUserWidget extends StatelessWidget {
   static const platform =
