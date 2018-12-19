@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:owmflutter/models/models.dart';
 import 'dart:io';
 import 'dart:async';
+import 'emoticon_button.dart';
+import 'markdown_button.dart';
+import 'media_button.dart';
 import 'send_button.dart';
+import 'selected_image.dart';
 import 'package:image_picker/image_picker.dart';
 
 typedef Future InputBarCallback(InputData inputData);
@@ -138,69 +142,95 @@ class InputBarWidgetState extends State<InputBarWidget> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          _drawShowMarkdownButton(),
-          _drawMediaButton(),
+          MarkdownButtonWidget(
+            show: showMarkdownBar,
+            onTap: () {
+              setState(() {
+                showMarkdownBar = showMarkdownBar ? false : true;
+                showMediaButton =
+                    showMarkdownBar ? false : clickTextField ? false : true;
+              });
+            },
+          ),
+          MediaButtonWidget(
+            show: showMediaButton,
+            onTap: () => this.pickImage(ImageSource.gallery),
+          ),
           Expanded(
             child: Container(
-              margin: EdgeInsets.symmetric(
-                vertical: 8.0,
-                horizontal: 6.0,
-              ),
-              padding: EdgeInsets.only(
-                left: 12.0,
-                top: 1.0,
-                right: 1.0,
-                bottom: 1.0,
-              ),
-              decoration: BoxDecoration(
-                color: Color(0x267f7f7f),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(16.0),
+                margin: EdgeInsets.symmetric(
+                  vertical: 8.0,
+                  horizontal: 6.0,
                 ),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Flexible(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxHeight: 90.0,
-                      ),
-                      child: Scrollbar(
-                        child: SingleChildScrollView(
-                          reverse: true,
-                          child: TextField(
-                            focusNode: focusNode,
-                            cursorWidth: 1.5,
-                            cursorRadius: Radius.circular(20.0),
-                            style: DefaultTextStyle.of(context).style.merge(
-                                  TextStyle(fontSize: 14.0),
-                                ),
-                            maxLines: null,
-                            controller: this.textController,
-                            keyboardType: TextInputType.multiline,
-                            onTap: () {
-                              setState(() {
-                                showMediaButton = false;
-                                clickTextField = true;
-                              });
-                            },
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                vertical: 8.0,
+                padding: EdgeInsets.only(
+                  top: 1.0,
+                  right: 1.0,
+                  bottom: 1.0,
+                ),
+                decoration: BoxDecoration(
+                  color: Color(0x267f7f7f),
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(16.0),
+                  ),
+                ),
+                child: Column(
+                  children: <Widget>[
+                    SelectedImageWidget(
+                        image: this.image,
+                        onTap: () {
+                          setState(() {
+                            this.image = null;
+                          });
+                        }),
+                    Padding(
+                      padding: EdgeInsets.only(left: 12.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Flexible(
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                maxHeight: 90.0,
                               ),
-                              border: InputBorder.none,
-                              hintText: 'Treść komentarza',
+                              child: Scrollbar(
+                                child: SingleChildScrollView(
+                                  reverse: true,
+                                  child: TextField(
+                                    focusNode: focusNode,
+                                    cursorWidth: 1.5,
+                                    cursorRadius: Radius.circular(20.0),
+                                    style: DefaultTextStyle.of(context)
+                                        .style
+                                        .merge(
+                                          TextStyle(fontSize: 14.0),
+                                        ),
+                                    maxLines: null,
+                                    controller: this.textController,
+                                    keyboardType: TextInputType.multiline,
+                                    onTap: () {
+                                      setState(() {
+                                        showMediaButton = false;
+                                        clickTextField = true;
+                                      });
+                                    },
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                        vertical: 8.0,
+                                      ),
+                                      border: InputBorder.none,
+                                      hintText: 'Treść komentarza',
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                          EmoticonButtonWidget(onTap: () {}),
+                        ],
                       ),
                     ),
-                  ),
-                  _drawEmoticonButton(),
-                ],
-              ),
-            ),
+                  ],
+                )),
           ),
           SendButtonWidget(
             onTap: () {
@@ -240,10 +270,9 @@ class InputBarWidgetState extends State<InputBarWidget> {
                   _drawIconRound(Icons.list, () => {}),
                   _drawIconRound(
                       Icons.image, () => this.pickImage(ImageSource.gallery)),
-                  _drawIconRound(
-                      Icons.camera, () => this.pickImage(ImageSource.camera)),
+                  _drawIconRound(Icons.camera_alt,
+                      () => this.pickImage(ImageSource.camera)),
                   _drawIconRound(Icons.fullscreen, () {}),
-                  this.image != null ? Image.file(this.image, width: 40, height: 30, fit: BoxFit.contain) : Container()
                 ]
               : <Widget>[
                   _drawIconRound(Icons.arrow_back, () {
@@ -281,63 +310,6 @@ class InputBarWidgetState extends State<InputBarWidget> {
             }));
   }
 
-  Widget _drawShowMarkdownButton() {
-    return Container(
-      padding: EdgeInsets.only(bottom: 6.0),
-      child: InkWell(
-          onTap: () {
-            setState(() {
-              showMarkdownBar = showMarkdownBar ? false : true;
-              showMediaButton =
-                  showMarkdownBar ? false : clickTextField ? false : true;
-            });
-          },
-          borderRadius: BorderRadius.circular(100.0),
-          child: Padding(
-              padding: const EdgeInsets.all(6.0),
-              child: Icon(
-                  showMarkdownBar ? Icons.remove_circle : Icons.add_circle,
-                  size: 26.0,
-                  color: Color(0xff3c84c1)))),
-    );
-  }
-
-  Widget _drawMediaButton() {
-    if (showMediaButton) {
-      return Container(
-        padding: EdgeInsets.only(bottom: 6.0),
-        child: InkWell(
-          onTap: () {},
-          borderRadius: BorderRadius.circular(100.0),
-          child: Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: Icon(
-              Icons.image,
-              size: 26.0,
-              color: Color(0xff3c84c1),
-            ),
-          ),
-        ),
-      );
-    } else {
-      return Container();
-    }
-  }
-
-  Widget _drawEmoticonButton() {
-    return InkWell(
-      onTap: () {},
-      borderRadius: BorderRadius.circular(100.0),
-      child: Padding(
-        padding: const EdgeInsets.all(4.0),
-        child: Icon(
-          Icons.mood,
-          color: Color(0xff3c84c1),
-        ),
-      ),
-    );
-  }
-
   Widget _drawIconRound(IconData iconData, VoidCallback onClick) {
     return Container(
       margin: EdgeInsets.symmetric(
@@ -347,7 +319,6 @@ class InputBarWidgetState extends State<InputBarWidget> {
         borderRadius: BorderRadius.circular(30.0),
         border: Border.all(
           color: Color(0x337f7f7f),
-          width: 1.0,
         ),
       ),
       child: InkWell(
