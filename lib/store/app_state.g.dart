@@ -21,6 +21,9 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
       'authState',
       serializers.serialize(object.authState,
           specifiedType: const FullType(AuthState)),
+      'themeState',
+      serializers.serialize(object.themeState,
+          specifiedType: const FullType(ThemeState)),
       'entitiesState',
       serializers.serialize(object.entitiesState,
           specifiedType: const FullType(EntitiesState)),
@@ -67,6 +70,10 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
         case 'authState':
           result.authState.replace(serializers.deserialize(value,
               specifiedType: const FullType(AuthState)) as AuthState);
+          break;
+        case 'themeState':
+          result.themeState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(ThemeState)) as ThemeState);
           break;
         case 'entitiesState':
           result.entitiesState.replace(serializers.deserialize(value,
@@ -118,6 +125,8 @@ class _$AppState extends AppState {
   @override
   final AuthState authState;
   @override
+  final ThemeState themeState;
+  @override
   final EntitiesState entitiesState;
   @override
   final SearchState searchState;
@@ -141,6 +150,7 @@ class _$AppState extends AppState {
 
   _$AppState._(
       {this.authState,
+      this.themeState,
       this.entitiesState,
       this.searchState,
       this.linksState,
@@ -153,6 +163,9 @@ class _$AppState extends AppState {
       : super._() {
     if (authState == null) {
       throw new BuiltValueNullFieldError('AppState', 'authState');
+    }
+    if (themeState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'themeState');
     }
     if (entitiesState == null) {
       throw new BuiltValueNullFieldError('AppState', 'entitiesState');
@@ -195,6 +208,7 @@ class _$AppState extends AppState {
     if (identical(other, this)) return true;
     return other is AppState &&
         authState == other.authState &&
+        themeState == other.themeState &&
         entitiesState == other.entitiesState &&
         searchState == other.searchState &&
         linksState == other.linksState &&
@@ -216,7 +230,9 @@ class _$AppState extends AppState {
                         $jc(
                             $jc(
                                 $jc(
-                                    $jc($jc(0, authState.hashCode),
+                                    $jc(
+                                        $jc($jc(0, authState.hashCode),
+                                            themeState.hashCode),
                                         entitiesState.hashCode),
                                     searchState.hashCode),
                                 linksState.hashCode),
@@ -232,6 +248,7 @@ class _$AppState extends AppState {
   String toString() {
     return (newBuiltValueToStringHelper('AppState')
           ..add('authState', authState)
+          ..add('themeState', themeState)
           ..add('entitiesState', entitiesState)
           ..add('searchState', searchState)
           ..add('linksState', linksState)
@@ -252,6 +269,12 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   AuthStateBuilder get authState =>
       _$this._authState ??= new AuthStateBuilder();
   set authState(AuthStateBuilder authState) => _$this._authState = authState;
+
+  ThemeStateBuilder _themeState;
+  ThemeStateBuilder get themeState =>
+      _$this._themeState ??= new ThemeStateBuilder();
+  set themeState(ThemeStateBuilder themeState) =>
+      _$this._themeState = themeState;
 
   EntitiesStateBuilder _entitiesState;
   EntitiesStateBuilder get entitiesState =>
@@ -311,6 +334,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   AppStateBuilder get _$this {
     if (_$v != null) {
       _authState = _$v.authState?.toBuilder();
+      _themeState = _$v.themeState?.toBuilder();
       _entitiesState = _$v.entitiesState?.toBuilder();
       _searchState = _$v.searchState?.toBuilder();
       _linksState = _$v.linksState?.toBuilder();
@@ -345,6 +369,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _$result = _$v ??
           new _$AppState._(
               authState: authState.build(),
+              themeState: themeState.build(),
               entitiesState: entitiesState.build(),
               searchState: searchState.build(),
               linksState: linksState.build(),
@@ -359,6 +384,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       try {
         _$failedField = 'authState';
         authState.build();
+        _$failedField = 'themeState';
+        themeState.build();
         _$failedField = 'entitiesState';
         entitiesState.build();
         _$failedField = 'searchState';
