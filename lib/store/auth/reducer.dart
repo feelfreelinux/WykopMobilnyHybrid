@@ -1,6 +1,4 @@
-import 'package:owmflutter/models/models.dart';
 import 'package:redux/redux.dart';
-import 'package:built_collection/built_collection.dart';
 import 'package:owmflutter/store/store.dart';
 
 Reducer<AuthState> authReducer = combineReducers<AuthState>([

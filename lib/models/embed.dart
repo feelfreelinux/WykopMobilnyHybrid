@@ -1,6 +1,5 @@
 import 'package:built_value/built_value.dart';
 import 'package:owmflutter/api/api.dart';
-import 'package:owmflutter/models/models.dart';
 
 part 'embed.g.dart';
 

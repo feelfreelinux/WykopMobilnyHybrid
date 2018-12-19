@@ -3,7 +3,6 @@ import 'package:redux_thunk/redux_thunk.dart';
 import 'package:redux/redux.dart';
 import 'dart:async';
 import 'package:owmflutter/api/api.dart';
-import 'package:owmflutter/models/models.dart';
 
 class SetLinkComments {
   final List<int> ids;

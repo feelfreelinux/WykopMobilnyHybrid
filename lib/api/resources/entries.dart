@@ -1,7 +1,6 @@
 import 'package:owmflutter/api/api.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:owmflutter/models/models.dart';
-import 'package:owmflutter/store/store.dart';
 
 class EntriesApi extends ApiResource {
   EntriesApi(ApiClient client) : super(client);

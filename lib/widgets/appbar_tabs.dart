@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'dart:async';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/store/store.dart';
@@ -58,12 +57,13 @@ class AppbarTabsWidget extends PreferredSize {
   }
 }
 
+@immutable
 class SearchAppbarWidget extends PreferredSize {
   final VoidCallback onClosedSearch;
   final SearchCallback searchCallback;
   SearchAppbarWidget(
       {@required this.onClosedSearch, @required this.searchCallback});
-  TextEditingController searchInputController = TextEditingController();
+  final TextEditingController searchInputController = TextEditingController();
 
   @override
   Size get preferredSize {

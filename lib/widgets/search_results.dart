@@ -42,7 +42,7 @@ void showSearchResultsBottomSheet(BuildContext context, Widget results) {
       });
 }
 
-/**
+/*
  * Just copy of flutter's showModalBottomSheet that does not restrict height of bottomsheet.
  *  */
 class _ModalBottomSheetLayout extends SingleChildLayoutDelegate {

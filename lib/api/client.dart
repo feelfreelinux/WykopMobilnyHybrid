@@ -17,7 +17,7 @@ import 'package:crypto/crypto.dart' as crypto;
 import 'package:http/http.dart' as http;
 import 'dart:io';
 
-/**
+/*
  * Handles request signing, retrying, deserializing, saving auth tokens,
  * logging in and all sort of things 
  */

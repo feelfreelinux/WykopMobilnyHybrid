@@ -2,7 +2,6 @@ import 'package:owmflutter/store/store.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:owmflutter/api/api.dart';
-import 'package:owmflutter/keys.dart';
 
 class SaveAuthCredentialsAction {
   final String login;

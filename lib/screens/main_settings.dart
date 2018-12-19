@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/widgets/widgets.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:owmflutter/keys.dart';
-import 'package:redux/redux.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/store/store.dart';

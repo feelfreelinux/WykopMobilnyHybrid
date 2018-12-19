@@ -1,10 +1,7 @@
 import 'package:owmflutter/store/store.dart';
-import 'package:owmflutter/api/api.dart';
 import 'package:redux_thunk/redux_thunk.dart';
-import 'package:owmflutter/store/store.dart';
 import 'package:redux/redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:async';
 
 class SetThemeAction {
   OWMTheme theme;

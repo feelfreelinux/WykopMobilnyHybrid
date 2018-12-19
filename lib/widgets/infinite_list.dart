@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-/**
+/*
  * Works around flutter#20495
  */
 class NotSuddenJumpPhysics extends ClampingScrollPhysics {

@@ -67,7 +67,6 @@ class _Shiny extends SingleChildRenderObjectWidget {
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    // TODO: implement createRenderObject
     return _RenderShiny(
         gradientCreator: gradientCreator,
         screenSize: screenSize,

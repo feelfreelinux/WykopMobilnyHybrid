@@ -2,7 +2,6 @@ import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/models/models.dart';
-import 'package:built_collection/built_collection.dart';
 
 part 'notification.g.dart';
 

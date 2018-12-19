@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 
 import 'package:html/parser.dart' as html show parse;
@@ -9,12 +8,9 @@ import 'package:owmflutter/widgets/tag.dart';
 import 'package:owmflutter/widgets/user_widget.dart';
 import 'package:owmflutter/navigator/navigator.dart';
 
-import 'package:url_launcher/url_launcher.dart';
-
 import 'dart:ui';
-import 'dart:math';
 
-/**
+/*
  * HtmlWidget 
  * 
  * Specialized html parser that utilizes both widgets and RichText for fancy views support.
@@ -45,7 +41,7 @@ class _HtmlParser {
   final TextTheme textTheme;
 
   _HtmlParser(this.context, {this.nested: false, this.appContext: const {}})
-      : textTheme = Theme.of(context).textTheme {}
+      : textTheme = Theme.of(context).textTheme;
 
   List<Widget> _widgets = [];
   List<TextSpan> _currentTextSpans = [];
@@ -207,40 +203,4 @@ class _HtmlParser {
 
     _currentTextSpans.clear();
   }
-
-  void _appendToCurrentTextSpans(dynamic stringOrTextSpan) {
-    switch (stringOrTextSpan.runtimeType) {
-      case String:
-        // NOTE if the widget to be added, and the current last widget, are both Text, then we should append the text instead of widgets.
-        if (_currentTextSpans.length > 0 &&
-            _currentTextSpans.last.runtimeType == Text) {
-          final String originalText = _currentTextSpans.last.text;
-          final String mergedText = originalText + stringOrTextSpan;
-          _currentTextSpans[_currentTextSpans.length - 1] =
-              new TextSpan(text: mergedText);
-        } else {
-          _currentTextSpans.add(new TextSpan(text: stringOrTextSpan));
-        }
-        break;
-      case TextSpan:
-        _currentTextSpans.add(stringOrTextSpan);
-        break;
-    }
-  }
-}
-
-TextSpan _textLink({BuildContext context, String text, String href}) {
-  final linkStyle =
-      Theme.of(context).textTheme.body1.copyWith(color: Colors.blue);
-
-  TextSpan _textSpanForExternalLink() {
-    final recognizer = new TapGestureRecognizer()
-      ..onTap = () {
-        launch(href);
-      };
-
-    return new TextSpan(text: text, style: linkStyle, recognizer: recognizer);
-  }
-
-  return _textSpanForExternalLink();
 }

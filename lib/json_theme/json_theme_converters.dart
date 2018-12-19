@@ -28,7 +28,7 @@ class JsonThemeConverters {
             int.parse("ff" + jsonColor.substring(1).toLowerCase(), radix: 16));
       } else if (colorFunctionRegExp
           .hasMatch(jsonColor.replaceAll(" ", "").toLowerCase())) {
-        var preprocessedFunc = jsonColor.replaceAll(" ", "").toLowerCase();
+        // var preprocessedFunc = jsonColor.replaceAll(" ", "").toLowerCase();
         //todo: finish
       } else if (jsonColor == "transparent") {
         return new Color.fromARGB(0, 0, 0, 0);
@@ -40,5 +40,6 @@ class JsonThemeConverters {
       throw new JsonThemeException(
           "A color in JsonTheme cannot be a ${jsonColor.runtimeType.toString()}");
     }
+    return null;
   }
 }

@@ -1,9 +1,7 @@
 import 'package:built_value/built_value.dart';
 import 'package:built_collection/built_collection.dart';
-
 import 'package:built_value/serializer.dart';
 import 'package:owmflutter/models/models.dart';
-import 'package:owmflutter/store/store.dart';
 
 part 'entities_state.g.dart';
 
