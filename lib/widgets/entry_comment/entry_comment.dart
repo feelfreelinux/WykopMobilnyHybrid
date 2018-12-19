@@ -5,6 +5,7 @@ import 'package:owmflutter/widgets/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/keys.dart';
+import 'package:owmflutter/owm_glyphs.dart';
 
 class EntryCommentWidget extends StatelessWidget {
   final int commentId;
@@ -16,26 +17,56 @@ class EntryCommentWidget extends StatelessWidget {
         converter: (store) =>
             store.state.entitiesState.entryComments[commentId],
         builder: (context, comment) {
-          return Material(
-              key: Key(commentId.toString()),
-              color: Theme.of(context).cardColor,
-              child: InkWell(
-                  onDoubleTap: () {
-                    // Quote action
-                    OwmKeys.inputBarKey.currentState
-                        .quoteText(comment.author, comment.body);
-                  },
-                  onTap: () {
-                    // Reply action
-                    OwmKeys.inputBarKey.currentState
-                        .replyToUser(comment.author);
-                  },
-                  onLongPress: () {
-                    // Show delete /add actions @TODO
-                  },
-                  child: Column(
-                      children: _buildEntryCommentBody(comment, context))));
+          return StoreConnector<AppState, AuthState>(
+            converter: (store) => store.state.authState,
+            builder: (context, authState) => Material(
+                key: Key(commentId.toString()),
+                color: Theme.of(context).cardColor,
+                child: InkWell(
+                    onDoubleTap: () {
+                      // Quote action
+                      OwmKeys.inputBarKey.currentState
+                          .quoteText(comment.author, comment.body);
+                    },
+                    onTap: () {
+                      // Reply action
+                      OwmKeys.inputBarKey.currentState
+                          .replyToUser(comment.author);
+                    },
+                    onLongPress: () {
+                      _showActionsDialog(context, comment, authState);
+                    },
+                    child: Column(
+                        children: _buildEntryCommentBody(comment, context)))),
+          );
         });
+  }
+
+  void _showActionsDialog(
+      BuildContext context, EntryComment comment, AuthState authState) {
+    var actions = [
+      ActionsDialogItem(
+          icon: OwmGlyphs.ic_dig_list,
+          onTap: () {},
+          title: "Lista plusujących"),
+      ActionsDialogItem(
+          icon: OwmGlyphs.ic_copy_content_light,
+          onTap: () {},
+          title: "Kopiuj treść")
+    ];
+
+    if (comment.author.login != authState.login) {
+      actions.add(ActionsDialogItem(
+          icon: OwmGlyphs.ic_report, onTap: () {}, title: "Zgłoś"));
+    } else {
+      actions
+        ..add(ActionsDialogItem(
+            icon: OwmGlyphs.ic_pen, onTap: () {}, title: "Edytuj komentarz"))
+        ..add(ActionsDialogItem(
+            icon: OwmGlyphs.ic_delete, onTap: () {}, title: "Usuń"));
+    }
+
+    ActionsDialog.showActionsDialog(context, actions);
   }
 
   List<Widget> _buildEntryCommentBody(

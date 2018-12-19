@@ -18,12 +18,13 @@ class BodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: padding,
-        child: HtmlWidget(
-            html: body != null
-                ? body.length > 300 && ellipsize
-                    ? body.substring(0, 200) + '...'
-                    : body
-                : ''));
+      padding: padding,
+      child: HtmlWidget(
+          html: body != null
+              ? body.length > 300 && ellipsize
+                  ? body.substring(0, 200) + '...'
+                  : body
+              : ''),
+    );
   }
 }

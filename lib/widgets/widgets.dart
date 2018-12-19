@@ -12,6 +12,7 @@ export 'link_comment/children_link_comment.dart';
 export 'link_comment/top_link_comment.dart';
 export 'notification/notification.dart';
 export 'notification/notifications_list.dart';
+export 'actions_dialog/actions_dialog.dart';
 export 'appbar_tabs.dart';
 export 'appbar_user.dart';
 export 'avatar.dart';
