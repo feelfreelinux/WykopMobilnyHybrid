@@ -32,7 +32,7 @@ class HtmlWidget extends StatelessWidget {
         .replaceAll('<cite> ', '<cite>')
         .replaceAll("@<a href=", "<a href=")
         .replaceAll('<br /> ', '<br/>')
-        .replaceAll('&quot;', ''));
+        .replaceAll('&quot;', '"'));
   }
 }
 
@@ -45,7 +45,7 @@ class _HtmlParser {
   final TextTheme textTheme;
 
   _HtmlParser(this.context, {this.nested: false, this.appContext: const {}})
-      : textTheme = Theme.of(context).textTheme {}
+      : textTheme = Theme.of(context).textTheme;
 
   List<Widget> _widgets = [];
   List<TextSpan> _currentTextSpans = [];
@@ -75,7 +75,7 @@ class _HtmlParser {
   }
 
   void _tokenizeBody(String body,
-      {style = const TextStyle(color: Colors.black)}) {
+      {style = const TextStyle()}) {
     final trimmedText = body.replaceAll('\n', '');
 
     _tryCloseCurrentTextSpan();
