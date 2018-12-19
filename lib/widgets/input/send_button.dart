@@ -30,7 +30,7 @@ class SendButtonWidget extends StatelessWidget {
               : Icon(
                   Icons.send,
                   size: 26.0,
-                  color: isEmpty ? Colors.grey : Color(0xff3c84c1),
+                  color: isEmpty ? Colors.grey : Theme.of(context).accentColor,
                 ),
         ),
       ),
