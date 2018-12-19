@@ -26,11 +26,12 @@ class _MainScreenState extends State<MainScreen> {
       body: _children[_currentIndex],
       floatingActionButton: FloatingActionButton(
         backgroundColor: Theme.of(context).primaryColor,
-        child: Icon(Icons.create, color: Theme.of(context).accentColor),
-        tooltip: "Dodaj nowy",
+        child: Icon(
+          Icons.create,
+          color: Theme.of(context).accentColor,
+        ),
         onPressed: () {},
       ),
-// what should we dooo      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
         color: Theme.of(context).primaryColor,
@@ -41,26 +42,53 @@ class _MainScreenState extends State<MainScreen> {
             _iconButton(Icons.home, 0, "Strona główna"),
             _iconButton(Icons.add_box, 1, "Mikroblog"),
             _iconButton(Icons.loyalty, 2, "Mój Wykop"),
-            _iconButton(Icons.mail, 3, "Powiadomienia"),
+            _iconButton(Icons.mail, 3, "Powiadomienia", badge: 0),
           ],
         ),
       ),
     );
   }
 
-  Widget _iconButton(IconData icon, num index, String tooltip) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: IconButton(
-        icon: Icon(icon),
-        color: _currentIndex == index
-            ? Theme.of(context).accentColor
-            : Theme.of(context).textTheme.caption.color,
-        onPressed: () => this.setState(() {
-              this._currentIndex = index;
-            }),
-        tooltip: tooltip,
+  Widget _iconButton(IconData icon, num index, String tooltip, {num badge = 0}) {
+    return IconButton(
+      icon: Stack(
+        children: <Widget>[
+          Icon(
+            icon,
+            size: 26.0,
+          ),
+          Positioned(
+            top: 0,
+            right: 0,
+            child: badge != 0
+                ? Container(
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      vertical: 1.0,
+                      horizontal: 3.0,
+                    ),
+                    child: Text(
+                      badge.toString(),
+                      style: TextStyle(
+                        fontSize: 8.0,
+                        color: Colors.white,
+                      ),
+                    ),
+                  )
+                : Container(),
+          ),
+        ],
       ),
+      color: _currentIndex == index
+          ? Theme.of(context).accentColor
+          : Theme.of(context).textTheme.caption.color,
+      onPressed: () => this.setState(() {
+            this._currentIndex = index;
+          }),
+      tooltip: tooltip,
     );
   }
 }
