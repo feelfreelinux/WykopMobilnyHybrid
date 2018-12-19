@@ -15,13 +15,19 @@ class OwmApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreProvider<AppState>(
         store: store,
-        child: MaterialApp(
-          title: 'Wykop Mobilny',
-          navigatorKey: OwmKeys.navKey,
-          theme: Themes.lightTheme(),
-          routes: {
-            '/': (context) => MainScreen(),
-          },
+        child: StoreConnector<AppState, OWMTheme>(
+          onInit: (store) => store.dispatch(ensureTheme()),
+          converter: (store) => store.state.themeState.currentTheme,
+          builder: (context, theme) => MaterialApp(
+                title: 'Wykop Mobilny',
+                navigatorKey: OwmKeys.navKey,
+                theme: theme == OWMTheme.LIGHT_THEME
+                    ? Themes.lightTheme()
+                    : Themes.darkTheme(),
+                routes: {
+                  '/': (context) => MainScreen(),
+                },
+              ),
         ));
   }
 }

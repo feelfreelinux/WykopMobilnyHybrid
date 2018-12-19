@@ -51,3 +51,7 @@ export 'link/link_state.dart';
 export 'auth/reducer.dart';
 export 'auth/actions.dart';
 export 'auth/auth_state.dart';
+
+export 'theme/theme_state.dart';
+export 'theme/reducer.dart';
+export 'theme/actions.dart';

@@ -8,6 +8,7 @@ part 'app_state.g.dart';
 
 abstract class AppState implements Built<AppState, AppStateBuilder> {
   AuthState get authState;
+  ThemeState get themeState;
   EntitiesState get entitiesState;
 
   SearchState get searchState;
@@ -25,6 +26,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
         authState: AuthState(),
         linksState: LinksState(),
         searchState: SearchState(),
+        themeState: ThemeState(),
         mikroblogState: MikroblogState(),
         myWykopState: MyWykopState(),
         tagsState: TagsState(),
