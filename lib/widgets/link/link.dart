@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/widgets/widgets.dart';
@@ -20,15 +19,20 @@ class LinkWidget extends StatelessWidget {
     return Padding(
       key: Key(linkId.toString()),
       padding: EdgeInsets.only(
-        bottom: 8.0,
+        bottom: 3.0,
       ),
       child: GestureDetector(
         onTap: () {
           Navigator.push(
-              context, Utils.getPageTransition(LinkScreen(linkId: linkId)));
+            context,
+            Utils.getPageTransition(
+              LinkScreen(
+                linkId: linkId,
+              ),
+            ),
+          );
         },
         child: Material(
-          elevation: 0.3,
           color: Theme.of(context).cardColor,
           child: StoreConnector<AppState, Link>(
             converter: (store) => store.state.entitiesState.links[linkId],
@@ -69,10 +73,7 @@ class LinkWidget extends StatelessWidget {
                     ],
                   ),
                   _drawDescription(link),
-                  LinkFooterWidget(
-                    link: link,
-                    linkId: linkId,
-                  ),
+                  LinkFooterWidget(link),
                 ],
               );
             },

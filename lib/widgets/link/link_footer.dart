@@ -6,8 +6,7 @@ import 'package:owmflutter/utils/utils.dart';
 
 class LinkFooterWidget extends StatelessWidget {
   final Link link;
-  final int linkId;
-  LinkFooterWidget({this.link, this.linkId});
+  LinkFooterWidget(this.link);
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +23,13 @@ class LinkFooterWidget extends StatelessWidget {
           CommentsButton(
             count: link.commentsCount,
             onClicked: () {
-              Navigator.push(
-                  context, Utils.getPageTransition(LinkScreen(linkId: linkId)));
+              Navigator.of(context).push(
+                Utils.getPageTransition(
+                  LinkScreen(
+                    linkId: link.id,
+                  ),
+                ),
+              );
             },
           ),
           ShareButton(onClicked: () {}),
