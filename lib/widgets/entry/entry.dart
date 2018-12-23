@@ -7,9 +7,11 @@ import 'package:owmflutter/store/store.dart';
 class EntryWidget extends StatelessWidget {
   final int entryId;
   final bool ellipsize;
+  final bool isClickable;
   EntryWidget({
     this.entryId,
     this.ellipsize,
+    this.isClickable = true,
   });
 
   @override
@@ -39,7 +41,7 @@ class EntryWidget extends StatelessWidget {
                 ),
                 _drawBody(entry),
                 _drawEmbed(entry),
-                EntryFooterWidget(entry),
+                EntryFooterWidget(entry, this.isClickable),
               ],
             );
           },

@@ -6,7 +6,8 @@ import 'package:owmflutter/utils/utils.dart';
 
 class LinkFooterWidget extends StatelessWidget {
   final Link link;
-  LinkFooterWidget(this.link);
+  final bool isClickable;
+  LinkFooterWidget(this.link, this.isClickable);
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +24,15 @@ class LinkFooterWidget extends StatelessWidget {
           CommentsButton(
             count: link.commentsCount,
             onClicked: () {
-              Navigator.of(context).push(
-                Utils.getPageTransition(
-                  LinkScreen(
-                    linkId: link.id,
+              if (isClickable) {
+                Navigator.of(context).push(
+                  Utils.getPageTransition(
+                    LinkScreen(
+                      linkId: link.id,
+                    ),
                   ),
-                ),
-              );
+                );
+              }
             },
           ),
           ShareButton(onClicked: () {}),

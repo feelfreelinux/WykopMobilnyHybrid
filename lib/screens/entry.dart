@@ -70,7 +70,7 @@ class EntryScreen extends StatelessWidget {
                               itemBuilder: (context, index) {
                                 if (index == 0) {
                                   return EntryWidget(
-                                      ellipsize: false, entryId: entryId);
+                                      ellipsize: false, entryId: entryId, isClickable: false);
                                 } else {
                                   return EntryCommentWidget(
                                       commentId: ids[index]);

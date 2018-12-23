@@ -66,7 +66,7 @@ class LinkScreen extends StatelessWidget {
                                   itemCount: ids.length,
                                   itemBuilder: (context, index) {
                                     if (index == 0) {
-                                      return LinkWidget(linkId: linkId);
+                                      return LinkWidget(linkId: linkId, isClickable: false);
                                     } else {
                                       return TopLinkCommentWidget(
                                           commentId: ids[index]);

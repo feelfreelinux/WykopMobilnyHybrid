@@ -12,7 +12,8 @@ import 'package:owmflutter/screens/screens.dart';
 
 class LinkWidget extends StatelessWidget {
   final int linkId;
-  LinkWidget({this.linkId});
+  final bool isClickable;
+  LinkWidget({this.linkId, this.isClickable = true});
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +24,16 @@ class LinkWidget extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () {
-          Navigator.push(
-            context,
-            Utils.getPageTransition(
-              LinkScreen(
-                linkId: linkId,
+          if (this.isClickable) {
+            Navigator.push(
+              context,
+              Utils.getPageTransition(
+                LinkScreen(
+                  linkId: linkId,
+                ),
               ),
-            ),
-          );
+            );
+          }
         },
         child: Material(
           color: Theme.of(context).cardColor,
@@ -73,7 +76,7 @@ class LinkWidget extends StatelessWidget {
                     ],
                   ),
                   _drawDescription(link),
-                  LinkFooterWidget(link),
+                  LinkFooterWidget(link, this.isClickable),
                 ],
               );
             },

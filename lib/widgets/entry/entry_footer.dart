@@ -6,7 +6,8 @@ import 'package:owmflutter/screens/screens.dart';
 
 class EntryFooterWidget extends StatelessWidget {
   final Entry entry;
-  EntryFooterWidget(this.entry);
+  final bool isClickable;
+  EntryFooterWidget(this.entry, this.isClickable);
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +24,15 @@ class EntryFooterWidget extends StatelessWidget {
           CommentsButton(
             count: entry.commentsCount,
             onClicked: () {
-              Navigator.of(context).push(
-                Utils.getPageTransition(
-                  EntryScreen(
-                    entryId: entry.id,
+              if (this.isClickable) {
+                Navigator.of(context).push(
+                  Utils.getPageTransition(
+                    EntryScreen(
+                      entryId: entry.id,
+                    ),
                   ),
-                ),
-              );
+                );
+              }
             },
           ),
           ShareButton(onClicked: () {}),
