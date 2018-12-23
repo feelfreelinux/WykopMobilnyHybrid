@@ -79,6 +79,7 @@ class MainSettingsScreen extends StatelessWidget {
             authState.loggedIn
                 ? Image(
                     height: 140.0,
+                    width: MediaQuery.of(context).size.width,
                     fit: BoxFit.cover,
                     image: AdvancedNetworkImage(
                       authState.backgroundUrl,
