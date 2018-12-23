@@ -211,6 +211,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.0"
+  flutter_html:
+    dependency: "direct main"
+    description:
+      name: flutter_html
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.8.2"
+  flutter_inappbrowser:
+    dependency: "direct main"
+    description:
+      name: flutter_inappbrowser
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.51"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -727,4 +741,4 @@ packages:
     version: "2.1.15"
 sdks:
   dart: ">=2.1.0-dev.5.0 <3.0.0"
-  flutter: ">=0.1.4 <2.0.0"
+  flutter: ">=0.10.1 <2.0.0"
