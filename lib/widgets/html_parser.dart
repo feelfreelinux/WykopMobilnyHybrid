@@ -5,6 +5,8 @@ import 'package:html/dom.dart' as html;
 import 'package:owmflutter/widgets/spoiler.dart';
 import 'package:owmflutter/navigator/navigator.dart';
 import 'package:flutter/gestures.dart';
+import 'package:owmflutter/utils/utils.dart';
+import 'package:owmflutter/screens/screens.dart';
 
 import 'dart:ui';
 
@@ -69,7 +71,10 @@ class _HtmlParser {
   void _tokenizeBody(String body, {style}) {
     final trimmedText = body.replaceAll('\n', '');
 
-    _currentTextSpans.add(TextSpan(text: trimmedText, style: style ?? TextStyle(color: Theme.of(context).textTheme.headline.color)));
+    _currentTextSpans.add(TextSpan(
+        text: trimmedText,
+        style: style ??
+            TextStyle(color: Theme.of(context).textTheme.headline.color)));
   }
 
   Widget parseFromElement(html.Element element) {
@@ -102,9 +107,14 @@ class _HtmlParser {
           _widgets.add(new SpoilerWidget());
           return;
         } else if (element.attributes['href'].startsWith('#')) {
-          _tokenizeBody(element.text,
+          _currentTextSpans.add(ClickableTextSpan(
+              text: element.text,
+              onTap: () {
+                Navigator.push(context,
+                    Utils.getPageTransition(TagScreen(tag: element.text)));
+              },
               style: TextStyle(
-                  color: Colors.blueAccent, fontWeight: FontWeight.bold));
+                  color: Colors.blueAccent, fontWeight: FontWeight.bold)));
           return;
         } else if (element.attributes['href'].startsWith('@')) {
           _tokenizeBody(element.text,
@@ -115,17 +125,11 @@ class _HtmlParser {
             (element.nodes.length == 1) &&
             (element.firstChild.nodeType == html.Node.TEXT_NODE)) {
           var url = element.attributes['href'];
-          _currentTextSpans.add(TextSpan(
+          _currentTextSpans.add(ClickableTextSpan(
               text: element.text,
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  WykopNavigator.handleUrl(context, url);
-                  /*
-                  Clipboard.setData(ClipboardData(text: url));
-              Scaffold.of(context).showSnackBar(new SnackBar(
-                content: new Text("Skopiowano url do schowka"),
-              ));*/
-                },
+              onTap: () {
+                WykopNavigator.handleUrl(context, url);
+              },
               style: TextStyle(
                   color: Colors.blueAccent, fontWeight: FontWeight.bold)));
           return;
@@ -178,11 +182,28 @@ class _HtmlParser {
             overflow: TextOverflow.clip,
             softWrap: true,
             text: new TextSpan(
-                style: TextStyle(color: Theme.of(context).textTheme.headline.color),
+                style: TextStyle(
+                    color: Theme.of(context).textTheme.headline.color),
                 children: new List.from(_currentTextSpans))),
       ),
     );
 
     _currentTextSpans.clear();
   }
+}
+
+class ClickableTextSpan extends TextSpan {
+  ClickableTextSpan(
+      {TextStyle style,
+      String text,
+      VoidCallback onTap,
+      List<TextSpan> children})
+      : super(
+            style: style,
+            text: text,
+            children: children ?? <TextSpan>[],
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                onTap();
+              });
 }
