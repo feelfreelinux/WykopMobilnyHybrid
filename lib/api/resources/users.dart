@@ -18,6 +18,10 @@ class UsersApi extends ApiResource {
     await saveAuthCreds(credentials);
     client.credentials = credentials;
 
-    return UserProfile(avatarUrl: result["profile"]["avatar"], login: login);
+    return UserProfile(
+        avatarUrl: result["profile"]["avatar"],
+        login: login,
+        color: result["profile"]["color"],
+        backgroundUrl: result["profile"]["background"]);
   }
 }

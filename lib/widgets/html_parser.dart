@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:html/parser.dart' as html show parse;
 import 'package:html/dom.dart' as html;
 import 'package:owmflutter/widgets/spoiler.dart';
-import 'package:owmflutter/widgets/tag.dart';
-import 'package:owmflutter/widgets/user_widget.dart';
 import 'package:owmflutter/navigator/navigator.dart';
 import 'package:flutter/gestures.dart';
 

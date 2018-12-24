@@ -58,6 +58,9 @@ class WykopApiClient {
     await this._client.syncCredsFromStorage();
   }
 
+  Future<void> logoutUser() async {
+    await this._client.logoutUser();
+  }
   WykopApiClient() {
     _client.initialize();
     this.entries = EntriesApi(_client);

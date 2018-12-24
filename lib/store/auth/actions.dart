@@ -11,12 +11,23 @@ class SaveAuthCredentialsAction {
   SaveAuthCredentialsAction({this.login, this.avatarUrl, this.color, this.backgroundUrl});
 }
 
+class LogoutUserAction {
+  LogoutUserAction();
+}
+
 ThunkAction<AppState> loginUser(String token, String login) {
   return (Store<AppState> store) async {
     var creds = await api.users.login(login, token);
 
     store.dispatch(SaveAuthCredentialsAction(
         login: creds.login, avatarUrl: creds.avatarUrl, color: creds.color, backgroundUrl: creds.backgroundUrl));
+  };
+}
+
+ThunkAction<AppState> logoutUser() {
+  return (Store<AppState> store) async {
+    await api.logoutUser();
+    store.dispatch(LogoutUserAction());
   };
 }
 

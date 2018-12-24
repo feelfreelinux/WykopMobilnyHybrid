@@ -82,7 +82,11 @@ class ApiClient extends http.BaseClient {
       this.checkedCreds = true;
     }
   }
-
+  Future<void> logoutUser() async {
+    await saveAuthCreds(AuthCredentials());
+    this.credentials = await loadAuthCreds();
+    this.checkedCreds = true;
+  }
   void initialize() {
     loadSecrets().then((keys) => this._secrets = keys);
   }
@@ -185,12 +189,12 @@ Future<ApiSecrets> loadSecrets() async {
 
 Future<void> saveAuthCreds(AuthCredentials credentials) async {
   var prefs = await SharedPreferences.getInstance();
-  await prefs.setString('userkey', credentials.refreshToken);
-  await prefs.setString('accountkey', credentials.token);
-  await prefs.setString('login', credentials.login);
-  await prefs.setString('avatarUrl', credentials.avatarUrl);
-  await prefs.setString('backgroundUrl', credentials.backgroundUrl);
-  await prefs.setInt('color', credentials.color);
+  await prefs.setString('userkey', credentials.refreshToken ?? "");
+  await prefs.setString('accountkey', credentials.token ?? "");
+  await prefs.setString('login', credentials.login ?? "");
+  await prefs.setString('avatarUrl', credentials.avatarUrl ?? "");
+  await prefs.setString('backgroundUrl', credentials.backgroundUrl ?? "");
+  await prefs.setInt('color', credentials.color ?? 0);
 
   return;
 }

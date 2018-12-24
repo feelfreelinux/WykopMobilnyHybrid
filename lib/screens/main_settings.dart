@@ -267,46 +267,46 @@ class MainSettingsScreen extends StatelessWidget {
         return StoreConnector<AppState, LoginCallback>(
           converter: (store) =>
               (login, token) => store.dispatch(loginUser(token, login)),
-          builder: (context, callback) {
-            return InkResponse(
-              onTap: () async {
-                if (authState.loggedIn) {
-                  Scaffold.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text("TODO Logout"),
-                    ),
-                  );
-                } else {
-                  var result = await platform.invokeMethod(
-                      'openLoginScreen', Map.from({'appKey': api.getAppKey()}));
-                  callback(result['login'], result['token']);
-                }
-              },
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: 8.0,
-                  horizontal: 12.0,
-                ),
-                child: Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(
-                        right: 8.0,
+          builder: (context, loginCallback) {
+            return StoreConnector<AppState, VoidCallback>(
+              converter: (store) => () => store.dispatch(logoutUser()),
+              builder: (context, logoutCallback) => InkResponse(
+                    onTap: () async {
+                      if (authState.loggedIn) {
+                        logoutCallback();
+                      } else {
+                        var result = await platform.invokeMethod(
+                            'openLoginScreen',
+                            Map.from({'appKey': api.getAppKey()}));
+                        loginCallback(result['login'], result['token']);
+                      }
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 8.0,
+                        horizontal: 12.0,
                       ),
-                      child: Icon(
-                        Icons.exit_to_app,
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(
+                              right: 8.0,
+                            ),
+                            child: Icon(
+                              Icons.exit_to_app,
+                            ),
+                          ),
+                          Text(
+                            authState.loggedIn ? "Wyloguj" : "Zaloguj",
+                            style: TextStyle(
+                              fontSize: 13.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    Text(
-                      authState.loggedIn ? "Wyloguj" : "Zaloguj",
-                      style: TextStyle(
-                        fontSize: 13.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                  ),
             );
           },
         );
