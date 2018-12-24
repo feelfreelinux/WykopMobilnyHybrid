@@ -116,7 +116,7 @@ class LinkWidget extends StatelessWidget {
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor.withOpacity(0.8),
             border: Border.all(
-              color: Color(0x337f7f7f),
+              color: Color(0x337f7f7f), 
               width: 0.5,
             ),
             borderRadius: BorderRadius.circular(100),

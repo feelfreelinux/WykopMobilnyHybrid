@@ -7,6 +7,7 @@ import 'package:owmflutter/widgets/spoiler.dart';
 import 'package:owmflutter/widgets/tag.dart';
 import 'package:owmflutter/widgets/user_widget.dart';
 import 'package:owmflutter/navigator/navigator.dart';
+import 'package:flutter/gestures.dart';
 
 import 'dart:ui';
 
@@ -24,9 +25,7 @@ class HtmlWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new _HtmlParser(context).parseFromStr(html
-        .replaceAll("#<a href=", "<a href=")
         .replaceAll('<cite> ', '<cite>')
-        .replaceAll("@<a href=", "<a href=")
         .replaceAll('<br /> ', '<br/>')
         .replaceAll('&quot;', '"'));
   }
@@ -70,24 +69,17 @@ class _HtmlParser {
     }
   }
 
-  void _tokenizeBody(String body,
-      {style = const TextStyle()}) {
+  void _tokenizeBody(String body, {style}) {
     final trimmedText = body.replaceAll('\n', '');
 
-    _tryCloseCurrentTextSpan();
-
-    var words = trimmedText.split(' ');
-    trimmedText.split(' ').asMap().forEach((index, value) {
-      _widgets
-          .add(Text(index == words.length ? value : value + ' ', style: style));
-    });
+    _currentTextSpans.add(TextSpan(text: trimmedText, style: style ?? TextStyle(color: Theme.of(context).textTheme.headline.color)));
   }
 
   Widget parseFromElement(html.Element element) {
     _parseNode(element);
     _tryCloseCurrentTextSpan();
 
-    return new Wrap(children: _widgets);
+    return new Column(children: _widgets);
   }
 
   void _parseElement(html.Element element) {
@@ -98,20 +90,14 @@ class _HtmlParser {
             style: TextStyle(fontStyle: FontStyle.italic));
         break;
       case 'br':
-        _tryCloseCurrentTextSpan();
-        _widgets.add(Container(
-          width: MediaQuery.of(context).size.width,
-          height: 0,
-        ));
+        _currentTextSpans.add(TextSpan(text: '\n'));
         return;
       case 'strong':
         _tokenizeBody(element.text,
             style: TextStyle(fontWeight: FontWeight.bold));
-        // for (var subNode in element.nodes) { _parseNode(subNode); }
         return;
       case 'code':
         _tokenizeBody(element.text, style: TextStyle(fontFamily: 'Monospace'));
-        // for (var subNode in element.nodes) { _parseNode(subNode); }
         return;
       case 'a':
         if (element.attributes['href'].startsWith('spoiler:')) {
@@ -119,32 +105,32 @@ class _HtmlParser {
           _widgets.add(new SpoilerWidget());
           return;
         } else if (element.attributes['href'].startsWith('#')) {
-          _tryCloseCurrentTextSpan();
-          _widgets.add(new TagWidget(element.text));
+          _tokenizeBody(element.text,
+              style: TextStyle(
+                  color: Colors.blueAccent, fontWeight: FontWeight.bold));
           return;
         } else if (element.attributes['href'].startsWith('@')) {
-          _tryCloseCurrentTextSpan();
-          _widgets.add(new UserWidget(element.text));
+          _tokenizeBody(element.text,
+              style: TextStyle(
+                  color: Colors.blueAccent, fontWeight: FontWeight.bold));
           return;
         } else if (element.hasContent() &&
             (element.nodes.length == 1) &&
             (element.firstChild.nodeType == html.Node.TEXT_NODE)) {
           var url = element.attributes['href'];
-          _tryCloseCurrentTextSpan();
-          _widgets.add(GestureDetector(
-            onLongPress: () {
-              Clipboard.setData(ClipboardData(text: url));
+          _currentTextSpans.add(TextSpan(
+              text: element.text,
+              recognizer: TapGestureRecognizer()
+                ..onTap = () {
+                  WykopNavigator.handleUrl(context, url);
+                  /*
+                  Clipboard.setData(ClipboardData(text: url));
               Scaffold.of(context).showSnackBar(new SnackBar(
                 content: new Text("Skopiowano url do schowka"),
-              ));
-            },
-            onTap: () async {
-              WykopNavigator.handleUrl(context, url);
-            },
-            child:
-                Text(element.text, style: TextStyle(color: Colors.blueAccent)),
-          ));
-
+              ));*/
+                },
+              style: TextStyle(
+                  color: Colors.blueAccent, fontWeight: FontWeight.bold)));
           return;
         }
 
@@ -191,12 +177,11 @@ class _HtmlParser {
 
     _widgets.add(
       Container(
-        color: Colors.red,
         child: new RichText(
             overflow: TextOverflow.clip,
             softWrap: true,
             text: new TextSpan(
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: Theme.of(context).textTheme.headline.color),
                 children: new List.from(_currentTextSpans))),
       ),
     );
