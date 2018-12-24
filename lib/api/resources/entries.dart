@@ -32,6 +32,18 @@ class EntriesApi extends ApiResource {
         client.deserializeElement(EntryResponse.serializer, items));
   }
 
+  Future<Result> deleteEntry(int id) async {
+    var items = await client.request('entries', 'delete', api: [id.toString()]);
+    return normalizeEntryResponse(
+        client.deserializeElement(EntryResponse.serializer, items));
+  }
+
+  Future<Result> deleteEntryComment(int id) async {
+    var items = await client.request('entries', 'commentdelete', api: [id.toString()]);
+    return normalizeEntryCommentResponse(
+        client.deserializeElement(EntryCommentResponse.serializer, items));
+  }
+
   Future<Result> addEntryComment(Entry entry, InputData data) async {
     await client.request('entries', 'commentadd',
         api: [entry.id.toString()], post: {'body': data.body}, image: data.file);

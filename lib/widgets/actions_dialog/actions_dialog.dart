@@ -20,7 +20,10 @@ class ActionsDialog {
                       leading: new Icon(action.icon),
                       title:
                           action.title != null ? new Text(action.title) : null,
-                      onTap: action.onTap))
+                      onTap: () {
+                        action.onTap();
+                        Navigator.pop(context);
+                      }))
                   .toList());
         });
   }

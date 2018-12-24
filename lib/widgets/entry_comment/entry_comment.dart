@@ -6,6 +6,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/keys.dart';
 import 'package:owmflutter/owm_glyphs.dart';
+import 'dart:async';
 
 class EntryCommentWidget extends StatelessWidget {
   final int commentId;
@@ -20,30 +21,38 @@ class EntryCommentWidget extends StatelessWidget {
           return StoreConnector<AppState, AuthState>(
             converter: (store) => store.state.authState,
             builder: (context, authState) => Material(
-                key: Key(commentId.toString()),
-                color: Theme.of(context).cardColor,
-                child: InkWell(
-                    onDoubleTap: () {
-                      // Quote action
-                      OwmKeys.inputBarKey.currentState
-                          .quoteText(comment.author, comment.body);
-                    },
-                    onTap: () {
-                      // Reply action
-                      OwmKeys.inputBarKey.currentState
-                          .replyToUser(comment.author);
-                    },
-                    onLongPress: () {
-                      _showActionsDialog(context, comment, authState);
-                    },
-                    child: Column(
-                        children: _buildEntryCommentBody(comment, context)))),
+                  key: Key(commentId.toString()),
+                  color: Theme.of(context).cardColor,
+                  child: StoreConnector<AppState, VoidCallback>(
+                    converter: (store) => () => store
+                        .dispatch(deleteEntryComment(commentId, Completer())),
+                    builder: (context, deleteCommentCallback) => InkWell(
+                          onDoubleTap: () {
+                            // Quote action
+                            OwmKeys.inputBarKey.currentState
+                                .quoteText(comment.author, comment.body);
+                          },
+                          onTap: () {
+                            // Reply action
+                            OwmKeys.inputBarKey.currentState
+                                .replyToUser(comment.author);
+                          },
+                          onLongPress: () {
+                            _showActionsDialog(context, comment, authState,
+                                deleteCommentCallback);
+                          },
+                          child: Column(
+                            children: _buildEntryCommentBody(comment, context),
+                          ),
+                        ),
+                  ),
+                ),
           );
         });
   }
 
-  void _showActionsDialog(
-      BuildContext context, EntryComment comment, AuthState authState) {
+  void _showActionsDialog(BuildContext context, EntryComment comment,
+      AuthState authState, VoidCallback deleteCommentCallback) {
     var actions = [
       ActionsDialogItem(
           icon: OwmGlyphs.ic_dig_list,
@@ -63,7 +72,9 @@ class EntryCommentWidget extends StatelessWidget {
         ..add(ActionsDialogItem(
             icon: OwmGlyphs.ic_pen, onTap: () {}, title: "Edytuj komentarz"))
         ..add(ActionsDialogItem(
-            icon: OwmGlyphs.ic_delete, onTap: () {}, title: "Usuń"));
+            icon: OwmGlyphs.ic_delete,
+            onTap: deleteCommentCallback,
+            title: "Usuń"));
     }
 
     ActionsDialog.showActionsDialog(context, actions);

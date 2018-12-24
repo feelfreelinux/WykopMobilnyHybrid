@@ -121,6 +121,14 @@ Result normalizeEntryResponse(EntryResponse entry) {
       result: ids);
 }
 
+Result normalizeEntryCommentResponse(EntryCommentResponse entryComment) {
+  var mappedEntryComment = EntryComment.mapFromResponse(entryComment);
+  return Result(
+      state: EntitiesState()
+          .rebuild((b) => b.entryComments.putIfAbsent(entryComment.id, () => mappedEntryComment)),
+      result: [mappedEntryComment.id]);
+}
+
 Result normalizeEntry(Entry entry) {
   return Result(
       state: EntitiesState()

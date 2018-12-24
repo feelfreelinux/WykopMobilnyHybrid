@@ -26,6 +26,31 @@ ThunkAction<AppState> loadEntry(
   };
 }
 
+ThunkAction<AppState> deleteEntry(int entryId, Completer completer) {
+  return (Store<AppState> store) async {
+    try {
+      var result = await api.entries.deleteEntry(entryId);
+
+      store.dispatch(AddEntitiesAction(entities: result.state));
+      completer.complete();
+    } catch (e) {
+      completer.completeError(e);
+    }
+  };
+}
+
+ThunkAction<AppState> deleteEntryComment(int commentId, Completer completer) {
+  return (Store<AppState> store) async {
+    try {
+      var result = await api.entries.deleteEntryComment(commentId);
+      store.dispatch(AddEntitiesAction(entities: result.state));
+      completer.complete();
+    } catch (e) {
+      completer.completeError(e);
+    }
+  };
+}
+
 ThunkAction<AppState> voteEntry(int id) {
   return (Store<AppState> store) async {
     var entry = store.state.entitiesState.entries[id];
