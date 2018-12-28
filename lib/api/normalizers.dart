@@ -17,6 +17,12 @@ Map<int, Entry> entryResponseListToMap(BuiltList<EntryResponse> entries) {
       Map.fromIterable(mappedEntries, key: (v) => v.id, value: (v) => v));
 }
 
+Map<int, Author> authorResponseListToMap(BuiltList<AuthorResponse> authors) {
+  var mappedAuthors = authors.map((c) => Author.fromResponse(response: c));
+  return Map<int, Author>.from(
+      Map.fromIterable(mappedAuthors, key: (v) => v.id, value: (v) => v));
+}
+
 Result normalizeEntriesResponse(BuiltList<EntryResponse> entries) {
   var entriesMap = entryResponseListToMap(entries);
   var ids = entries.map((e) => e.id);

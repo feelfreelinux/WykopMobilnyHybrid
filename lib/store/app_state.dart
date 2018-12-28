@@ -10,6 +10,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   EntitiesState get entitiesState;
 
   SearchState get searchState;
+  SuggestionsState get suggestionsState;
 
   LinksState get linksState;
   MyWykopState get myWykopState;
@@ -25,6 +26,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
         linksState: LinksState(),
         searchState: SearchState(),
         themeState: ThemeState(),
+        suggestionsState: SuggestionsState(),
         mikroblogState: MikroblogState(),
         myWykopState: MyWykopState(),
         tagsState: TagsState(),

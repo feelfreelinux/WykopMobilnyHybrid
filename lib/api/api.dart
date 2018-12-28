@@ -17,10 +17,12 @@ export 'resources/mywykop.dart';
 export 'resources/tags.dart';
 export 'resources/notifications.dart';
 export 'resources/search.dart';
+export 'resources/suggest.dart';
 
 import 'dart:async';
 import 'package:owmflutter/api/client.dart';
 import 'package:owmflutter/api/api.dart';
+import 'package:owmflutter/models/models.dart';
 import 'dart:convert';
 import 'dart:async' show Future;
 import 'package:convert/convert.dart';
@@ -47,6 +49,7 @@ class WykopApiClient {
   MyWykopApi mywykop;
   TagsApi tags;
   NotificationsApi notifications;
+  SuggestApi suggest;
 
   AuthCredentials get credentials => _client.credentials;
 
@@ -67,6 +70,7 @@ class WykopApiClient {
     this.users = UsersApi(_client);
     this.links = LinksApi(_client);
     this.tags = TagsApi(_client);
+    this.suggest = SuggestApi(_client);
     this.search = SearchApi(_client);
     this.notifications = NotificationsApi(_client);
     this.mywykop = MyWykopApi(_client);

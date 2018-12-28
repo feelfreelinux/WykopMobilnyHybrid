@@ -12,6 +12,7 @@ abstract class EntitiesState
   BuiltMap<int, Link> get links;
   BuiltMap<int, LinkComment> get linkComments;
   BuiltMap<int, Notification> get notifications;
+  BuiltMap<int, Author> get authorSuggestions;
 
   factory EntitiesState() {
     return _$EntitiesState._(
@@ -19,6 +20,7 @@ abstract class EntitiesState
         linkComments: new BuiltMap<int, LinkComment>(),
         links: new BuiltMap<int, Link>(),
         notifications: new BuiltMap<int, Notification>(),
+        authorSuggestions: new BuiltMap<int, Author>(),
         entryComments: new BuiltMap<int, EntryComment>());
   }
 

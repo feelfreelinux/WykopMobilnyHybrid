@@ -40,6 +40,10 @@ export 'pagination/reducer.dart';
 export 'pagination/pagination_state.dart';
 export 'pagination/actions.dart';
 
+export 'suggestions/reducer.dart';
+export 'suggestions/suggestions_state.dart';
+export 'suggestions/actions.dart';
+
 export 'entry/reducer.dart';
 export 'entry/actions.dart';
 export 'entry/entry_state.dart';

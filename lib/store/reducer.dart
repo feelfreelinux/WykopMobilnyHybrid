@@ -13,6 +13,7 @@ AppState appReducer(AppState state, action) {
     ..notificationsState
         .replace(notificationsReducer(state.notificationsState, action))
     ..searchState.replace(searchReducer(state.searchState, action))
+    ..suggestionsState.replace(suggestionsReducer(state.suggestionsState, action))
     ..linkScreensState
         .replace(linkScreenReducer(state.linkScreensState, action))
     ..mikroblogState.replace(mikroblogReducer(state.mikroblogState, action)));

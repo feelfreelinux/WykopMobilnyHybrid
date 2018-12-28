@@ -9,6 +9,7 @@ EntitiesState _addToState(EntitiesState state, AddEntitiesAction action) {
     ..entries.addAll(action.entities.entries.asMap())
     ..links.addAll(action.entities.links.asMap())
     ..linkComments.addAll(action.entities.linkComments.asMap())
+    ..authorSuggestions.addAll(action.entities.authorSuggestions.asMap())
     ..notifications.addAll(action.entities.notifications.asMap())
     ..entryComments.addAll(action.entities.entryComments.asMap()));
 }
