@@ -8,6 +8,7 @@ part of 'serializers.dart';
 
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(AuthorResponse.serializer)
+      ..add(AuthorSuggestionResponse.serializer)
       ..add(EmbedResponse.serializer)
       ..add(EntryCommentResponse.serializer)
       ..add(EntryLinkResponse.serializer)

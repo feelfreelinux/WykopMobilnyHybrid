@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/models/models.dart';
+import 'package:owmflutter/store/store.dart';
+import 'package:redux/redux.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'dart:io';
 import 'dart:async';
 import 'emoticon_button.dart';
@@ -8,6 +11,8 @@ import 'media_button.dart';
 import 'send_button.dart';
 import 'selected_image.dart';
 import 'package:image_picker/image_picker.dart';
+
+typedef void SuggestCallback(String q);
 
 typedef Future InputBarCallback(InputData inputData);
 
@@ -99,6 +104,7 @@ class InputBarWidgetState extends State<InputBarWidget> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            _drawSuggestions(),
             _drawInputBar(),
             _drawButtons(),
           ],
@@ -195,31 +201,41 @@ class InputBarWidgetState extends State<InputBarWidget> {
                               child: Scrollbar(
                                 child: SingleChildScrollView(
                                   reverse: true,
-                                  child: TextField(
-                                    focusNode: focusNode,
-                                    cursorWidth: 1.5,
-                                    cursorRadius: Radius.circular(20.0),
-                                    style: DefaultTextStyle.of(context)
-                                        .style
-                                        .merge(
-                                          TextStyle(fontSize: 14.0),
+                                  child:
+                                      StoreConnector<AppState, SuggestCallback>(
+                                    converter: (store) => (q) => store.dispatch(
+                                        loadSuggestions(q, Completer())),
+                                    builder: (context, suggestCallback) =>
+                                        TextField(
+                                          focusNode: focusNode,
+                                          cursorWidth: 1.5,
+                                          cursorRadius: Radius.circular(20.0),
+                                          onChanged: (text) {
+                                            suggestCallback(extractSuggestions());
+                                          },
+                                          style: DefaultTextStyle.of(context)
+                                              .style
+                                              .merge(
+                                                TextStyle(fontSize: 14.0),
+                                              ),
+                                          maxLines: null,
+                                          controller: this.textController,
+                                          keyboardType: TextInputType.multiline,
+                                          onTap: () {
+                                            setState(() {
+                                              showMediaButton = false;
+                                              clickTextField = true;
+                                            });
+                                          },
+                                          decoration: InputDecoration(
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                              vertical: 8.0,
+                                            ),
+                                            border: InputBorder.none,
+                                            hintText: 'Treść komentarza',
+                                          ),
                                         ),
-                                    maxLines: null,
-                                    controller: this.textController,
-                                    keyboardType: TextInputType.multiline,
-                                    onTap: () {
-                                      setState(() {
-                                        showMediaButton = false;
-                                        clickTextField = true;
-                                      });
-                                    },
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(
-                                        vertical: 8.0,
-                                      ),
-                                      border: InputBorder.none,
-                                      hintText: 'Treść komentarza',
-                                    ),
                                   ),
                                 ),
                               ),
@@ -241,6 +257,17 @@ class InputBarWidgetState extends State<InputBarWidget> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _drawSuggestions() {
+    return StoreConnector<AppState, List<AuthorSuggestion>>(
+      converter: (store) => store.state.suggestionsState.authorSuggestions,
+      builder: (context, suggestions) {
+        return Column(
+          children: suggestions.map((s) => Text(s.login)).toList(),
+        );
+      },
     );
   }
 
@@ -333,5 +360,18 @@ class InputBarWidgetState extends State<InputBarWidget> {
         ),
       ),
     );
+  }
+
+  String extractSuggestions() {
+    // Get last word between cursor and space
+    var input =
+        textController.text.substring(0, textController.selection.start);
+    var splitText = input.split(' ');
+    var q = splitText[splitText.length - 1];
+
+    if (q.startsWith('#') || q.startsWith('@')) {
+      return q;
+    }
+    return null;
   }
 }

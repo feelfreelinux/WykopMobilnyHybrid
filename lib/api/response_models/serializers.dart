@@ -14,6 +14,7 @@ part 'serializers.g.dart';
   LinkResponse,
   LinkCommentResponse,
   NotificationResponse,
+  AuthorSuggestionResponse,
   EntryLinkResponse
 ])
 final Serializers serializers =
