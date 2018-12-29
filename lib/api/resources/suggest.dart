@@ -7,13 +7,17 @@ class SuggestApi extends ApiResource {
 
   Future<List<AuthorSuggestion>> suggestUsers(String q) async {
     var items = await client.request('suggest', 'users', api: [q]);
-    return client.deserializeList(AuthorSuggestionResponse.serializer, items).map((a) => AuthorSuggestion.fromResponse(response: a)).toList();
+    return client
+        .deserializeList(AuthorSuggestionResponse.serializer, items)
+        .map((a) => AuthorSuggestion.fromResponse(response: a))
+        .toList();
   }
 
-  Future<Result> searchLinks(int page, String q) async {
-    var items = await client.request('search', 'links',
-        named: {'page': page.toString()}, post: {'q': q});
-    return normalizeLinksResponse(
-        BuiltList.from(client.deserializeList(LinkResponse.serializer, items)));
+  Future<List<TagSuggestion>> suggestTags(String q) async {
+    var items = await client.request('suggest', 'tags', api: [q]);
+    return client
+        .deserializeList(TagSuggestionResponse.serializer, items)
+        .map((a) => TagSuggestion.fromResponse(response: a))
+        .toList();
   }
 }

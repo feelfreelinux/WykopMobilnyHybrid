@@ -15,7 +15,8 @@ part 'serializers.g.dart';
   LinkCommentResponse,
   NotificationResponse,
   AuthorSuggestionResponse,
-  EntryLinkResponse
+  EntryLinkResponse,
+  TagSuggestionResponse,
 ])
 final Serializers serializers =
     (_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();

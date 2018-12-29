@@ -211,7 +211,8 @@ class InputBarWidgetState extends State<InputBarWidget> {
                                           cursorWidth: 1.5,
                                           cursorRadius: Radius.circular(20.0),
                                           onChanged: (text) {
-                                            suggestCallback(extractSuggestions());
+                                            suggestCallback(
+                                                extractSuggestions());
                                           },
                                           style: DefaultTextStyle.of(context)
                                               .style
@@ -261,12 +262,16 @@ class InputBarWidgetState extends State<InputBarWidget> {
   }
 
   Widget _drawSuggestions() {
-    return StoreConnector<AppState, List<AuthorSuggestion>>(
-      converter: (store) => store.state.suggestionsState.authorSuggestions,
+    return StoreConnector<AppState, SuggestionsState>(
+      converter: (store) => store.state.suggestionsState,
       builder: (context, suggestions) {
         return Column(
-          children: suggestions.map((s) => Text(s.login)).toList(),
-        );
+            children: List()
+              ..addAll(suggestions.authorSuggestions
+                  .map((s) => Text(s.login))
+                  .toList())
+              ..addAll(
+                  suggestions.tagSuggestions.map((s) => Text(s.tag)).toList()));
       },
     );
   }

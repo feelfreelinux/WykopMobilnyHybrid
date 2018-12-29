@@ -25,7 +25,7 @@ class _$TagSuggestionResponseSerializer
     final result = <Object>[
       'followers',
       serializers.serialize(object.followers,
-          specifiedType: const FullType(int)),
+          specifiedType: const FullType(String)),
       'tag',
       serializers.serialize(object.tag, specifiedType: const FullType(String)),
     ];
@@ -47,7 +47,7 @@ class _$TagSuggestionResponseSerializer
       switch (key) {
         case 'followers':
           result.followers = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
+              specifiedType: const FullType(String)) as String;
           break;
         case 'tag':
           result.tag = serializers.deserialize(value,
@@ -62,7 +62,7 @@ class _$TagSuggestionResponseSerializer
 
 class _$TagSuggestionResponse extends TagSuggestionResponse {
   @override
-  final int followers;
+  final String followers;
   @override
   final String tag;
 
@@ -113,9 +113,9 @@ class TagSuggestionResponseBuilder
     implements Builder<TagSuggestionResponse, TagSuggestionResponseBuilder> {
   _$TagSuggestionResponse _$v;
 
-  int _followers;
-  int get followers => _$this._followers;
-  set followers(int followers) => _$this._followers = followers;
+  String _followers;
+  String get followers => _$this._followers;
+  set followers(String followers) => _$this._followers = followers;
 
   String _tag;
   String get tag => _$this._tag;

@@ -10,7 +10,7 @@ abstract class TagSuggestion implements Built<TagSuggestion, TagSuggestionBuilde
   factory TagSuggestion.fromResponse({TagSuggestionResponse response}) {
     return _$TagSuggestion._(
         tag: response.tag,
-        followers: response.followers);
+        followers: int.parse(response.followers)) ?? 0;
   }
 
   TagSuggestion._();

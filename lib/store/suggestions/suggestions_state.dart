@@ -8,9 +8,11 @@ part 'suggestions_state.g.dart';
 
 abstract class SuggestionsState implements Built<SuggestionsState, SuggestionsStateBuilder> {
   List<AuthorSuggestion> get authorSuggestions;
+  List<TagSuggestion> get tagSuggestions;
 
   factory SuggestionsState() {
     return _$SuggestionsState._(
+        tagSuggestions: [],
         authorSuggestions: []);
   }
 
