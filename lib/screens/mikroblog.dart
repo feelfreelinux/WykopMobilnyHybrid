@@ -10,56 +10,74 @@ class MikroblogScreen extends StatefulWidget {
 class _MikroblogScreenState extends State<MikroblogScreen> {
   bool isSearching = false;
   String searchQuery = "";
+  
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 6,
-        child: Scaffold(
-          resizeToAvoidBottomPadding: false,
-          appBar: isSearching
-              ? SearchAppbarWidget(
-                  onClosedSearch: () {
-                    setState(() {
-                      isSearching = false;
-                      searchQuery = "";
-                    });
-                  },
-                  searchCallback: (q, store, completer) {
-                    setState(() {
-                      searchQuery = q;
-                    });
-                    store.dispatch(searchEntries(q, true, completer));
-                  },
-                )
-              : AppbarTabsWidget(
-                  tabs: <Widget>[
-                      Tab(text: 'NOWE'),
-                      Tab(text: 'AKTYWNE'),
-                      Tab(text: 'GORĄCE 6H'),
-                      Tab(text: 'GORĄCE 12H'),
-                      Tab(text: 'GORĄCE 24H')
-                    ],
-                  onPressedSearch: () {
-                    setState(() {
-                      isSearching = true;
-                    });
-                  }),
-          body: isSearching
-              ? StoreConnector<AppState, ItemListState>(
-                  onInit: (store) => store.dispatch(clearEntries()),
-                  converter: (store) =>
-                      store.state.searchState.entriesSearchState,
-                  builder: (context, state) =>
-                      state.paginationState.itemIds.isNotEmpty
-                          ? EntryList(
-                              converterCallback: (store) =>
-                                  store.state.searchState.entriesSearchState,
-                              loadDataCallback: (store, refresh, completer) =>
-                                  store.dispatch(searchEntries(
-                                      searchQuery, refresh, completer)))
-                          : Center(child: Text('Wyszukaj najpierw')),
-                )
-              : TabBarView(children: [
+      length: 6,
+      child: Scaffold(
+        resizeToAvoidBottomPadding: false,
+        appBar: isSearching
+            ? SearchAppbarWidget(
+                onClosedSearch: () {
+                  setState(() {
+                    isSearching = false;
+                    searchQuery = "";
+                  });
+                },
+                searchCallback: (q, store, completer) {
+                  setState(() {
+                    searchQuery = q;
+                  });
+                  store.dispatch(searchEntries(q, true, completer));
+                },
+              )
+            : AppbarTabsWidget(
+                tabs: <Widget>[
+                  Tab(text: 'NOWE'),
+                  Tab(text: 'AKTYWNE'),
+                  Tab(text: 'GORĄCE 6H'),
+                  Tab(text: 'GORĄCE 12H'),
+                  Tab(text: 'GORĄCE 24H'),
+                  Tab(text: 'ULUBIONE'),
+                ],
+                onPressedSearch: () {
+                  setState(() {
+                    isSearching = true;
+                  });
+                },
+              ),
+        body: isSearching
+            ? StoreConnector<AppState, ItemListState>(
+                onInit: (store) => store.dispatch(clearEntries()),
+                converter: (store) =>
+                    store.state.searchState.entriesSearchState,
+                builder: (context, state) => state
+                        .paginationState.itemIds.isNotEmpty
+                    ? EntryList(
+                        converterCallback: (store) =>
+                            store.state.searchState.entriesSearchState,
+                        loadDataCallback: (store, refresh, completer) =>
+                            store.dispatch(
+                                searchEntries(searchQuery, refresh, completer)))
+                    : Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.all(12.0),
+                              child: Icon(
+                                Icons.search,
+                                size: 60.0,
+                              ),
+                            ),
+                            Text('Szukaj wpisu'),
+                          ],
+                        ),
+                      ),
+              )
+            : TabBarView(
+                children: [
                   EntryList(
                       converterCallback: (store) =>
                           store.state.mikroblogState.newestState,
@@ -84,8 +102,18 @@ class _MikroblogScreenState extends State<MikroblogScreen> {
                       converterCallback: (store) =>
                           store.state.mikroblogState.hot24State,
                       loadDataCallback: (store, refresh, completer) =>
-                          store.dispatch(loadHot24(refresh, completer)))
-                ], physics: NeverScrollableScrollPhysics()),
-        ));
+                          store.dispatch(loadHot24(refresh, completer))),
+                  NotLoggedWidget(
+                    icon: Icons.favorite,
+                    text: "Ulubione wpisy",
+                    child: Center(
+                      child: Text('Niezaimplementowane'),
+                    ),
+                  ),
+                ],
+                physics: NeverScrollableScrollPhysics(),
+              ),
+      ),
+    );
   }
 }
