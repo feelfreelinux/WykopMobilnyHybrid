@@ -11,12 +11,7 @@ class AvatarWidget extends StatelessWidget {
     @required this.author,
     @required this.size,
     this.genderVisibility: true,
-    this.boxShadow: const [
-      BoxShadow(
-        color: Color(0x33000000),
-        blurRadius: 1.0,
-      )
-    ],
+    this.boxShadow,
   });
 
   @override
