@@ -74,7 +74,9 @@ class _HtmlParser {
     _currentTextSpans.add(TextSpan(
         text: trimmedText,
         style: style ??
-            TextStyle(color: Theme.of(context).textTheme.headline.color)));
+            TextStyle(
+                color: Theme.of(context).textTheme.headline.color,
+                height: 1.1)));
   }
 
   Widget parseFromElement(html.Element element) {
@@ -114,12 +116,14 @@ class _HtmlParser {
                     Utils.getPageTransition(TagScreen(tag: element.text)));
               },
               style: TextStyle(
-                  color: Colors.blueAccent, fontWeight: FontWeight.bold)));
+                color: Colors.blueAccent,
+              )));
           return;
         } else if (element.attributes['href'].startsWith('@')) {
           _tokenizeBody(element.text,
               style: TextStyle(
-                  color: Colors.blueAccent, fontWeight: FontWeight.bold));
+                color: Colors.blueAccent,
+              ));
           return;
         } else if (element.hasContent() &&
             (element.nodes.length == 1) &&
@@ -131,7 +135,8 @@ class _HtmlParser {
                 WykopNavigator.handleUrl(context, url);
               },
               style: TextStyle(
-                  color: Colors.blueAccent, fontWeight: FontWeight.bold)));
+                color: Colors.blueAccent,
+              )));
           return;
         }
 
