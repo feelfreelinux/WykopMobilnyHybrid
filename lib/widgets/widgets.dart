@@ -25,4 +25,5 @@ export 'html_parser.dart';
 export 'infinite_list.dart';
 export 'links_list.dart';
 export 'search_results.dart';
+export 'not_logged.dart';
 export 'user_widget.dart';
