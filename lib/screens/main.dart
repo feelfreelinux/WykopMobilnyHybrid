@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/keys.dart';
+import 'package:owmflutter/owm_glyphs.dart';
+import 'package:owmflutter/widgets/widgets.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -24,14 +26,6 @@ class _MainScreenState extends State<MainScreen> {
       resizeToAvoidBottomPadding: false,
       key: OwmKeys.mainScaffoldKey,
       body: _children[_currentIndex],
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).primaryColor,
-        child: Icon(
-          Icons.create,
-          color: Theme.of(context).accentColor,
-        ),
-        onPressed: () {},
-      ),
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),
         color: Theme.of(context).primaryColor,
@@ -41,6 +35,7 @@ class _MainScreenState extends State<MainScreen> {
           children: <Widget>[
             _iconButton(Icons.home, 0, "Strona główna"),
             _iconButton(Icons.add_box, 1, "Mikroblog"),
+            _addNewButton(),
             _iconButton(Icons.loyalty, 2, "Mój Wykop"),
             _iconButton(Icons.mail, 3, "Powiadomienia", badge: 0),
           ],
@@ -49,7 +44,107 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget _iconButton(IconData icon, num index, String tooltip, {num badge = 0}) {
+  Widget _addNewButton() {
+    return Container(
+      width: 34.0,
+      height: 34.0,
+      child: FloatingActionButton(
+        child: Icon(
+          Icons.create,
+          size: 20.0,
+        ),
+        tooltip: "Dodaj",
+        foregroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme.of(context).textTheme.caption.color,
+        elevation: 0.0,
+        onPressed: () {
+          showModalBottomSheet<void>(
+            context: context,
+            builder: (BuildContext context) {
+              return NotLoggedWidget(
+                icon: Icons.account_circle,
+                fullText: "Dodawanie treści będzie możliwe po zalogowaniu.",
+                child: Container(
+                  padding: EdgeInsets.all(7.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.all(14.0),
+                        child: Text(
+                          "NAPISZ COŚ OD SIEBIE",
+                          style: TextStyle(
+                            fontSize: 13.0,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          _iconAddNewButton(OwmGlyphs.ic_buttontoolbar_wykop,
+                              "ZNALEZISKO", () {}),
+                          _iconAddNewButton(Icons.add_box, "WPIS", () {}),
+                          _iconAddNewButton(Icons.mail, "WIADOMOŚĆ", () {}),
+                        ],
+                      ),
+                      Container(
+                        width: 34.0,
+                        height: 34.0,
+                        child: FloatingActionButton(
+                          child: Icon(Icons.close),
+                          foregroundColor: Theme.of(context).primaryColor,
+                          backgroundColor:
+                              Theme.of(context).textTheme.caption.color,
+                          elevation: 0.0,
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _iconAddNewButton(
+      IconData icon, String title, VoidCallback onPressed) {
+    return Padding(
+      padding: EdgeInsets.all(10.0),
+      child: Column(
+        children: <Widget>[
+          FloatingActionButton(
+            elevation: 1.0,
+            highlightElevation: 8.0,
+            onPressed: onPressed,
+            child: Icon(icon),
+          ),
+          GestureDetector(
+            onTap: onPressed,
+            child: Padding(
+              padding: EdgeInsets.all(12.0),
+              child: Text(
+                title,
+                style: TextStyle(
+                  fontSize: 11.0,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _iconButton(IconData icon, num index, String tooltip,
+      {num badge = 0}) {
     return IconButton(
       icon: Stack(
         children: <Widget>[
