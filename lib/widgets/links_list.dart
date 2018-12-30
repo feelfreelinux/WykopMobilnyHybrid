@@ -32,14 +32,18 @@ class LinksList extends StatelessWidget {
                       callback(true, completer);
                       return completer.future;
                     },
-                    child: InfiniteList(
-                        hasReachedEnd: state.listState.haveReachedEnd,
-                        loadData: (completer) => callback(false, completer),
-                        itemCount: state.paginationState.itemIds.length,
-                        itemBuilder: (context, index) {
-                          return LinkWidget(
-                              linkId: state.paginationState.itemIds[index]);
-                        }));
+                    child: ErrorHandlerWidget(
+                      hasData: () =>
+                          state.paginationState.itemIds.isNotEmpty,
+                      child: InfiniteList(
+                          hasReachedEnd: state.listState.haveReachedEnd,
+                          loadData: (completer) => callback(false, completer),
+                          itemCount: state.paginationState.itemIds.length,
+                          itemBuilder: (context, index) {
+                            return LinkWidget(
+                                linkId: state.paginationState.itemIds[index]);
+                          }),
+                    ));
               });
             }));
   }

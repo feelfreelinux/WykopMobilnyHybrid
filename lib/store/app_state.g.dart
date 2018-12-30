@@ -27,6 +27,9 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
       'entitiesState',
       serializers.serialize(object.entitiesState,
           specifiedType: const FullType(EntitiesState)),
+      'errorState',
+      serializers.serialize(object.errorState,
+          specifiedType: const FullType(ErrorState)),
       'searchState',
       serializers.serialize(object.searchState,
           specifiedType: const FullType(SearchState)),
@@ -81,6 +84,10 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
         case 'entitiesState':
           result.entitiesState.replace(serializers.deserialize(value,
               specifiedType: const FullType(EntitiesState)) as EntitiesState);
+          break;
+        case 'errorState':
+          result.errorState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(ErrorState)) as ErrorState);
           break;
         case 'searchState':
           result.searchState.replace(serializers.deserialize(value,
@@ -137,6 +144,8 @@ class _$AppState extends AppState {
   @override
   final EntitiesState entitiesState;
   @override
+  final ErrorState errorState;
+  @override
   final SearchState searchState;
   @override
   final SuggestionsState suggestionsState;
@@ -162,6 +171,7 @@ class _$AppState extends AppState {
       {this.authState,
       this.themeState,
       this.entitiesState,
+      this.errorState,
       this.searchState,
       this.suggestionsState,
       this.linksState,
@@ -180,6 +190,9 @@ class _$AppState extends AppState {
     }
     if (entitiesState == null) {
       throw new BuiltValueNullFieldError('AppState', 'entitiesState');
+    }
+    if (errorState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'errorState');
     }
     if (searchState == null) {
       throw new BuiltValueNullFieldError('AppState', 'searchState');
@@ -224,6 +237,7 @@ class _$AppState extends AppState {
         authState == other.authState &&
         themeState == other.themeState &&
         entitiesState == other.entitiesState &&
+        errorState == other.errorState &&
         searchState == other.searchState &&
         suggestionsState == other.suggestionsState &&
         linksState == other.linksState &&
@@ -247,9 +261,11 @@ class _$AppState extends AppState {
                                 $jc(
                                     $jc(
                                         $jc(
-                                            $jc($jc(0, authState.hashCode),
-                                                themeState.hashCode),
-                                            entitiesState.hashCode),
+                                            $jc(
+                                                $jc($jc(0, authState.hashCode),
+                                                    themeState.hashCode),
+                                                entitiesState.hashCode),
+                                            errorState.hashCode),
                                         searchState.hashCode),
                                     suggestionsState.hashCode),
                                 linksState.hashCode),
@@ -267,6 +283,7 @@ class _$AppState extends AppState {
           ..add('authState', authState)
           ..add('themeState', themeState)
           ..add('entitiesState', entitiesState)
+          ..add('errorState', errorState)
           ..add('searchState', searchState)
           ..add('suggestionsState', suggestionsState)
           ..add('linksState', linksState)
@@ -299,6 +316,12 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _$this._entitiesState ??= new EntitiesStateBuilder();
   set entitiesState(EntitiesStateBuilder entitiesState) =>
       _$this._entitiesState = entitiesState;
+
+  ErrorStateBuilder _errorState;
+  ErrorStateBuilder get errorState =>
+      _$this._errorState ??= new ErrorStateBuilder();
+  set errorState(ErrorStateBuilder errorState) =>
+      _$this._errorState = errorState;
 
   SearchStateBuilder _searchState;
   SearchStateBuilder get searchState =>
@@ -360,6 +383,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _authState = _$v.authState?.toBuilder();
       _themeState = _$v.themeState?.toBuilder();
       _entitiesState = _$v.entitiesState?.toBuilder();
+      _errorState = _$v.errorState?.toBuilder();
       _searchState = _$v.searchState?.toBuilder();
       _suggestionsState = _$v.suggestionsState?.toBuilder();
       _linksState = _$v.linksState?.toBuilder();
@@ -396,6 +420,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
               authState: authState.build(),
               themeState: themeState.build(),
               entitiesState: entitiesState.build(),
+              errorState: errorState.build(),
               searchState: searchState.build(),
               suggestionsState: suggestionsState.build(),
               linksState: linksState.build(),
@@ -414,6 +439,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
         themeState.build();
         _$failedField = 'entitiesState';
         entitiesState.build();
+        _$failedField = 'errorState';
+        errorState.build();
         _$failedField = 'searchState';
         searchState.build();
         _$failedField = 'suggestionsState';

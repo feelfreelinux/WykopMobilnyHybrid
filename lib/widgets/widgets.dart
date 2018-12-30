@@ -20,6 +20,7 @@ export 'author.dart';
 export 'body.dart';
 export 'embed.dart';
 export 'entry_link_list.dart';
+export 'error_handler.dart';
 export 'entry_list.dart';
 export 'html_parser.dart';
 export 'infinite_list.dart';

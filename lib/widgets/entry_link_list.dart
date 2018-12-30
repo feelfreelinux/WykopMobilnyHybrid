@@ -33,21 +33,25 @@ class EntryLinkList extends StatelessWidget {
                     callback(true, completer);
                     return completer.future;
                   },
-                  child: InfiniteList(
-                      hasReachedEnd: state.listState.haveReachedEnd,
-                      loadData: (completer) => callback(false, completer),
-                      itemCount: state.paginationState.itemIds.length,
-                      itemBuilder: (context, index) {
-                        if (state.paginationState.itemIds[index] > 99999999) {
-                          return EntryWidget(
-                              entryId:
-                                  state.paginationState.itemIds[index] ~/ 1000,
-                              ellipsize: true);
-                        } else {
-                          return LinkWidget(
-                              linkId: state.paginationState.itemIds[index]);
-                        }
-                      }),
+                  child: ErrorHandlerWidget(
+                    hasData: () =>
+                        state.paginationState.itemIds.isNotEmpty,
+                    child: InfiniteList(
+                        hasReachedEnd: state.listState.haveReachedEnd,
+                        loadData: (completer) => callback(false, completer),
+                        itemCount: state.paginationState.itemIds.length,
+                        itemBuilder: (context, index) {
+                          if (state.paginationState.itemIds[index] > 99999999) {
+                            return EntryWidget(
+                                entryId: state.paginationState.itemIds[index] ~/
+                                    1000,
+                                ellipsize: true);
+                          } else {
+                            return LinkWidget(
+                                linkId: state.paginationState.itemIds[index]);
+                          }
+                        }),
+                  ),
                 );
               });
             }));

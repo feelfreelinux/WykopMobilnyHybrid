@@ -48,7 +48,9 @@ class EntryListState extends State<EntryList> {
                     callback(true, completer);
                     return completer.future;
                   },
-                  child: InfiniteList(
+                  child: ErrorHandlerWidget(
+                    hasData: () => state.paginationState.itemIds.isNotEmpty,
+                    child: InfiniteList(
                       hasReachedEnd: state.listState.haveReachedEnd,
                       loadData: (completer) => callback(false, completer),
                       itemCount: state.paginationState.itemIds.length,
@@ -57,7 +59,7 @@ class EntryListState extends State<EntryList> {
                             entryId: state.paginationState.itemIds[index],
                             ellipsize: true);
                       }),
-                );
+                ));
               });
             }));
   }

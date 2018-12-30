@@ -20,6 +20,7 @@ ThunkAction<AppState> loadLinkComments(int linkId, Completer completer) {
       completer.complete();
     } catch (e) {
       completer.completeError(e);
+      store.dispatch(SetErrorAction(error: e));
     }
   };
 }

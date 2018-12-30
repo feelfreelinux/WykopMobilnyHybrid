@@ -8,6 +8,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   AuthState get authState;
   ThemeState get themeState;
   EntitiesState get entitiesState;
+  ErrorState get errorState;
 
   SearchState get searchState;
   SuggestionsState get suggestionsState;
@@ -25,6 +26,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
         authState: AuthState(),
         linksState: LinksState(),
         searchState: SearchState(),
+        errorState: ErrorState(),
         themeState: ThemeState(),
         suggestionsState: SuggestionsState(),
         mikroblogState: MikroblogState(),

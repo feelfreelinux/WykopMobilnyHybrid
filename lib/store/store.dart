@@ -59,3 +59,7 @@ export 'auth/auth_state.dart';
 export 'theme/theme_state.dart';
 export 'theme/reducer.dart';
 export 'theme/actions.dart';
+
+export 'error/error_state.dart';
+export 'error/reducer.dart';
+export 'error/actions.dart';
