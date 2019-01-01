@@ -41,10 +41,14 @@ class AvatarWidget extends StatelessWidget {
           shape: BoxShape.circle,
           image: DecorationImage(
             fit: BoxFit.fill,
-            image: AdvancedNetworkImage(
-              author.avatar,
-              useDiskCache: true,
-            ),
+            image: author.avatar.length != 0
+                ? AdvancedNetworkImage(
+                    author.avatar,
+                    useDiskCache: true,
+                  )
+                : AssetImage(
+                    'assets/avatar.png',
+                  ),
           ),
         ),
       ),

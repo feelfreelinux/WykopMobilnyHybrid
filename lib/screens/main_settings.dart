@@ -19,7 +19,6 @@ class MainSettingsScreen extends StatelessWidget {
         slivers: <Widget>[
           SliverAppBar(
             elevation: 1.5,
-            pinned: true,
             leading: _drawBackButton(context),
             expandedHeight: 180.0,
             flexibleSpace: FlexibleSpaceBar(
@@ -55,10 +54,13 @@ class MainSettingsScreen extends StatelessWidget {
   Widget _drawBackButton(BuildContext context) {
     return IconButton(
       icon: Container(
+        margin: EdgeInsets.only(
+          bottom: 8.0,
+        ),
         padding: EdgeInsets.all(4.0),
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor.withOpacity(0.5),
-          borderRadius: BorderRadius.circular(100.0),
+          shape: BoxShape.circle,
         ),
         child: Icon(
           Icons.close,
@@ -104,7 +106,7 @@ class MainSettingsScreen extends StatelessWidget {
                   ),
             Positioned(
               width: MediaQuery.of(context).size.width,
-              bottom: 0,
+              bottom: 0.0,
               child: Container(
                 padding: EdgeInsets.symmetric(
                   vertical: 10.0,
@@ -114,9 +116,7 @@ class MainSettingsScreen extends StatelessWidget {
                   children: <Widget>[
                     AvatarWidget(
                       author: Author.fromAuthState(
-                          avatarUrl: authState.loggedIn
-                              ? authState.avatarUrl
-                              : "https://www.wykop.pl/cdn/c3397992/avatar_def.png",
+                          avatarUrl: authState.avatarUrl,
                           username: authState.login,
                           color: authState.color),
                       size: 84.0,
@@ -130,44 +130,60 @@ class MainSettingsScreen extends StatelessWidget {
                           top: 36.0,
                           right: 12.0,
                         ),
-                        child: GestureDetector(
-                          onTap: () {},
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                authState.loggedIn
-                                    ? authState.login
-                                    : "Zaloguj się",
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: authState.loggedIn
-                                      ? Utils.getAuthorColor(
-                                          Author.fromAuthState(
-                                              avatarUrl: authState.avatarUrl,
-                                              username: authState.login,
-                                              color: authState.color),
-                                          context)
-                                      : Theme.of(context)
-                                          .textTheme
-                                          .caption
-                                          .color,
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w600,
+                        child: StoreConnector<AppState, LoginCallback>(
+                          converter: (store) => (login, token) =>
+                              store.dispatch(loginUser(token, login)),
+                          builder: (context, loginCallback) => GestureDetector(
+                                onTap: authState.loggedIn
+                                    ? () {}
+                                    : () async {
+                                        var result =
+                                            await platform.invokeMethod(
+                                                'openLoginScreen',
+                                                Map.from({
+                                                  'appKey': api.getAppKey()
+                                                }));
+                                        loginCallback(
+                                            result['login'], result['token']);
+                                      },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      authState.loggedIn
+                                          ? authState.login
+                                          : "Zaloguj się",
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: authState.loggedIn
+                                            ? Utils.getAuthorColor(
+                                                Author.fromAuthState(
+                                                    avatarUrl:
+                                                        authState.avatarUrl,
+                                                    username: authState.login,
+                                                    color: authState.color),
+                                                context)
+                                            : Theme.of(context)
+                                                .textTheme
+                                                .caption
+                                                .color,
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    Text(
+                                      authState.loggedIn
+                                          ? "Kliknij, aby zobaczyć swój profil"
+                                          : "Kliknij, aby zalogować się",
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        height: 1.2,
+                                        fontSize: 11.0,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Text(
-                                authState.loggedIn
-                                    ? "Kliknij, aby zobaczyć swój profil"
-                                    : "Kliknij, aby zalogować się",
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  height: 1.2,
-                                  fontSize: 11.0,
-                                ),
-                              ),
-                            ],
-                          ),
                         ),
                       ),
                     )

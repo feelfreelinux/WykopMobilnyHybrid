@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/utils/utils.dart';
@@ -10,7 +11,10 @@ class AppbarUserWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+      margin: EdgeInsets.symmetric(
+        vertical: 10,
+        horizontal: 14,
+      ),
       child: StoreConnector<AppState, AuthState>(
         onInit: (store) => store.dispatch(syncStateWithApi()),
         converter: (store) => store.state.authState,
@@ -30,9 +34,14 @@ class AppbarUserWidget extends StatelessWidget {
                 shape: BoxShape.circle,
                 image: DecorationImage(
                   fit: BoxFit.fill,
-                  image: NetworkImage(authState.loggedIn
-                      ? authState.avatarUrl
-                      : "https://www.wykop.pl/cdn/c3397992/avatar_def,q80.png"),
+                  image: authState.loggedIn
+                      ? AdvancedNetworkImage(
+                          authState.avatarUrl,
+                          useDiskCache: true,
+                        )
+                      : AssetImage(
+                          'assets/avatar.png',
+                        ),
                 ),
               ),
             ),

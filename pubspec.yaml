@@ -52,3 +52,4 @@ flutter:
   assets:
     - secrets.json
     - rogal.png
+    - avatar.png
