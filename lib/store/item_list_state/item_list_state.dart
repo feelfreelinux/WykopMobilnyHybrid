@@ -8,10 +8,11 @@ abstract class ItemListState
     implements Built<ItemListState, ItemListStateBuilder> {
   PaginationState get paginationState;
   ListState get listState;
+  ErrorState get errorState;
 
   factory ItemListState() {
     return _$ItemListState._(
-        paginationState: PaginationState(), listState: new ListState());
+        paginationState: PaginationState(), listState: new ListState(), errorState: new ErrorState());
   }
 
   ItemListState._();

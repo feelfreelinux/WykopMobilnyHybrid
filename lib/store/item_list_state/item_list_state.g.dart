@@ -25,6 +25,9 @@ class _$ItemListStateSerializer implements StructuredSerializer<ItemListState> {
       'listState',
       serializers.serialize(object.listState,
           specifiedType: const FullType(ListState)),
+      'errorState',
+      serializers.serialize(object.errorState,
+          specifiedType: const FullType(ErrorState)),
     ];
 
     return result;
@@ -50,6 +53,10 @@ class _$ItemListStateSerializer implements StructuredSerializer<ItemListState> {
           result.listState.replace(serializers.deserialize(value,
               specifiedType: const FullType(ListState)) as ListState);
           break;
+        case 'errorState':
+          result.errorState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(ErrorState)) as ErrorState);
+          break;
       }
     }
 
@@ -62,16 +69,22 @@ class _$ItemListState extends ItemListState {
   final PaginationState paginationState;
   @override
   final ListState listState;
+  @override
+  final ErrorState errorState;
 
   factory _$ItemListState([void updates(ItemListStateBuilder b)]) =>
       (new ItemListStateBuilder()..update(updates)).build();
 
-  _$ItemListState._({this.paginationState, this.listState}) : super._() {
+  _$ItemListState._({this.paginationState, this.listState, this.errorState})
+      : super._() {
     if (paginationState == null) {
       throw new BuiltValueNullFieldError('ItemListState', 'paginationState');
     }
     if (listState == null) {
       throw new BuiltValueNullFieldError('ItemListState', 'listState');
+    }
+    if (errorState == null) {
+      throw new BuiltValueNullFieldError('ItemListState', 'errorState');
     }
   }
 
@@ -87,19 +100,22 @@ class _$ItemListState extends ItemListState {
     if (identical(other, this)) return true;
     return other is ItemListState &&
         paginationState == other.paginationState &&
-        listState == other.listState;
+        listState == other.listState &&
+        errorState == other.errorState;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, paginationState.hashCode), listState.hashCode));
+    return $jf($jc($jc($jc(0, paginationState.hashCode), listState.hashCode),
+        errorState.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('ItemListState')
           ..add('paginationState', paginationState)
-          ..add('listState', listState))
+          ..add('listState', listState)
+          ..add('errorState', errorState))
         .toString();
   }
 }
@@ -119,12 +135,19 @@ class ItemListStateBuilder
       _$this._listState ??= new ListStateBuilder();
   set listState(ListStateBuilder listState) => _$this._listState = listState;
 
+  ErrorStateBuilder _errorState;
+  ErrorStateBuilder get errorState =>
+      _$this._errorState ??= new ErrorStateBuilder();
+  set errorState(ErrorStateBuilder errorState) =>
+      _$this._errorState = errorState;
+
   ItemListStateBuilder();
 
   ItemListStateBuilder get _$this {
     if (_$v != null) {
       _paginationState = _$v.paginationState?.toBuilder();
       _listState = _$v.listState?.toBuilder();
+      _errorState = _$v.errorState?.toBuilder();
       _$v = null;
     }
     return this;
@@ -150,7 +173,8 @@ class ItemListStateBuilder
       _$result = _$v ??
           new _$ItemListState._(
               paginationState: paginationState.build(),
-              listState: listState.build());
+              listState: listState.build(),
+              errorState: errorState.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -158,6 +182,8 @@ class ItemListStateBuilder
         paginationState.build();
         _$failedField = 'listState';
         listState.build();
+        _$failedField = 'errorState';
+        errorState.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'ItemListState', _$failedField, e.toString());

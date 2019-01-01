@@ -1,6 +1,17 @@
 import 'package:redux/redux.dart';
 import 'package:owmflutter/store/store.dart';
 
+ErrorState createErrorReducer(ErrorState state, String type, action) {
+  if (action is TypedAction && action.type == type) {
+    return combineReducers<ErrorState>(
+      [
+        TypedReducer<ErrorState, SetErrorAction>(_setError),
+        TypedReducer<ErrorState, DismissErrorAction>(_dismissError),
+      ],
+    )(state, action);
+  }
+  return state;
+}
 Reducer<ErrorState> errorReducer = combineReducers<ErrorState>([
   TypedReducer<ErrorState, SetErrorAction>(_setError),
   TypedReducer<ErrorState, DismissErrorAction>(_dismissError),

@@ -15,21 +15,22 @@ class ErrorHandlerWidget extends StatelessWidget {
     return StoreConnector<AppState, VoidCallback>(
         converter: (store) => () => store.dispatch(DismissErrorAction()),
         builder: (context, dismiss) => StoreConnector<AppState, bool>(
+            onWillChange: (state) {
+              if (hasData()) {
+                if (state) {
+                  Scaffold.of(context)
+                      .showSnackBar(_buildErrorSnackbar(context, dismiss));
+                } else {
+                  Scaffold.of(context).hideCurrentSnackBar();
+                }
+              }
+            },
             converter: (store) =>
                 store.state.errorState.exception != null &&
                 !store.state.errorState.isDismissed,
             builder: (context, hasError) {
               if (hasError && !hasData()) {
                 return Center(child: Text('Error się stał'));
-              } else if (hasError) {
-                print("error się stał");
-                WidgetsBinding.instance.addPostFrameCallback((_) =>
-                    Scaffold.of(context)
-                        .showSnackBar(_buildErrorSnackbar(context, dismiss)));
-              } else {
-                WidgetsBinding.instance.addPostFrameCallback((_) =>
-                    Scaffold.of(context)
-                        .hideCurrentSnackBar());
               }
               return child;
             }));

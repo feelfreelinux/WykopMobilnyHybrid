@@ -3,11 +3,13 @@ import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:owmflutter/api/api.dart';
 
-class SetErrorAction {
+class SetErrorAction implements TypedAction {
   final Exception error;
-  SetErrorAction({this.error});
+  final String type;
+  SetErrorAction({this.error, this.type});
 }
 
-class DismissErrorAction {
-  DismissErrorAction();
+class DismissErrorAction implements TypedAction {
+  final String type;
+  DismissErrorAction({this.type});
 }
