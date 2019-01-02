@@ -20,7 +20,7 @@ class EntryLinkList extends StatelessWidget {
             converter: (store) => converterCallback(store),
             onInit: (store) {
               var state = converterCallback(store);
-              if (state.paginationState.itemIds.isEmpty &&
+              if (state == null || state.paginationState.itemIds.isEmpty &&
                   !state.listState.haveReachedEnd) {
                 loadDataCallback(store, true, Completer());
               }

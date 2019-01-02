@@ -19,7 +19,7 @@ class TagScreen extends StatelessWidget {
             EntryLinkList(
                 actionType: TAG_INDEX_PREFIX + tag,
                 converterCallback: (store) =>
-                    store.state.tagsState.states[tag].indexState,
+                    store.state.tagsState?.states[tag]?.indexState,
                 loadDataCallback: (store, refresh, completer) =>
                     store.dispatch(loadTagIndex(tag, refresh, completer))),
             LinksList(

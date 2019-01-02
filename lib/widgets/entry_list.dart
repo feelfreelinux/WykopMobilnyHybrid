@@ -33,7 +33,7 @@ class EntryListState extends State<EntryList> {
             converter: (store) => widget.converterCallback(store),
             onInit: (store) {
               var state = widget.converterCallback(store);
-              if (state.paginationState.itemIds.isEmpty &&
+              if (state == null || state.paginationState.itemIds.isEmpty &&
                   !state.listState.haveReachedEnd) {
                 widget.loadDataCallback(store, true, Completer());
               }
