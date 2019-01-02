@@ -7,7 +7,7 @@ import 'dart:async';
 ThunkAction<AppState> loadHot6(bool refresh, Completer completer) {
   return (Store<AppState> store) async {
     store.dispatch(loadItems(
-        "HOT6",
+        MIKROBLOG_HOT6,
         refresh,
         (page) => api.entries.getHot(page, "6"),
         store.state.mikroblogState.hot6State.listState,
@@ -18,7 +18,7 @@ ThunkAction<AppState> loadHot6(bool refresh, Completer completer) {
 ThunkAction<AppState> loadHot12(bool refresh, Completer completer) {
   return (Store<AppState> store) async {
     store.dispatch(loadItems(
-        "HOT12",
+        MIKROBLOG_HOT12,
         refresh,
         (page) => api.entries.getHot(page, "12"),
         store.state.mikroblogState.hot12State.listState,
@@ -29,7 +29,7 @@ ThunkAction<AppState> loadHot12(bool refresh, Completer completer) {
 ThunkAction<AppState> loadHot24(bool refresh, Completer complater) {
   return (Store<AppState> store) async {
     store.dispatch(loadItems(
-        "HOT24",
+        MIKROBLOG_HOT24,
         refresh,
         (page) => api.entries.getHot(page, "24"),
         store.state.mikroblogState.hot24State.listState,
@@ -40,7 +40,7 @@ ThunkAction<AppState> loadHot24(bool refresh, Completer complater) {
 ThunkAction<AppState> loadNewest(bool refresh, Completer completer) {
   return (Store<AppState> store) async {
     store.dispatch(loadItems(
-        "NEWEST",
+        MIKROBLOG_NEWEST,
         refresh,
         (page) => api.entries.getNewest(page),
         store.state.mikroblogState.newestState.listState,
@@ -51,7 +51,7 @@ ThunkAction<AppState> loadNewest(bool refresh, Completer completer) {
 ThunkAction<AppState> loadActive(bool refresh, Completer completer) {
   return (Store<AppState> store) async {
     store.dispatch(loadItems(
-        "ACTIVE",
+        MIKROBLOG_ACTIVE,
         refresh,
         (page) => api.entries.getActive(page),
         store.state.mikroblogState.activeState.listState,

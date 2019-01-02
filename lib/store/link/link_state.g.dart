@@ -25,7 +25,7 @@ class _$LinkScreensStateSerializer
       'states',
       serializers.serialize(object.states,
           specifiedType: const FullType(BuiltMap,
-              const [const FullType(int), const FullType(LinkScreenState)])),
+              const [const FullType(String), const FullType(LinkScreenState)])),
     ];
 
     return result;
@@ -45,7 +45,7 @@ class _$LinkScreensStateSerializer
         case 'states':
           result.states.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
-                const FullType(int),
+                const FullType(String),
                 const FullType(LinkScreenState)
               ])) as BuiltMap);
           break;
@@ -108,7 +108,7 @@ class _$LinkScreenStateSerializer
 
 class _$LinkScreensState extends LinkScreensState {
   @override
-  final BuiltMap<int, LinkScreenState> states;
+  final BuiltMap<String, LinkScreenState> states;
 
   factory _$LinkScreensState([void updates(LinkScreensStateBuilder b)]) =>
       (new LinkScreensStateBuilder()..update(updates)).build();
@@ -150,10 +150,10 @@ class LinkScreensStateBuilder
     implements Builder<LinkScreensState, LinkScreensStateBuilder> {
   _$LinkScreensState _$v;
 
-  MapBuilder<int, LinkScreenState> _states;
-  MapBuilder<int, LinkScreenState> get states =>
-      _$this._states ??= new MapBuilder<int, LinkScreenState>();
-  set states(MapBuilder<int, LinkScreenState> states) =>
+  MapBuilder<String, LinkScreenState> _states;
+  MapBuilder<String, LinkScreenState> get states =>
+      _$this._states ??= new MapBuilder<String, LinkScreenState>();
+  set states(MapBuilder<String, LinkScreenState> states) =>
       _$this._states = states;
 
   LinkScreensStateBuilder();

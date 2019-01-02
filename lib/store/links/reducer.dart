@@ -6,5 +6,5 @@ import 'package:owmflutter/store/store.dart';
 LinksState linksReducer(LinksState state, action) {
   return state.rebuild((b) => b
     ..promotedState
-        .replace(itemListReducer("PROMOTED", state.promotedState, action)));
+        .replace(itemListReducer(LINKS_PROMOTED, state.promotedState, action)));
 }

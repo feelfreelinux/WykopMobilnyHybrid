@@ -20,6 +20,7 @@ class ClearItems implements TypedAction {
 ThunkAction<AppState> loadItems(String type, bool refresh,
     LoadItemsCallback loadEntries, ListState listState, Completer completer) {
   return (Store<AppState> store) async {
+    store.dispatch(DismissErrorAction(type: type));
     if (refresh) {
       store.dispatch(SetPageNumber(type: type, number: 2137));
     }

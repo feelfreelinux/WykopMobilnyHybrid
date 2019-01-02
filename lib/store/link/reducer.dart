@@ -1,17 +1,31 @@
 import 'package:redux/redux.dart';
 import 'package:owmflutter/store/store.dart';
 
-Reducer<LinkScreensState> linkScreenReducer = combineReducers([
-  TypedReducer<LinkScreensState, SetLinkComments>(_setLinkComments),
+LinkScreensState linkScreenReducer(LinkScreensState state, action) {
+  if (action is TypedAction && action.type.startsWith(LINK_PREFIX)) {
+    var id = action.type.split('_')[1];
+    var newState = state
+        .rebuild((b) => b..states.putIfAbsent(id, () => LinkScreenState()));
+    return newState.rebuild((e) => e
+      ..states.updateValue(
+          id,
+          (linkScreenState) => linkScreenState.rebuild(
+                (k) => k
+                  ..replace(_linkScreenReducer(newState.states[id], action))
+                  ..errorState.replace(createErrorReducer(
+                      newState.states[id].errorState,  LINK_PREFIX + id, action)),
+              )));
+  } else {
+    return state;
+  }
+}
+
+Reducer<LinkScreenState> _linkScreenReducer = combineReducers([
+  TypedReducer<LinkScreenState, SetLinkComments>(_setLinkComments),
 ]);
 
-LinkScreensState _setLinkComments(
-    LinkScreensState state, SetLinkComments action) {
+LinkScreenState _setLinkComments(LinkScreenState state, SetLinkComments action) {
   return state.rebuild((b) => b
-    ..states.putIfAbsent(action.linkId, () => LinkScreenState())
-    ..states.updateValue(
-        action.linkId,
-        (b) => b
-          ..ids.clear()
-          ..ids.addAll(action.ids)));
+    ..ids.clear()
+    ..ids.addAll(action.ids));
 }

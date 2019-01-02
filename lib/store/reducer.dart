@@ -15,7 +15,6 @@ AppState appReducer(AppState state, action) {
     ..searchState.replace(searchReducer(state.searchState, action))
     ..suggestionsState
         .replace(suggestionsReducer(state.suggestionsState, action))
-    ..errorState.replace(errorReducer(state.errorState, action))
     ..linkScreensState
         .replace(linkScreenReducer(state.linkScreensState, action))
     ..mikroblogState.replace(mikroblogReducer(state.mikroblogState, action)));

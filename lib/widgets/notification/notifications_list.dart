@@ -16,7 +16,13 @@ class NotificationsList extends StatelessWidget {
         decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
         child: StoreConnector<AppState, ItemListState>(
             converter: (store) => converterCallback(store),
-            onInit: (store) => loadDataCallback(store, true, Completer()),
+            onInit: (store) {
+              var state = converterCallback(store);
+              if (state.paginationState.itemIds.isEmpty &&
+                  !state.listState.haveReachedEnd) {
+                loadDataCallback(store, true, Completer());
+              }
+            },
             builder: (context, state) {
               if (state == null ||
                   state.listState.isLoading && state.listState.page == 1) {

@@ -6,5 +6,5 @@ import 'package:owmflutter/store/store.dart';
 MyWykopState myWykopReducer(MyWykopState state, action) {
   return state.rebuild((b) => b
     ..indexState
-        .replace(itemListReducer("MYWYKOP_INDEX", state.indexState, action)));
+        .replace(itemListReducer(MYWYKOP_INDEX, state.indexState, action)));
 }

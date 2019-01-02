@@ -7,7 +7,7 @@ import 'dart:async';
 ThunkAction<AppState> loadPromoted(bool refresh, Completer completer) {
   return (Store<AppState> store) async {
     store.dispatch(loadItems(
-        "PROMOTED",
+        LINKS_PROMOTED,
         refresh,
         (page) => api.links.getPromoted(page),
         store.state.linksState.promotedState.listState,

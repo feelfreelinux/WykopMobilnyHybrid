@@ -7,10 +7,10 @@ part 'link_state.g.dart';
 
 abstract class LinkScreensState
     implements Built<LinkScreensState, LinkScreensStateBuilder> {
-  BuiltMap<int, LinkScreenState> get states;
+  BuiltMap<String, LinkScreenState> get states;
 
   factory LinkScreensState() {
-    return _$LinkScreensState._(states: BuiltMap<int, LinkScreenState>());
+    return _$LinkScreensState._(states: BuiltMap<String, LinkScreenState>());
   }
 
   LinkScreensState._();

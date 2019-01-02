@@ -38,7 +38,6 @@ class EntryScreen extends StatelessWidget {
                   elevation: 1.5,
                   centerTitle: true,
                   titleSpacing: 0.0)),
-          
           body: Container(
               decoration:
                   BoxDecoration(color: Theme.of(context).backgroundColor),
@@ -67,6 +66,11 @@ class EntryScreen extends StatelessWidget {
                         child: ScrollConfiguration(
                           behavior: NotSuddenJumpScrollBehavior(),
                           child: ErrorHandlerWidget(
+                            errorType: ENTRY_PREFIX + entryId.toString(),
+                            errorStateConverter: (store) =>
+                                store.state.entryScreensState
+                                    ?.states[entryId.toString()]?.errorState ??
+                                ErrorState(),
                             hasData: () => ids.isNotEmpty,
                             child: ListView.builder(
                                 itemCount: ids.length,

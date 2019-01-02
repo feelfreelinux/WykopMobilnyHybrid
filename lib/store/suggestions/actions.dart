@@ -40,7 +40,7 @@ ThunkAction<AppState> loadSuggestions(String q, Completer completer) {
       store.dispatch(SetAuthorSuggestionsAction(suggestions: []));
       store.dispatch(SetTagSuggestionsAction(suggestions: []));
     } catch (e) {
-      store.dispatch(SetErrorAction(error: e));
+      // store.dispatch(SetErrorAction(error: e));
     }
   };
 }

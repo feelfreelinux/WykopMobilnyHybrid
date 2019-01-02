@@ -46,10 +46,9 @@ class LinkScreen extends StatelessWidget {
                 builder: (context, callback) =>
                     StoreConnector<AppState, List<int>>(
                         converter: (store) =>
-                            store.state.linkScreensState.states[linkId] != null
-                                ? store
-                                    .state.linkScreensState.states[linkId].ids
-                                : [],
+                            store.state.linkScreensState
+                                ?.states[linkId.toString()]?.ids ??
+                            [],
                         onInit: (store) {
                           store.dispatch(loadLinkComments(linkId, Completer()));
                         },
@@ -62,16 +61,28 @@ class LinkScreen extends StatelessWidget {
                             },
                             child: ScrollConfiguration(
                               behavior: NotSuddenJumpScrollBehavior(),
-                              child: ListView.builder(
-                                  itemCount: ids.length,
-                                  itemBuilder: (context, index) {
-                                    if (index == 0) {
-                                      return LinkWidget(linkId: linkId, isClickable: false);
-                                    } else {
-                                      return TopLinkCommentWidget(
-                                          commentId: ids[index]);
-                                    }
-                                  }),
+                              child: ErrorHandlerWidget(
+                                  errorType: LINK_PREFIX + linkId.toString(),
+                                  errorStateConverter: (store) =>
+                                      store
+                                          .state
+                                          .linkScreensState
+                                          ?.states[linkId.toString()]
+                                          ?.errorState ??
+                                      ErrorState(),
+                                  hasData: () => ids.isNotEmpty,
+                                  child: ListView.builder(
+                                      itemCount: ids.length,
+                                      itemBuilder: (context, index) {
+                                        if (index == 0) {
+                                          return LinkWidget(
+                                              linkId: linkId,
+                                              isClickable: false);
+                                        } else {
+                                          return TopLinkCommentWidget(
+                                              commentId: ids[index]);
+                                        }
+                                      })),
                             ),
                           );
                         }),

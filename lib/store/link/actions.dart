@@ -4,10 +4,10 @@ import 'package:redux/redux.dart';
 import 'dart:async';
 import 'package:owmflutter/api/api.dart';
 
-class SetLinkComments {
+class SetLinkComments implements TypedAction {
   final List<int> ids;
-  final int linkId;
-  SetLinkComments({this.linkId, this.ids});
+  final String type;
+  SetLinkComments({this.type, this.ids});
 }
 
 ThunkAction<AppState> loadLinkComments(int linkId, Completer completer) {
@@ -16,11 +16,11 @@ ThunkAction<AppState> loadLinkComments(int linkId, Completer completer) {
       var result = await api.links.getLinkComments(linkId);
 
       store.dispatch(AddEntitiesAction(entities: result.state));
-      store.dispatch(SetLinkComments(ids: result.result, linkId: linkId));
+      store.dispatch(SetLinkComments(ids: result.result, type: LINK_PREFIX + linkId.toString()));
       completer.complete();
     } catch (e) {
       completer.completeError(e);
-      store.dispatch(SetErrorAction(error: e));
+      store.dispatch(SetErrorAction(error: e, type: LINK_PREFIX + linkId.toString()));
     }
   };
 }

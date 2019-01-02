@@ -10,7 +10,7 @@ class MikroblogScreen extends StatefulWidget {
 class _MikroblogScreenState extends State<MikroblogScreen> {
   bool isSearching = false;
   String searchQuery = "";
-  
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -79,26 +79,31 @@ class _MikroblogScreenState extends State<MikroblogScreen> {
             : TabBarView(
                 children: [
                   EntryList(
+                      actionType: MIKROBLOG_NEWEST,
                       converterCallback: (store) =>
                           store.state.mikroblogState.newestState,
                       loadDataCallback: (store, refresh, completer) =>
                           store.dispatch(loadNewest(refresh, completer))),
                   EntryList(
+                      actionType: MIKROBLOG_ACTIVE,
                       converterCallback: (store) =>
                           store.state.mikroblogState.activeState,
                       loadDataCallback: (store, refresh, completer) =>
                           store.dispatch(loadActive(refresh, completer))),
                   EntryList(
+                      actionType: MIKROBLOG_HOT6,
                       converterCallback: (store) =>
                           store.state.mikroblogState.hot6State,
                       loadDataCallback: (store, refresh, completer) =>
                           store.dispatch(loadHot6(refresh, completer))),
                   EntryList(
+                      actionType: MIKROBLOG_HOT12,
                       converterCallback: (store) =>
                           store.state.mikroblogState.hot12State,
                       loadDataCallback: (store, refresh, completer) =>
                           store.dispatch(loadHot12(refresh, completer))),
                   EntryList(
+                      actionType: MIKROBLOG_HOT24,
                       converterCallback: (store) =>
                           store.state.mikroblogState.hot24State,
                       loadDataCallback: (store, refresh, completer) =>

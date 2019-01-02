@@ -1,5 +1,6 @@
 export 'app_state.dart';
 export 'reducer.dart';
+export 'types.dart';
 
 export 'item_list_state/item_list_state.dart';
 export 'item_list_state/reducer.dart';
