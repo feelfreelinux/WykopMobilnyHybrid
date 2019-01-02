@@ -1,33 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/widgets/widgets.dart';
-import 'dart:async';
+import 'package:owmflutter/owm_glyphs.dart';
 
 class NotificationsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 5,
-        child: Scaffold(
-            appBar: AppbarTabsWidget(
-              onPressedSearch: () {},
-              tabs: <Widget>[
-              Tab(text: 'Powiadomienia'),
-              Tab(text: 'Obserwowane tagi'),
-            ]),
-            body:
-                TabBarView(physics: NeverScrollableScrollPhysics(), children: [
-              NotificationsList(
+      length: 3,
+      child: Scaffold(
+        appBar: AppbarTabsWidget(
+          tabs: <Widget>[
+            Tab(text: "WIADOMOŚCI"),
+            Tab(text: "POWIADOMIENIA"),
+            Tab(text: "TAGI"),
+          ],
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.more_vert),
+              highlightColor: Colors.transparent,
+              splashColor: Colors.transparent,
+              onPressed: () {},
+              tooltip: "Więcej",
+            ),
+          ],
+        ),
+        body: TabBarView(
+          children: [
+            NotLoggedWidget(
+              icon: Icons.mail,
+              text: "Prywatne wiadomości",
+              child: Center(
+                child: Text('Niezaimplementowane'),
+              ),
+            ),
+            NotLoggedWidget(
+              icon: Icons.notifications,
+              text: "Powiadomienia",
+              child: NotificationsList(
                   converterCallback: (store) =>
                       store.state.notificationsState.notificationsState,
                   loadDataCallback: (store, refresh, completer) =>
                       store.dispatch(loadNotifications(refresh, completer))),
-              NotificationsList(
+            ),
+            NotLoggedWidget(
+              icon: OwmGlyphs.ic_navi_my_wykop,
+              text: "Obserwowane tagi",
+              child: NotificationsList(
                   converterCallback: (store) =>
                       store.state.notificationsState.hashTagsState,
-                  loadDataCallback: (store, refresh, completer) =>
-                      store.dispatch(loadHashTagNotifications(refresh, completer))),
-
-            ])));
+                  loadDataCallback: (store, refresh, completer) => store
+                      .dispatch(loadHashTagNotifications(refresh, completer))),
+            ),
+          ],
+          physics: NeverScrollableScrollPhysics(),
+        ),
+      ),
+    );
   }
 }

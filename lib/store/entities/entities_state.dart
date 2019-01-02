@@ -1,9 +1,7 @@
 import 'package:built_value/built_value.dart';
 import 'package:built_collection/built_collection.dart';
-
 import 'package:built_value/serializer.dart';
 import 'package:owmflutter/models/models.dart';
-import 'package:owmflutter/store/store.dart';
 
 part 'entities_state.g.dart';
 
@@ -14,6 +12,7 @@ abstract class EntitiesState
   BuiltMap<int, Link> get links;
   BuiltMap<int, LinkComment> get linkComments;
   BuiltMap<int, Notification> get notifications;
+  BuiltMap<int, Author> get authorSuggestions;
 
   factory EntitiesState() {
     return _$EntitiesState._(
@@ -21,6 +20,7 @@ abstract class EntitiesState
         linkComments: new BuiltMap<int, LinkComment>(),
         links: new BuiltMap<int, Link>(),
         notifications: new BuiltMap<int, Notification>(),
+        authorSuggestions: new BuiltMap<int, Author>(),
         entryComments: new BuiltMap<int, EntryComment>());
   }
 

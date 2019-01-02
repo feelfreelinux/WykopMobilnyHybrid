@@ -1,7 +1,6 @@
 import 'package:built_value/built_value.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/api/api.dart';
-import 'package:built_collection/built_collection.dart';
 
 part 'link.g.dart';
 
@@ -42,7 +41,11 @@ abstract class Link implements Built<Link, LinkBuilder> {
       author: Author.fromResponse(response: response.author),
       isHot: response.isHot,
       preview: // Makes link previews load in full resolution
-        response.preview != null ? response.preview.split(',')[0] + '.' + response.preview.split(',')[1].split('.')[1] : null,
+          response.preview != null
+              ? response.preview.split(',')[0] +
+                  '.' +
+                  response.preview.split(',')[1].split('.')[1]
+              : null,
       sourceUrl: response.sourceUrl,
       canVote: response.canVote,
       description: response.description,

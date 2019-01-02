@@ -30,8 +30,8 @@ class NotificationWidget extends StatelessWidget {
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child:
-                              AvatarWidget(author: notification.author, size: 40),
+                          child: AvatarWidget(
+                              author: notification.author, size: 40),
                         ),
                         new Flexible(
                           child: Padding(
@@ -54,7 +54,8 @@ class NotificationWidget extends StatelessWidget {
                                             text: notification.body.substring(
                                                 notification.body.indexOf(' '),
                                                 notification.body.length),
-                                            style: TextStyle(color: Colors.black))
+                                            style:
+                                                TextStyle(color: Colors.black))
                                       ],
                                     ))
                               ],

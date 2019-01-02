@@ -6,6 +6,8 @@ export 'response_models/entry_link_response.dart';
 export 'response_models/notification_response.dart';
 export 'response_models/entry_comment_response.dart';
 export 'response_models/link_comment_response.dart';
+export 'response_models/author_suggestion_response.dart';
+export 'response_models/tag_suggestion_response.dart';
 export 'response_models/serializers.dart';
 export 'normalizers.dart';
 export 'client.dart';
@@ -17,10 +19,12 @@ export 'resources/mywykop.dart';
 export 'resources/tags.dart';
 export 'resources/notifications.dart';
 export 'resources/search.dart';
+export 'resources/suggest.dart';
 
 import 'dart:async';
 import 'package:owmflutter/api/client.dart';
 import 'package:owmflutter/api/api.dart';
+import 'package:owmflutter/models/models.dart';
 import 'dart:convert';
 import 'dart:async' show Future;
 import 'package:convert/convert.dart';
@@ -47,6 +51,7 @@ class WykopApiClient {
   MyWykopApi mywykop;
   TagsApi tags;
   NotificationsApi notifications;
+  SuggestApi suggest;
 
   AuthCredentials get credentials => _client.credentials;
 
@@ -58,12 +63,16 @@ class WykopApiClient {
     await this._client.syncCredsFromStorage();
   }
 
+  Future<void> logoutUser() async {
+    await this._client.logoutUser();
+  }
   WykopApiClient() {
     _client.initialize();
     this.entries = EntriesApi(_client);
     this.users = UsersApi(_client);
     this.links = LinksApi(_client);
     this.tags = TagsApi(_client);
+    this.suggest = SuggestApi(_client);
     this.search = SearchApi(_client);
     this.notifications = NotificationsApi(_client);
     this.mywykop = MyWykopApi(_client);

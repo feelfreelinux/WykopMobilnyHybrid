@@ -6,5 +6,4 @@ class OwmKeys {
   static final navKey = new GlobalKey<NavigatorState>();
   static final mainScaffoldKey = new GlobalKey<ScaffoldState>();
   static final inputBarKey = new GlobalKey<InputBarWidgetState>();
-
 }

@@ -1,5 +1,6 @@
 export 'app_state.dart';
 export 'reducer.dart';
+export 'types.dart';
 
 export 'item_list_state/item_list_state.dart';
 export 'item_list_state/reducer.dart';
@@ -40,6 +41,10 @@ export 'pagination/reducer.dart';
 export 'pagination/pagination_state.dart';
 export 'pagination/actions.dart';
 
+export 'suggestions/reducer.dart';
+export 'suggestions/suggestions_state.dart';
+export 'suggestions/actions.dart';
+
 export 'entry/reducer.dart';
 export 'entry/actions.dart';
 export 'entry/entry_state.dart';
@@ -51,3 +56,11 @@ export 'link/link_state.dart';
 export 'auth/reducer.dart';
 export 'auth/actions.dart';
 export 'auth/auth_state.dart';
+
+export 'theme/theme_state.dart';
+export 'theme/reducer.dart';
+export 'theme/actions.dart';
+
+export 'error/error_state.dart';
+export 'error/reducer.dart';
+export 'error/actions.dart';

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
 
 class EmbedFullScreen extends StatelessWidget {
   final ImageProvider imageProvider;

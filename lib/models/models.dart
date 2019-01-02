@@ -7,3 +7,5 @@ export 'link_comment.dart';
 export 'user_profile.dart';
 export 'input_data.dart';
 export 'notification.dart';
+export 'author_suggestion.dart';
+export 'tag_suggestion.dart';

@@ -2,12 +2,17 @@ import 'package:owmflutter/store/store.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:owmflutter/api/api.dart';
-import 'package:owmflutter/keys.dart';
 
 class SaveAuthCredentialsAction {
   final String login;
   final String avatarUrl;
-  SaveAuthCredentialsAction({this.login, this.avatarUrl});
+  final int color;
+  final String backgroundUrl;
+  SaveAuthCredentialsAction({this.login, this.avatarUrl, this.color, this.backgroundUrl});
+}
+
+class LogoutUserAction {
+  LogoutUserAction();
 }
 
 ThunkAction<AppState> loginUser(String token, String login) {
@@ -15,7 +20,14 @@ ThunkAction<AppState> loginUser(String token, String login) {
     var creds = await api.users.login(login, token);
 
     store.dispatch(SaveAuthCredentialsAction(
-        login: creds.login, avatarUrl: creds.avatarUrl));
+        login: creds.login, avatarUrl: creds.avatarUrl, color: creds.color, backgroundUrl: creds.backgroundUrl));
+  };
+}
+
+ThunkAction<AppState> logoutUser() {
+  return (Store<AppState> store) async {
+    await api.logoutUser();
+    store.dispatch(LogoutUserAction());
   };
 }
 
@@ -26,7 +38,7 @@ ThunkAction<AppState> syncStateWithApi() {
 
     if (creds != null) {
       store.dispatch(SaveAuthCredentialsAction(
-          login: creds.login, avatarUrl: creds.avatarUrl));
+          login: creds.login, avatarUrl: creds.avatarUrl, backgroundUrl: creds.backgroundUrl, color: creds.color));
     }
   };
 }

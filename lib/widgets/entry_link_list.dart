@@ -7,8 +7,10 @@ import 'dart:async';
 class EntryLinkList extends StatelessWidget {
   final ConverterCallback converterCallback;
   final LoadDataCallback loadDataCallback;
+  // screen type in redux used in error handling
+  final String actionType;
 
-  EntryLinkList({this.converterCallback, this.loadDataCallback});
+  EntryLinkList({this.converterCallback, this.actionType, this.loadDataCallback});
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +18,13 @@ class EntryLinkList extends StatelessWidget {
         decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
         child: StoreConnector<AppState, ItemListState>(
             converter: (store) => converterCallback(store),
-            onInit: (store) => loadDataCallback(store, true, Completer()),
-            builder: (context, state) {
+            onInit: (store) {
+              var state = converterCallback(store);
+              if (state.paginationState.itemIds.isEmpty &&
+                  !state.listState.haveReachedEnd) {
+                loadDataCallback(store, true, Completer());
+              }
+            },            builder: (context, state) {
               if (state == null ||
                   state.listState.isLoading && state.listState.page == 1) {
                 return Center(child: CircularProgressIndicator());
@@ -33,21 +40,27 @@ class EntryLinkList extends StatelessWidget {
                     callback(true, completer);
                     return completer.future;
                   },
-                  child: InfiniteList(
-                      hasReachedEnd: state.listState.haveReachedEnd,
-                      loadData: (completer) => callback(false, completer),
-                      itemCount: state.paginationState.itemIds.length,
-                      itemBuilder: (context, index) {
-                        if (state.paginationState.itemIds[index] > 99999999) {
-                          return EntryWidget(
-                              entryId:
-                                  state.paginationState.itemIds[index] ~/ 1000,
-                              ellipsize: true);
-                        } else {
-                          return LinkWidget(
-                              linkId: state.paginationState.itemIds[index]);
-                        }
-                      }),
+                  child: ErrorHandlerWidget(
+                    errorType: actionType,
+                    errorStateConverter: (store) =>
+                        converterCallback(store).errorState,
+                    hasData: () => state.paginationState.itemIds.isNotEmpty,
+                    child: InfiniteList(
+                        hasReachedEnd: state.listState.haveReachedEnd,
+                        loadData: (completer) => callback(false, completer),
+                        itemCount: state.paginationState.itemIds.length,
+                        itemBuilder: (context, index) {
+                          if (state.paginationState.itemIds[index] > 99999999) {
+                            return EntryWidget(
+                                entryId: state.paginationState.itemIds[index] ~/
+                                    1000,
+                                ellipsize: true);
+                          } else {
+                            return LinkWidget(
+                                linkId: state.paginationState.itemIds[index]);
+                          }
+                        }),
+                  ),
                 );
               });
             }));

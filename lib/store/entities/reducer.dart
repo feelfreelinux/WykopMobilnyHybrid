@@ -1,6 +1,4 @@
-import 'package:owmflutter/models/models.dart';
 import 'package:redux/redux.dart';
-import 'package:built_collection/built_collection.dart';
 import 'package:owmflutter/store/store.dart';
 
 Reducer<EntitiesState> entitiesReducer = combineReducers<EntitiesState>(
@@ -11,6 +9,7 @@ EntitiesState _addToState(EntitiesState state, AddEntitiesAction action) {
     ..entries.addAll(action.entities.entries.asMap())
     ..links.addAll(action.entities.links.asMap())
     ..linkComments.addAll(action.entities.linkComments.asMap())
+    ..authorSuggestions.addAll(action.entities.authorSuggestions.asMap())
     ..notifications.addAll(action.entities.notifications.asMap())
     ..entryComments.addAll(action.entities.entryComments.asMap()));
 }

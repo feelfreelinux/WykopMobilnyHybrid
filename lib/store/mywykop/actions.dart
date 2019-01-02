@@ -7,7 +7,7 @@ import 'dart:async';
 ThunkAction<AppState> loadIndex(bool refresh, Completer completer) {
   return (Store<AppState> store) async {
     store.dispatch(loadItems(
-        "MYWYKOP_INDEX",
+        MYWYKOP_INDEX,
         refresh,
         (page) => api.mywykop.getIndex(page),
         store.state.myWykopState.indexState.listState,

@@ -13,8 +13,9 @@ typedef void ListRefreshCallback(bool refresh, Completer completer);
 class EntryList extends StatefulWidget {
   final ConverterCallback converterCallback;
   final LoadDataCallback loadDataCallback;
+  final String actionType;
 
-  EntryList({this.converterCallback, this.loadDataCallback});
+  EntryList({this.converterCallback, this.loadDataCallback, this.actionType});
 
   @override
   EntryListState createState() {
@@ -30,8 +31,13 @@ class EntryListState extends State<EntryList> {
         decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
         child: StoreConnector<AppState, ItemListState>(
             converter: (store) => widget.converterCallback(store),
-            onInit: (store) =>
-                widget.loadDataCallback(store, true, Completer()),
+            onInit: (store) {
+              var state = widget.converterCallback(store);
+              if (state.paginationState.itemIds.isEmpty &&
+                  !state.listState.haveReachedEnd) {
+                widget.loadDataCallback(store, true, Completer());
+              }
+            },
             builder: (context, state) {
               if (state == null ||
                   state.listState.isLoading && state.listState.page == 1) {
@@ -43,21 +49,26 @@ class EntryListState extends State<EntryList> {
                     widget.loadDataCallback(store, refresh, completer);
               }, builder: (context, callback) {
                 return RefreshIndicator(
-                  onRefresh: () {
-                    var completer = Completer();
-                    callback(true, completer);
-                    return completer.future;
-                  },
-                  child: InfiniteList(
-                      hasReachedEnd: state.listState.haveReachedEnd,
-                      loadData: (completer) => callback(false, completer),
-                      itemCount: state.paginationState.itemIds.length,
-                      itemBuilder: (context, index) {
-                        return EntryWidget(
-                            entryId: state.paginationState.itemIds[index],
-                            ellipsize: true);
-                      }),
-                );
+                    onRefresh: () {
+                      var completer = Completer();
+                      callback(true, completer);
+                      return completer.future;
+                    },
+                    child: ErrorHandlerWidget(
+                      errorType: widget.actionType,
+                      errorStateConverter: (store) =>
+                          widget.converterCallback(store).errorState,
+                      hasData: () => state.paginationState.itemIds.isNotEmpty,
+                      child: InfiniteList(
+                          hasReachedEnd: state.listState.haveReachedEnd,
+                          loadData: (completer) => callback(false, completer),
+                          itemCount: state.paginationState.itemIds.length,
+                          itemBuilder: (context, index) {
+                            return EntryWidget(
+                                entryId: state.paginationState.itemIds[index],
+                                ellipsize: true);
+                          }),
+                    ));
               });
             }));
   }

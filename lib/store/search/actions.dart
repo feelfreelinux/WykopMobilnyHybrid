@@ -4,7 +4,8 @@ import 'package:owmflutter/store/store.dart';
 import 'package:redux/redux.dart';
 import 'dart:async';
 
-ThunkAction<AppState> searchEntries(String query, bool refresh, Completer completer) {
+ThunkAction<AppState> searchEntries(
+    String query, bool refresh, Completer completer) {
   return (Store<AppState> store) async {
     store.dispatch(loadItems(
         "SEARCH_ENTRIES",
@@ -16,12 +17,13 @@ ThunkAction<AppState> searchEntries(String query, bool refresh, Completer comple
 }
 
 ThunkAction<AppState> clearEntries() {
-  return (Store<AppState> store ) async {
+  return (Store<AppState> store) async {
     store.dispatch(ClearItems(type: "SEARCH_ENTRIES_ITEMS"));
   };
 }
 
-ThunkAction<AppState> searchLinks(String query, bool refresh, Completer completer) {
+ThunkAction<AppState> searchLinks(
+    String query, bool refresh, Completer completer) {
   return (Store<AppState> store) async {
     store.dispatch(loadItems(
         "SEARCH_LINKS",
@@ -33,7 +35,7 @@ ThunkAction<AppState> searchLinks(String query, bool refresh, Completer complete
 }
 
 ThunkAction<AppState> clearLinks() {
-  return (Store<AppState> store ) async {
+  return (Store<AppState> store) async {
     store.dispatch(ClearItems(type: "SEARCH_LINKS_ITEMS"));
   };
 }

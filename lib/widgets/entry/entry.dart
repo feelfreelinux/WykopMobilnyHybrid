@@ -7,48 +7,65 @@ import 'package:owmflutter/store/store.dart';
 class EntryWidget extends StatelessWidget {
   final int entryId;
   final bool ellipsize;
-  EntryWidget({this.entryId, this.ellipsize});
+  final bool isClickable;
+  EntryWidget({
+    this.entryId,
+    this.ellipsize,
+    this.isClickable = true,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-        key: Key(entryId.toString()),
-        padding: EdgeInsets.only(bottom: 4.0),
-        child: Material(
-            color: Theme.of(context).cardColor,
-            child: StoreConnector<AppState, Entry>(
-                converter: (store) =>
-                    store.state.entitiesState.entries[entryId],
-                builder: (context, entry) {
-                  return Column(children: _buildEntryBody(entry));
-                })));
+      key: Key(entryId.toString()),
+      padding: EdgeInsets.only(
+        bottom: 3.0,
+      ),
+      child: Material(
+        color: Theme.of(context).cardColor,
+        child: StoreConnector<AppState, Entry>(
+          converter: (store) => store.state.entitiesState.entries[entryId],
+          builder: (context, entry) {
+            return Column(
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    AuthorWidget(
+                      author: entry.author,
+                      date: entry.date,
+                      fontSize: 14.0,
+                    ),
+                    _drawVoteButton(entry),
+                  ],
+                ),
+                _drawBody(entry),
+                _drawEmbed(entry),
+                EntryFooterWidget(entry, this.isClickable),
+              ],
+            );
+          },
+        ),
+      ),
+    );
   }
 
-  List<Widget> _buildEntryBody(Entry entry) {
-    return [
-      Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            AuthorWidget(
-                author: entry.author, date: entry.date, fontSize: 13.5),
-            Padding(
-                padding: EdgeInsets.only(right: 12.0),
-                child: StoreConnector<AppState, VoidCallback>(
-                  converter: (state) =>
-                      () => state.dispatch(voteEntry(entryId)),
-                  builder: (context, callback) => VoteButton(
-                      isSelected: entry.isVoted,
-                      count: entry.voteCount,
-                      onClicked: () {
-                        callback();
-                      }),
-                ))
-          ]),
-      _drawBody(entry),
-      _drawEmbed(entry),
-      EntryFooterWidget(entry: entry)
-    ];
+  Widget _drawVoteButton(Entry entry) {
+    return Padding(
+      padding: EdgeInsets.only(
+        right: 12.0,
+      ),
+      child: StoreConnector<AppState, VoidCallback>(
+        converter: (state) => () => state.dispatch(voteEntry(entryId)),
+        builder: (context, callback) => VoteButton(
+              isSelected: entry.isVoted,
+              count: entry.voteCount,
+              onClicked: () {
+                callback();
+              },
+            ),
+      ),
+    );
   }
 
   Widget _drawBody(Entry entry) {
@@ -56,8 +73,10 @@ class EntryWidget extends StatelessWidget {
       return BodyWidget(
         body: entry.body,
         ellipsize: ellipsize,
-        padding:
-            EdgeInsets.only(left: 12.0, right: 12.0, bottom: 4.0, top: 4.0),
+        padding: EdgeInsets.symmetric(
+          vertical: 4.0,
+          horizontal: 12.0,
+        ),
       );
     } else {
       return Container();
@@ -67,8 +86,11 @@ class EntryWidget extends StatelessWidget {
   Widget _drawEmbed(Entry entry) {
     if (entry.embed != null) {
       return Container(
-          padding: EdgeInsets.only(top: 6.0),
-          child: EmbedWidget(embed: entry.embed));
+        padding: EdgeInsets.only(
+          top: 6.0,
+        ),
+        child: EmbedWidget(embed: entry.embed),
+      );
     } else {
       return Container();
     }

@@ -1,6 +1,4 @@
 import 'package:built_value/built_value.dart';
-import 'package:built_collection/built_collection.dart';
-
 import 'package:built_value/serializer.dart';
 import 'package:owmflutter/store/store.dart';
 
@@ -8,9 +6,11 @@ part 'app_state.g.dart';
 
 abstract class AppState implements Built<AppState, AppStateBuilder> {
   AuthState get authState;
+  ThemeState get themeState;
   EntitiesState get entitiesState;
 
   SearchState get searchState;
+  SuggestionsState get suggestionsState;
 
   LinksState get linksState;
   MyWykopState get myWykopState;
@@ -25,6 +25,8 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
         authState: AuthState(),
         linksState: LinksState(),
         searchState: SearchState(),
+        themeState: ThemeState(),
+        suggestionsState: SuggestionsState(),
         mikroblogState: MikroblogState(),
         myWykopState: MyWykopState(),
         tagsState: TagsState(),

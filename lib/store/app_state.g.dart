@@ -21,12 +21,18 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
       'authState',
       serializers.serialize(object.authState,
           specifiedType: const FullType(AuthState)),
+      'themeState',
+      serializers.serialize(object.themeState,
+          specifiedType: const FullType(ThemeState)),
       'entitiesState',
       serializers.serialize(object.entitiesState,
           specifiedType: const FullType(EntitiesState)),
       'searchState',
       serializers.serialize(object.searchState,
           specifiedType: const FullType(SearchState)),
+      'suggestionsState',
+      serializers.serialize(object.suggestionsState,
+          specifiedType: const FullType(SuggestionsState)),
       'linksState',
       serializers.serialize(object.linksState,
           specifiedType: const FullType(LinksState)),
@@ -68,6 +74,10 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
           result.authState.replace(serializers.deserialize(value,
               specifiedType: const FullType(AuthState)) as AuthState);
           break;
+        case 'themeState':
+          result.themeState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(ThemeState)) as ThemeState);
+          break;
         case 'entitiesState':
           result.entitiesState.replace(serializers.deserialize(value,
               specifiedType: const FullType(EntitiesState)) as EntitiesState);
@@ -75,6 +85,11 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
         case 'searchState':
           result.searchState.replace(serializers.deserialize(value,
               specifiedType: const FullType(SearchState)) as SearchState);
+          break;
+        case 'suggestionsState':
+          result.suggestionsState.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(SuggestionsState))
+              as SuggestionsState);
           break;
         case 'linksState':
           result.linksState.replace(serializers.deserialize(value,
@@ -118,9 +133,13 @@ class _$AppState extends AppState {
   @override
   final AuthState authState;
   @override
+  final ThemeState themeState;
+  @override
   final EntitiesState entitiesState;
   @override
   final SearchState searchState;
+  @override
+  final SuggestionsState suggestionsState;
   @override
   final LinksState linksState;
   @override
@@ -141,8 +160,10 @@ class _$AppState extends AppState {
 
   _$AppState._(
       {this.authState,
+      this.themeState,
       this.entitiesState,
       this.searchState,
+      this.suggestionsState,
       this.linksState,
       this.myWykopState,
       this.notificationsState,
@@ -154,11 +175,17 @@ class _$AppState extends AppState {
     if (authState == null) {
       throw new BuiltValueNullFieldError('AppState', 'authState');
     }
+    if (themeState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'themeState');
+    }
     if (entitiesState == null) {
       throw new BuiltValueNullFieldError('AppState', 'entitiesState');
     }
     if (searchState == null) {
       throw new BuiltValueNullFieldError('AppState', 'searchState');
+    }
+    if (suggestionsState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'suggestionsState');
     }
     if (linksState == null) {
       throw new BuiltValueNullFieldError('AppState', 'linksState');
@@ -195,8 +222,10 @@ class _$AppState extends AppState {
     if (identical(other, this)) return true;
     return other is AppState &&
         authState == other.authState &&
+        themeState == other.themeState &&
         entitiesState == other.entitiesState &&
         searchState == other.searchState &&
+        suggestionsState == other.suggestionsState &&
         linksState == other.linksState &&
         myWykopState == other.myWykopState &&
         notificationsState == other.notificationsState &&
@@ -216,9 +245,13 @@ class _$AppState extends AppState {
                         $jc(
                             $jc(
                                 $jc(
-                                    $jc($jc(0, authState.hashCode),
-                                        entitiesState.hashCode),
-                                    searchState.hashCode),
+                                    $jc(
+                                        $jc(
+                                            $jc($jc(0, authState.hashCode),
+                                                themeState.hashCode),
+                                            entitiesState.hashCode),
+                                        searchState.hashCode),
+                                    suggestionsState.hashCode),
                                 linksState.hashCode),
                             myWykopState.hashCode),
                         notificationsState.hashCode),
@@ -232,8 +265,10 @@ class _$AppState extends AppState {
   String toString() {
     return (newBuiltValueToStringHelper('AppState')
           ..add('authState', authState)
+          ..add('themeState', themeState)
           ..add('entitiesState', entitiesState)
           ..add('searchState', searchState)
+          ..add('suggestionsState', suggestionsState)
           ..add('linksState', linksState)
           ..add('myWykopState', myWykopState)
           ..add('notificationsState', notificationsState)
@@ -253,6 +288,12 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _$this._authState ??= new AuthStateBuilder();
   set authState(AuthStateBuilder authState) => _$this._authState = authState;
 
+  ThemeStateBuilder _themeState;
+  ThemeStateBuilder get themeState =>
+      _$this._themeState ??= new ThemeStateBuilder();
+  set themeState(ThemeStateBuilder themeState) =>
+      _$this._themeState = themeState;
+
   EntitiesStateBuilder _entitiesState;
   EntitiesStateBuilder get entitiesState =>
       _$this._entitiesState ??= new EntitiesStateBuilder();
@@ -264,6 +305,12 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _$this._searchState ??= new SearchStateBuilder();
   set searchState(SearchStateBuilder searchState) =>
       _$this._searchState = searchState;
+
+  SuggestionsStateBuilder _suggestionsState;
+  SuggestionsStateBuilder get suggestionsState =>
+      _$this._suggestionsState ??= new SuggestionsStateBuilder();
+  set suggestionsState(SuggestionsStateBuilder suggestionsState) =>
+      _$this._suggestionsState = suggestionsState;
 
   LinksStateBuilder _linksState;
   LinksStateBuilder get linksState =>
@@ -311,8 +358,10 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   AppStateBuilder get _$this {
     if (_$v != null) {
       _authState = _$v.authState?.toBuilder();
+      _themeState = _$v.themeState?.toBuilder();
       _entitiesState = _$v.entitiesState?.toBuilder();
       _searchState = _$v.searchState?.toBuilder();
+      _suggestionsState = _$v.suggestionsState?.toBuilder();
       _linksState = _$v.linksState?.toBuilder();
       _myWykopState = _$v.myWykopState?.toBuilder();
       _notificationsState = _$v.notificationsState?.toBuilder();
@@ -345,8 +394,10 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _$result = _$v ??
           new _$AppState._(
               authState: authState.build(),
+              themeState: themeState.build(),
               entitiesState: entitiesState.build(),
               searchState: searchState.build(),
+              suggestionsState: suggestionsState.build(),
               linksState: linksState.build(),
               myWykopState: myWykopState.build(),
               notificationsState: notificationsState.build(),
@@ -359,10 +410,14 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       try {
         _$failedField = 'authState';
         authState.build();
+        _$failedField = 'themeState';
+        themeState.build();
         _$failedField = 'entitiesState';
         entitiesState.build();
         _$failedField = 'searchState';
         searchState.build();
+        _$failedField = 'suggestionsState';
+        suggestionsState.build();
         _$failedField = 'linksState';
         linksState.build();
         _$failedField = 'myWykopState';

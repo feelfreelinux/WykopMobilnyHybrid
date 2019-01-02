@@ -30,6 +30,11 @@ class _$AuthStateSerializer implements StructuredSerializer<AuthState> {
       'accountKey',
       serializers.serialize(object.accountKey,
           specifiedType: const FullType(String)),
+      'color',
+      serializers.serialize(object.color, specifiedType: const FullType(int)),
+      'backgroundUrl',
+      serializers.serialize(object.backgroundUrl,
+          specifiedType: const FullType(String)),
       'loggedIn',
       serializers.serialize(object.loggedIn,
           specifiedType: const FullType(bool)),
@@ -65,6 +70,14 @@ class _$AuthStateSerializer implements StructuredSerializer<AuthState> {
           result.accountKey = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'color':
+          result.color = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
+        case 'backgroundUrl':
+          result.backgroundUrl = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
         case 'loggedIn':
           result.loggedIn = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool;
@@ -86,13 +99,23 @@ class _$AuthState extends AuthState {
   @override
   final String accountKey;
   @override
+  final int color;
+  @override
+  final String backgroundUrl;
+  @override
   final bool loggedIn;
 
   factory _$AuthState([void updates(AuthStateBuilder b)]) =>
       (new AuthStateBuilder()..update(updates)).build();
 
   _$AuthState._(
-      {this.token, this.login, this.avatarUrl, this.accountKey, this.loggedIn})
+      {this.token,
+      this.login,
+      this.avatarUrl,
+      this.accountKey,
+      this.color,
+      this.backgroundUrl,
+      this.loggedIn})
       : super._() {
     if (token == null) {
       throw new BuiltValueNullFieldError('AuthState', 'token');
@@ -105,6 +128,12 @@ class _$AuthState extends AuthState {
     }
     if (accountKey == null) {
       throw new BuiltValueNullFieldError('AuthState', 'accountKey');
+    }
+    if (color == null) {
+      throw new BuiltValueNullFieldError('AuthState', 'color');
+    }
+    if (backgroundUrl == null) {
+      throw new BuiltValueNullFieldError('AuthState', 'backgroundUrl');
     }
     if (loggedIn == null) {
       throw new BuiltValueNullFieldError('AuthState', 'loggedIn');
@@ -126,6 +155,8 @@ class _$AuthState extends AuthState {
         login == other.login &&
         avatarUrl == other.avatarUrl &&
         accountKey == other.accountKey &&
+        color == other.color &&
+        backgroundUrl == other.backgroundUrl &&
         loggedIn == other.loggedIn;
   }
 
@@ -133,9 +164,13 @@ class _$AuthState extends AuthState {
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc($jc($jc(0, token.hashCode), login.hashCode),
-                avatarUrl.hashCode),
-            accountKey.hashCode),
+            $jc(
+                $jc(
+                    $jc($jc($jc(0, token.hashCode), login.hashCode),
+                        avatarUrl.hashCode),
+                    accountKey.hashCode),
+                color.hashCode),
+            backgroundUrl.hashCode),
         loggedIn.hashCode));
   }
 
@@ -146,6 +181,8 @@ class _$AuthState extends AuthState {
           ..add('login', login)
           ..add('avatarUrl', avatarUrl)
           ..add('accountKey', accountKey)
+          ..add('color', color)
+          ..add('backgroundUrl', backgroundUrl)
           ..add('loggedIn', loggedIn))
         .toString();
   }
@@ -170,6 +207,15 @@ class AuthStateBuilder implements Builder<AuthState, AuthStateBuilder> {
   String get accountKey => _$this._accountKey;
   set accountKey(String accountKey) => _$this._accountKey = accountKey;
 
+  int _color;
+  int get color => _$this._color;
+  set color(int color) => _$this._color = color;
+
+  String _backgroundUrl;
+  String get backgroundUrl => _$this._backgroundUrl;
+  set backgroundUrl(String backgroundUrl) =>
+      _$this._backgroundUrl = backgroundUrl;
+
   bool _loggedIn;
   bool get loggedIn => _$this._loggedIn;
   set loggedIn(bool loggedIn) => _$this._loggedIn = loggedIn;
@@ -182,6 +228,8 @@ class AuthStateBuilder implements Builder<AuthState, AuthStateBuilder> {
       _login = _$v.login;
       _avatarUrl = _$v.avatarUrl;
       _accountKey = _$v.accountKey;
+      _color = _$v.color;
+      _backgroundUrl = _$v.backgroundUrl;
       _loggedIn = _$v.loggedIn;
       _$v = null;
     }
@@ -209,6 +257,8 @@ class AuthStateBuilder implements Builder<AuthState, AuthStateBuilder> {
             login: login,
             avatarUrl: avatarUrl,
             accountKey: accountKey,
+            color: color,
+            backgroundUrl: backgroundUrl,
             loggedIn: loggedIn);
     replace(_$result);
     return _$result;

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/widgets/widgets.dart';
-import 'package:redux/redux.dart';
 import 'dart:async';
 
 class NotificationsList extends StatelessWidget {
@@ -17,7 +16,13 @@ class NotificationsList extends StatelessWidget {
         decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
         child: StoreConnector<AppState, ItemListState>(
             converter: (store) => converterCallback(store),
-            onInit: (store) => loadDataCallback(store, true, Completer()),
+            onInit: (store) {
+              var state = converterCallback(store);
+              if (state.paginationState.itemIds.isEmpty &&
+                  !state.listState.haveReachedEnd) {
+                loadDataCallback(store, true, Completer());
+              }
+            },
             builder: (context, state) {
               if (state == null ||
                   state.listState.isLoading && state.listState.page == 1) {
@@ -39,7 +44,8 @@ class NotificationsList extends StatelessWidget {
                         itemCount: state.paginationState.itemIds.length,
                         itemBuilder: (context, index) {
                           return NotificationWidget(
-                              notificationId: state.paginationState.itemIds[index]);
+                              notificationId:
+                                  state.paginationState.itemIds[index]);
                         }));
               });
             }));

@@ -22,9 +22,7 @@ var colorOverrides = {
   "neuropa": [Colors.red, Color.fromARGB(255, 240, 240, 240)]
 };
 
-/**
- * Shows a tag in mikroblog text. Each tag has its own colors assigned.
- */
+/// Shows a tag in mikroblog text. Each tag has its own colors assigned.
 class TagWidget extends StatelessWidget {
   final String tag;
   TagWidget(this.tag);
@@ -44,9 +42,7 @@ class TagWidget extends StatelessWidget {
 
     return GestureDetector(
         onTap: () {
-          Navigator.push(
-              context,
-              Utils.getPageTransition(TagScreen(tag: tag)));
+          Navigator.push(context, Utils.getPageTransition(TagScreen(tag: tag)));
         },
         child: Container(
             margin: EdgeInsets.only(top: 0.4, bottom: 1.0),
@@ -57,6 +53,6 @@ class TagWidget extends StatelessWidget {
                     LinearGradient(colors: [Colors.blueAccent, Colors.blue]),
                 borderRadius: BorderRadius.circular(20.0)),
             child: Text('#' + this.tag,
-                style: TextStyle(color: Colors.white, fontSize: 13.0))));
+                style: TextStyle(color: Colors.white, fontSize: 14.0))));
   }
 }

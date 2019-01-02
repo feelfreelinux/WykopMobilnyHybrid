@@ -65,17 +65,27 @@ class EntryScreen extends StatelessWidget {
                         },
                         child: ScrollConfiguration(
                           behavior: NotSuddenJumpScrollBehavior(),
-                          child: ListView.builder(
-                              itemCount: ids.length,
-                              itemBuilder: (context, index) {
-                                if (index == 0) {
-                                  return EntryWidget(
-                                      ellipsize: false, entryId: entryId);
-                                } else {
-                                  return EntryCommentWidget(
-                                      commentId: ids[index]);
-                                }
-                              }),
+                          child: ErrorHandlerWidget(
+                            errorType: ENTRY_PREFIX + entryId.toString(),
+                            errorStateConverter: (store) =>
+                                store.state.entryScreensState
+                                    ?.states[entryId.toString()]?.errorState ??
+                                ErrorState(),
+                            hasData: () => ids.isNotEmpty,
+                            child: ListView.builder(
+                                itemCount: ids.length,
+                                itemBuilder: (context, index) {
+                                  if (index == 0) {
+                                    return EntryWidget(
+                                        ellipsize: false,
+                                        entryId: entryId,
+                                        isClickable: false);
+                                  } else {
+                                    return EntryCommentWidget(
+                                        commentId: ids[index]);
+                                  }
+                                }),
+                          ),
                         ),
                       );
                     }),

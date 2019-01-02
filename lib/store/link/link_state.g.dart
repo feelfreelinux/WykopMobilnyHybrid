@@ -25,7 +25,7 @@ class _$LinkScreensStateSerializer
       'states',
       serializers.serialize(object.states,
           specifiedType: const FullType(BuiltMap,
-              const [const FullType(int), const FullType(LinkScreenState)])),
+              const [const FullType(String), const FullType(LinkScreenState)])),
     ];
 
     return result;
@@ -45,7 +45,7 @@ class _$LinkScreensStateSerializer
         case 'states':
           result.states.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
-                const FullType(int),
+                const FullType(String),
                 const FullType(LinkScreenState)
               ])) as BuiltMap);
           break;
@@ -70,6 +70,9 @@ class _$LinkScreenStateSerializer
       'ids',
       serializers.serialize(object.ids,
           specifiedType: const FullType(List, const [const FullType(int)])),
+      'errorState',
+      serializers.serialize(object.errorState,
+          specifiedType: const FullType(ErrorState)),
     ];
 
     return result;
@@ -92,6 +95,10 @@ class _$LinkScreenStateSerializer
                       const FullType(List, const [const FullType(int)]))
               as List<int>;
           break;
+        case 'errorState':
+          result.errorState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(ErrorState)) as ErrorState);
+          break;
       }
     }
 
@@ -101,7 +108,7 @@ class _$LinkScreenStateSerializer
 
 class _$LinkScreensState extends LinkScreensState {
   @override
-  final BuiltMap<int, LinkScreenState> states;
+  final BuiltMap<String, LinkScreenState> states;
 
   factory _$LinkScreensState([void updates(LinkScreensStateBuilder b)]) =>
       (new LinkScreensStateBuilder()..update(updates)).build();
@@ -143,10 +150,10 @@ class LinkScreensStateBuilder
     implements Builder<LinkScreensState, LinkScreensStateBuilder> {
   _$LinkScreensState _$v;
 
-  MapBuilder<int, LinkScreenState> _states;
-  MapBuilder<int, LinkScreenState> get states =>
-      _$this._states ??= new MapBuilder<int, LinkScreenState>();
-  set states(MapBuilder<int, LinkScreenState> states) =>
+  MapBuilder<String, LinkScreenState> _states;
+  MapBuilder<String, LinkScreenState> get states =>
+      _$this._states ??= new MapBuilder<String, LinkScreenState>();
+  set states(MapBuilder<String, LinkScreenState> states) =>
       _$this._states = states;
 
   LinkScreensStateBuilder();
@@ -196,13 +203,18 @@ class LinkScreensStateBuilder
 class _$LinkScreenState extends LinkScreenState {
   @override
   final List<int> ids;
+  @override
+  final ErrorState errorState;
 
   factory _$LinkScreenState([void updates(LinkScreenStateBuilder b)]) =>
       (new LinkScreenStateBuilder()..update(updates)).build();
 
-  _$LinkScreenState._({this.ids}) : super._() {
+  _$LinkScreenState._({this.ids, this.errorState}) : super._() {
     if (ids == null) {
       throw new BuiltValueNullFieldError('LinkScreenState', 'ids');
+    }
+    if (errorState == null) {
+      throw new BuiltValueNullFieldError('LinkScreenState', 'errorState');
     }
   }
 
@@ -217,17 +229,21 @@ class _$LinkScreenState extends LinkScreenState {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is LinkScreenState && ids == other.ids;
+    return other is LinkScreenState &&
+        ids == other.ids &&
+        errorState == other.errorState;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, ids.hashCode));
+    return $jf($jc($jc(0, ids.hashCode), errorState.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('LinkScreenState')..add('ids', ids))
+    return (newBuiltValueToStringHelper('LinkScreenState')
+          ..add('ids', ids)
+          ..add('errorState', errorState))
         .toString();
   }
 }
@@ -240,11 +256,18 @@ class LinkScreenStateBuilder
   List<int> get ids => _$this._ids;
   set ids(List<int> ids) => _$this._ids = ids;
 
+  ErrorStateBuilder _errorState;
+  ErrorStateBuilder get errorState =>
+      _$this._errorState ??= new ErrorStateBuilder();
+  set errorState(ErrorStateBuilder errorState) =>
+      _$this._errorState = errorState;
+
   LinkScreenStateBuilder();
 
   LinkScreenStateBuilder get _$this {
     if (_$v != null) {
       _ids = _$v.ids;
+      _errorState = _$v.errorState?.toBuilder();
       _$v = null;
     }
     return this;
@@ -265,7 +288,21 @@ class LinkScreenStateBuilder
 
   @override
   _$LinkScreenState build() {
-    final _$result = _$v ?? new _$LinkScreenState._(ids: ids);
+    _$LinkScreenState _$result;
+    try {
+      _$result = _$v ??
+          new _$LinkScreenState._(ids: ids, errorState: errorState.build());
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'errorState';
+        errorState.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'LinkScreenState', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

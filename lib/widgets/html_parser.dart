@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/services.dart';
 
 import 'package:html/parser.dart' as html show parse;
 import 'package:html/dom.dart' as html;
 import 'package:owmflutter/widgets/spoiler.dart';
-import 'package:owmflutter/widgets/tag.dart';
-import 'package:owmflutter/widgets/user_widget.dart';
 import 'package:owmflutter/navigator/navigator.dart';
-
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/gestures.dart';
+import 'package:owmflutter/utils/utils.dart';
+import 'package:owmflutter/screens/screens.dart';
 
 import 'dart:ui';
-import 'dart:math';
 
-/**
+/*
  * HtmlWidget 
  * 
  * Specialized html parser that utilizes both widgets and RichText for fancy views support.
@@ -27,11 +23,10 @@ class HtmlWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new _HtmlParser(context)
-        .parseFromStr(html.replaceAll("#<a href=", "<a href=")
+    return new _HtmlParser(context).parseFromStr(html
         .replaceAll('<cite> ', '<cite>')
-        .replaceAll("@<a href=", "<a href=")
-        .replaceAll('<br /> ', '<br/>'));
+        .replaceAll('<br /> ', '<br/>')
+        .replaceAll('&quot;', '"'));
   }
 }
 
@@ -44,7 +39,7 @@ class _HtmlParser {
   final TextTheme textTheme;
 
   _HtmlParser(this.context, {this.nested: false, this.appContext: const {}})
-      : textTheme = Theme.of(context).textTheme {}
+      : textTheme = Theme.of(context).textTheme;
 
   List<Widget> _widgets = [];
   List<TextSpan> _currentTextSpans = [];
@@ -73,24 +68,22 @@ class _HtmlParser {
     }
   }
 
-  void _tokenizeBody(String body,
-      {style = const TextStyle(color: Colors.black)}) {
+  void _tokenizeBody(String body, {style}) {
     final trimmedText = body.replaceAll('\n', '');
 
-    _tryCloseCurrentTextSpan();
-
-    var words = trimmedText.split(' ');
-    trimmedText.split(' ').asMap().forEach((index, value) {
-      _widgets
-          .add(Text(index == words.length ? value : value + ' ', style: style));
-    });
+    _currentTextSpans.add(TextSpan(
+        text: trimmedText,
+        style: style ??
+            TextStyle(
+                color: Theme.of(context).textTheme.headline.color,
+                height: 1.1)));
   }
 
   Widget parseFromElement(html.Element element) {
     _parseNode(element);
     _tryCloseCurrentTextSpan();
 
-    return new Wrap(children: _widgets);
+    return new Column(children: _widgets);
   }
 
   void _parseElement(html.Element element) {
@@ -101,20 +94,14 @@ class _HtmlParser {
             style: TextStyle(fontStyle: FontStyle.italic));
         break;
       case 'br':
-        _tryCloseCurrentTextSpan();
-        _widgets.add(Container(
-          width: MediaQuery.of(context).size.width,
-          height: 0,
-        ));
+        _currentTextSpans.add(TextSpan(text: '\n'));
         return;
       case 'strong':
         _tokenizeBody(element.text,
             style: TextStyle(fontWeight: FontWeight.bold));
-        // for (var subNode in element.nodes) { _parseNode(subNode); }
         return;
       case 'code':
         _tokenizeBody(element.text, style: TextStyle(fontFamily: 'Monospace'));
-        // for (var subNode in element.nodes) { _parseNode(subNode); }
         return;
       case 'a':
         if (element.attributes['href'].startsWith('spoiler:')) {
@@ -122,32 +109,34 @@ class _HtmlParser {
           _widgets.add(new SpoilerWidget());
           return;
         } else if (element.attributes['href'].startsWith('#')) {
-          _tryCloseCurrentTextSpan();
-          _widgets.add(new TagWidget(element.text));
+          _currentTextSpans.add(ClickableTextSpan(
+              text: element.text,
+              onTap: () {
+                Navigator.push(context,
+                    Utils.getPageTransition(TagScreen(tag: element.text)));
+              },
+              style: TextStyle(
+                color: Colors.blueAccent,
+              )));
           return;
         } else if (element.attributes['href'].startsWith('@')) {
-          _tryCloseCurrentTextSpan();
-          _widgets.add(new UserWidget(element.text));
+          _tokenizeBody(element.text,
+              style: TextStyle(
+                color: Colors.blueAccent,
+              ));
           return;
         } else if (element.hasContent() &&
             (element.nodes.length == 1) &&
             (element.firstChild.nodeType == html.Node.TEXT_NODE)) {
           var url = element.attributes['href'];
-          _tryCloseCurrentTextSpan();
-          _widgets.add(GestureDetector(
-            onLongPress: () {
-              Clipboard.setData(ClipboardData(text: url));
-              Scaffold.of(context).showSnackBar(new SnackBar(
-                content: new Text("Skopiowano url do schowka"),
-              ));
-            },
-            onTap: () async {
-              WykopNavigator.handleUrl(context, url);
-            },
-            child:
-                Text(element.text, style: TextStyle(color: Colors.blueAccent)),
-          ));
-
+          _currentTextSpans.add(ClickableTextSpan(
+              text: element.text,
+              onTap: () {
+                WykopNavigator.handleUrl(context, url);
+              },
+              style: TextStyle(
+                color: Colors.blueAccent,
+              )));
           return;
         }
 
@@ -194,52 +183,32 @@ class _HtmlParser {
 
     _widgets.add(
       Container(
-        color: Colors.red,
         child: new RichText(
             overflow: TextOverflow.clip,
             softWrap: true,
             text: new TextSpan(
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(
+                    color: Theme.of(context).textTheme.headline.color),
                 children: new List.from(_currentTextSpans))),
       ),
     );
 
     _currentTextSpans.clear();
   }
-
-  void _appendToCurrentTextSpans(dynamic stringOrTextSpan) {
-    switch (stringOrTextSpan.runtimeType) {
-      case String:
-        // NOTE if the widget to be added, and the current last widget, are both Text, then we should append the text instead of widgets.
-        if (_currentTextSpans.length > 0 &&
-            _currentTextSpans.last.runtimeType == Text) {
-          final String originalText = _currentTextSpans.last.text;
-          final String mergedText = originalText + stringOrTextSpan;
-          _currentTextSpans[_currentTextSpans.length - 1] =
-              new TextSpan(text: mergedText);
-        } else {
-          _currentTextSpans.add(new TextSpan(text: stringOrTextSpan));
-        }
-        break;
-      case TextSpan:
-        _currentTextSpans.add(stringOrTextSpan);
-        break;
-    }
-  }
 }
 
-TextSpan _textLink({BuildContext context, String text, String href}) {
-  final linkStyle =
-      Theme.of(context).textTheme.body1.copyWith(color: Colors.blue);
-
-  TextSpan _textSpanForExternalLink() {
-    final recognizer = new TapGestureRecognizer()
-      ..onTap = () {
-        launch(href);
-      };
-
-    return new TextSpan(text: text, style: linkStyle, recognizer: recognizer);
-  }
-
-  return _textSpanForExternalLink();
+class ClickableTextSpan extends TextSpan {
+  ClickableTextSpan(
+      {TextStyle style,
+      String text,
+      VoidCallback onTap,
+      List<TextSpan> children})
+      : super(
+            style: style,
+            text: text,
+            children: children ?? <TextSpan>[],
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                onTap();
+              });
 }

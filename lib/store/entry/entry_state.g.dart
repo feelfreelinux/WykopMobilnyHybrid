@@ -72,6 +72,9 @@ class _$EntryScreenStateSerializer
       'ids',
       serializers.serialize(object.ids,
           specifiedType: const FullType(List, const [const FullType(int)])),
+      'errorState',
+      serializers.serialize(object.errorState,
+          specifiedType: const FullType(ErrorState)),
     ];
 
     return result;
@@ -93,6 +96,10 @@ class _$EntryScreenStateSerializer
                   specifiedType:
                       const FullType(List, const [const FullType(int)]))
               as List<int>;
+          break;
+        case 'errorState':
+          result.errorState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(ErrorState)) as ErrorState);
           break;
       }
     }
@@ -198,13 +205,18 @@ class EntryScreensStateBuilder
 class _$EntryScreenState extends EntryScreenState {
   @override
   final List<int> ids;
+  @override
+  final ErrorState errorState;
 
   factory _$EntryScreenState([void updates(EntryScreenStateBuilder b)]) =>
       (new EntryScreenStateBuilder()..update(updates)).build();
 
-  _$EntryScreenState._({this.ids}) : super._() {
+  _$EntryScreenState._({this.ids, this.errorState}) : super._() {
     if (ids == null) {
       throw new BuiltValueNullFieldError('EntryScreenState', 'ids');
+    }
+    if (errorState == null) {
+      throw new BuiltValueNullFieldError('EntryScreenState', 'errorState');
     }
   }
 
@@ -219,17 +231,21 @@ class _$EntryScreenState extends EntryScreenState {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is EntryScreenState && ids == other.ids;
+    return other is EntryScreenState &&
+        ids == other.ids &&
+        errorState == other.errorState;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, ids.hashCode));
+    return $jf($jc($jc(0, ids.hashCode), errorState.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('EntryScreenState')..add('ids', ids))
+    return (newBuiltValueToStringHelper('EntryScreenState')
+          ..add('ids', ids)
+          ..add('errorState', errorState))
         .toString();
   }
 }
@@ -242,11 +258,18 @@ class EntryScreenStateBuilder
   List<int> get ids => _$this._ids;
   set ids(List<int> ids) => _$this._ids = ids;
 
+  ErrorStateBuilder _errorState;
+  ErrorStateBuilder get errorState =>
+      _$this._errorState ??= new ErrorStateBuilder();
+  set errorState(ErrorStateBuilder errorState) =>
+      _$this._errorState = errorState;
+
   EntryScreenStateBuilder();
 
   EntryScreenStateBuilder get _$this {
     if (_$v != null) {
       _ids = _$v.ids;
+      _errorState = _$v.errorState?.toBuilder();
       _$v = null;
     }
     return this;
@@ -267,7 +290,21 @@ class EntryScreenStateBuilder
 
   @override
   _$EntryScreenState build() {
-    final _$result = _$v ?? new _$EntryScreenState._(ids: ids);
+    _$EntryScreenState _$result;
+    try {
+      _$result = _$v ??
+          new _$EntryScreenState._(ids: ids, errorState: errorState.build());
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'errorState';
+        errorState.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'EntryScreenState', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

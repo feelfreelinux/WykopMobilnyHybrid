@@ -1,7 +1,6 @@
 import 'package:owmflutter/api/api.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:owmflutter/models/models.dart';
-import 'package:owmflutter/store/store.dart';
 
 class EntriesApi extends ApiResource {
   EntriesApi(ApiClient client) : super(client);
@@ -33,11 +32,24 @@ class EntriesApi extends ApiResource {
         client.deserializeElement(EntryResponse.serializer, items));
   }
 
+  Future<Result> deleteEntry(int id) async {
+    var items = await client.request('entries', 'delete', api: [id.toString()]);
+    return normalizeEntryResponse(
+        client.deserializeElement(EntryResponse.serializer, items));
+  }
+
+  Future<Result> deleteEntryComment(int id) async {
+    var items = await client.request('entries', 'commentdelete', api: [id.toString()]);
+    return normalizeEntryCommentResponse(
+        client.deserializeElement(EntryCommentResponse.serializer, items));
+  }
+
   Future<Result> addEntryComment(Entry entry, InputData data) async {
-    await client.request('entries', 'commentadd', api: [entry.id.toString()], post: { 'body': data.body });
+    await client.request('entries', 'commentadd',
+        api: [entry.id.toString()], post: {'body': data.body}, image: data.file);
     return normalizeEntry(entry);
   }
-  
+
   Future<Result> voteUp(Entry entry) async {
     var voteCount =
         await client.request('entries', 'voteup', api: [entry.id.toString()]);

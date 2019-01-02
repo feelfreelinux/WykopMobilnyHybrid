@@ -17,6 +17,12 @@ Map<int, Entry> entryResponseListToMap(BuiltList<EntryResponse> entries) {
       Map.fromIterable(mappedEntries, key: (v) => v.id, value: (v) => v));
 }
 
+Map<int, Author> authorResponseListToMap(BuiltList<AuthorResponse> authors) {
+  var mappedAuthors = authors.map((c) => Author.fromResponse(response: c));
+  return Map<int, Author>.from(
+      Map.fromIterable(mappedAuthors, key: (v) => v.id, value: (v) => v));
+}
+
 Result normalizeEntriesResponse(BuiltList<EntryResponse> entries) {
   var entriesMap = entryResponseListToMap(entries);
   var ids = entries.map((e) => e.id);
@@ -26,17 +32,21 @@ Result normalizeEntriesResponse(BuiltList<EntryResponse> entries) {
       state: EntitiesState().rebuild((b) => b..entries.addAll(entriesMap)));
 }
 
-Result normalizeNotificationsResponse(BuiltList<NotificationResponse> notifications) {
+Result normalizeNotificationsResponse(
+    BuiltList<NotificationResponse> notifications) {
   var notificationsMap = notificationResponseListToMap(notifications);
   var ids = notifications.map((e) => e.id);
 
   return Result(
       result: ids.toList(),
-      state: EntitiesState().rebuild((b) => b..notifications.addAll(notificationsMap)));
+      state: EntitiesState()
+          .rebuild((b) => b..notifications.addAll(notificationsMap)));
 }
 
-Map<int, Notification> notificationResponseListToMap(BuiltList<NotificationResponse> notifications) {
-  var mappedNotifications = notifications.map((c) => Notification.mapFromResponse(c));
+Map<int, Notification> notificationResponseListToMap(
+    BuiltList<NotificationResponse> notifications) {
+  var mappedNotifications =
+      notifications.map((c) => Notification.mapFromResponse(c));
   return Map<int, Notification>.from(
       Map.fromIterable(mappedNotifications, key: (v) => v.id, value: (v) => v));
 }
@@ -47,8 +57,16 @@ Map<int, Link> linkResponseListToMap(BuiltList<LinkResponse> links) {
       Map.fromIterable(mappedLinks, key: (v) => v.id, value: (v) => v));
 }
 
-Map<int, LinkComment> linkCommentResponseListToMap(BuiltList<LinkCommentResponse> linkComments) {
-  var mappedLinkComments = linkComments.map((c) => LinkComment.mapFromResponse(c, linkComments.where((d) => d.parentId == c.id && d.id != c.id).map((d) => d.id).toList())).toList();
+Map<int, LinkComment> linkCommentResponseListToMap(
+    BuiltList<LinkCommentResponse> linkComments) {
+  var mappedLinkComments = linkComments
+      .map((c) => LinkComment.mapFromResponse(
+          c,
+          linkComments
+              .where((d) => d.parentId == c.id && d.id != c.id)
+              .map((d) => d.id)
+              .toList()))
+      .toList();
   return Map<int, LinkComment>.from(
       Map.fromIterable(mappedLinkComments, key: (v) => v.id, value: (v) => v));
 }
@@ -62,13 +80,18 @@ Result normalizeLinksResponse(BuiltList<LinkResponse> links) {
       state: EntitiesState().rebuild((b) => b..links.addAll(linksMap)));
 }
 
-Result normalizeLinkCommentsResponse(BuiltList<LinkCommentResponse> linkComments) {
+Result normalizeLinkCommentsResponse(
+    BuiltList<LinkCommentResponse> linkComments) {
   var linkCommentsMap = linkCommentResponseListToMap(linkComments);
-  var ids = linkCommentsMap.values.toList().where((c) => c.id == c.parentId).map((e) => e.id);
+  var ids = linkCommentsMap.values
+      .toList()
+      .where((c) => c.id == c.parentId)
+      .map((e) => e.id);
 
   return Result(
       result: ids.toList(),
-      state: EntitiesState().rebuild((b) => b..linkComments.addAll(linkCommentsMap)));
+      state: EntitiesState()
+          .rebuild((b) => b..linkComments.addAll(linkCommentsMap)));
 }
 
 Result normalizeEntryCommentsResponse(
@@ -102,6 +125,14 @@ Result normalizeEntryResponse(EntryResponse entry) {
       state: commentsResult.state
           .rebuild((b) => b.entries.putIfAbsent(entry.id, () => mappedEntry)),
       result: ids);
+}
+
+Result normalizeEntryCommentResponse(EntryCommentResponse entryComment) {
+  var mappedEntryComment = EntryComment.mapFromResponse(entryComment);
+  return Result(
+      state: EntitiesState()
+          .rebuild((b) => b.entryComments.putIfAbsent(entryComment.id, () => mappedEntryComment)),
+      result: [mappedEntryComment.id]);
 }
 
 Result normalizeEntry(Entry entry) {
