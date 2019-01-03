@@ -4,52 +4,6 @@ import 'package:owmflutter/widgets/widgets.dart';
 import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 
-class TagScreen4 extends StatelessWidget {
-  final String tag;
-  TagScreen4({this.tag});
-  @override
-  Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: <Widget>[
-        SliverAppBar(
-          elevation: 1.5,
-          leading: IconButton(
-            icon: Container(
-              margin: EdgeInsets.only(
-                bottom: 8.0,
-              ),
-              padding: EdgeInsets.all(4.0),
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor.withOpacity(0.5),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.close,
-              ),
-            ),
-            onPressed: () {
-              Navigator.of(context).maybePop();
-            },
-          ),
-          expandedHeight: 180.0,
-          flexibleSpace: FlexibleSpaceBar(
-            background: Image(
-              image: AdvancedNetworkImage(
-                  "https://www.wykop.pl/cdn/c3397992/profile_background-feelfree_RyD5ErCHQ2.jpg"),
-              fit: BoxFit.fitWidth,
-            ),
-          ),
-        ),
-        SliverList(
-          delegate: SliverChildListDelegate(
-            <Widget>[],
-          ),
-        )
-      ],
-    );
-  }
-}
-
 class TagScreen extends StatefulWidget {
   final String tag;
   TagScreen({this.tag});
@@ -68,18 +22,9 @@ class _MainCollapsingToolbarState extends State<TagScreen> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
-                expandedHeight: 200.0,
+                expandedHeight: 190,
                 floating: false,
                 pinned: true,
-                bottom: AppbarTabsWidget(
-                  tabs: [
-                    Tab(text: 'WSZYSTKO'),
-                    Tab(text: 'ZNALEZISKA'),
-                    Tab(text: 'WPISY'),
-                  ],
-                  actions: [],
-                  showCurrentUser: false,
-                ),
                 title: Text("#" + widget.tag),
                 /*bottom: new TabBar(
                   tabs: [
@@ -109,12 +54,30 @@ class _MainCollapsingToolbarState extends State<TagScreen> {
                   ),
                   unselectedLabelColor: Colors.grey[600],
                 ),*/
+
                 flexibleSpace: FlexibleSpaceBar(
-                    background: Image(
-                  image: AdvancedNetworkImage(
-                      "https://www.wykop.pl/cdn/c3397992/profile_background-feelfree_RyD5ErCHQ2.jpg"),
-                  fit: BoxFit.fitWidth,
-                )),
+                    background: Column(children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 150,
+                    child: Image(
+                      image: AdvancedNetworkImage(
+                          "https://www.wykop.pl/cdn/c3397992/profile_background-feelfree_RyD5ErCHQ2.jpg"),
+                      fit: BoxFit.fitWidth,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                        "Rozmowy o aktualnych wydarzeniach związanych z królową sportów motorowych oraz miejsce na wspomnienia pięknych momentów związanych z tym sportem"),
+                  ),
+                ])),
+              ),
+              SliverPersistentHeader(
+                delegate: _SliverAppBarDelegate(
+                  AppbarPreferredSize(child: _renderDropdown()),
+                ),
+                pinned: true,
               ),
             ];
           },
@@ -145,12 +108,40 @@ class _MainCollapsingToolbarState extends State<TagScreen> {
       ),
     );
   }
+
+  Widget _renderDropdown() {
+    return Container(
+      color: Theme.of(context).backgroundColor,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                items: <String>['Wszystko', 'Znaleziska', 'Wpisy']
+                    .map((String value) {
+                  return new DropdownMenuItem<String>(
+                    value: value,
+                    child: new Text(value),
+                  );
+                }).toList(),
+                value: "Wszystko",
+                onChanged: (_) {},
+              ),
+            ),
+            Expanded(child: Container()),
+            Icon(Icons.menu)
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   _SliverAppBarDelegate(this._tabBar);
 
-  final TabBar _tabBar;
+  final PreferredSizeWidget _tabBar;
 
   @override
   double get minExtent => _tabBar.preferredSize.height;
@@ -171,39 +162,22 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   }
 }
 
-class TagScreen2 extends StatelessWidget {
-  final String tag;
-  TagScreen2({this.tag});
+@immutable
+class AppbarPreferredSize extends PreferredSize {
+  final Widget child;
+  final double height;
+  AppbarPreferredSize({
+    @required this.child,
+    this.height = 48,
+  });
+
+  @override
+  Size get preferredSize {
+    return Size.fromHeight(height);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 6,
-      child: Scaffold(
-          appBar: AppbarTabsWidget(tabs: <Widget>[
-            Tab(text: 'WSZYSTKO'),
-            Tab(text: 'ZNALEZISKA'),
-            Tab(text: 'WPISY'),
-          ], actions: []),
-          body: TabBarView(children: [
-            EntryLinkList(
-                actionType: TAG_INDEX_PREFIX + tag,
-                converterCallback: (store) =>
-                    store.state.tagsState?.states[tag]?.indexState,
-                loadDataCallback: (store, refresh, completer) =>
-                    store.dispatch(loadTagIndex(tag, refresh, completer))),
-            LinksList(
-                actionType: TAG_LINKS_PREFIX + tag,
-                converterCallback: (store) =>
-                    store.state.tagsState.states[tag].linksState,
-                loadDataCallback: (store, refresh, completer) =>
-                    store.dispatch(loadTagLinks(tag, refresh, completer))),
-            EntryList(
-                actionType: TAG_ENTRIES_PREFIX + tag,
-                converterCallback: (store) =>
-                    store.state.tagsState.states[tag].entriesState,
-                loadDataCallback: (store, refresh, completer) =>
-                    store.dispatch(loadTagEntries(tag, refresh, completer))),
-          ], physics: NeverScrollableScrollPhysics())),
-    );
+    return child;
   }
 }
