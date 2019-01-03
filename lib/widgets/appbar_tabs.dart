@@ -13,10 +13,12 @@ class AppbarTabsWidget extends PreferredSize {
   final List<Widget> tabs;
   final VoidCallback onPressedSearch;
   final List<Widget> actions;
+  final bool showCurrentUser;
   AppbarTabsWidget({
     @required this.tabs,
     this.onPressedSearch,
     this.actions,
+    this.showCurrentUser = true
   });
 
   @override
@@ -27,7 +29,8 @@ class AppbarTabsWidget extends PreferredSize {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leading: AppbarUserWidget(),
+      automaticallyImplyLeading: false,
+      leading: this.showCurrentUser ? AppbarUserWidget() : null,
       title: Container(
         color: Theme.of(context).primaryColor,
         child: Stack(

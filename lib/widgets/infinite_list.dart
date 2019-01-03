@@ -69,6 +69,36 @@ class _InfiniteListState extends State<InfiniteList> {
   Widget build(BuildContext context) {
     return ScrollConfiguration(
         behavior: NotSuddenJumpScrollBehavior(),
+        child:  CustomScrollView(
+  semanticChildCount: 4,
+  slivers: [SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          if (index == widget.itemCount) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: widget.hasReachedEnd
+                    ? Column(children: [
+                        Text('To jest już koniec :)'),
+                        Image.asset(
+                          'rogal.png',
+                          width: 100,
+                          height: 100,
+                        )
+                      ])
+                    : CircularProgressIndicator(),
+              ),
+            );
+          }
+
+          return widget.itemBuilder(context, index);
+        },
+        childCount: widget.itemCount,
+      ),
+    )]));
+    return ScrollConfiguration(
+        behavior: NotSuddenJumpScrollBehavior(),
         child: ListView.builder(
           physics: NotSuddenJumpPhysics(),
           itemCount: widget.itemCount + 1,
