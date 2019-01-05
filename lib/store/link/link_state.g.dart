@@ -67,9 +67,11 @@ class _$LinkScreenStateSerializer
   Iterable serialize(Serializers serializers, LinkScreenState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'ids',
-      serializers.serialize(object.ids,
-          specifiedType: const FullType(List, const [const FullType(int)])),
+      'comments',
+      serializers.serialize(object.comments,
+          specifiedType: const FullType(List, const [
+            const FullType(List, const [const FullType(int)])
+          ])),
       'errorState',
       serializers.serialize(object.errorState,
           specifiedType: const FullType(ErrorState)),
@@ -89,11 +91,11 @@ class _$LinkScreenStateSerializer
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'ids':
-          result.ids = serializers.deserialize(value,
-                  specifiedType:
-                      const FullType(List, const [const FullType(int)]))
-              as List<int>;
+        case 'comments':
+          result.comments = serializers.deserialize(value,
+              specifiedType: const FullType(List, const [
+                const FullType(List, const [const FullType(int)])
+              ])) as List<List<int>>;
           break;
         case 'errorState':
           result.errorState.replace(serializers.deserialize(value,
@@ -202,16 +204,16 @@ class LinkScreensStateBuilder
 
 class _$LinkScreenState extends LinkScreenState {
   @override
-  final List<int> ids;
+  final List<List<int>> comments;
   @override
   final ErrorState errorState;
 
   factory _$LinkScreenState([void updates(LinkScreenStateBuilder b)]) =>
       (new LinkScreenStateBuilder()..update(updates)).build();
 
-  _$LinkScreenState._({this.ids, this.errorState}) : super._() {
-    if (ids == null) {
-      throw new BuiltValueNullFieldError('LinkScreenState', 'ids');
+  _$LinkScreenState._({this.comments, this.errorState}) : super._() {
+    if (comments == null) {
+      throw new BuiltValueNullFieldError('LinkScreenState', 'comments');
     }
     if (errorState == null) {
       throw new BuiltValueNullFieldError('LinkScreenState', 'errorState');
@@ -230,19 +232,19 @@ class _$LinkScreenState extends LinkScreenState {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is LinkScreenState &&
-        ids == other.ids &&
+        comments == other.comments &&
         errorState == other.errorState;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, ids.hashCode), errorState.hashCode));
+    return $jf($jc($jc(0, comments.hashCode), errorState.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('LinkScreenState')
-          ..add('ids', ids)
+          ..add('comments', comments)
           ..add('errorState', errorState))
         .toString();
   }
@@ -252,9 +254,9 @@ class LinkScreenStateBuilder
     implements Builder<LinkScreenState, LinkScreenStateBuilder> {
   _$LinkScreenState _$v;
 
-  List<int> _ids;
-  List<int> get ids => _$this._ids;
-  set ids(List<int> ids) => _$this._ids = ids;
+  List<List<int>> _comments;
+  List<List<int>> get comments => _$this._comments;
+  set comments(List<List<int>> comments) => _$this._comments = comments;
 
   ErrorStateBuilder _errorState;
   ErrorStateBuilder get errorState =>
@@ -266,7 +268,7 @@ class LinkScreenStateBuilder
 
   LinkScreenStateBuilder get _$this {
     if (_$v != null) {
-      _ids = _$v.ids;
+      _comments = _$v.comments;
       _errorState = _$v.errorState?.toBuilder();
       _$v = null;
     }
@@ -291,7 +293,8 @@ class LinkScreenStateBuilder
     _$LinkScreenState _$result;
     try {
       _$result = _$v ??
-          new _$LinkScreenState._(ids: ids, errorState: errorState.build());
+          new _$LinkScreenState._(
+              comments: comments, errorState: errorState.build());
     } catch (_) {
       String _$failedField;
       try {
