@@ -20,7 +20,7 @@ class NotificationsList extends StatelessWidget {
               var state = converterCallback(store);
               if (state.paginationState.itemIds.isEmpty &&
                   !state.listState.haveReachedEnd) {
-                loadDataCallback(store, true, Completer());
+                loadDataCallback(store, false, Completer());
               }
             },
             builder: (context, state) {
