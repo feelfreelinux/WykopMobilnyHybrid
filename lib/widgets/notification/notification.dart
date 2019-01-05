@@ -55,7 +55,7 @@ class NotificationWidget extends StatelessWidget {
                                                 notification.body.indexOf(' '),
                                                 notification.body.length),
                                             style:
-                                                TextStyle(color: Colors.black))
+                                                TextStyle(color: Theme.of(context).textTheme.headline.color))
                                       ],
                                     ))
                               ],
