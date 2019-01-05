@@ -21,7 +21,7 @@ class LinksList extends StatelessWidget {
               var state = converterCallback(store);
               if (state == null || state.paginationState.itemIds.isEmpty &&
                   !state.listState.haveReachedEnd) {
-                loadDataCallback(store, true, Completer());
+                loadDataCallback(store, false, Completer());
               }
             },
             builder: (context, state) {
