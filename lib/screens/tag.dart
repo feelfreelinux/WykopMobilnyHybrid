@@ -15,16 +15,16 @@ class _MainCollapsingToolbarState extends State<TagScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: null,
       body: DefaultTabController(
         length: 3,
         child: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
+                elevation: 2.0,
                 expandedHeight: 190,
-                floating: false,
                 pinned: true,
+                titleSpacing: 0,
                 title: Text("#" + widget.tag),
                 /*bottom: new TabBar(
                   tabs: [
@@ -77,7 +77,7 @@ class _MainCollapsingToolbarState extends State<TagScreen> {
                 delegate: _SliverAppBarDelegate(
                   AppbarPreferredSize(child: _renderDropdown()),
                 ),
-                pinned: true,
+                floating: true,
               ),
             ];
           },
@@ -113,19 +113,21 @@ class _MainCollapsingToolbarState extends State<TagScreen> {
     return Container(
       color: Theme.of(context).backgroundColor,
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         child: Row(
           children: [
             DropdownButtonHideUnderline(
               child: DropdownButton<String>(
-                items: <String>['Wszystko', 'Znaleziska', 'Wpisy']
+                items: <String>['WSZYSTKO', 'ZNALEZISKA', 'WPISY']
                     .map((String value) {
                   return new DropdownMenuItem<String>(
                     value: value,
-                    child: new Text(value),
+                    child: new Text(value,
+                        style: TextStyle(
+                            fontSize: 13.0, fontWeight: FontWeight.w600)),
                   );
                 }).toList(),
-                value: "Wszystko",
+                value: "WSZYSTKO",
                 onChanged: (_) {},
               ),
             ),

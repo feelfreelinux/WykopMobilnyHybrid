@@ -41,9 +41,7 @@ class EntryCommentWidget extends StatelessWidget {
                             _showActionsDialog(context, comment, authState,
                                 deleteCommentCallback);
                           },
-                          child: Column(
-                            children: _buildEntryCommentBody(comment, context),
-                          ),
+                          child: _buildEntryCommentBody(comment, context),
                         ),
                   ),
                 ),
@@ -80,24 +78,22 @@ class EntryCommentWidget extends StatelessWidget {
     ActionsDialog.showActionsDialog(context, actions);
   }
 
-  List<Widget> _buildEntryCommentBody(
-      EntryComment comment, BuildContext context) {
-    return [
-      //InkWell(child:
-      Column(
+  Widget _buildEntryCommentBody(EntryComment comment, BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 18.0),
+      child: Column(
         children: <Widget>[
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(
-                  left: 12.0,
-                  top: 10.0,
-                  bottom: 10.0,
+                  top: 12.0,
+                  bottom: 12.0,
                 ),
                 child: AvatarWidget(
                   author: comment.author,
-                  size: 44.0,
+                  size: 38.0,
                   genderVisibility: true,
                 ),
               ),
@@ -113,25 +109,23 @@ class EntryCommentWidget extends StatelessWidget {
               ),
             ],
           ),
-          Container(
-            color: Color(0x1A7F7F7F),
-            height: 0.8,
-            margin: EdgeInsets.only(
-              left: 70.0,
-              right: 12.0,
-            ),
-          )
+          Divider(
+            height: 1,
+            indent: 50,
+          ),
         ],
       ),
-      //onTap: () {},
-      //onDoubleTap: () {},
-      //onLongPress: () {})
-    ];
+    );
   }
 
   Widget _drawBody(EntryComment comment) {
     if (comment.body != null) {
-      return BodyWidget(body: comment.body, ellipsize: false);
+      return BodyWidget(body: comment.body, ellipsize: false, padding: EdgeInsets.only(
+          top: 2.0,
+          left: 12.0,
+          right: 2.0,
+          bottom: 12.0,
+        ),);
     } else {
       return Container();
     }
@@ -142,7 +136,6 @@ class EntryCommentWidget extends StatelessWidget {
       return Container(
         padding: EdgeInsets.only(
           left: 12.0,
-          right: 12.0,
           bottom: 18.0,
           top: (comment.body != null ? 0.0 : 10.0),
         ),
@@ -161,8 +154,7 @@ class EntryCommentWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(
         left: 12.0,
-        top: 8.0,
-        right: 12.0,
+        top: 10.0,
         bottom: 1.5,
       ),
       child: Row(
@@ -179,7 +171,7 @@ class EntryCommentWidget extends StatelessWidget {
                       comment.author.login,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w500,
                         fontSize: 13.5,
                         color: Utils.getAuthorColor(comment.author, context),
                       ),

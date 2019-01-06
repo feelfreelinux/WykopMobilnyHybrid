@@ -27,7 +27,6 @@ class _MainScreenState extends State<MainScreen> {
       key: OwmKeys.mainScaffoldKey,
       body: _children[_currentIndex],
       bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
         color: Theme.of(context).primaryColor,
         child: Row(
           mainAxisSize: MainAxisSize.max,
@@ -46,12 +45,13 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget _addNewButton() {
     return Container(
-      width: 34.0,
-      height: 34.0,
+      margin: EdgeInsets.all(8.0),
+      width: 36.0,
+      height: 36.0,
       child: FloatingActionButton(
         child: Icon(
           Icons.create,
-          size: 20.0,
+          size: 22.0,
         ),
         tooltip: "Dodaj",
         foregroundColor: Theme.of(context).primaryColor,

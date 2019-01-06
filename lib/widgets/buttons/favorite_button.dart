@@ -8,9 +8,9 @@ class FavoriteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: Padding(
+      child: Container(
         padding: EdgeInsets.symmetric(
-          horizontal: 10.0,
+          horizontal: 4.0,
         ),
         child: Row(
           children: <Widget>[

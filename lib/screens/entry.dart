@@ -28,16 +28,11 @@ class EntryScreen extends StatelessWidget {
           appBar: PreferredSize(
               preferredSize: Size.fromHeight(48.0),
               child: AppBar(
-                  title: Text('WPIS', style: TextStyle(fontSize: 16.0)),
-                  actions: <Widget>[
-                    IconButton(
-                        icon: Icon(OwmGlyphs.ic_refresh),
-                        onPressed: () {},
-                        tooltip: "Odśwież")
-                  ],
-                  elevation: 1.5,
-                  centerTitle: true,
-                  titleSpacing: 0.0)),
+                iconTheme: IconThemeData(
+                  color: Colors.blueAccent,
+                ),
+                elevation: 0.0,
+              ),),
           body: Container(
               decoration:
                   BoxDecoration(color: Theme.of(context).backgroundColor),

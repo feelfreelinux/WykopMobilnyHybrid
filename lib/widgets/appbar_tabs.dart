@@ -105,7 +105,7 @@ class AppbarTabsWidget extends PreferredSize {
               tooltip: "Szukaj",
             ),
           ],
-      elevation: 2.0,
+      elevation: 0.0,
       centerTitle: true,
       titleSpacing: 0.0,
     );
@@ -187,7 +187,7 @@ class SearchAppbarWidget extends PreferredSize {
           tooltip: "Zamknij wyszukiwarkę",
         ),
       ],
-      elevation: 2.0,
+      elevation: 0.0,
       centerTitle: true,
       titleSpacing: 0.0,
     );

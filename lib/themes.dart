@@ -4,10 +4,10 @@ class Themes {
   static ThemeData lightTheme() {
     return ThemeData(
         brightness: Brightness.light,
-        accentColor: Color(0xff3c84c1),
+        accentColor: Colors.blueAccent,
         primaryColor: Color(0xffffffff),
         primaryColorDark: Color(0xfff0f0f0),
-        backgroundColor: Color(0xfff5f5f5),
+        backgroundColor: Color(0xffffffff),
         cardColor: Color(0xffffffff),
         bottomAppBarColor: Color(0xffffffff));
   }

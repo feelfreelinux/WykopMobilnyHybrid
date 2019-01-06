@@ -36,7 +36,7 @@ class AuthorWidget extends StatelessWidget {
                             style: TextStyle(
                                 color: Utils.getAuthorColor(author, context),
                                 fontSize: fontSize,
-                                fontWeight: FontWeight.w600))),
+                                fontWeight: FontWeight.w500))),
                     Container(
                         padding: EdgeInsets.symmetric(
                             vertical: 1.0, horizontal: 10.0),
