@@ -24,6 +24,11 @@ class _$EmbedResponseSerializer implements StructuredSerializer<EmbedResponse> {
       'preview',
       serializers.serialize(object.preview,
           specifiedType: const FullType(String)),
+      'type',
+      serializers.serialize(object.type, specifiedType: const FullType(String)),
+      'animated',
+      serializers.serialize(object.animated,
+          specifiedType: const FullType(bool)),
     ];
     if (object.plus18 != null) {
       result
@@ -54,6 +59,14 @@ class _$EmbedResponseSerializer implements StructuredSerializer<EmbedResponse> {
           result.preview = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'type':
+          result.type = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'animated':
+          result.animated = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
         case 'plus18':
           result.plus18 = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool;
@@ -71,17 +84,29 @@ class _$EmbedResponse extends EmbedResponse {
   @override
   final String preview;
   @override
+  final String type;
+  @override
+  final bool animated;
+  @override
   final bool plus18;
 
   factory _$EmbedResponse([void updates(EmbedResponseBuilder b)]) =>
       (new EmbedResponseBuilder()..update(updates)).build();
 
-  _$EmbedResponse._({this.url, this.preview, this.plus18}) : super._() {
+  _$EmbedResponse._(
+      {this.url, this.preview, this.type, this.animated, this.plus18})
+      : super._() {
     if (url == null) {
       throw new BuiltValueNullFieldError('EmbedResponse', 'url');
     }
     if (preview == null) {
       throw new BuiltValueNullFieldError('EmbedResponse', 'preview');
+    }
+    if (type == null) {
+      throw new BuiltValueNullFieldError('EmbedResponse', 'type');
+    }
+    if (animated == null) {
+      throw new BuiltValueNullFieldError('EmbedResponse', 'animated');
     }
   }
 
@@ -98,13 +123,17 @@ class _$EmbedResponse extends EmbedResponse {
     return other is EmbedResponse &&
         url == other.url &&
         preview == other.preview &&
+        type == other.type &&
+        animated == other.animated &&
         plus18 == other.plus18;
   }
 
   @override
   int get hashCode {
-    return $jf(
-        $jc($jc($jc(0, url.hashCode), preview.hashCode), plus18.hashCode));
+    return $jf($jc(
+        $jc($jc($jc($jc(0, url.hashCode), preview.hashCode), type.hashCode),
+            animated.hashCode),
+        plus18.hashCode));
   }
 
   @override
@@ -112,6 +141,8 @@ class _$EmbedResponse extends EmbedResponse {
     return (newBuiltValueToStringHelper('EmbedResponse')
           ..add('url', url)
           ..add('preview', preview)
+          ..add('type', type)
+          ..add('animated', animated)
           ..add('plus18', plus18))
         .toString();
   }
@@ -129,6 +160,14 @@ class EmbedResponseBuilder
   String get preview => _$this._preview;
   set preview(String preview) => _$this._preview = preview;
 
+  String _type;
+  String get type => _$this._type;
+  set type(String type) => _$this._type = type;
+
+  bool _animated;
+  bool get animated => _$this._animated;
+  set animated(bool animated) => _$this._animated = animated;
+
   bool _plus18;
   bool get plus18 => _$this._plus18;
   set plus18(bool plus18) => _$this._plus18 = plus18;
@@ -139,6 +178,8 @@ class EmbedResponseBuilder
     if (_$v != null) {
       _url = _$v.url;
       _preview = _$v.preview;
+      _type = _$v.type;
+      _animated = _$v.animated;
       _plus18 = _$v.plus18;
       _$v = null;
     }
@@ -161,7 +202,12 @@ class EmbedResponseBuilder
   @override
   _$EmbedResponse build() {
     final _$result = _$v ??
-        new _$EmbedResponse._(url: url, preview: preview, plus18: plus18);
+        new _$EmbedResponse._(
+            url: url,
+            preview: preview,
+            type: type,
+            animated: animated,
+            plus18: plus18);
     replace(_$result);
     return _$result;
   }

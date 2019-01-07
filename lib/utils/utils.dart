@@ -28,6 +28,7 @@ class Utils {
 
   static Route getPageTransition(Widget screen) {
     return PageRouteBuilder(
+        opaque: true,
         pageBuilder: (BuildContext context, Animation<double> animation,
             Animation<double> secondaryAnimation) {
           return screen;

@@ -16,6 +16,7 @@ dependencies:
   flutter_advanced_networkimage: ^0.3.9
   path_provider: ^0.4.1
   flutter_html: ^0.8.2
+  pinch_zoom_image: ^0.2.5
   flutter_inappbrowser: ^0.5.51
   redux_thunk: ^0.2.1
   timeago: ^2.0.9

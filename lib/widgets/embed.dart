@@ -5,6 +5,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/widgets/embed_full_screen.dart';
 import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
+import 'package:owmflutter/utils/utils.dart';
+import 'package:owmflutter/screens/screens.dart';
+import 'package:owmflutter/widgets/widgets.dart';
 
 class EmbedWidget extends StatefulWidget {
   final Embed embed;
@@ -172,9 +175,13 @@ class _EmbedState extends State<EmbedWidget> {
   }
 
   // Open fullscreen image viewer
-  openFullscreen() {
+  void openFullscreen() {
     String heroTag = 'embedImage${widget.embed.hashCode}';
 
+    Navigator.of(context).push(FullscreenOverlay(child: MediaScreen(embed: widget.embed,)));
+  
+
+    return;
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -189,3 +196,4 @@ class _EmbedState extends State<EmbedWidget> {
     );
   }
 }
+

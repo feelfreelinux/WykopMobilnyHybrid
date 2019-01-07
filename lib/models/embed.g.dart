@@ -12,17 +12,28 @@ class _$Embed extends Embed {
   @override
   final String url;
   @override
+  final String type;
+  @override
+  final bool isAnimated;
+  @override
   final bool plus18;
 
   factory _$Embed([void updates(EmbedBuilder b)]) =>
       (new EmbedBuilder()..update(updates)).build();
 
-  _$Embed._({this.preview, this.url, this.plus18}) : super._() {
+  _$Embed._({this.preview, this.url, this.type, this.isAnimated, this.plus18})
+      : super._() {
     if (preview == null) {
       throw new BuiltValueNullFieldError('Embed', 'preview');
     }
     if (url == null) {
       throw new BuiltValueNullFieldError('Embed', 'url');
+    }
+    if (type == null) {
+      throw new BuiltValueNullFieldError('Embed', 'type');
+    }
+    if (isAnimated == null) {
+      throw new BuiltValueNullFieldError('Embed', 'isAnimated');
     }
   }
 
@@ -39,13 +50,17 @@ class _$Embed extends Embed {
     return other is Embed &&
         preview == other.preview &&
         url == other.url &&
+        type == other.type &&
+        isAnimated == other.isAnimated &&
         plus18 == other.plus18;
   }
 
   @override
   int get hashCode {
-    return $jf(
-        $jc($jc($jc(0, preview.hashCode), url.hashCode), plus18.hashCode));
+    return $jf($jc(
+        $jc($jc($jc($jc(0, preview.hashCode), url.hashCode), type.hashCode),
+            isAnimated.hashCode),
+        plus18.hashCode));
   }
 
   @override
@@ -53,6 +68,8 @@ class _$Embed extends Embed {
     return (newBuiltValueToStringHelper('Embed')
           ..add('preview', preview)
           ..add('url', url)
+          ..add('type', type)
+          ..add('isAnimated', isAnimated)
           ..add('plus18', plus18))
         .toString();
   }
@@ -69,6 +86,14 @@ class EmbedBuilder implements Builder<Embed, EmbedBuilder> {
   String get url => _$this._url;
   set url(String url) => _$this._url = url;
 
+  String _type;
+  String get type => _$this._type;
+  set type(String type) => _$this._type = type;
+
+  bool _isAnimated;
+  bool get isAnimated => _$this._isAnimated;
+  set isAnimated(bool isAnimated) => _$this._isAnimated = isAnimated;
+
   bool _plus18;
   bool get plus18 => _$this._plus18;
   set plus18(bool plus18) => _$this._plus18 = plus18;
@@ -79,6 +104,8 @@ class EmbedBuilder implements Builder<Embed, EmbedBuilder> {
     if (_$v != null) {
       _preview = _$v.preview;
       _url = _$v.url;
+      _type = _$v.type;
+      _isAnimated = _$v.isAnimated;
       _plus18 = _$v.plus18;
       _$v = null;
     }
@@ -100,8 +127,13 @@ class EmbedBuilder implements Builder<Embed, EmbedBuilder> {
 
   @override
   _$Embed build() {
-    final _$result =
-        _$v ?? new _$Embed._(preview: preview, url: url, plus18: plus18);
+    final _$result = _$v ??
+        new _$Embed._(
+            preview: preview,
+            url: url,
+            type: type,
+            isAnimated: isAnimated,
+            plus18: plus18);
     replace(_$result);
     return _$result;
   }
