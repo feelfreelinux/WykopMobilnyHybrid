@@ -11,6 +11,19 @@ class LinkScreen extends StatelessWidget {
   final int linkId;
   LinkScreen({Key key, @required this.linkId}) : super(key: key);
 
+  List<String> _getComments(List<List<dynamic>> comments) {
+    var ids = List<String>.from([]);
+    comments.forEach((e) {
+      ids
+        ..add('top_' + e.first.toString())
+        ..addAll(e
+            .sublist(1, e.length)
+            .map((d) => 'child_' + d.toString())
+            .toList());
+    });
+    return ids;
+  }
+
   @override
   Widget build(BuildContext context) {
     return _SystemPadding(
@@ -44,15 +57,16 @@ class LinkScreen extends StatelessWidget {
                 converter: (store) => (completer) =>
                     store.dispatch(loadLinkComments(linkId, completer)),
                 builder: (context, callback) =>
-                    StoreConnector<AppState, List<int>>(
+                    StoreConnector<AppState, List<List<dynamic>>>(
                         converter: (store) =>
                             store.state.linkScreensState
-                                ?.states[linkId.toString()]?.ids ??
+                                ?.states[linkId.toString()]?.comments ??
                             [],
                         onInit: (store) {
                           store.dispatch(loadLinkComments(linkId, Completer()));
                         },
                         builder: (context, ids) {
+                          var commentIds = _getComments(ids);
                           return RefreshIndicator(
                             onRefresh: () {
                               var completer = new Completer();
@@ -70,17 +84,27 @@ class LinkScreen extends StatelessWidget {
                                           ?.states[linkId.toString()]
                                           ?.errorState ??
                                       ErrorState(),
-                                  hasData: () => ids.isNotEmpty,
+                                  hasData: () => commentIds.isNotEmpty,
                                   child: ListView.builder(
-                                      itemCount: ids.length,
+                                      itemCount: commentIds.length + 1,
                                       itemBuilder: (context, index) {
                                         if (index == 0) {
                                           return LinkWidget(
                                               linkId: linkId,
                                               isClickable: false);
                                         } else {
-                                          return TopLinkCommentWidget(
-                                              commentId: ids[index]);
+                                          if (commentIds[index - 1]
+                                              .startsWith('top_')) {
+                                            return TopLinkCommentWidget(
+                                                commentId: int.parse(
+                                                    commentIds[index - 1]
+                                                        .split('_')[1]));
+                                          } else {
+                                            return ChildrenLinkCommentWidget(
+                                                commentId: int.parse(
+                                                    commentIds[index - 1]
+                                                        .split('_')[1]));
+                                          }
                                         }
                                       })),
                             ),

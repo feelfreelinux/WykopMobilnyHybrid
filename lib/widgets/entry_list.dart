@@ -35,7 +35,7 @@ class EntryListState extends State<EntryList> {
               var state = widget.converterCallback(store);
               if (state == null || state.paginationState.itemIds.isEmpty &&
                   !state.listState.haveReachedEnd) {
-                widget.loadDataCallback(store, true, Completer());
+                widget.loadDataCallback(store, false, Completer());
               }
             },
             builder: (context, state) {
@@ -43,6 +43,7 @@ class EntryListState extends State<EntryList> {
                   state.listState.isLoading && state.listState.page == 1) {
                 return Center(child: CircularProgressIndicator());
               }
+
               return StoreConnector<AppState, ListRefreshCallback>(
                   converter: (store) {
                 return (bool refresh, Completer completer) =>

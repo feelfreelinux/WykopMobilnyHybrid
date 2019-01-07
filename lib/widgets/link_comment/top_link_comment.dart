@@ -17,24 +17,12 @@ class TopLinkCommentWidget extends StatelessWidget {
             converter: (store) =>
                 store.state.entitiesState.linkComments[commentId],
             builder: (context, comment) {
-              return ListView.builder(
-                  shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
-                  itemCount: comment.childrenIds.length + 1,
-                  itemBuilder: (context, index) {
-                    if (index == 0) {
-                      return Padding(
-                          key: Key(commentId.toString()),
-                          padding: EdgeInsets.only(bottom: 8.0),
-                          child: Material(
-                              color: Theme.of(context).cardColor,
-                              child: Column(
-                                  children: _buildLinkComment(comment))));
-                    }
-
-                    return ChildrenLinkCommentWidget(
-                        commentId: comment.childrenIds[index - 1]);
-                  });
+              return Padding(
+                  key: Key(commentId.toString()),
+                  padding: EdgeInsets.only(bottom: 8.0),
+                  child: Material(
+                      color: Theme.of(context).cardColor,
+                      child: Column(children: _buildLinkComment(comment))));
             }));
   }
 

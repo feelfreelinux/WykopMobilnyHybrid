@@ -26,6 +26,6 @@ Reducer<LinkScreenState> _linkScreenReducer = combineReducers([
 
 LinkScreenState _setLinkComments(LinkScreenState state, SetLinkComments action) {
   return state.rebuild((b) => b
-    ..ids.clear()
-    ..ids.addAll(action.ids));
+    ..comments.clear()
+    ..comments.addAll(action.ids));
 }
