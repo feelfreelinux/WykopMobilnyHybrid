@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:ui';
 
 // Based on stackoverflow@51908187
 class FullscreenOverlay extends ModalRoute<void> {
@@ -12,10 +13,10 @@ class FullscreenOverlay extends ModalRoute<void> {
   bool get opaque => false;
 
   @override
-  bool get barrierDismissible => false;
+  bool get barrierDismissible => true;
 
   @override
-  Color get barrierColor => Colors.black.withOpacity(0.5);
+  Color get barrierColor => Colors.black.withOpacity(0.6);
 
   @override
   String get barrierLabel => null;
@@ -25,16 +26,19 @@ class FullscreenOverlay extends ModalRoute<void> {
 
   @override
   Widget buildPage(
-      BuildContext context,
-      Animation<double> animation,
-      Animation<double> secondaryAnimation,
-      ) {
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+  ) {
     // This makes sure that text and other content follows the material style
     return Material(
       type: MaterialType.transparency,
       // make sure that the overlay content is not cut off
-      child: SafeArea(
-        child: _buildOverlayContent(context),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+        child: SafeArea(
+          child: _buildOverlayContent(context),
+        ),
       ),
     );
   }
@@ -44,8 +48,8 @@ class FullscreenOverlay extends ModalRoute<void> {
   }
 
   @override
-  Widget buildTransitions(
-      BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+  Widget buildTransitions(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation, Widget child) {
     // You can add your own animations for the overlay content
     return FadeTransition(
       opacity: animation,

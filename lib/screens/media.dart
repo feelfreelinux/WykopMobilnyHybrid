@@ -27,17 +27,21 @@ class MediaScreen extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Expanded(child: _handleImage()),
-          Container(
-            
-            color: Colors.black.withOpacity(0.7),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                _drawToolbarIcon(Icons.share),
-                _drawToolbarIcon(Icons.replay),
-                _drawToolbarIcon(Icons.report),
-                _drawToolbarIcon(Icons.save)
-              ],
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Theme.of(context).backgroundColor,
+                  borderRadius: BorderRadius.all(Radius.circular(12))),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  _drawToolbarIcon(Icons.share),
+                  _drawToolbarIcon(Icons.replay),
+                  _drawToolbarIcon(Icons.report),
+                  _drawToolbarIcon(Icons.save)
+                ],
+              ),
             ),
           )
         ],
