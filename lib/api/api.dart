@@ -16,6 +16,7 @@ export 'resources/entries.dart';
 export 'resources/users.dart';
 export 'resources/links.dart';
 export 'resources/mywykop.dart';
+export 'resources/embed.dart';
 export 'resources/tags.dart';
 export 'resources/notifications.dart';
 export 'resources/search.dart';
@@ -52,6 +53,7 @@ class WykopApiClient {
   TagsApi tags;
   NotificationsApi notifications;
   SuggestApi suggest;
+  EmbedApi embed;
 
   AuthCredentials get credentials => _client.credentials;
 
@@ -73,6 +75,7 @@ class WykopApiClient {
     this.links = LinksApi(_client);
     this.tags = TagsApi(_client);
     this.suggest = SuggestApi(_client);
+    this.embed = EmbedApi(_client);
     this.search = SearchApi(_client);
     this.notifications = NotificationsApi(_client);
     this.mywykop = MyWykopApi(_client);
