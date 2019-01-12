@@ -52,7 +52,8 @@ class _HtmlParser {
 
     return new Container(
         width: MediaQuery.of(context).size.width,
-        child: Wrap(children: _widgets));
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start, children: _widgets));
   }
 
   void _parseNode(html.Node node) {
@@ -83,7 +84,9 @@ class _HtmlParser {
     _parseNode(element);
     _tryCloseCurrentTextSpan();
 
-    return new Column(children: _widgets);
+    return new Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: _widgets);
   }
 
   void _parseElement(html.Element element) {
@@ -148,7 +151,8 @@ class _HtmlParser {
       case 'cite':
         if (!nested) {
           _tryCloseCurrentTextSpan();
-          _widgets.add(Wrap(children: [
+          _widgets.add(
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Container(
                 padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
                 decoration: BoxDecoration(
