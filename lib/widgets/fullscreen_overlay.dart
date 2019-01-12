@@ -50,13 +50,8 @@ class FullscreenOverlay extends ModalRoute<void> {
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation, Widget child) {
-    // You can add your own animations for the overlay content
     return FadeTransition(
-      opacity: animation,
-      child: ScaleTransition(
-        scale: animation,
-        child: child,
-      ),
-    );
+        opacity: Tween<double>(begin: 0.0, end: 1.0).animate(animation),
+        child: child);
   }
 }

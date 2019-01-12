@@ -26,7 +26,7 @@ class EntryCommentWidget extends StatelessWidget {
                   child: StoreConnector<AppState, VoidCallback>(
                     converter: (store) => () => store
                         .dispatch(deleteEntryComment(commentId, Completer())),
-                    builder: (context, deleteCommentCallback) => InkWell(
+                    builder: (context, deleteCommentCallback) => GestureDetector(
                           onDoubleTap: () {
                             // Quote action
                             OwmKeys.inputBarKey.currentState

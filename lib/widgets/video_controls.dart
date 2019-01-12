@@ -65,7 +65,7 @@ class VideoControlsState extends State<VideoControlsToolbar> {
             style: TextStyle(color: Colors.grey)),
       ),
       _drawToolbarIcon(
-          this.isLooping ? Icons.looks_one : Icons.loop, 'Zapętlij', () {
+          this.isLooping ? Icons.loop : Icons.looks_one, 'Zapętlij', () {
         setState(() {
           widget.controller.setLooping(!isLooping);
         });
