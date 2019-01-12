@@ -15,10 +15,15 @@ import 'package:image_picker/image_picker.dart';
 typedef void SuggestCallback(String q);
 
 typedef Future InputBarCallback(InputData inputData);
+typedef void OnImageStateChangedCallback(File image);
 
 class InputBarWidget extends StatefulWidget {
   final InputBarCallback callback;
-  InputBarWidget(this.callback, {@required Key key}) : super(key: key);
+  final OnImageStateChangedCallback imageStateChanged;
+  final TextEditingController externalController;
+  InputBarWidget(this.callback,
+      {@required Key key, this.externalController, this.imageStateChanged})
+      : super(key: key);
   InputBarWidgetState createState() => InputBarWidgetState();
 }
 
@@ -29,7 +34,19 @@ class InputBarWidgetState extends State<InputBarWidget> {
   bool clickTextField = false;
   bool isEmpty = true;
   bool sending = false;
+
+  bool get hasExternalInput => widget.externalController != null;
+
   File image;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.externalController != null) {
+      this.textController = widget.externalController;
+    }
+    textController.addListener(() => _watchTextChanges());
+  }
 
   final FocusNode focusNode = FocusNode();
   TextEditingController textController = TextEditingController();
@@ -45,9 +62,7 @@ class InputBarWidgetState extends State<InputBarWidget> {
 
   void pickImage(ImageSource source) async {
     var image = await ImagePicker.pickImage(source: source);
-    setState(() {
-      this.image = image;
-    });
+    setImage(image);
   }
 
   void _ensureFocus() {
@@ -105,18 +120,12 @@ class InputBarWidgetState extends State<InputBarWidget> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _drawSuggestions(),
-            _drawInputBar(),
+            hasExternalInput ? Container() : _drawInputBar(),
             _drawButtons(),
           ],
         ),
       ),
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    textController.addListener(() => _watchTextChanges());
   }
 
   @override
@@ -184,9 +193,7 @@ class InputBarWidgetState extends State<InputBarWidget> {
                     SelectedImageWidget(
                         image: this.image,
                         onTap: () {
-                          setState(() {
-                            this.image = null;
-                          });
+                          removeImage();
                         }),
                     Padding(
                       padding: EdgeInsets.only(left: 12.0),
@@ -277,7 +284,7 @@ class InputBarWidgetState extends State<InputBarWidget> {
   }
 
   Widget _drawButtons() {
-    if (showMarkdownBar) {
+    if (showMarkdownBar || hasExternalInput) {
       return Container(
         padding: EdgeInsets.only(
           bottom: 8.0,
@@ -289,10 +296,10 @@ class InputBarWidgetState extends State<InputBarWidget> {
           children: !showTextFormatBar
               ? <Widget>[
                   _drawIconRound(Icons.text_format, () {
-                    setState(() {
-                      showTextFormatBar = true;
-                    });
-                  }),
+                          setState(() {
+                            showTextFormatBar = true;
+                          });
+                        }),
                   _drawIconRound(
                       Icons.link,
                       () => insertSelectedText("[",
@@ -305,13 +312,23 @@ class InputBarWidgetState extends State<InputBarWidget> {
                   _drawIconRound(Icons.camera_alt,
                       () => this.pickImage(ImageSource.camera)),
                   _drawIconRound(Icons.fullscreen, () {}),
+                  Expanded(child: Container()),
+                  hasExternalInput
+                      ? SendButtonWidget(
+                          onTap: () {
+                            this._sendButtonClicked();
+                          },
+                          isEmpty: isEmpty,
+                          sending: sending,
+                        )
+                      : Container(),
                 ]
               : <Widget>[
                   _drawIconRound(Icons.arrow_back, () {
-                    setState(() {
-                      showTextFormatBar = false;
-                    });
-                  }),
+                          setState(() {
+                            showTextFormatBar = false;
+                          });
+                        }),
                   _drawIconRound(Icons.format_bold,
                       () => insertSelectedText("**", suffix: "**")),
                   _drawIconRound(Icons.format_italic,
@@ -320,6 +337,16 @@ class InputBarWidgetState extends State<InputBarWidget> {
                       () => insertSelectedText("\n> ", suffix: "\n")),
                   _drawIconRound(
                       Icons.code, () => insertSelectedText("`", suffix: "`")),
+                  Expanded(child: Container()),
+                  hasExternalInput
+                      ? SendButtonWidget(
+                          onTap: () {
+                            this._sendButtonClicked();
+                          },
+                          isEmpty: isEmpty,
+                          sending: sending,
+                        )
+                      : Container(),
                 ],
         ),
       );
@@ -335,11 +362,13 @@ class InputBarWidgetState extends State<InputBarWidget> {
     this
         .widget
         .callback(InputData(body: this.textController.text, file: this.image))
-        .then((_) => setState(() {
-              this.image = null;
-              this.sending = false;
-              this.textController.clear();
-            }));
+        .then((_) {
+      setState(() {
+        this.sending = false;
+        this.textController.clear();
+      });
+      removeImage();
+    });
   }
 
   Widget _drawIconRound(IconData iconData, VoidCallback onClick) {
@@ -365,6 +394,24 @@ class InputBarWidgetState extends State<InputBarWidget> {
         ),
       ),
     );
+  }
+
+  void setImage(File image) {
+    setState(() {
+      this.image = image;
+    });
+    if (hasExternalInput) {
+      widget.imageStateChanged(image);
+    }
+  }
+
+  void removeImage() {
+    setState(() {
+      this.image = null;
+    });
+    if (hasExternalInput) {
+      widget.imageStateChanged(null);
+    }
   }
 
   String extractSuggestions() {

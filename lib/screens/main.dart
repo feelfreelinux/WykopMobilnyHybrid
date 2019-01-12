@@ -3,6 +3,7 @@ import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/keys.dart';
 import 'package:owmflutter/owm_glyphs.dart';
 import 'package:owmflutter/widgets/widgets.dart';
+import 'package:owmflutter/utils/utils.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -58,59 +59,66 @@ class _MainScreenState extends State<MainScreen> {
         backgroundColor: Theme.of(context).textTheme.caption.color,
         elevation: 0.0,
         onPressed: () {
-          showModalBottomSheet<void>(
-            context: context,
-            builder: (BuildContext context) {
-              return NotLoggedWidget(
-                icon: Icons.account_circle,
-                fullText: "Dodawanie treści będzie możliwe po zalogowaniu.",
-                child: Container(
-                  padding: EdgeInsets.all(7.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.all(14.0),
-                        child: Text(
-                          "NAPISZ COŚ OD SIEBIE",
-                          style: TextStyle(
-                            fontSize: 13.0,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          _iconAddNewButton(OwmGlyphs.ic_buttontoolbar_wykop,
-                              "ZNALEZISKO", () {}),
-                          _iconAddNewButton(Icons.add_box, "WPIS", () {}),
-                          _iconAddNewButton(Icons.mail, "WIADOMOŚĆ", () {}),
-                        ],
-                      ),
-                      Container(
-                        width: 34.0,
-                        height: 34.0,
-                        child: FloatingActionButton(
-                          child: Icon(Icons.close),
-                          foregroundColor: Theme.of(context).primaryColor,
-                          backgroundColor:
-                              Theme.of(context).textTheme.caption.color,
-                          elevation: 0.0,
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
+          _showWriteBottomSheet(context);
         },
       ),
     );
+  }
+
+  void _showWriteBottomSheet(BuildContext context) {
+    showModalBottomSheet<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return NotLoggedWidget(
+            icon: Icons.account_circle,
+            fullText: "Dodawanie treści będzie możliwe po zalogowaniu.",
+            child: Container(
+              padding: EdgeInsets.all(7.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(14.0),
+                    child: Text(
+                      "NAPISZ COŚ OD SIEBIE",
+                      style: TextStyle(
+                        fontSize: 13.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      _iconAddNewButton(OwmGlyphs.ic_buttontoolbar_wykop,
+                          "ZNALEZISKO", () {}),
+                      _iconAddNewButton(Icons.add_box, "WPIS", () {
+                        Navigator.pop(context);
+                        Navigator.of(context)
+                            .push(Utils.getPageTransition(InputScreen()));
+                      }),
+                      _iconAddNewButton(Icons.mail, "WIADOMOŚĆ", () {}),
+                    ],
+                  ),
+                  Container(
+                    width: 34.0,
+                    height: 34.0,
+                    child: FloatingActionButton(
+                      child: Icon(Icons.close),
+                      foregroundColor: Theme.of(context).primaryColor,
+                      backgroundColor:
+                          Theme.of(context).textTheme.caption.color,
+                      elevation: 0.0,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   Widget _iconAddNewButton(
