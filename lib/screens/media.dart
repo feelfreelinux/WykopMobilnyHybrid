@@ -32,9 +32,25 @@ class _MediaScreenState extends State<MediaScreen> {
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Expanded(child: _handleImage()),
-          _renderImageControls(context),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Theme.of(context).backgroundColor,
+                  borderRadius: BorderRadius.all(Radius.circular(12))),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  _drawToolbarIcon(Icons.share, 'udostępnij', () {}),
+                  _drawToolbarIcon(Icons.report, 'zgłoś', () {}),
+                  _drawToolbarIcon(Icons.save, 'zapisz', () {}),
+                ],
+              ),
+            ),
+          )
         ],
       );
+      _handleImage();
     }
     return _handleVideo(context);
   }
@@ -56,10 +72,16 @@ class _MediaScreenState extends State<MediaScreen> {
         : widget.embed.url;
     return Container(
       child: PhotoView(
+        loadingChild: Container(
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            children: [LinearProgressIndicator()],
+          ),
+        ),
         backgroundColor: Colors.transparent,
         imageProvider: AdvancedNetworkImage(url),
         minScale: PhotoViewComputedScale.contained,
-        maxScale: PhotoViewComputedScale.covered * 3,
+        maxScale: PhotoViewComputedScale.covered * 1.1,
       ),
     );
   }
