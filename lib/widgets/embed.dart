@@ -13,14 +13,10 @@ class EmbedWidget extends StatefulWidget {
   final Embed embed;
   final double reducedWidth;
   final double borderRadius;
-  final VoidCallback onTapUp;
-  final VoidCallback onTapDown;
   EmbedWidget({
     this.embed,
     this.reducedWidth: 0.0,
     this.borderRadius: 0.0,
-    this.onTapDown,
-    this.onTapUp,
   });
 
   _EmbedState createState() => _EmbedState();
@@ -65,8 +61,9 @@ class _EmbedState extends State<EmbedWidget> {
   Widget build(BuildContext context) {
     String heroTag = 'embedImage${widget.embed.hashCode}';
     return GestureDetector(
-      onTapDown: (_) => widget.onTapDown(),
-      onTapUp: (_) => widget.onTapUp(),
+      onTapDown: (_) =>
+          ActiveGestureDetectorWidget.of(context).changeState(false),
+      onTapUp: (_) => ActiveGestureDetectorWidget.of(context).changeState(true),
       onTap: () {
         if (!resized && !loading) {
           this.setState(() {
@@ -184,8 +181,10 @@ class _EmbedState extends State<EmbedWidget> {
   void openFullscreen() {
     String heroTag = 'embedImage${widget.embed.hashCode}';
 
-    Navigator.of(context).push(FullscreenOverlay(child: MediaScreen(embed: widget.embed,)));
-  
+    Navigator.of(context).push(FullscreenOverlay(
+        child: MediaScreen(
+      embed: widget.embed,
+    )));
 
     return;
     Navigator.push(
@@ -202,4 +201,3 @@ class _EmbedState extends State<EmbedWidget> {
     );
   }
 }
-

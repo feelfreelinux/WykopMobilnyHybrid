@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/owm_glyphs.dart';
 import 'package:owmflutter/widgets/shiny_backdrop.dart';
+import 'package:owmflutter/widgets/widgets.dart';
 
 class VoteButton extends StatefulWidget {
   final VoidCallback onClicked;
@@ -27,8 +28,7 @@ class VoteButtonState extends State<VoteButton> {
   double scrollPosition = 0;
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-        borderRadius: BorderRadius.circular(30.0),
+    return GestureDetector(
         child: ClipRRect(
           borderRadius: BorderRadius.circular(30),
           child: Stack(
@@ -72,7 +72,15 @@ class VoteButtonState extends State<VoteButton> {
             ],
           ),
         ),
-        onTap: this.widget.onClicked);
+        onTapDown: (_) {
+          ActiveGestureDetectorWidget.of(context).changeState(false);
+        },
+        onTapUp: (_) {
+          ActiveGestureDetectorWidget.of(context).changeState(true);
+        },
+        onTap: () {
+          this.widget.onClicked();
+        });
   }
 
   List<Color> get stateGradientColor {

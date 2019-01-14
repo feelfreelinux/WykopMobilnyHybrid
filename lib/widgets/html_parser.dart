@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:html/parser.dart' as html show parse;
 import 'package:html/dom.dart' as html;
+import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/widgets/spoiler.dart';
 import 'package:owmflutter/navigator/navigator.dart';
 import 'package:flutter/gestures.dart';
@@ -17,11 +18,7 @@ import 'dart:ui';
  * Base from `wiki-flutter` client. Thanks a lot!
 */
 class HtmlWidget extends StatelessWidget {
-  final VoidCallback onTapDown;
-  final VoidCallback onTapUp;
-
-  const HtmlWidget({Key key, this.html, this.onTapDown, this.onTapUp})
-      : super(key: key);
+  const HtmlWidget({Key key, this.html}) : super(key: key);
 
   final String html;
 
@@ -36,18 +33,12 @@ class HtmlWidget extends StatelessWidget {
 
 class _HtmlParser {
   final BuildContext context;
-  final VoidCallback onTapDown;
-  final VoidCallback onTapUp;
   final Map appContext;
   final bool nested;
 
   final TextTheme textTheme;
 
-  _HtmlParser(this.context,
-      {this.nested: false,
-      this.appContext: const {},
-      this.onTapDown,
-      this.onTapUp})
+  _HtmlParser(this.context, {this.nested: false, this.appContext: const {}})
       : textTheme = Theme.of(context).textTheme;
 
   List<Widget> _widgets = [];
@@ -121,8 +112,12 @@ class _HtmlParser {
           return;
         } else if (element.attributes['href'].startsWith('#')) {
           _currentTextSpans.add(ClickableTextSpan(
-              onTapDown: onTapDown,
-              onTapUp: onTapUp,
+              onTapDown: () {
+                ActiveGestureDetectorWidget.of(context).changeState(false);
+              },
+              onTapUp: () {
+                ActiveGestureDetectorWidget.of(context).changeState(true);
+              },
               text: element.text,
               onTap: () {
                 Navigator.push(context,
@@ -143,8 +138,12 @@ class _HtmlParser {
             (element.firstChild.nodeType == html.Node.TEXT_NODE)) {
           var url = element.attributes['href'];
           _currentTextSpans.add(ClickableTextSpan(
-                          onTapDown: onTapDown,
-              onTapUp: onTapUp,
+              onTapDown: () {
+                ActiveGestureDetectorWidget.of(context).changeState(false);
+              },
+              onTapUp: () {
+                ActiveGestureDetectorWidget.of(context).changeState(true);
+              },
               text: element.text,
               onTap: () {
                 WykopNavigator.handleUrl(context, url);

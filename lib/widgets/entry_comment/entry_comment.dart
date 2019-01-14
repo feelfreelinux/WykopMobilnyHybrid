@@ -8,55 +8,40 @@ import 'package:owmflutter/keys.dart';
 import 'package:owmflutter/owm_glyphs.dart';
 import 'dart:async';
 
-class EntryCommentWidget extends StatefulWidget {
+class EntryCommentWidget extends StatelessWidget {
   final int commentId;
   EntryCommentWidget({this.commentId});
-  _EntryCommentWidgetState createState() => _EntryCommentWidgetState();
-}
 
-class _EntryCommentWidgetState extends State<EntryCommentWidget> {
-  bool childDetectorActivated = false;
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, EntryComment>(
         converter: (store) =>
-            store.state.entitiesState.entryComments[widget.commentId],
+            store.state.entitiesState.entryComments[commentId],
         builder: (context, comment) {
           return StoreConnector<AppState, AuthState>(
             converter: (store) => store.state.authState,
             builder: (context, authState) => Material(
-                  key: Key(widget.commentId.toString()),
+                  key: Key(commentId.toString()),
                   color: Theme.of(context).cardColor,
                   child: StoreConnector<AppState, VoidCallback>(
-                    converter: (store) => () => store.dispatch(
-                        deleteEntryComment(widget.commentId, Completer())),
-                    builder: (context, deleteCommentCallback) =>
-                        SupaGestureDetector(
-                          onDoubleTap: childDetectorActivated
-                              ? null
-                              : () {
-                                  // Quote action
-                                  OwmKeys.inputBarKey.currentState
-                                      .quoteText(comment.author, comment.body);
-                                },
-                          onTap: childDetectorActivated
-                              ? null
-                              : () {
-                                  // Reply action
-                                  OwmKeys.inputBarKey.currentState
-                                      .replyToUser(comment.author);
-                                },
-                          onLongPress: childDetectorActivated
-                              ? null
-                              : () {
-                                  _showActionsDialog(context, comment,
-                                      authState, deleteCommentCallback);
-                                },
-                          child: _EntryCommentBody((activated) {
-                            setState(() {
-                              this.childDetectorActivated = activated;
-                            });
-                          }, comment),
+                    converter: (store) => () => store
+                        .dispatch(deleteEntryComment(commentId, Completer())),
+                    builder: (context, deleteCommentCallback) => SupaGestureDetector(
+                          onDoubleTap: () {
+                            // Quote action
+                            OwmKeys.inputBarKey.currentState
+                                .quoteText(comment.author, comment.body);
+                          },
+                          onTap: () {
+                            // Reply action
+                            OwmKeys.inputBarKey.currentState
+                                .replyToUser(comment.author);
+                          },
+                          onLongPress: () {
+                            _showActionsDialog(context, comment, authState,
+                                deleteCommentCallback);
+                          },
+                          child: _buildEntryCommentBody(comment, context),
                         ),
                   ),
                 ),
@@ -92,19 +77,8 @@ class _EntryCommentWidgetState extends State<EntryCommentWidget> {
 
     ActionsDialog.showActionsDialog(context, actions);
   }
-}
 
-class _EntryCommentBody extends StatelessWidget {
-  final EntryComment comment;
-  final dynamic activateCallback;
-  const _EntryCommentBody(
-    this.activateCallback,
-    this.comment, {
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildEntryCommentBody(EntryComment comment, BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 18.0),
       child: Column(
@@ -146,18 +120,12 @@ class _EntryCommentBody extends StatelessWidget {
 
   Widget _drawBody(EntryComment comment) {
     if (comment.body != null) {
-      return BodyWidget(
-        body: comment.body,
-        ellipsize: false,
-        onTapDown: () => this.activateCallback(true),
-        onTapUp: () => this.activateCallback(false),
-        padding: EdgeInsets.only(
+      return BodyWidget(body: comment.body, ellipsize: false, padding: EdgeInsets.only(
           top: 2.0,
           left: 12.0,
           right: 2.0,
           bottom: 12.0,
-        ),
-      );
+        ),);
     } else {
       return Container();
     }
@@ -172,8 +140,6 @@ class _EntryCommentBody extends StatelessWidget {
           top: (comment.body != null ? 0.0 : 10.0),
         ),
         child: EmbedWidget(
-          onTapDown: () => this.activateCallback(true),
-          onTapUp: () => this.activateCallback(false),
           embed: comment.embed,
           reducedWidth: 84.0,
           borderRadius: 10.0,
@@ -241,94 +207,6 @@ class _EntryCommentBody extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class SupaGestureDetector extends StatefulWidget {
-  final Widget child;
-  final VoidCallback onTap;
-  final VoidCallback onDoubleTap;
-  final VoidCallback onLongPress;
-
-  SupaGestureDetector(
-      {@required this.child, this.onDoubleTap, this.onTap, this.onLongPress});
-  _SupaGestureDetectorState createState() => _SupaGestureDetectorState();
-}
-
-class _SupaGestureDetectorState extends State<SupaGestureDetector> {
-  static const int tapSlop = 16;
-  static const int longPressTrigger = 500;
-  static const int doubleTapInterval = 200;
-
-  Duration lastDownClickTimestamp;
-  Duration lastTapTimestamp;
-
-  Offset lastDownPosition;
-
-  Timer tapTimer;
-  Timer longPressTimer;
-
-  // Used to detect between taps and scrolls
-  bool excededTouchSlop(Offset position) =>
-      position.dy < lastDownPosition.dy + tapSlop &&
-      position.dy > lastDownPosition.dy - tapSlop;
-
-  @override
-  Widget build(BuildContext context) {
-    return Listener(
-      onPointerUp: (p) {
-        if (excededTouchSlop(p.position)) {
-          // Trigger double tap only if lastest tap happened in lastest doubleTapInterval
-          if (lastTapTimestamp != null &&
-              p.timeStamp.inMilliseconds <
-                  lastTapTimestamp.inMilliseconds + doubleTapInterval) {
-            if (tapTimer != null) {
-              setState(() {
-                tapTimer.cancel();
-                tapTimer = null;
-                widget.onDoubleTap();
-              });
-            }
-          }
-          setState(() {
-            lastTapTimestamp = p.timeStamp;
-            // Wait a doubleTapInterval to be able to detect a double tap
-            this.tapTimer =
-                new Timer(const Duration(milliseconds: doubleTapInterval), () {
-              widget.onTap();
-            });
-            this.longPressTimer.cancel();
-          });
-        }
-      },
-      onPointerDown: (p) {
-        setState(() {
-          // Save initial positions, used to detect if finger moved during tap / longpress
-          this.lastDownClickTimestamp = p.timeStamp;
-          this.lastDownPosition = p.position;
-
-          // Start the long press timer. Can get cancelled by move and tap events
-          this.longPressTimer =
-              new Timer(const Duration(milliseconds: longPressTrigger), () {
-            setState(() {
-              this.longPressTimer = null;
-            });
-            widget.onLongPress();
-          });
-        });
-      },
-      onPointerCancel: (_) {},
-      onPointerMove: (p) {
-        // Cancel long press timer when scroll is detected
-        if (this.longPressTimer != null && !excededTouchSlop(p.position)) {
-          setState(() {
-            this.longPressTimer.cancel();
-            this.longPressTimer = null;
-          });
-        }
-      },
-      child: widget.child,
     );
   }
 }
