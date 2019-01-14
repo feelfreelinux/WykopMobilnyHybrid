@@ -17,7 +17,11 @@ import 'dart:ui';
  * Base from `wiki-flutter` client. Thanks a lot!
 */
 class HtmlWidget extends StatelessWidget {
-  const HtmlWidget({Key key, this.html}) : super(key: key);
+  final VoidCallback onTapDown;
+  final VoidCallback onTapUp;
+
+  const HtmlWidget({Key key, this.html, this.onTapDown, this.onTapUp})
+      : super(key: key);
 
   final String html;
 
@@ -32,13 +36,18 @@ class HtmlWidget extends StatelessWidget {
 
 class _HtmlParser {
   final BuildContext context;
-
+  final VoidCallback onTapDown;
+  final VoidCallback onTapUp;
   final Map appContext;
   final bool nested;
 
   final TextTheme textTheme;
 
-  _HtmlParser(this.context, {this.nested: false, this.appContext: const {}})
+  _HtmlParser(this.context,
+      {this.nested: false,
+      this.appContext: const {},
+      this.onTapDown,
+      this.onTapUp})
       : textTheme = Theme.of(context).textTheme;
 
   List<Widget> _widgets = [];
@@ -85,8 +94,7 @@ class _HtmlParser {
     _tryCloseCurrentTextSpan();
 
     return new Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: _widgets);
+        crossAxisAlignment: CrossAxisAlignment.start, children: _widgets);
   }
 
   void _parseElement(html.Element element) {
@@ -113,6 +121,8 @@ class _HtmlParser {
           return;
         } else if (element.attributes['href'].startsWith('#')) {
           _currentTextSpans.add(ClickableTextSpan(
+              onTapDown: onTapDown,
+              onTapUp: onTapUp,
               text: element.text,
               onTap: () {
                 Navigator.push(context,
@@ -133,6 +143,8 @@ class _HtmlParser {
             (element.firstChild.nodeType == html.Node.TEXT_NODE)) {
           var url = element.attributes['href'];
           _currentTextSpans.add(ClickableTextSpan(
+                          onTapDown: onTapDown,
+              onTapUp: onTapUp,
               text: element.text,
               onTap: () {
                 WykopNavigator.handleUrl(context, url);
@@ -206,12 +218,20 @@ class ClickableTextSpan extends TextSpan {
       {TextStyle style,
       String text,
       VoidCallback onTap,
+      VoidCallback onTapUp,
+      VoidCallback onTapDown,
       List<TextSpan> children})
       : super(
             style: style,
             text: text,
             children: children ?? <TextSpan>[],
             recognizer: TapGestureRecognizer()
+              ..onTapDown = (_) {
+                onTapDown();
+              }
+              ..onTapUp = (_) {
+                onTapUp();
+              }
               ..onTap = () {
                 onTap();
               });

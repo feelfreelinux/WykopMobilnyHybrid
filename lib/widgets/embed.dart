@@ -13,10 +13,14 @@ class EmbedWidget extends StatefulWidget {
   final Embed embed;
   final double reducedWidth;
   final double borderRadius;
+  final VoidCallback onTapUp;
+  final VoidCallback onTapDown;
   EmbedWidget({
     this.embed,
     this.reducedWidth: 0.0,
     this.borderRadius: 0.0,
+    this.onTapDown,
+    this.onTapUp,
   });
 
   _EmbedState createState() => _EmbedState();
@@ -61,6 +65,8 @@ class _EmbedState extends State<EmbedWidget> {
   Widget build(BuildContext context) {
     String heroTag = 'embedImage${widget.embed.hashCode}';
     return GestureDetector(
+      onTapDown: (_) => widget.onTapDown(),
+      onTapUp: (_) => widget.onTapUp(),
       onTap: () {
         if (!resized && !loading) {
           this.setState(() {
