@@ -70,7 +70,7 @@ class _InfiniteListState extends State<InfiniteList> {
     return ScrollConfiguration(
         behavior: NotSuddenJumpScrollBehavior(),
         child: CustomScrollView(
-          semanticChildCount: 4,
+          physics: AlwaysScrollableScrollPhysics(),
           slivers: [
             SliverList(
               delegate: SliverChildBuilderDelegate(

@@ -26,13 +26,14 @@ class EntryScreen extends StatelessWidget {
                   }, key: OwmKeys.inputBarKey)),
           resizeToAvoidBottomPadding: false,
           appBar: PreferredSize(
-              preferredSize: Size.fromHeight(48.0),
-              child: AppBar(
-                iconTheme: IconThemeData(
-                  color: Colors.blueAccent,
-                ),
-                elevation: 0.0,
-              ),),
+            preferredSize: Size.fromHeight(48.0),
+            child: AppBar(
+              iconTheme: IconThemeData(
+                color: Colors.blueAccent,
+              ),
+              elevation: 0.0,
+            ),
+          ),
           body: Container(
               decoration:
                   BoxDecoration(color: Theme.of(context).backgroundColor),
@@ -68,6 +69,7 @@ class EntryScreen extends StatelessWidget {
                                 ErrorState(),
                             hasData: () => ids.isNotEmpty,
                             child: ListView.builder(
+                                physics: AlwaysScrollableScrollPhysics(),
                                 itemCount: ids.length,
                                 itemBuilder: (context, index) {
                                   if (index == 0) {

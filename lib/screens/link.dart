@@ -86,6 +86,7 @@ class LinkScreen extends StatelessWidget {
                                       ErrorState(),
                                   hasData: () => commentIds.isNotEmpty,
                                   child: ListView.builder(
+                                      physics: AlwaysScrollableScrollPhysics(),
                                       itemCount: commentIds.length + 1,
                                       itemBuilder: (context, index) {
                                         if (index == 0) {

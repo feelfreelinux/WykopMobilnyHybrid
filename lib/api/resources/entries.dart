@@ -60,6 +60,15 @@ class EntriesApi extends ApiResource {
     return normalizeEntry(updatedEntry);
   }
 
+  Future<Result> markFavorite(Entry entry) async {
+    var voteCount =
+        await client.request('entries', 'voteup', api: [entry.id.toString()]);
+    var updatedEntry = entry.rebuild((b) => b
+      ..isVoted = true);
+
+    return normalizeEntry(updatedEntry);
+  }
+
   Future<Result> voteDown(Entry entry) async {
     var voteCount = await client
         .request('entries', 'voteremove', api: [entry.id.toString()]);
