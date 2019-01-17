@@ -2,6 +2,7 @@ import 'package:owmflutter/store/store.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:owmflutter/api/api.dart';
+import 'dart:async';
 
 class SaveAuthCredentialsAction {
   final String login;
@@ -15,7 +16,7 @@ class LogoutUserAction {
   LogoutUserAction();
 }
 
-ThunkAction<AppState> loginUser(String token, String login) {
+ThunkAction<AppState> loginUser(String token, String login, Completer completer) {
   return (Store<AppState> store) async {
     var creds = await api.users.login(login, token);
 

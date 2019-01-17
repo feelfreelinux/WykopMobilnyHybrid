@@ -67,7 +67,7 @@ class _InfiniteListState extends State<InfiniteList> {
 
   @override
   Widget build(BuildContext context) {
-    return ScrollConfiguration(
+    /*return ScrollConfiguration(
         behavior: NotSuddenJumpScrollBehavior(),
         child: CustomScrollView(
           physics: AlwaysScrollableScrollPhysics(),
@@ -100,7 +100,7 @@ class _InfiniteListState extends State<InfiniteList> {
             )
           ],
           controller: _scrollController,
-        ));
+        ));*/
     return ScrollConfiguration(
         behavior: NotSuddenJumpScrollBehavior(),
         child: ListView.builder(

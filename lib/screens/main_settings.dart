@@ -6,7 +6,9 @@ import 'package:owmflutter/models/models.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/store/store.dart';
+import 'package:owmflutter/main.dart';
 import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
+import 'dart:async';
 
 class MainSettingsScreen extends StatelessWidget {
   static const platform =
@@ -131,8 +133,8 @@ class MainSettingsScreen extends StatelessWidget {
                           right: 12.0,
                         ),
                         child: StoreConnector<AppState, LoginCallback>(
-                          converter: (store) => (login, token) =>
-                              store.dispatch(loginUser(token, login)),
+                          converter: (store) => (login, token, completer) =>
+                              store.dispatch(loginUser(token, login, completer)),
                           builder: (context, loginCallback) => GestureDetector(
                                 onTap: authState.loggedIn
                                     ? () {}
@@ -143,8 +145,11 @@ class MainSettingsScreen extends StatelessWidget {
                                                 Map.from({
                                                   'appKey': api.getAppKey()
                                                 }));
+                                        var completer = Completer();
                                         loginCallback(
-                                            result['login'], result['token']);
+                                            result['login'], result['token'], completer);
+                                        await completer.future;
+                                        RestartWidget.restartApp(context);
                                       },
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -282,7 +287,7 @@ class MainSettingsScreen extends StatelessWidget {
       builder: (context, authState) {
         return StoreConnector<AppState, LoginCallback>(
           converter: (store) =>
-              (login, token) => store.dispatch(loginUser(token, login)),
+              (login, token, completer) => store.dispatch(loginUser(token, login, completer)),
           builder: (context, loginCallback) {
             return StoreConnector<AppState, VoidCallback>(
               converter: (store) => () => store.dispatch(logoutUser()),
@@ -294,7 +299,10 @@ class MainSettingsScreen extends StatelessWidget {
                         var result = await platform.invokeMethod(
                             'openLoginScreen',
                             Map.from({'appKey': api.getAppKey()}));
-                        loginCallback(result['login'], result['token']);
+                        var completer = Completer();
+                        loginCallback(result['login'], result['token'], completer);
+                        await completer.future;
+                        RestartWidget.restartApp(context);
                       }
                     },
                     child: Padding(

@@ -4,8 +4,9 @@ import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'dart:async';
 
-typedef void LoginCallback(String login, String token);
+typedef void LoginCallback(String login, String token, Completer completer);
 
 class AppbarUserWidget extends StatelessWidget {
   @override
