@@ -25,13 +25,7 @@ class EntryFooterWidget extends StatelessWidget {
             count: entry.commentsCount,
             onClicked: () {
               if (this.isClickable) {
-                Navigator.of(context).push(
-                  Utils.getPageTransition(
-                    EntryScreen(
-                      entryId: entry.id,
-                    ),
-                  ),
-                );
+                ;
               }
             },
           ),

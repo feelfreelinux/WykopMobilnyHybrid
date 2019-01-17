@@ -95,7 +95,7 @@ class _MainScreenState extends State<MainScreen> {
                       _iconAddNewButton(Icons.add_box, "WPIS", () {
                         Navigator.pop(context);
                         Navigator.of(context)
-                            .push(Utils.getPageTransition(InputScreen()));
+                            .push(Utils.getPageTransition(EntryInputScreen()));
                       }),
                       _iconAddNewButton(Icons.mail, "WIADOMOŚĆ", () {}),
                     ],

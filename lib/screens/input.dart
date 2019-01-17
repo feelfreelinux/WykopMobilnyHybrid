@@ -10,7 +10,44 @@ import 'package:owmflutter/widgets/input/selected_image.dart';
 import 'dart:async';
 import 'dart:io';
 
+enum InputType {
+  ENTRY,
+  ENTRY_COMMENT,
+  LINK_COMMENT,
+  PRIVATE_MESSAGE,
+}
+
+typedef Future InputBarCallback(InputData inputData);
+
+class EntryInputScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: StoreConnector<AppState, dynamic>(
+        converter: (store) =>
+            (inputData, completer) => store.dispatch(addEntry(inputData, completer)),
+        builder: (context, callback) {
+          return InputScreen(
+              inputType: InputType.ENTRY,
+              sendCallback: (inputData) async {
+                var completer = Completer();
+                callback(inputData, completer);
+                await completer.future;
+                return;
+              });
+        },
+      ),
+    );
+  }
+}
+
 class InputScreen extends StatefulWidget {
+  final InputType inputType;
+  final InputBarCallback sendCallback;
+  final InputData inputData;
+
+  InputScreen({this.inputType, this.sendCallback, this.inputData});
+
   _InputScreenState createState() => _InputScreenState();
 }
 
@@ -18,6 +55,23 @@ class _InputScreenState extends State<InputScreen> {
   TextEditingController textController = TextEditingController();
   File image;
   final inputBarKey = new GlobalKey<InputBarWidgetState>();
+
+  String get inputHint {
+    switch (widget.inputType) {
+      case InputType.ENTRY:
+        return "wpis";
+      case InputType.ENTRY_COMMENT:
+        return "komentarz";
+      case InputType.LINK_COMMENT:
+        return "komentarz";
+      case InputType.PRIVATE_MESSAGE:
+        return "wiadomość prywatną";
+        break;
+      default:
+        return "";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return _SystemPadding(
@@ -26,14 +80,10 @@ class _InputScreenState extends State<InputScreen> {
             converter: (store) => (Completer completer, InputData inputData) =>
                 store.dispatch(addEntryComment(0, inputData, completer)),
             builder: (context, callback) => InputBarWidget(
-                (inputData) {
-                  var completer = Completer();
-                  callback(completer, inputData);
-                  return completer.future;
-                },
-                key: inputBarKey,
-                externalController: textController,
-                imageStateChanged: (image) {
+                    widget.sendCallback,
+                    key: inputBarKey,
+                    externalController: textController,
+                    imageStateChanged: (image) {
                   setState(() {
                     this.image = image;
                   });
@@ -42,7 +92,7 @@ class _InputScreenState extends State<InputScreen> {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(48.0),
           child: AppBar(
-            title: Text('Napisz wpis'),
+            title: Text('Napisz $inputHint'),
             iconTheme: IconThemeData(
               color: Colors.blueAccent,
             ),
@@ -108,7 +158,7 @@ class _InputScreenState extends State<InputScreen> {
                                         vertical: 8.0,
                                       ),
                                       border: InputBorder.none,
-                                      hintText: 'Treść komentarza',
+                                      hintText: 'Treść',
                                     ),
                                   ),
                             ),

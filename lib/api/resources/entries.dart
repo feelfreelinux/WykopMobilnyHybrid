@@ -50,6 +50,12 @@ class EntriesApi extends ApiResource {
     return normalizeEntry(entry);
   }
 
+  Future<Result> addEntry(InputData data) async {
+    var entry = await client.request('entries', 'add',
+        post: {'body': data.body}, image: data.file);
+    return normalizeEntryResponse(client.deserializeElement(EntryResponse.serializer, entry));
+  }
+
   Future<Result> voteUp(Entry entry) async {
     var voteCount =
         await client.request('entries', 'voteup', api: [entry.id.toString()]);

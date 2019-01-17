@@ -4,6 +4,9 @@ import 'package:redux/redux.dart';
 import 'dart:async';
 import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/models/models.dart';
+import 'package:owmflutter/keys.dart';
+import 'package:owmflutter/screens/screens.dart';
+import 'package:owmflutter/utils/utils.dart';
 
 class SetEntryAction implements TypedAction {
   final List<int> ids;
@@ -72,7 +75,8 @@ ThunkAction<AppState> voteEntry(int id) {
         store.dispatch(AddEntitiesAction(entities: result.state));
       }
     } catch (e) {
-      store.dispatch(SetErrorAction(error: e, type: ENTRY_PREFIX + id.toString()));
+      store.dispatch(
+          SetErrorAction(error: e, type: ENTRY_PREFIX + id.toString()));
     }
   };
 }
@@ -107,7 +111,23 @@ ThunkAction<AppState> addEntryComment(
       await entryCompltr.future;
       completer.complete();
     } catch (e) {
-      store.dispatch(SetErrorAction(error: e, type: ENTRY_PREFIX + id.toString()));
+      store.dispatch(
+          SetErrorAction(error: e, type: ENTRY_PREFIX + id.toString()));
+    }
+  };
+}
+
+ThunkAction<AppState> addEntry(InputData inputData, Completer completer) {
+  return (Store<AppState> store) async {
+    try {
+      var result = await api.entries.addEntry(inputData);
+      store.dispatch(AddEntitiesAction(entities: result.state));
+      OwmKeys.navKey.currentState.pushReplacement(
+          Utils.getPageTransition(EntryScreen(entryId: result.result[0])));
+      completer.complete();
+    } catch (e) {
+      throw e;
+      // store.dispatch(SetErrorAction(error: e, type: ENTRY_PREFIX + id.toString()));
     }
   };
 }

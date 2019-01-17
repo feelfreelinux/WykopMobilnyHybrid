@@ -4,6 +4,7 @@ import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/themes.dart';
+import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/keys.dart';
 
 class OwmApp extends StatelessWidget {
@@ -24,6 +25,16 @@ class OwmApp extends StatelessWidget {
                 builder: (context, theme) => MaterialApp(
                       title: 'Wykop Mobilny',
                       navigatorKey: OwmKeys.navKey,
+                      onGenerateRoute: (routeSettings) {
+                        var path = routeSettings.name.split('/');
+                        if (path[0] == "entry") {
+                          return Utils.getPageTransition(
+                            EntryScreen(
+                              entryId: int.parse(path[1]),
+                            ),
+                          );
+                        }
+                      },
                       theme: theme == OWMTheme.LIGHT_THEME
                           ? Themes.lightTheme()
                           : Themes.darkTheme(),

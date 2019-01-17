@@ -9,19 +9,25 @@ class SaveAuthCredentialsAction {
   final String avatarUrl;
   final int color;
   final String backgroundUrl;
-  SaveAuthCredentialsAction({this.login, this.avatarUrl, this.color, this.backgroundUrl});
+  SaveAuthCredentialsAction(
+      {this.login, this.avatarUrl, this.color, this.backgroundUrl});
 }
 
 class LogoutUserAction {
   LogoutUserAction();
 }
 
-ThunkAction<AppState> loginUser(String token, String login, Completer completer) {
+ThunkAction<AppState> loginUser(
+    String token, String login, Completer completer) {
   return (Store<AppState> store) async {
     var creds = await api.users.login(login, token);
 
     store.dispatch(SaveAuthCredentialsAction(
-        login: creds.login, avatarUrl: creds.avatarUrl, color: creds.color, backgroundUrl: creds.backgroundUrl));
+        login: creds.login,
+        avatarUrl: creds.avatarUrl,
+        color: creds.color,
+        backgroundUrl: creds.backgroundUrl));
+    completer.complete();
   };
 }
 
@@ -39,7 +45,10 @@ ThunkAction<AppState> syncStateWithApi() {
 
     if (creds != null) {
       store.dispatch(SaveAuthCredentialsAction(
-          login: creds.login, avatarUrl: creds.avatarUrl, backgroundUrl: creds.backgroundUrl, color: creds.color));
+          login: creds.login,
+          avatarUrl: creds.avatarUrl,
+          backgroundUrl: creds.backgroundUrl,
+          color: creds.color));
     }
   };
 }
