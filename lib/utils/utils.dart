@@ -34,13 +34,9 @@ class Utils {
           return screen;
         },
         transitionsBuilder: (context, animation1, animation2, child) {
-          return new SlideTransition(
-            position: new Tween<Offset>(
-              begin: const Offset(0.0, 1.0),
-              end: Offset.zero,
-            ).animate(animation1),
-            child: child,
-           );
+          return FadeTransition(
+              opacity: Tween<double>(begin: 0.0, end: 1.0).animate(animation1),
+              child: child);
         },
         transitionDuration: Duration(milliseconds: 400));
   }
