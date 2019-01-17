@@ -22,6 +22,7 @@ class OwmApp extends StatelessWidget {
                 onInit: (store) => store.dispatch(ensureTheme()),
                 converter: (store) => store.state.themeState.currentTheme,
                 builder: (context, theme) => MaterialApp(
+                  showPerformanceOverlay: true,
                       title: 'Wykop Mobilny',
                       navigatorKey: OwmKeys.navKey,
                       theme: theme == OWMTheme.LIGHT_THEME

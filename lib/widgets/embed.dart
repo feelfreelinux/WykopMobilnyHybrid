@@ -142,9 +142,8 @@ class _EmbedState extends State<EmbedWidget> {
       borderRadius: BorderRadius.circular(widget.borderRadius),
       boxShadow: [BoxShadow(color: Color(0x33000000))],
       image: DecorationImage(
-        image: AdvancedNetworkImage(
+        image: NetworkImage(
           widget.embed.preview,
-          useDiskCache: true,
         ),
         alignment: FractionalOffset.topCenter,
         fit: BoxFit.fitWidth,
@@ -192,9 +191,8 @@ class _EmbedState extends State<EmbedWidget> {
       MaterialPageRoute(
         builder: (context) => EmbedFullScreen(
               heroTag: heroTag,
-              imageProvider: AdvancedNetworkImage(
-                widget.embed.url,
-                useDiskCache: true,
+              imageProvider: NetworkImage(
+                widget.embed.url
               ),
             ),
       ),

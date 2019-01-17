@@ -42,9 +42,8 @@ class AvatarWidget extends StatelessWidget {
           image: DecorationImage(
             fit: BoxFit.fill,
             image: author.avatar.length != 0
-                ? AdvancedNetworkImage(
+                ? NetworkImage(
                     author.avatar,
-                    useDiskCache: true,
                   )
                 : AssetImage(
                     'assets/avatar.png',
