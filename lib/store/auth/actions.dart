@@ -47,7 +47,7 @@ ThunkAction<AppState> syncStateWithApi() {
       store.dispatch(SaveAuthCredentialsAction(
           login: creds.login,
           avatarUrl: creds.avatarUrl,
-          backgroundUrl: creds.backgroundUrl,
+          backgroundUrl: creds.backgroundUrl ?? "",
           color: creds.color));
     }
   };

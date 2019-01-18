@@ -80,7 +80,7 @@ class MainSettingsScreen extends StatelessWidget {
       builder: (context, authState) {
         return Stack(
           children: [
-            authState.loggedIn
+            authState.loggedIn && authState.backgroundUrl != null
                 ? Image(
                     height: 140.0,
                     width: MediaQuery.of(context).size.width,
