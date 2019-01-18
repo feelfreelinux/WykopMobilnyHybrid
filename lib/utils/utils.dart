@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'dart:io' show Platform;
 
 class Utils {
   static Color getAuthorColor(Author author, BuildContext context) {
@@ -27,18 +29,25 @@ class Utils {
   }
 
   static Route getPageTransition(Widget screen) {
-    return PageRouteBuilder(
-        opaque: true,
-        pageBuilder: (BuildContext context, Animation<double> animation,
-            Animation<double> secondaryAnimation) {
-          return screen;
-        },
-        transitionsBuilder: (context, animation1, animation2, child) {
-          return FadeTransition(
-              opacity: Tween<double>(begin: 0.0, end: 1.0).animate(animation1),
-              child: child);
-        },
-        transitionDuration: Duration(milliseconds: 400));
+    if (Platform.isAndroid) {
+      return PageRouteBuilder(
+          opaque: true,
+          pageBuilder: (BuildContext context, Animation<double> animation,
+              Animation<double> secondaryAnimation) {
+            return screen;
+          },
+          transitionsBuilder: (context, animation1, animation2, child) {
+            return FadeTransition(
+                opacity:
+                    Tween<double>(begin: 0.0, end: 1.0).animate(animation1),
+                child: child);
+          },
+          transitionDuration: Duration(milliseconds: 400));
+    } else {
+      return CupertinoPageRoute(
+        builder: (context) => screen
+      );
+    }
   }
 
   static String getSimpleDate(String date) {
