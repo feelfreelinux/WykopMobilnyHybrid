@@ -40,6 +40,9 @@ class LinkWidget extends StatelessWidget {
           child: StoreConnector<AppState, Link>(
             converter: (store) => store.state.entitiesState.links[linkId],
             builder: (context, link) {
+              if (link == null) {
+                return Container();
+              }
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

@@ -24,6 +24,10 @@ class WykopNavigator {
             var id = getEntryId(url);
             return EntryScreen(entryId: id);
             break;
+          case LINK_MATCHER:
+            var id = getLinkUrl(url);
+            return LinkScreen(linkId: id);
+            break;
           case TAG_MATCHER:
             var tag = getTag(url);
             return TagScreen(tag: tag);

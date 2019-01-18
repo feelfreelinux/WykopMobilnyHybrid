@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/widgets/widgets.dart';
+import 'package:owmflutter/screens/screens.dart';
+import 'package:owmflutter/utils/utils.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/store/store.dart';
 
@@ -21,36 +23,46 @@ class EntryWidget extends StatelessWidget {
       padding: EdgeInsets.only(
         bottom: 0.0,
       ),
-      child: Material(
-        color: Theme.of(context).cardColor,
-        child: StoreConnector<AppState, Entry>(
-          converter: (store) => store.state.entitiesState.entries[entryId],
-          builder: (context, entry) {
-            return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 18.0),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      AuthorWidget(
-                        author: entry.author,
-                        date: entry.date,
-                        fontSize: 14.0,
-                        padding:
-                            EdgeInsets.only(top: 12.0, bottom: 0.0, right: 4.0),
-                      ),
-                      _drawVoteButton(entry),
-                    ],
-                  ),
-                  _drawBody(entry),
-                  _drawEmbed(entry),
-                  EntryFooterWidget(entry, this.isClickable),
-                  Divider(height: 1.0,),
-                ],
-              ),
-            );
-          },
+      child: SupaGestureDetector(
+        onTap: isClickable
+            ? () {
+                Navigator.of(context).push(Utils.getPageTransition(
+                    EntryScreen(entryId: this.entryId)));
+              }
+            : null,
+        child: Material(
+          color: Theme.of(context).cardColor,
+          child: StoreConnector<AppState, Entry>(
+            converter: (store) => store.state.entitiesState.entries[entryId],
+            builder: (context, entry) {
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 18.0),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        AuthorWidget(
+                          author: entry.author,
+                          date: entry.date,
+                          fontSize: 14.0,
+                          padding: EdgeInsets.only(
+                              top: 12.0, bottom: 0.0, right: 4.0),
+                        ),
+                        _drawVoteButton(entry),
+                      ],
+                    ),
+                    _drawBody(entry),
+                    _drawEmbed(entry),
+                    EntryFooterWidget(entry, this.isClickable),
+                    Divider(
+                      height: 1.0,
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

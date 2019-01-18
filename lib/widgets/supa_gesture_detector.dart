@@ -16,7 +16,7 @@ class SupaGestureDetector extends StatefulWidget {
 class _SupaGestureDetectorState extends State<SupaGestureDetector> {
   static const int tapSlop = 16;
   static const int longPressTrigger = 500;
-  static const int doubleTapInterval = 200;
+  static const int doubleTapInterval = 300;
   bool isActive = true;
   bool disable = false;
 

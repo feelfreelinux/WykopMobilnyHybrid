@@ -92,7 +92,7 @@ class VoteButtonState extends State<VoteButton> {
       }
     } else {
       if (widget.negativeIcon) {
-        return [const Color(0x26C0392B), const Color(0x268D3D77)]; // -
+        return [const Color(0x003B915F), const Color(0x00007672)]; // -
       } else {
         return [const Color(0x003B915F), const Color(0x00007672)]; // +
       }

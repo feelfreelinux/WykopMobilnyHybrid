@@ -1,6 +1,13 @@
 int getEntryId(String url) {
-  print(url);
   return int.tryParse(url.split('/wpis/')[1].split('/')[0]);
+}
+
+int getLinkUrl(String url) {
+  return int.tryParse(url.split('/link/')[1].split('/')[0]);
+}
+
+int getLinkCommentId(String url) {
+  return int.tryParse(url.split('/#comment-')[1].split('/')[0]);
 }
 
 int getEntryCommentId(String url) {

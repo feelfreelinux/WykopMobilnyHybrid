@@ -127,6 +127,13 @@ Result normalizeEntryResponse(EntryResponse entry) {
       result: ids);
 }
 
+Result normalizeLinkResponse(LinkResponse link) {
+  var mappedLink = Link.mapFromResponse(link);
+  return Result(
+      state: EntitiesState().rebuild((b) => b.links.putIfAbsent(link.id, () => mappedLink)),
+      result: [link.id]);
+}
+
 Result normalizeEntryCommentResponse(EntryCommentResponse entryComment) {
   var mappedEntryComment = EntryComment.mapFromResponse(entryComment);
   return Result(

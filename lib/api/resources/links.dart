@@ -11,6 +11,12 @@ class LinksApi extends ApiResource {
         BuiltList.from(client.deserializeList(LinkResponse.serializer, items)));
   }
 
+  Future<Result> getLink(int linkId) async {
+    var items = await client.request('links', 'link', api: [linkId.toString()]);
+    return normalizeLinkResponse(
+        client.deserializeElement(LinkResponse.serializer, items));
+  }
+
   Future<Result> getLinkComments(int linkId) async {
     var items =
         await client.request('links', 'comments', api: [linkId.toString()]);

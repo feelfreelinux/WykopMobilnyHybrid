@@ -8,34 +8,31 @@ class CommentsButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: 4.0,
-        ),
-        child: Row(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(
-                right: 6.0,
-              ),
-              child: Icon(
-                FontAwesomeIcons.comment,
-                size: 16.0,
-                color: Theme.of(context).textTheme.caption.color,
-              ),
-            ),
-            Text(
-              count.toString() + " " + _polishPlural(count),
-              style: TextStyle(
-                fontSize: 13.0,
-                color: Theme.of(context).textTheme.caption.color,
-              ),
-            ),
-          ],
-        ),
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: 4.0,
       ),
-      onTap: this.onClicked,
+      child: Row(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(
+              right: 6.0,
+            ),
+            child: Icon(
+              FontAwesomeIcons.comment,
+              size: 16.0,
+              color: Theme.of(context).textTheme.caption.color,
+            ),
+          ),
+          Text(
+            count.toString() + " " + _polishPlural(count),
+            style: TextStyle(
+              fontSize: 13.0,
+              color: Theme.of(context).textTheme.caption.color,
+            ),
+          ),
+        ],
+      ),
     );
   }
 

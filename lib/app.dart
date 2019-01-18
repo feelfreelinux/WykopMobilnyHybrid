@@ -25,16 +25,6 @@ class OwmApp extends StatelessWidget {
                 builder: (context, theme) => MaterialApp(
                       title: 'Wykop Mobilny',
                       navigatorKey: OwmKeys.navKey,
-                      onGenerateRoute: (routeSettings) {
-                        var path = routeSettings.name.split('/');
-                        if (path[0] == "entry") {
-                          return Utils.getPageTransition(
-                            EntryScreen(
-                              entryId: int.parse(path[1]),
-                            ),
-                          );
-                        }
-                      },
                       theme: theme == OWMTheme.LIGHT_THEME
                           ? Themes.lightTheme()
                           : Themes.darkTheme(),

@@ -13,7 +13,11 @@ class SetLinkComments implements TypedAction {
 ThunkAction<AppState> loadLinkComments(int linkId, Completer completer) {
   return (Store<AppState> store) async {
     try {
+      api.links.getLink(linkId).then((result) {
+        store.dispatch(AddEntitiesAction(entities: result.state));
+      });
       var result = await api.links.getLinkComments(linkId);
+
 
       store.dispatch(AddEntitiesAction(entities: result.state));
       var comments = result.result
