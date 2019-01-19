@@ -8,6 +8,7 @@ import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart
 import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/widgets/widgets.dart';
+import 'dart:io' show Platform;
 
 class EmbedWidget extends StatefulWidget {
   final Embed embed;
@@ -180,10 +181,16 @@ class _EmbedState extends State<EmbedWidget> {
   void openFullscreen() {
     String heroTag = 'embedImage${widget.embed.hashCode}';
 
-    Navigator.of(context).push(FullscreenOverlay(
-        child: MediaScreen(
-      embed: widget.embed,
-    )));
+    // use different transitions for both platforms
+    Navigator.of(context).push(Platform.isAndroid
+        ? (FullscreenOverlay(
+            child: MediaScreen(
+            embed: widget.embed,
+          )))
+        : CupertinoFullscreenOverlay(
+            child: MediaScreen(
+            embed: widget.embed,
+          )));
 
     return;
     Navigator.push(
@@ -191,9 +198,7 @@ class _EmbedState extends State<EmbedWidget> {
       MaterialPageRoute(
         builder: (context) => EmbedFullScreen(
               heroTag: heroTag,
-              imageProvider: NetworkImage(
-                widget.embed.url
-              ),
+              imageProvider: NetworkImage(widget.embed.url),
             ),
       ),
     );
