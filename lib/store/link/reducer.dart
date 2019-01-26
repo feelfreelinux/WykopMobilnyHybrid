@@ -22,10 +22,17 @@ LinkScreensState linkScreenReducer(LinkScreensState state, action) {
 
 Reducer<LinkScreenState> _linkScreenReducer = combineReducers([
   TypedReducer<LinkScreenState, SetLinkComments>(_setLinkComments),
+  TypedReducer<LinkScreenState, SetRelatedLinks>(_setRelatedLinks),
 ]);
 
 LinkScreenState _setLinkComments(LinkScreenState state, SetLinkComments action) {
   return state.rebuild((b) => b
     ..comments.clear()
     ..comments.addAll(action.ids));
+}
+
+LinkScreenState _setRelatedLinks(LinkScreenState state, SetRelatedLinks action) {
+  return state.rebuild((b) => b
+    ..relatedLinks.clear()
+    ..relatedLinks.addAll(action.ids));
 }

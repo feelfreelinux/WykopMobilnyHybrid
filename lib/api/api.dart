@@ -8,6 +8,7 @@ export 'response_models/entry_comment_response.dart';
 export 'response_models/link_comment_response.dart';
 export 'response_models/author_suggestion_response.dart';
 export 'response_models/tag_suggestion_response.dart';
+export 'response_models/related_response.dart';
 export 'response_models/serializers.dart';
 export 'normalizers.dart';
 export 'client.dart';

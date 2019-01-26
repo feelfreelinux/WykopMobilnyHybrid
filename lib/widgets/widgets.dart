@@ -6,6 +6,7 @@ export 'entry/entry_footer.dart';
 export 'entry/entry.dart';
 export 'entry_comment/entry_comment.dart';
 export 'input/input_bar.dart';
+export 'related/related.dart';
 export 'link/link_footer.dart';
 export 'link/link.dart';
 export 'link/link_opened.dart';

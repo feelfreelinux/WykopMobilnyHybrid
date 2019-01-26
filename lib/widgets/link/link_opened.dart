@@ -119,7 +119,17 @@ class LinkOpenedWidget extends StatelessWidget {
                       ],
                     ),
                     link.relatedCount > 0
-                        ? Container()
+                        ? StoreConnector<AppState, List<int>>(
+                          converter: (store) => store.state.linkScreensState
+                                ?.states[linkId.toString()]?.relatedLinks ??
+                            [],
+                          builder: (context, relatedLinks) {
+                            return ListView.builder(
+                              itemCount: relatedLinks.length,
+                              itemBuilder: (context, index) => RelatedWidget(id: relatedLinks[index]),
+                            );
+                          },
+                        )
                         : Padding(
                             padding: EdgeInsets.only(top: 6.0),
                             child: Text(

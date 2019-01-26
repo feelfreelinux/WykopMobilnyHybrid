@@ -21,10 +21,12 @@ abstract class LinkScreensState
 abstract class LinkScreenState
     implements Built<LinkScreenState, LinkScreenStateBuilder> {
   List<List<int>> get comments;
+  List<int> get relatedLinks;
+
   ErrorState get errorState;
 
   factory LinkScreenState() {
-    return _$LinkScreenState._(comments: ([]), errorState: ErrorState());
+    return _$LinkScreenState._(comments: ([]), relatedLinks: ([]), errorState: ErrorState());
   }
 
   LinkScreenState._();

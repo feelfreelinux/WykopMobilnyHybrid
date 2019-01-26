@@ -10,6 +10,12 @@ class SetLinkComments implements TypedAction {
   SetLinkComments({this.type, this.ids});
 }
 
+class SetRelatedLinks implements TypedAction {
+  final List<int> ids;
+  final String type;
+  SetRelatedLinks({this.type, this.ids});
+}
+
 ThunkAction<AppState> loadLinkComments(int linkId, Completer completer) {
   return (Store<AppState> store) async {
     try {
@@ -27,6 +33,12 @@ ThunkAction<AppState> loadLinkComments(int linkId, Completer completer) {
 
       store.dispatch(SetLinkComments(
           ids: comments, type: LINK_PREFIX + linkId.toString()));
+
+      var relatedResult = await api.links.getRelatedLinks(linkId);
+      store.dispatch(AddEntitiesAction(entities: relatedResult.state));
+      store.dispatch(SetRelatedLinks(
+          ids: relatedResult.result, type: LINK_PREFIX + linkId.toString()));
+
       completer.complete();
     } catch (e) {
       completer.completeError(e);
