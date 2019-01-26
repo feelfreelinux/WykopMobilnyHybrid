@@ -24,7 +24,7 @@ class ShareButton extends StatelessWidget {
               ),
             ),
             Text(
-              "udostępnij",
+              "Udostępnij",
               style: TextStyle(
                 fontSize: 13.0,
                 color: Theme.of(context).textTheme.caption.color,

@@ -54,7 +54,6 @@ class MyWykopScreen extends StatelessWidget {
               ),
             ),
           ],
-          physics: NeverScrollableScrollPhysics(),
         ),
       ),
     );

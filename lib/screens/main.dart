@@ -31,7 +31,7 @@ class _MainScreenState extends State<MainScreen> {
         color: Theme.of(context).primaryColor,
         child: Row(
           mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             _iconButton(Icons.home, 0, "Strona główna"),
             _iconButton(Icons.add_box, 1, "Mikroblog"),
@@ -56,7 +56,8 @@ class _MainScreenState extends State<MainScreen> {
         ),
         tooltip: "Dodaj",
         foregroundColor: Theme.of(context).primaryColor,
-        backgroundColor: Theme.of(context).textTheme.caption.color,
+        backgroundColor:
+            Theme.of(context).textTheme.caption.color.withOpacity(0.45),
         elevation: 0.0,
         onPressed: () {
           _showWriteBottomSheet(context);
@@ -73,12 +74,23 @@ class _MainScreenState extends State<MainScreen> {
             icon: Icons.account_circle,
             fullText: "Dodawanie treści będzie możliwe po zalogowaniu.",
             child: Container(
-              padding: EdgeInsets.all(7.0),
+              padding: EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  alignment: Alignment.center,
+                  fit: BoxFit.scaleDown,
+                  image: AssetImage("kosmo_bg.png"),
+                  repeat: ImageRepeat.repeat,
+                ),
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.all(14.0),
+                    padding: EdgeInsets.symmetric(
+                      vertical: 14.0,
+                      horizontal: 4.0,
+                    ),
                     child: Text(
                       "NAPISZ COŚ OD SIEBIE",
                       style: TextStyle(
@@ -90,14 +102,28 @@ class _MainScreenState extends State<MainScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      _iconAddNewButton(OwmGlyphs.ic_buttontoolbar_wykop,
-                          "ZNALEZISKO", () {}),
-                      _iconAddNewButton(Icons.add_box, "WPIS", () {
-                        Navigator.pop(context);
-                        Navigator.of(context)
-                            .push(Utils.getPageTransition(EntryInputScreen()));
-                      }),
-                      _iconAddNewButton(Icons.mail, "WIADOMOŚĆ", () {}),
+                      _iconAddNewButton(
+                        icon: OwmGlyphs.ic_buttontoolbar_wykop,
+                        color: Colors.blueAccent,
+                        title: "ZNALEZISKO",
+                        onPressed: () {},
+                      ),
+                      _iconAddNewButton(
+                        icon: Icons.add_box,
+                        color: Colors.green,
+                        title: "WPIS",
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.of(context).push(
+                              Utils.getPageTransition(EntryInputScreen()));
+                        },
+                      ),
+                      _iconAddNewButton(
+                        icon: Icons.mail,
+                        color: Colors.deepOrange,
+                        title: "WIADOMOŚĆ",
+                        onPressed: () {},
+                      ),
                     ],
                   ),
                   Container(
@@ -106,8 +132,11 @@ class _MainScreenState extends State<MainScreen> {
                     child: FloatingActionButton(
                       child: Icon(Icons.close),
                       foregroundColor: Theme.of(context).primaryColor,
-                      backgroundColor:
-                          Theme.of(context).textTheme.caption.color,
+                      backgroundColor: Theme.of(context)
+                          .textTheme
+                          .caption
+                          .color
+                          .withOpacity(0.45),
                       elevation: 0.0,
                       onPressed: () {
                         Navigator.pop(context);
@@ -121,25 +150,42 @@ class _MainScreenState extends State<MainScreen> {
         });
   }
 
-  Widget _iconAddNewButton(
-      IconData icon, String title, VoidCallback onPressed) {
+  Widget _iconAddNewButton({
+    IconData icon,
+    Color color,
+    String title,
+    VoidCallback onPressed,
+  }) {
     return Padding(
-      padding: EdgeInsets.all(10.0),
+      padding: EdgeInsets.symmetric(
+        vertical: 14.0,
+        horizontal: 4.0,
+      ),
       child: Column(
         children: <Widget>[
           FloatingActionButton(
-            elevation: 1.0,
+            elevation: 0.0,
             highlightElevation: 8.0,
             onPressed: onPressed,
             child: Icon(icon),
+            backgroundColor: color,
           ),
           GestureDetector(
             onTap: onPressed,
             child: Padding(
-              padding: EdgeInsets.all(12.0),
+              padding: EdgeInsets.symmetric(
+                vertical: 14.0,
+                horizontal: 4.0,
+              ),
               child: Text(
                 title,
                 style: TextStyle(
+                  shadows: [
+                    Shadow(
+                      color: Theme.of(context).backgroundColor,
+                      blurRadius: 2.0,
+                    )
+                  ],
                   fontSize: 11.0,
                   fontWeight: FontWeight.w500,
                 ),
@@ -158,7 +204,7 @@ class _MainScreenState extends State<MainScreen> {
         children: <Widget>[
           Icon(
             icon,
-            size: 26.0,
+            size: _currentIndex == index ? 30.0 : 26.0,
           ),
           Positioned(
             top: 0,
@@ -186,8 +232,8 @@ class _MainScreenState extends State<MainScreen> {
         ],
       ),
       color: _currentIndex == index
-          ? Theme.of(context).accentColor
-          : Theme.of(context).textTheme.caption.color,
+          ? Theme.of(context).textTheme.headline.color
+          : Theme.of(context).textTheme.caption.color.withOpacity(0.45),
       onPressed: () => this.setState(() {
             this._currentIndex = index;
           }),

@@ -3,7 +3,6 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/models/models.dart';
-import 'package:owmflutter/owm_glyphs.dart';
 import 'package:owmflutter/keys.dart';
 import 'dart:async';
 
@@ -37,19 +36,15 @@ class LinkScreen extends StatelessWidget {
                     return completer.future;
                   }, key: OwmKeys.inputBarKey)),
           resizeToAvoidBottomPadding: false,
-          appBar: PreferredSize(
-              preferredSize: Size.fromHeight(48.0),
-              child: AppBar(
-                  title: Text('ZNALEZISKO', style: TextStyle(fontSize: 16.0)),
-                  actions: <Widget>[
-                    IconButton(
-                        icon: Icon(OwmGlyphs.ic_refresh),
-                        onPressed: () {},
-                        tooltip: "Odśwież")
-                  ],
-                  elevation: 1.5,
-                  centerTitle: true,
-                  titleSpacing: 0.0)),
+          appBar: AppbarNormalWidget(
+            title: "Znalezisko",
+            actions: <Widget>[
+              IconButton(
+                  icon: Icon(Icons.refresh),
+                  onPressed: () {},
+                  tooltip: "Odśwież")
+            ],
+          ),
           body: Container(
               decoration:
                   BoxDecoration(color: Theme.of(context).backgroundColor),
@@ -90,9 +85,8 @@ class LinkScreen extends StatelessWidget {
                                       itemCount: commentIds.length + 1,
                                       itemBuilder: (context, index) {
                                         if (index == 0) {
-                                          return LinkWidget(
-                                              linkId: linkId,
-                                              isClickable: false);
+                                          return LinkOpenedWidget(
+                                              linkId: linkId);
                                         } else {
                                           if (commentIds[index - 1]
                                               .startsWith('top_')) {

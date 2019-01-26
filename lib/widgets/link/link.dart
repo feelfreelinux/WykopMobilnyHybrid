@@ -17,33 +17,31 @@ class LinkWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return GestureDetector(
       key: Key(linkId.toString()),
-      padding: EdgeInsets.only(
-        bottom: 3.0,
-      ),
-      child: GestureDetector(
-        onTap: () {
-          if (this.isClickable) {
-            Navigator.push(
-              context,
-              Utils.getPageTransition(
-                LinkScreen(
-                  linkId: linkId,
-                ),
+      onTap: () {
+        if (this.isClickable) {
+          Navigator.push(
+            context,
+            Utils.getPageTransition(
+              LinkScreen(
+                linkId: linkId,
               ),
-            );
-          }
-        },
-        child: Material(
-          color: Theme.of(context).cardColor,
-          child: StoreConnector<AppState, Link>(
-            converter: (store) => store.state.entitiesState.links[linkId],
-            builder: (context, link) {
-              if (link == null) {
-                return Container();
-              }
-              return Column(
+            ),
+          );
+        }
+      },
+      child: Material(
+        color: Theme.of(context).cardColor,
+        child: StoreConnector<AppState, Link>(
+          converter: (store) => store.state.entitiesState.links[linkId],
+          builder: (context, link) {
+            if (link == null) {
+              return Container();
+            }
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 18.0),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
@@ -51,22 +49,19 @@ class LinkWidget extends StatelessWidget {
                       AuthorWidget(
                         author: link.author,
                         date: link.date,
-                        avatarSize: 30.0,
-                        fontSize: 12.0,
+                        fontSize: 14.0,
                         padding: EdgeInsets.symmetric(
-                          vertical: 8.0,
-                          horizontal: 8.0,
+                          vertical: 12.0,
                         ),
                       ),
                       VoteCounterWidget(
                         voteState: "",
                         onClicked: () {},
                         count: link.voteCount,
-                        size: 44.0,
+                        size: 48.0,
                         isHot: link.isHot,
                         padding: EdgeInsets.symmetric(
-                          vertical: 4.0,
-                          horizontal: 12.0,
+                          vertical: 12.0,
                         ),
                       ),
                     ],
@@ -75,15 +70,18 @@ class LinkWidget extends StatelessWidget {
                     children: [
                       _drawImage(context, link),
                       _drawLinkFavicon(context, link),
-                      _drawTitle(context, link),
                     ],
                   ),
+                  _drawTitle(context, link),
                   _drawDescription(link),
                   LinkFooterWidget(link, this.isClickable),
+                  Divider(
+                    height: 1.0,
+                  ),
                 ],
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -91,9 +89,10 @@ class LinkWidget extends StatelessWidget {
 
   Widget _drawImage(BuildContext context, Link link) {
     return Container(
-      width: MediaQuery.of(context).size.width,
-      height: 200,
+      width: MediaQuery.of(context).size.width - 36.0,
+      height: 180,
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(14.0),
         boxShadow: [BoxShadow(color: Color(0x33000000))],
         image: DecorationImage(
           image: AdvancedNetworkImage(
@@ -119,7 +118,7 @@ class LinkWidget extends StatelessWidget {
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor.withOpacity(0.8),
             border: Border.all(
-              color: Color(0x337f7f7f), 
+              color: Color(0x337f7f7f),
               width: 0.5,
             ),
             borderRadius: BorderRadius.circular(100),
@@ -164,40 +163,38 @@ class LinkWidget extends StatelessWidget {
   }
 
   Widget _drawTitle(BuildContext context, Link link) {
-    return Positioned(
-      bottom: 0,
-      width: MediaQuery.of(context).size.width,
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          vertical: 8.0,
-          horizontal: 12.0,
-        ),
-        color: Theme.of(context).cardColor.withOpacity(0.8),
-        child: Text(
-          link.title.replaceAll('&quot;', '"').replaceAll('&amp;', '&'),
-          overflow: TextOverflow.ellipsis,
-          maxLines: 3,
-          style: TextStyle(
-            fontSize: 14.0,
-            fontWeight: FontWeight.w500,
-          ),
+    return Container(
+      padding: EdgeInsets.only(
+        left: 2.0,
+        top: 12.0,
+        right: 2.0,
+        bottom: 6.0,
+      ),
+      child: Text(
+        link.title.replaceAll('&quot;', '"').replaceAll('&amp;', '&'),
+        overflow: TextOverflow.ellipsis,
+        maxLines: 3,
+        style: TextStyle(
+          height: 1.1,
+          fontSize: 15,
+          fontWeight: FontWeight.w500,
         ),
       ),
     );
   }
 
   Widget _drawDescription(Link link) {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: 12.0,
-        top: 8.0,
-        right: 12.0,
-        bottom: 2.0,
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: 2.0,
       ),
       child: Text(
         link.description.replaceAll('&quot;', '"').replaceAll('&amp;', '&'),
+        overflow: TextOverflow.ellipsis,
+        maxLines: 4,
         style: TextStyle(
-          fontSize: 13.0,
+          height: 1.1,
+          fontSize: 13.5,
         ),
       ),
     );

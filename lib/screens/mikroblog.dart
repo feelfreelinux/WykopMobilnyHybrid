@@ -116,7 +116,6 @@ class _MikroblogScreenState extends State<MikroblogScreen> {
                     ),
                   ),
                 ],
-                physics: NeverScrollableScrollPhysics(),
               ),
       ),
     );

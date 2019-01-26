@@ -53,7 +53,6 @@ class NotificationsScreen extends StatelessWidget {
                       .dispatch(loadHashTagNotifications(refresh, completer))),
             ),
           ],
-          physics: NeverScrollableScrollPhysics(),
         ),
       ),
     );

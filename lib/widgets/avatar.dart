@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/models/models.dart';
-import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
 
 class AvatarWidget extends StatelessWidget {
   final Author author;

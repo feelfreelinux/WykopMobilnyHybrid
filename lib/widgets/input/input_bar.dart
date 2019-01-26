@@ -295,23 +295,46 @@ class InputBarWidgetState extends State<InputBarWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: !showTextFormatBar
               ? <Widget>[
-                  _drawIconRound(Icons.text_format, () {
-                          setState(() {
-                            showTextFormatBar = true;
-                          });
-                        }),
                   _drawIconRound(
-                      Icons.link,
-                      () => insertSelectedText("[",
-                          suffix: "](https://wykop.pl)")),
-                  _drawIconRound(Icons.visibility_off,
-                      () => insertSelectedText("\n! ", suffix: "\n")),
-                  _drawIconRound(Icons.list, () => {}),
+                    icon: Icons.text_format,
+                    color: Colors.deepOrange,
+                    onTap: () {
+                      setState(() {
+                        showTextFormatBar = true;
+                      });
+                    },
+                  ),
                   _drawIconRound(
-                      Icons.image, () => this.pickImage(ImageSource.gallery)),
-                  _drawIconRound(Icons.camera_alt,
-                      () => this.pickImage(ImageSource.camera)),
-                  _drawIconRound(Icons.fullscreen, () {}),
+                    icon: Icons.link,
+                    color: Colors.indigo,
+                    onTap: () =>
+                        insertSelectedText("[", suffix: "](https://wykop.pl)"),
+                  ),
+                  _drawIconRound(
+                    icon: Icons.visibility_off,
+                    color: Colors.grey[600],
+                    onTap: () => insertSelectedText("\n! ", suffix: "\n"),
+                  ),
+                  _drawIconRound(
+                    icon: Icons.list,
+                    color: Colors.deepPurple,
+                    onTap: () => {},
+                  ),
+                  _drawIconRound(
+                    icon: Icons.image,
+                    color: Colors.green[600],
+                    onTap: () => this.pickImage(ImageSource.gallery),
+                  ),
+                  _drawIconRound(
+                    icon: Icons.camera_alt,
+                    color: Colors.blueAccent,
+                    onTap: () => this.pickImage(ImageSource.camera),
+                  ),
+                  _drawIconRound(
+                    icon: Icons.fullscreen,
+                    color: Colors.brown,
+                    onTap: () {},
+                  ),
                   Expanded(child: Container()),
                   hasExternalInput
                       ? SendButtonWidget(
@@ -324,19 +347,34 @@ class InputBarWidgetState extends State<InputBarWidget> {
                       : Container(),
                 ]
               : <Widget>[
-                  _drawIconRound(Icons.arrow_back, () {
-                          setState(() {
-                            showTextFormatBar = false;
-                          });
-                        }),
-                  _drawIconRound(Icons.format_bold,
-                      () => insertSelectedText("**", suffix: "**")),
-                  _drawIconRound(Icons.format_italic,
-                      () => insertSelectedText("_", suffix: "_")),
-                  _drawIconRound(Icons.format_quote,
-                      () => insertSelectedText("\n> ", suffix: "\n")),
                   _drawIconRound(
-                      Icons.code, () => insertSelectedText("`", suffix: "`")),
+                    icon: Icons.arrow_back,
+                    onTap: () {
+                      setState(() {
+                        showTextFormatBar = false;
+                      });
+                    },
+                  ),
+                  _drawIconRound(
+                    icon: Icons.format_bold,
+                    color: Colors.red,
+                    onTap: () => insertSelectedText("**", suffix: "**"),
+                  ),
+                  _drawIconRound(
+                    icon: Icons.format_italic,
+                    color: Colors.indigo,
+                    onTap: () => insertSelectedText("_", suffix: "_"),
+                  ),
+                  _drawIconRound(
+                    icon: Icons.format_quote,
+                    color: Colors.amber[600],
+                    onTap: () => insertSelectedText("\n> ", suffix: "\n"),
+                  ),
+                  _drawIconRound(
+                    icon: Icons.code,
+                    color: Colors.purple,
+                    onTap: () => insertSelectedText("`", suffix: "`"),
+                  ),
                   Expanded(child: Container()),
                   hasExternalInput
                       ? SendButtonWidget(
@@ -371,25 +409,24 @@ class InputBarWidgetState extends State<InputBarWidget> {
     });
   }
 
-  Widget _drawIconRound(IconData iconData, VoidCallback onClick) {
+  Widget _drawIconRound({IconData icon, Color color, VoidCallback onTap}) {
     return Container(
       margin: EdgeInsets.symmetric(
         horizontal: 6.0,
       ),
       decoration: BoxDecoration(
+        color: color ?? Theme.of(context).accentColor,
         borderRadius: BorderRadius.circular(30.0),
-        border: Border.all(
-          color: Color(0x337f7f7f),
-        ),
       ),
       child: InkWell(
-        onTap: onClick,
+        onTap: onTap,
         borderRadius: BorderRadius.circular(100.0),
         child: Padding(
-          padding: EdgeInsets.all(4.0),
+          padding: EdgeInsets.all(6.0),
           child: Icon(
-            iconData,
+            icon,
             size: 22.0,
+            color: Colors.white,
           ),
         ),
       ),

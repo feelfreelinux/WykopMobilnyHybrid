@@ -14,12 +14,11 @@ class AppbarTabsWidget extends PreferredSize {
   final VoidCallback onPressedSearch;
   final List<Widget> actions;
   final bool showCurrentUser;
-  AppbarTabsWidget({
-    @required this.tabs,
-    this.onPressedSearch,
-    this.actions,
-    this.showCurrentUser = true
-  });
+  AppbarTabsWidget(
+      {@required this.tabs,
+      this.onPressedSearch,
+      this.actions,
+      this.showCurrentUser = true});
 
   @override
   Size get preferredSize {
@@ -33,65 +32,29 @@ class AppbarTabsWidget extends PreferredSize {
       leading: this.showCurrentUser ? AppbarUserWidget() : null,
       title: Container(
         color: Theme.of(context).primaryColor,
-        child: Stack(
-          alignment: AlignmentDirectional.center,
-          children: <Widget>[
-            TabBar(
-              tabs: tabs,
-              isScrollable: true,
-              indicator: BubbleTabIndicator(
-                indicatorHeight: 26.0,
-                indicatorColor: Theme.of(context).accentColor,
-                tabBarIndicatorSize: TabBarIndicatorSize.tab,
-                insets: EdgeInsets.symmetric(
-                  horizontal: 3.0,
-                ),
-              ),
-              indicatorSize: TabBarIndicatorSize.tab,
-              labelColor: Colors.white,
-              labelStyle: TextStyle(
-                fontSize: 11.0,
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-              ),
-              labelPadding: EdgeInsets.symmetric(
-                vertical: 18.0,
-                horizontal: 14.0,
-              ),
-              unselectedLabelColor: Colors.grey[600],
+        child: TabBar(
+          tabs: tabs,
+          isScrollable: true,
+          indicator: BubbleTabIndicator(
+            indicatorHeight: 26.0,
+            indicatorColor: Theme.of(context).accentColor,
+            tabBarIndicatorSize: TabBarIndicatorSize.tab,
+            insets: EdgeInsets.symmetric(
+              horizontal: 3.0,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  width: 2.0,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      colors: [
-                        Theme.of(context).primaryColor.withOpacity(0.8),
-                        Theme.of(context).primaryColor.withOpacity(0.0),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 2.0,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      colors: [
-                        Theme.of(context).primaryColor.withOpacity(0.0),
-                        Theme.of(context).primaryColor.withOpacity(0.8),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
+          ),
+          indicatorSize: TabBarIndicatorSize.tab,
+          labelColor: Colors.white,
+          labelStyle: TextStyle(
+            fontSize: 11.0,
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
+          labelPadding: EdgeInsets.symmetric(
+            vertical: 18.0,
+            horizontal: 14.0,
+          ),
+          unselectedLabelColor: Colors.grey[600],
         ),
       ),
       actions: actions ??
@@ -105,7 +68,7 @@ class AppbarTabsWidget extends PreferredSize {
               tooltip: "Szukaj",
             ),
           ],
-      elevation: 0.0,
+      elevation: 1.5,
       centerTitle: true,
       titleSpacing: 0.0,
     );
@@ -187,7 +150,7 @@ class SearchAppbarWidget extends PreferredSize {
           tooltip: "Zamknij wyszukiwarkę",
         ),
       ],
-      elevation: 0.0,
+      elevation: 1.5,
       centerTitle: true,
       titleSpacing: 0.0,
     );

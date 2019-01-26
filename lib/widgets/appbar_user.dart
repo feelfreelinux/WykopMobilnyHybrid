@@ -13,8 +13,8 @@ class AppbarUserWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(
-        vertical: 10,
-        horizontal: 14,
+        vertical: 8.0,
+        horizontal: 12.0,
       ),
       child: StoreConnector<AppState, AuthState>(
         onInit: (store) => store.dispatch(syncStateWithApi()),
