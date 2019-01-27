@@ -58,3 +58,15 @@ ThunkAction<AppState> loadActive(bool refresh, Completer completer) {
         completer));
   };
 }
+
+ThunkAction<AppState> loadEntriesFavorite(bool refresh, Completer completer) {
+  return (Store<AppState> store) async {
+    store.dispatch(loadItems(
+        MIKROBLOG_FAVORITE,
+        refresh,
+        (page) => api.entries.getFavorite(page),
+        store.state.mikroblogState.favoriteState.listState,
+        completer));
+  };
+}
+

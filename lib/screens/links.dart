@@ -90,7 +90,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     icon: Icons.favorite,
                     text: "Ulubione znaleziska",
                     child: Center(
-                      child: Text('Niezaimplementowane'),
+                      child: LinksList(
+                          converterCallback: (store) =>
+                              store.state.linksState.favoriteState,
+                          loadDataCallback: (store, refresh, completer) => store
+                              .dispatch(loadLinksFavorite(refresh, completer))),
                     ),
                   ),
                 ],

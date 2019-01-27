@@ -25,9 +25,6 @@ class _$NotificationSerializer implements StructuredSerializer<Notification> {
       serializers.serialize(object.date, specifiedType: const FullType(String)),
       'type',
       serializers.serialize(object.type, specifiedType: const FullType(String)),
-      'author',
-      serializers.serialize(object.author,
-          specifiedType: const FullType(Author)),
     ];
     if (object.body != null) {
       result
@@ -52,6 +49,12 @@ class _$NotificationSerializer implements StructuredSerializer<Notification> {
         ..add('new')
         ..add(serializers.serialize(object.isNew,
             specifiedType: const FullType(bool)));
+    }
+    if (object.author != null) {
+      result
+        ..add('author')
+        ..add(serializers.serialize(object.author,
+            specifiedType: const FullType(Author)));
     }
 
     return result;
@@ -146,9 +149,6 @@ class _$Notification extends Notification {
     }
     if (type == null) {
       throw new BuiltValueNullFieldError('Notification', 'type');
-    }
-    if (author == null) {
-      throw new BuiltValueNullFieldError('Notification', 'author');
     }
   }
 
@@ -283,12 +283,12 @@ class NotificationBuilder
               url: url,
               type: type,
               isNew: isNew,
-              author: author.build());
+              author: _author?.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'author';
-        author.build();
+        _author?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'Notification', _$failedField, e.toString());

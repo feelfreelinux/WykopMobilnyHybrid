@@ -28,6 +28,7 @@ abstract class Notification
   @BuiltValueField(wireName: 'new')
   bool get isNew;
 
+  @nullable
   Author get author;
 
   factory Notification.mapFromResponse(NotificationResponse response) {
@@ -39,7 +40,7 @@ abstract class Notification
       body: response.body,
       isNew: response.isNew,
       itemId: response.itemId,
-      author: Author.fromResponse(response: response.author),
+      author: response.author != null ? Author.fromResponse(response: response.author) : null,
     );
   }
 

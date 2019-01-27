@@ -11,6 +11,13 @@ class LinksApi extends ApiResource {
         BuiltList.from(client.deserializeList(LinkResponse.serializer, items)));
   }
 
+  Future<Result> getFavorite(int page) async {
+    var items = await client
+        .request('links', 'observed', named: {'page': page.toString()});
+    return normalizeLinksResponse(
+        BuiltList.from(client.deserializeList(LinkResponse.serializer, items)));
+  }
+
   Future<Result> getLink(int linkId) async {
     var items = await client.request('links', 'link', api: [linkId.toString()]);
     return normalizeLinkResponse(

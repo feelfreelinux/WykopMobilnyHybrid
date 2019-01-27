@@ -112,7 +112,13 @@ class _MikroblogScreenState extends State<MikroblogScreen> {
                     icon: Icons.favorite,
                     text: "Ulubione wpisy",
                     child: Center(
-                      child: Text('Niezaimplementowane'),
+                      child: EntryList(
+                          actionType: MIKROBLOG_FAVORITE,
+                          converterCallback: (store) =>
+                              store.state.mikroblogState.favoriteState,
+                          loadDataCallback: (store, refresh, completer) =>
+                              store.dispatch(
+                                  loadEntriesFavorite(refresh, completer))),
                     ),
                   ),
                 ],

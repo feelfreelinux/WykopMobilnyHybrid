@@ -21,6 +21,9 @@ class _$LinksStateSerializer implements StructuredSerializer<LinksState> {
       'promotedState',
       serializers.serialize(object.promotedState,
           specifiedType: const FullType(ItemListState)),
+      'favoriteState',
+      serializers.serialize(object.favoriteState,
+          specifiedType: const FullType(ItemListState)),
     ];
 
     return result;
@@ -41,6 +44,10 @@ class _$LinksStateSerializer implements StructuredSerializer<LinksState> {
           result.promotedState.replace(serializers.deserialize(value,
               specifiedType: const FullType(ItemListState)) as ItemListState);
           break;
+        case 'favoriteState':
+          result.favoriteState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(ItemListState)) as ItemListState);
+          break;
       }
     }
 
@@ -51,13 +58,18 @@ class _$LinksStateSerializer implements StructuredSerializer<LinksState> {
 class _$LinksState extends LinksState {
   @override
   final ItemListState promotedState;
+  @override
+  final ItemListState favoriteState;
 
   factory _$LinksState([void updates(LinksStateBuilder b)]) =>
       (new LinksStateBuilder()..update(updates)).build();
 
-  _$LinksState._({this.promotedState}) : super._() {
+  _$LinksState._({this.promotedState, this.favoriteState}) : super._() {
     if (promotedState == null) {
       throw new BuiltValueNullFieldError('LinksState', 'promotedState');
+    }
+    if (favoriteState == null) {
+      throw new BuiltValueNullFieldError('LinksState', 'favoriteState');
     }
   }
 
@@ -71,18 +83,21 @@ class _$LinksState extends LinksState {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is LinksState && promotedState == other.promotedState;
+    return other is LinksState &&
+        promotedState == other.promotedState &&
+        favoriteState == other.favoriteState;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, promotedState.hashCode));
+    return $jf($jc($jc(0, promotedState.hashCode), favoriteState.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('LinksState')
-          ..add('promotedState', promotedState))
+          ..add('promotedState', promotedState)
+          ..add('favoriteState', favoriteState))
         .toString();
   }
 }
@@ -96,11 +111,18 @@ class LinksStateBuilder implements Builder<LinksState, LinksStateBuilder> {
   set promotedState(ItemListStateBuilder promotedState) =>
       _$this._promotedState = promotedState;
 
+  ItemListStateBuilder _favoriteState;
+  ItemListStateBuilder get favoriteState =>
+      _$this._favoriteState ??= new ItemListStateBuilder();
+  set favoriteState(ItemListStateBuilder favoriteState) =>
+      _$this._favoriteState = favoriteState;
+
   LinksStateBuilder();
 
   LinksStateBuilder get _$this {
     if (_$v != null) {
       _promotedState = _$v.promotedState?.toBuilder();
+      _favoriteState = _$v.favoriteState?.toBuilder();
       _$v = null;
     }
     return this;
@@ -123,13 +145,17 @@ class LinksStateBuilder implements Builder<LinksState, LinksStateBuilder> {
   _$LinksState build() {
     _$LinksState _$result;
     try {
-      _$result =
-          _$v ?? new _$LinksState._(promotedState: promotedState.build());
+      _$result = _$v ??
+          new _$LinksState._(
+              promotedState: promotedState.build(),
+              favoriteState: favoriteState.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'promotedState';
         promotedState.build();
+        _$failedField = 'favoriteState';
+        favoriteState.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'LinksState', _$failedField, e.toString());

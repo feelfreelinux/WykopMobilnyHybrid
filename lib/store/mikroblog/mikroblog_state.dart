@@ -12,6 +12,7 @@ abstract class MikroblogState
   ItemListState get hot6State;
   ItemListState get activeState;
   ItemListState get newestState;
+  ItemListState get favoriteState;
 
   factory MikroblogState() {
     return _$MikroblogState._(
@@ -19,7 +20,8 @@ abstract class MikroblogState
         hot6State: ItemListState(),
         hot24State: ItemListState(),
         newestState: ItemListState(),
-        activeState: ItemListState());
+        activeState: ItemListState(),
+        favoriteState: ItemListState());
   }
 
   MikroblogState._();

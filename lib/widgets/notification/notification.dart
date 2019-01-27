@@ -35,10 +35,12 @@ class NotificationWidget extends StatelessWidget {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          AvatarWidget(
-                            author: notification.author,
-                            size: 36.0,
-                          ),
+                          notification.author != null
+                              ? AvatarWidget(
+                                  author: notification.author,
+                                  size: 36.0,
+                                )
+                              : Container(),
                           Flexible(
                             fit: FlexFit.tight,
                             child: Padding(
@@ -56,8 +58,13 @@ class NotificationWidget extends StatelessWidget {
                                         fontSize: 13.5,
                                         height: 1.1,
                                         fontWeight: FontWeight.w500,
-                                        color: Utils.getAuthorColor(
-                                            notification.author, context),
+                                        color: notification.author != null
+                                            ? Utils.getAuthorColor(
+                                                notification.author, context)
+                                            : Theme.of(context)
+                                                .textTheme
+                                                .headline
+                                                .color,
                                       ),
                                     ),
                                     TextSpan(

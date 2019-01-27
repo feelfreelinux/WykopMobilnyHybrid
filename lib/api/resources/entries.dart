@@ -5,6 +5,13 @@ import 'package:owmflutter/models/models.dart';
 class EntriesApi extends ApiResource {
   EntriesApi(ApiClient client) : super(client);
 
+  Future<Result> getFavorite(int page) async {
+    var items = await client.request('entries', 'observed',
+        named: {'page': page.toString()});
+    return normalizeEntriesResponse(BuiltList.from(
+        client.deserializeList(EntryResponse.serializer, items)));
+  }
+
   Future<Result> getHot(int page, String period) async {
     var items = await client.request('entries', 'hot',
         named: {'period': period, 'page': page.toString()});

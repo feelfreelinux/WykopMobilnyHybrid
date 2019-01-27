@@ -14,3 +14,14 @@ ThunkAction<AppState> loadPromoted(bool refresh, Completer completer) {
         completer));
   };
 }
+
+ThunkAction<AppState> loadLinksFavorite(bool refresh, Completer completer) {
+  return (Store<AppState> store) async {
+    store.dispatch(loadItems(
+        LINKS_FAVORITE,
+        refresh,
+        (page) => api.links.getFavorite(page),
+        store.state.linksState.favoriteState.listState,
+        completer));
+  };
+}
