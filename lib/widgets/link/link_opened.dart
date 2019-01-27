@@ -23,132 +23,137 @@ class LinkOpenedWidget extends StatelessWidget {
           if (link == null) {
             return Container();
           }
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 18.0,
-                ),
-                child: Row(
-                  children: <Widget>[
-                    AuthorWidget(
-                      author: link.author,
-                      date: link.date,
-                      fontSize: 14.0,
-                      padding: EdgeInsets.symmetric(
-                        vertical: 12.0,
-                      ),
+          return GestureDetector(
+              onTap: () => _launchURL(link.sourceUrl),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 18.0,
                     ),
-                    VoteCounterWidget(
-                      voteState: "",
-                      onClicked: () {},
-                      count: link.voteCount,
-                      size: 48.0,
-                      isHot: link.isHot,
-                      padding: EdgeInsets.symmetric(
-                        vertical: 12.0,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              GestureDetector(
-                onTap: () => _launchURL(link.sourceUrl),
-                child: Stack(
-                  children: [
-                    _drawImage(context, link),
-                    _drawLinkFavicon(context, link),
-                  ],
-                ),
-              ),
-              _drawTitle(context, link),
-              _drawDescription(link),
-              _drawTags(link),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 18.0,
-                ),
-                child: LinkFooterWidget(link, false),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 18.0,
-                ),
-                child: Divider(
-                  height: 1.0,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 18.0,
-                  vertical: 14.0,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    child: Row(
                       children: <Widget>[
-                        Text(
-                          "Powiązane" +
-                              (link.relatedCount > 0
-                                  ? " • " + link.relatedCount.toString()
-                                  : ""),
-                          style: TextStyle(
-                            fontSize: 16.5,
-                            fontWeight: FontWeight.w500,
+                        AuthorWidget(
+                          author: link.author,
+                          date: link.date,
+                          fontSize: 14.0,
+                          padding: EdgeInsets.symmetric(
+                            vertical: 12.0,
                           ),
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Theme.of(context).accentColor,
-                              borderRadius: BorderRadius.circular(20)),
+                        VoteCounterWidget(
+                          voteState: "",
+                          onClicked: () {},
+                          count: link.voteCount,
+                          size: 48.0,
+                          isHot: link.isHot,
                           padding: EdgeInsets.symmetric(
-                            vertical: 4.0,
-                            horizontal: 9.0,
-                          ),
-                          child: Text(
-                            "Dodaj link",
-                            style: TextStyle(
-                              fontSize: 11.0,
-                              color: Colors.white,
-                            ),
+                            vertical: 12.0,
                           ),
                         ),
                       ],
                     ),
-                    link.relatedCount > 0
-                        ? StoreConnector<AppState, List<int>>(
-                          converter: (store) => store.state.linkScreensState
-                                ?.states[linkId.toString()]?.relatedLinks ??
-                            [],
-                          builder: (context, relatedLinks) {
-                            return Column(
-                              children: relatedLinks.map((id) => RelatedWidget(id: id)).toList(),
-                            );
-                          },
-                        )
-                        : Padding(
-                            padding: EdgeInsets.only(top: 6.0),
-                            child: Text(
-                              "Brak linków powiązanych z znaleziskiem.",
-                              style: TextStyle(),
+                  ),
+                  Stack(
+                    children: [
+                      _drawImage(context, link),
+                      _drawLinkFavicon(context, link),
+                    ],
+                  ),
+                  _drawTitle(context, link),
+                  _drawDescription(link),
+                  _drawTags(link),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 18.0,
+                    ),
+                    child: LinkFooterWidget(link, false),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 18.0,
+                    ),
+                    child: Divider(
+                      height: 1.0,
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 18.0,
+                      vertical: 14.0,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              "Powiązane" +
+                                  (link.relatedCount > 0
+                                      ? " • " + link.relatedCount.toString()
+                                      : ""),
+                              style: TextStyle(
+                                fontSize: 16.5,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
-                          ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 18.0,
-                ),
-                child: Divider(
-                  height: 1.0,
-                ),
-              ),
-            ],
-          );
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context).accentColor,
+                                  borderRadius: BorderRadius.circular(20)),
+                              padding: EdgeInsets.symmetric(
+                                vertical: 4.0,
+                                horizontal: 9.0,
+                              ),
+                              child: Text(
+                                "Dodaj link",
+                                style: TextStyle(
+                                  fontSize: 11.0,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        link.relatedCount > 0
+                            ? StoreConnector<AppState, List<int>>(
+                                converter: (store) =>
+                                    store
+                                        .state
+                                        .linkScreensState
+                                        ?.states[linkId.toString()]
+                                        ?.relatedLinks ??
+                                    [],
+                                builder: (context, relatedLinks) {
+                                  return Column(
+                                    children: relatedLinks
+                                        .map((id) => RelatedWidget(id: id))
+                                        .toList(),
+                                  );
+                                },
+                              )
+                            : Padding(
+                                padding: EdgeInsets.only(top: 6.0),
+                                child: Text(
+                                  "Brak linków powiązanych z znaleziskiem.",
+                                  style: TextStyle(),
+                                ),
+                              ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 18.0,
+                    ),
+                    child: Divider(
+                      height: 1.0,
+                    ),
+                  ),
+                ],
+              ));
         },
       ),
     );
