@@ -36,6 +36,7 @@ ThunkAction<AppState> loadLinkComments(int linkId, Completer completer) {
 
       var relatedResult = await api.links.getRelatedLinks(linkId);
       store.dispatch(AddEntitiesAction(entities: relatedResult.state));
+      print(relatedResult);
       store.dispatch(SetRelatedLinks(
           ids: relatedResult.result, type: LINK_PREFIX + linkId.toString()));
 

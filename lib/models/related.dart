@@ -21,7 +21,7 @@ abstract class Related implements Built<Related, RelatedBuilder> {
       url: response.url,
       title: response.title,
       voteCount: response.voteCount,
-      isVoted: response.userVote > 0,
+      isVoted: false,
       author: Author.fromResponse(response: response.author),
     );
   }

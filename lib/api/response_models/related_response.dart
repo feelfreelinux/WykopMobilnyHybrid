@@ -15,12 +15,6 @@ abstract class RelatedResponse
   @BuiltValueField(wireName: "vote_count")
   int get voteCount;
 
-  @BuiltValueField(wireName: "user_vote")
-  int get userVote;
-
-  @BuiltValueField(wireName: "related_count")
-  int get relatedCount;
-
   AuthorResponse get author;
 
   RelatedResponse._();

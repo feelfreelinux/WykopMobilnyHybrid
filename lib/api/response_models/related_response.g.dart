@@ -30,12 +30,6 @@ class _$RelatedResponseSerializer
       'vote_count',
       serializers.serialize(object.voteCount,
           specifiedType: const FullType(int)),
-      'user_vote',
-      serializers.serialize(object.userVote,
-          specifiedType: const FullType(int)),
-      'related_count',
-      serializers.serialize(object.relatedCount,
-          specifiedType: const FullType(int)),
       'author',
       serializers.serialize(object.author,
           specifiedType: const FullType(AuthorResponse)),
@@ -71,14 +65,6 @@ class _$RelatedResponseSerializer
           result.voteCount = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
-        case 'user_vote':
-          result.userVote = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
-          break;
-        case 'related_count':
-          result.relatedCount = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
-          break;
         case 'author':
           result.author.replace(serializers.deserialize(value,
               specifiedType: const FullType(AuthorResponse)) as AuthorResponse);
@@ -100,23 +86,13 @@ class _$RelatedResponse extends RelatedResponse {
   @override
   final int voteCount;
   @override
-  final int userVote;
-  @override
-  final int relatedCount;
-  @override
   final AuthorResponse author;
 
   factory _$RelatedResponse([void updates(RelatedResponseBuilder b)]) =>
       (new RelatedResponseBuilder()..update(updates)).build();
 
   _$RelatedResponse._(
-      {this.id,
-      this.title,
-      this.url,
-      this.voteCount,
-      this.userVote,
-      this.relatedCount,
-      this.author})
+      {this.id, this.title, this.url, this.voteCount, this.author})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('RelatedResponse', 'id');
@@ -129,12 +105,6 @@ class _$RelatedResponse extends RelatedResponse {
     }
     if (voteCount == null) {
       throw new BuiltValueNullFieldError('RelatedResponse', 'voteCount');
-    }
-    if (userVote == null) {
-      throw new BuiltValueNullFieldError('RelatedResponse', 'userVote');
-    }
-    if (relatedCount == null) {
-      throw new BuiltValueNullFieldError('RelatedResponse', 'relatedCount');
     }
     if (author == null) {
       throw new BuiltValueNullFieldError('RelatedResponse', 'author');
@@ -157,20 +127,14 @@ class _$RelatedResponse extends RelatedResponse {
         title == other.title &&
         url == other.url &&
         voteCount == other.voteCount &&
-        userVote == other.userVote &&
-        relatedCount == other.relatedCount &&
         author == other.author;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
-        $jc(
-            $jc(
-                $jc($jc($jc($jc(0, id.hashCode), title.hashCode), url.hashCode),
-                    voteCount.hashCode),
-                userVote.hashCode),
-            relatedCount.hashCode),
+        $jc($jc($jc($jc(0, id.hashCode), title.hashCode), url.hashCode),
+            voteCount.hashCode),
         author.hashCode));
   }
 
@@ -181,8 +145,6 @@ class _$RelatedResponse extends RelatedResponse {
           ..add('title', title)
           ..add('url', url)
           ..add('voteCount', voteCount)
-          ..add('userVote', userVote)
-          ..add('relatedCount', relatedCount)
           ..add('author', author))
         .toString();
   }
@@ -208,14 +170,6 @@ class RelatedResponseBuilder
   int get voteCount => _$this._voteCount;
   set voteCount(int voteCount) => _$this._voteCount = voteCount;
 
-  int _userVote;
-  int get userVote => _$this._userVote;
-  set userVote(int userVote) => _$this._userVote = userVote;
-
-  int _relatedCount;
-  int get relatedCount => _$this._relatedCount;
-  set relatedCount(int relatedCount) => _$this._relatedCount = relatedCount;
-
   AuthorResponseBuilder _author;
   AuthorResponseBuilder get author =>
       _$this._author ??= new AuthorResponseBuilder();
@@ -229,8 +183,6 @@ class RelatedResponseBuilder
       _title = _$v.title;
       _url = _$v.url;
       _voteCount = _$v.voteCount;
-      _userVote = _$v.userVote;
-      _relatedCount = _$v.relatedCount;
       _author = _$v.author?.toBuilder();
       _$v = null;
     }
@@ -260,8 +212,6 @@ class RelatedResponseBuilder
               title: title,
               url: url,
               voteCount: voteCount,
-              userVote: userVote,
-              relatedCount: relatedCount,
               author: author.build());
     } catch (_) {
       String _$failedField;

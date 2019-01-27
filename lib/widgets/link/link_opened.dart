@@ -124,9 +124,8 @@ class LinkOpenedWidget extends StatelessWidget {
                                 ?.states[linkId.toString()]?.relatedLinks ??
                             [],
                           builder: (context, relatedLinks) {
-                            return ListView.builder(
-                              itemCount: relatedLinks.length,
-                              itemBuilder: (context, index) => RelatedWidget(id: relatedLinks[index]),
+                            return Column(
+                              children: relatedLinks.map((id) => RelatedWidget(id: id)).toList(),
                             );
                           },
                         )

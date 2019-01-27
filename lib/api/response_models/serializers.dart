@@ -15,6 +15,7 @@ part 'serializers.g.dart';
   LinkCommentResponse,
   NotificationResponse,
   AuthorSuggestionResponse,
+  RelatedResponse,
   EntryLinkResponse,
   TagSuggestionResponse,
 ])
