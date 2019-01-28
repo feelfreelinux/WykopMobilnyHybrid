@@ -7,9 +7,14 @@ import 'dart:async';
 class LinksList extends StatelessWidget {
   final ConverterCallback converterCallback;
   final LoadDataCallback loadDataCallback;
+  final Widget header;
   final String actionType;
 
-  LinksList({this.converterCallback, this.loadDataCallback, this.actionType});
+  LinksList(
+      {this.converterCallback,
+      this.loadDataCallback,
+      this.actionType,
+      this.header});
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +24,9 @@ class LinksList extends StatelessWidget {
             converter: (store) => converterCallback(store),
             onInit: (store) {
               var state = converterCallback(store);
-              if (state == null || state.paginationState.itemIds.isEmpty &&
-                  !state.listState.haveReachedEnd) {
+              if (state == null ||
+                  state.paginationState.itemIds.isEmpty &&
+                      !state.listState.haveReachedEnd) {
                 loadDataCallback(store, false, Completer());
               }
             },
@@ -45,6 +51,7 @@ class LinksList extends StatelessWidget {
                           converterCallback(store).errorState,
                       hasData: () => state.paginationState.itemIds.isNotEmpty,
                       child: InfiniteList(
+                          header: header,
                           hasReachedEnd: state.listState.haveReachedEnd,
                           loadData: (completer) => callback(false, completer),
                           itemCount: state.paginationState.itemIds.length,

@@ -29,47 +29,51 @@ class VoteButtonState extends State<VoteButton> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(30),
-          child: Stack(
-            children: <Widget>[
-              Positioned(
-                  top: 0,
-                  bottom: 0,
-                  right: 0,
-                  left: 0,
-                  child: ShinyBackdrop(
-                    extent: 100.0,
-                    child: Container(),
-                    gradientCreator: (double parallaxValue) {
-                      var offset = Alignment(parallaxValue, 0);
-                      return LinearGradient(
-                        colors: List.from(stateGradientColor)
-                          ..addAll(stateGradientColor.reversed.toList()),
-                        stops: [0, 0.50, 0.50, 1],
-                        begin: Alignment.topLeft.add(offset),
-                        end: Alignment.bottomCenter.add(offset),
-                      );
-                    },
-                  )),
-              Container(
-                  padding: widget.padding,
-                  child: Row(children: <Widget>[
-                    Icon(
-                        (widget.negativeIcon
-                            ? OwmGlyphs.ic_buttontoolbar_minus
-                            : OwmGlyphs.ic_buttontoolbar_plus),
-                        size: widget.fontSize * 1.19,
-                        color: stateTextColor),
-                    Padding(
-                        padding: EdgeInsets.only(right: 4.0),
-                        child: Text(widget.count.toInt().toString(),
-                            style: TextStyle(
-                                color: stateTextColor,
-                                fontSize: widget.fontSize,
-                                fontWeight: FontWeight.w500)))
-                  ])),
-            ],
+        behavior: HitTestBehavior.opaque,
+        child: Padding(
+          padding: const EdgeInsets.all(0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(30),
+            child: Stack(
+              children: <Widget>[
+                Positioned(
+                    top: 0,
+                    bottom: 0,
+                    right: 0,
+                    left: 0,
+                    child: ShinyBackdrop(
+                      extent: 100.0,
+                      child: Container(),
+                      gradientCreator: (double parallaxValue) {
+                        var offset = Alignment(parallaxValue, 0);
+                        return LinearGradient(
+                          colors: List.from(stateGradientColor)
+                            ..addAll(stateGradientColor.reversed.toList()),
+                          stops: [0, 0.50, 0.50, 1],
+                          begin: Alignment.topLeft.add(offset),
+                          end: Alignment.bottomCenter.add(offset),
+                        );
+                      },
+                    )),
+                Container(
+                    padding: widget.padding,
+                    child: Row(children: <Widget>[
+                      Icon(
+                          (widget.negativeIcon
+                              ? OwmGlyphs.ic_buttontoolbar_minus
+                              : OwmGlyphs.ic_buttontoolbar_plus),
+                          size: widget.fontSize * 1.19,
+                          color: stateTextColor),
+                      Padding(
+                          padding: EdgeInsets.only(right: 4.0),
+                          child: Text(widget.count.toInt().toString(),
+                              style: TextStyle(
+                                  color: stateTextColor,
+                                  fontSize: widget.fontSize,
+                                  fontWeight: FontWeight.w500)))
+                    ])),
+              ],
+            ),
           ),
         ),
         onTapDown: (_) {

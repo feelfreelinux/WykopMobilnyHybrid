@@ -7,10 +7,15 @@ import 'dart:async';
 class EntryLinkList extends StatelessWidget {
   final ConverterCallback converterCallback;
   final LoadDataCallback loadDataCallback;
+  final Widget header;
   // screen type in redux used in error handling
   final String actionType;
 
-  EntryLinkList({this.converterCallback, this.actionType, this.loadDataCallback});
+  EntryLinkList(
+      {this.converterCallback,
+      this.actionType,
+      this.loadDataCallback,
+      this.header});
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +25,13 @@ class EntryLinkList extends StatelessWidget {
             converter: (store) => converterCallback(store),
             onInit: (store) {
               var state = converterCallback(store);
-              if (state == null || state.paginationState.itemIds.isEmpty &&
-                  !state.listState.haveReachedEnd) {
+              if (state == null ||
+                  state.paginationState.itemIds.isEmpty &&
+                      !state.listState.haveReachedEnd) {
                 loadDataCallback(store, false, Completer());
               }
-            },            builder: (context, state) {
+            },
+            builder: (context, state) {
               if (state == null ||
                   state.listState.isLoading && state.listState.page == 1) {
                 return Center(child: CircularProgressIndicator());
@@ -46,6 +53,7 @@ class EntryLinkList extends StatelessWidget {
                         converterCallback(store).errorState,
                     hasData: () => state.paginationState.itemIds.isNotEmpty,
                     child: InfiniteList(
+                        header: header,
                         hasReachedEnd: state.listState.haveReachedEnd,
                         loadData: (completer) => callback(false, completer),
                         itemCount: state.paginationState.itemIds.length,
