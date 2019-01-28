@@ -138,7 +138,7 @@ class _InfiniteListState extends State<InfiniteList> {
             if (widget.header == null) {
               return widget.itemBuilder(context, index);
             } else {
-              return widget.itemBuilder(context, index + 1);
+              return widget.itemBuilder(context, index - 1);
             }
           },
           controller: _scrollController,
