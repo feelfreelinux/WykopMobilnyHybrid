@@ -9,9 +9,12 @@ export 'response_models/link_comment_response.dart';
 export 'response_models/author_suggestion_response.dart';
 export 'response_models/tag_suggestion_response.dart';
 export 'response_models/related_response.dart';
+export 'response_models/pm_message_response.dart';
+export 'response_models/conversation_response.dart';
 export 'response_models/serializers.dart';
 export 'normalizers.dart';
 export 'client.dart';
+export 'resources/pm.dart';
 export 'resources/api_resource.dart';
 export 'resources/entries.dart';
 export 'resources/users.dart';
@@ -55,6 +58,7 @@ class WykopApiClient {
   NotificationsApi notifications;
   SuggestApi suggest;
   EmbedApi embed;
+  PmApi pm;
 
   AuthCredentials get credentials => _client.credentials;
 
@@ -75,6 +79,7 @@ class WykopApiClient {
     this.users = UsersApi(_client);
     this.links = LinksApi(_client);
     this.tags = TagsApi(_client);
+    this.pm = PmApi(_client);
     this.suggest = SuggestApi(_client);
     this.embed = EmbedApi(_client);
     this.search = SearchApi(_client);
