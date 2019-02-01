@@ -10,6 +10,7 @@ abstract class PmMessage
   factory PmMessage([updates(PmMessageBuilder b)]) = _$PmMessage;
   String get date;
   String get body;
+  @nullable
   Embed get embed;
   bool get isSentFromUser;
   @nullable

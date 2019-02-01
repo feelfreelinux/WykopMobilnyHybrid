@@ -21,7 +21,7 @@ class _$PmMessageResponseSerializer
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'id',
-      serializers.serialize(object.id, specifiedType: const FullType(int)),
+      serializers.serialize(object.id, specifiedType: const FullType(String)),
       'date',
       serializers.serialize(object.date, specifiedType: const FullType(String)),
       'direction',
@@ -75,7 +75,7 @@ class _$PmMessageResponseSerializer
       switch (key) {
         case 'id':
           result.id = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
+              specifiedType: const FullType(String)) as String;
           break;
         case 'date':
           result.date = serializers.deserialize(value,
@@ -114,7 +114,7 @@ class _$PmMessageResponseSerializer
 
 class _$PmMessageResponse extends PmMessageResponse {
   @override
-  final int id;
+  final String id;
   @override
   final String date;
   @override
@@ -211,9 +211,9 @@ class PmMessageResponseBuilder
     implements Builder<PmMessageResponse, PmMessageResponseBuilder> {
   _$PmMessageResponse _$v;
 
-  int _id;
-  int get id => _$this._id;
-  set id(int id) => _$this._id = id;
+  String _id;
+  String get id => _$this._id;
+  set id(String id) => _$this._id = id;
 
   String _date;
   String get date => _$this._date;

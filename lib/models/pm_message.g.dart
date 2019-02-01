@@ -22,12 +22,16 @@ class _$PmMessageSerializer implements StructuredSerializer<PmMessage> {
       serializers.serialize(object.date, specifiedType: const FullType(String)),
       'body',
       serializers.serialize(object.body, specifiedType: const FullType(String)),
-      'embed',
-      serializers.serialize(object.embed, specifiedType: const FullType(Embed)),
       'isSentFromUser',
       serializers.serialize(object.isSentFromUser,
           specifiedType: const FullType(bool)),
     ];
+    if (object.embed != null) {
+      result
+        ..add('embed')
+        ..add(serializers.serialize(object.embed,
+            specifiedType: const FullType(Embed)));
+    }
     if (object.app != null) {
       result
         ..add('app')
@@ -99,9 +103,6 @@ class _$PmMessage extends PmMessage {
     }
     if (body == null) {
       throw new BuiltValueNullFieldError('PmMessage', 'body');
-    }
-    if (embed == null) {
-      throw new BuiltValueNullFieldError('PmMessage', 'embed');
     }
     if (isSentFromUser == null) {
       throw new BuiltValueNullFieldError('PmMessage', 'isSentFromUser');
@@ -205,14 +206,14 @@ class PmMessageBuilder implements Builder<PmMessage, PmMessageBuilder> {
           new _$PmMessage._(
               date: date,
               body: body,
-              embed: embed.build(),
+              embed: _embed?.build(),
               isSentFromUser: isSentFromUser,
               app: app);
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'embed';
-        embed.build();
+        _embed?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'PmMessage', _$failedField, e.toString());

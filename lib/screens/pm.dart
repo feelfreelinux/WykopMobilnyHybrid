@@ -12,21 +12,22 @@ class PmScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Container(
-            child: FutureBuilder<List<PmMessage>>(
-                future: api.pm.getMessages(conversation.author.login),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                        reverse: true,
-                        itemCount: snapshot.data.length,
-                        itemBuilder: (context, index) {
-                          var message = snapshot.data[index];
-                          return Text(message.body);
-                        });
-                  }
-                  return Center(child: CircularProgressIndicator());
-                })));
+    return Scaffold(
+          body: Container(
+              child: FutureBuilder<List<PmMessage>>(
+                  future: api.pm.getMessages(conversation.author.login),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                          reverse: true,
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (context, index) {
+                            var message = snapshot.data[index];
+                            return Text(message.body, textAlign: message.isSentFromUser ? TextAlign.right : TextAlign.left);
+                          });
+                    }
+                    return Center(child: CircularProgressIndicator());
+                  })),
+    );
   }
 }
