@@ -95,7 +95,15 @@ class LinkScreen extends StatelessWidget {
                                                     commentIds[index - 1]
                                                         .split('_')[1]));
                                           } else {
+                                            // TODO: Rewrite this sick piece of code. It works tho
                                             return ChildrenLinkCommentWidget(
+                                                isFirst: ids.firstWhere((e) => e.contains(int.parse(commentIds[index - 1].split('_')[1])))[1] == int.parse(
+                                                    commentIds[index - 1]
+                                                        .split('_')[1]),
+                                                isLast: ids.firstWhere((e) => e.contains(int.parse(commentIds[index - 1].split('_')[1])))
+                                                  [ids.firstWhere((e) => e.contains(int.parse(commentIds[index - 1].split('_')[1]))).length - 1] == int.parse(
+                                                    commentIds[index - 1]
+                                                        .split('_')[1]),                              
                                                 commentId: int.parse(
                                                     commentIds[index - 1]
                                                         .split('_')[1]));

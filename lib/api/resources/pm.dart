@@ -12,11 +12,16 @@ class PmApi extends ApiResource {
     return client.deserializeList(ConversationResponse.serializer, items).map((e) => Conversation.mapFromResponse(e)).toList();
   }
 
-  Future<Result> getMessages(int page) async {
+  Future<List<PmMessage>> getMessages(String receiver) async {
     var items = await client
-        .request('mywykop', 'tags', named: {'page': page.toString()});
-    return normalizeEntryLinkResponse(BuiltList.from(
-        client.deserializeList(EntryLinkResponse.serializer, items)));
+        .request('pm', 'conversation', api: [ receiver ]);
+        print(items);
+        try {
+    print(client.deserializeList(PmMessageResponse.serializer, items).length);
+        } catch (e) {
+          print(e);
+        }
+    return client.deserializeList(PmMessageResponse.serializer, items).map((e) => PmMessage.mapFromResponse(e)).toList();
   }
 
   Future<Result> sendMessage(int page) async {

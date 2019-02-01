@@ -8,4 +8,5 @@ export 'link.dart';
 export 'notifications.dart';
 export 'mywykop.dart';
 export 'media.dart';
+export 'pm.dart';
 export 'main_settings.dart';

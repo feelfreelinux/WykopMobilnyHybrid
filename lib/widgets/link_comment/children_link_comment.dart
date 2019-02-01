@@ -7,7 +7,9 @@ import 'package:owmflutter/utils/utils.dart';
 
 class ChildrenLinkCommentWidget extends StatelessWidget {
   final int commentId;
-  ChildrenLinkCommentWidget({this.commentId});
+  final bool isFirst;
+  final bool isLast;
+  ChildrenLinkCommentWidget({this.commentId, this.isFirst, this.isLast});
 
   @override
   Widget build(BuildContext context) {
