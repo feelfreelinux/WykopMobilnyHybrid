@@ -81,7 +81,9 @@ class EntryCommentWidget extends StatelessWidget {
 
   Widget _buildEntryCommentBody(EntryComment comment, BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 18.0),
+      padding: EdgeInsets.symmetric(
+        horizontal: 18.0,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -104,7 +106,16 @@ class EntryCommentWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     _drawHeader(context, comment),
-                    _drawBody(comment),
+                    BodyWidget(
+                      body: comment.body,
+                      ellipsize: false,
+                      padding: EdgeInsets.only(
+                        top: 2.0,
+                        left: 12.0,
+                        right: 2.0,
+                        bottom: 12.0,
+                      ),
+                    ),
                     _drawEmbed(comment),
                   ],
                 ),
@@ -118,23 +129,6 @@ class EntryCommentWidget extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Widget _drawBody(EntryComment comment) {
-    if (comment.body != null) {
-      return BodyWidget(
-        body: comment.body,
-        ellipsize: false,
-        padding: EdgeInsets.only(
-          top: 2.0,
-          left: 12.0,
-          right: 2.0,
-          bottom: 12.0,
-        ),
-      );
-    } else {
-      return Container();
-    }
   }
 
   Widget _drawEmbed(EntryComment comment) {

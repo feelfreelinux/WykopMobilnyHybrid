@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/store/store.dart';
-import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'dart:io';
 import 'dart:async';

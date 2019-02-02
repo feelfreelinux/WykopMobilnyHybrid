@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'dart:io' show Platform;
+import 'package:url_launcher/url_launcher.dart';
 
 class Utils {
   static Color getAuthorColor(Author author, BuildContext context) {
@@ -44,14 +45,61 @@ class Utils {
           },
           transitionDuration: Duration(milliseconds: 400));
     } else {
-      return CupertinoPageRoute(
-        builder: (context) => screen
-      );
+      return CupertinoPageRoute(builder: (context) => screen);
     }
   }
 
   static String getSimpleDate(String date) {
     var newDate = DateTime.parse(date);
     return timeago.format(newDate, locale: 'pl');
+  }
+
+  static Color voteIconStateColor({bool isSelected, bool negativeIcon}) {
+    if (isSelected) {
+      return Colors.white;
+    } else {
+      if (negativeIcon) {
+        return Colors.red[800];
+      } else {
+        return Colors.green[800];
+      }
+    }
+  }
+
+  static Color voteBackgroundStateColor({bool isSelected, bool negativeIcon}) {
+    if (isSelected) {
+      if (negativeIcon) {
+        return Colors.red[800];
+      } else {
+        return Colors.green[800];
+      }
+    } else {
+      if (negativeIcon) {
+        return Colors.red[800].withOpacity(0.1);
+      } else {
+        return Colors.green[800].withOpacity(0.1);
+      }
+    }
+  }
+
+  static String polishPlural(
+      {num count, String first, String many, String other}) {
+    if (count == 1) {
+      return first; // komentarz
+    } else if (count % 10 >= 2 &&
+        count % 10 <= 4 &&
+        (count % 100 < 10 || count % 100 >= 20)) {
+      return other; // komentarze
+    } else {
+      return many; // komentarzy
+    }
+  }
+
+  static void launchURL(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Nie można załadować linku';
+    }
   }
 }

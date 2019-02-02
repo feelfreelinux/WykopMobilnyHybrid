@@ -1,11 +1,11 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:owmflutter/models/models.dart';
+import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/store/store.dart';
 import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'vote_counter.dart';
 
 class LinkOpenedWidget extends StatelessWidget {
@@ -23,139 +23,183 @@ class LinkOpenedWidget extends StatelessWidget {
           if (link == null) {
             return Container();
           }
-          return GestureDetector(
-              onTap: () => _launchURL(link.sourceUrl),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 18.0,
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 18.0,
+                ),
+                child: Row(
+                  children: <Widget>[
+                    AuthorWidget(
+                      author: link.author,
+                      date: link.date,
+                      fontSize: 14.0,
+                      padding: EdgeInsets.symmetric(
+                        vertical: 12.0,
+                      ),
                     ),
-                    child: Row(
-                      children: <Widget>[
-                        AuthorWidget(
-                          author: link.author,
-                          date: link.date,
-                          fontSize: 14.0,
-                          padding: EdgeInsets.symmetric(
-                            vertical: 12.0,
-                          ),
-                        ),
-                        VoteCounterWidget(
-                          voteState: "",
-                          onClicked: () {},
-                          count: link.voteCount,
-                          size: 48.0,
-                          isHot: link.isHot,
-                          padding: EdgeInsets.symmetric(
-                            vertical: 12.0,
-                          ),
-                        ),
+                    VoteCounterWidget(
+                      voteState: "",
+                      onClicked: () {},
+                      count: link.voteCount,
+                      size: 48.0,
+                      isHot: link.isHot,
+                      padding: EdgeInsets.symmetric(
+                        vertical: 12.0,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              GestureDetector(
+                onTap: () => Utils.launchURL(link.sourceUrl),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Stack(
+                      children: [
+                        _drawImage(context, link),
+                        _drawLinkFavicon(context, link),
                       ],
                     ),
-                  ),
-                  Stack(
-                    children: [
-                      _drawImage(context, link),
-                      _drawLinkFavicon(context, link),
-                    ],
-                  ),
-                  _drawTitle(context, link),
-                  _drawDescription(link),
-                  _drawTags(link),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 18.0,
-                    ),
-                    child: LinkFooterWidget(link, false),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 18.0,
-                    ),
-                    child: Divider(
-                      height: 1.0,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 18.0,
-                      vertical: 14.0,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              "Powiązane" +
-                                  (link.relatedCount > 0
-                                      ? " • " + link.relatedCount.toString()
-                                      : ""),
-                              style: TextStyle(
-                                fontSize: 16.5,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: Theme.of(context).accentColor,
-                                  borderRadius: BorderRadius.circular(20)),
-                              padding: EdgeInsets.symmetric(
-                                vertical: 4.0,
-                                horizontal: 9.0,
-                              ),
-                              child: Text(
-                                "Dodaj link",
-                                style: TextStyle(
-                                  fontSize: 11.0,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        link.relatedCount > 0
-                            ? StoreConnector<AppState, List<int>>(
-                                converter: (store) =>
-                                    store
-                                        .state
-                                        .linkScreensState
-                                        ?.states[linkId.toString()]
-                                        ?.relatedLinks ??
-                                    [],
-                                builder: (context, relatedLinks) {
-                                  return Column(
-                                    children: relatedLinks
-                                        .map((id) => RelatedWidget(id: id))
-                                        .toList(),
-                                  );
-                                },
-                              )
-                            : Padding(
-                                padding: EdgeInsets.only(top: 6.0),
-                                child: Text(
-                                  "Brak linków powiązanych z znaleziskiem.",
-                                  style: TextStyle(),
-                                ),
-                              ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 18.0,
-                    ),
-                    child: Divider(
-                      height: 1.0,
-                    ),
-                  ),
-                ],
-              ));
+                    _drawTitle(context, link),
+                    _drawDescription(link),
+                  ],
+                ),
+              ),
+              _drawTags(link),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 18.0,
+                ),
+                child: LinkFooterWidget(link, false),
+              ),
+              DividerWidget(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 18.0,
+                ),
+              ),
+              _drawRelated(context, link),
+              DividerWidget(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 18.0,
+                ),
+              ),
+            ],
+          );
         },
       ),
+    );
+  }
+
+  Widget _drawRelated(BuildContext context, Link link) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 18.0,
+            vertical: 14.0,
+          ),
+          child: Row(
+            children: <Widget>[
+              Text(
+                "Powiązane",
+                style: TextStyle(
+                  fontSize: 16.5,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              link.relatedCount > 0
+                  ? Container(
+                      margin: EdgeInsets.only(left: 6.0),
+                      padding: EdgeInsets.symmetric(
+                        vertical: 1.0,
+                        horizontal: 6.0,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        link.relatedCount.toString(),
+                        style: TextStyle(
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    )
+                  : Container(),
+              Expanded(child: Container()),
+              GestureDetector(
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).accentColor,
+                      borderRadius: BorderRadius.circular(20)),
+                  padding: EdgeInsets.symmetric(
+                    vertical: 4.0,
+                    horizontal: 9.0,
+                  ),
+                  child: Text(
+                    "Dodaj link",
+                    style: TextStyle(
+                      fontSize: 11.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  //TODO add a related add screen
+                  Scaffold.of(context).showSnackBar(SnackBar(
+                    content: Text('Niezaimplementowano'),
+                  ));
+                },
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(
+            bottom: 18.0,
+          ),
+          child: link.relatedCount > 0
+              ? StoreConnector<AppState, List<int>>(
+                  converter: (store) =>
+                      store.state.linkScreensState?.states[linkId.toString()]
+                          ?.relatedLinks ??
+                      [],
+                  builder: (context, relatedLinks) {
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8.0,
+                        ),
+                        child: Row(
+                          children: relatedLinks
+                              .map((id) => RelatedWidget(
+                                    id: id,
+                                    count: link.relatedCount,
+                                  ))
+                              .toList(),
+                        ),
+                      ),
+                    );
+                  },
+                )
+              : Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 18.0,
+                  ),
+                  child: Text(
+                    "Brak linków powiązanych ze znaleziskiem.",
+                  ),
+                ),
+        ),
+      ],
     );
   }
 
@@ -278,13 +322,5 @@ class LinkOpenedWidget extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void _launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Nie można załadować linku';
-    }
   }
 }

@@ -30,7 +30,7 @@ class AvatarWidget extends StatelessWidget {
         shape: BoxShape.circle,
         border: Border.all(
           color: Theme.of(context).cardColor,
-          width: size / 36,
+          width: size / 30,
         ),
       ),
       child: Container(
@@ -38,6 +38,7 @@ class AvatarWidget extends StatelessWidget {
         height: size,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
+          color: Theme.of(context).backgroundColor,
           image: DecorationImage(
             fit: BoxFit.fill,
             image: author.avatar.length != 0
@@ -64,7 +65,7 @@ class AvatarWidget extends StatelessWidget {
             shape: BoxShape.circle,
             border: Border.all(
               color: Theme.of(context).cardColor,
-              width: size / 36,
+              width: size / 30,
             ),
           ),
           child: Container(

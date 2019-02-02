@@ -53,7 +53,16 @@ class EntryWidget extends StatelessWidget {
                         _drawVoteButton(entry),
                       ],
                     ),
-                    _drawBody(entry),
+                    BodyWidget(
+                      body: entry.body,
+                      ellipsize: ellipsize,
+                      padding: EdgeInsets.only(
+                        top: 12.0,
+                        left: 2.0,
+                        right: 2.0,
+                        bottom: 2.0,
+                      ),
+                    ),
                     _drawEmbed(entry),
                     EntryFooterWidget(entry, this.isClickable),
                     Divider(
@@ -85,23 +94,6 @@ class EntryWidget extends StatelessWidget {
             ),
       ),
     );
-  }
-
-  Widget _drawBody(Entry entry) {
-    if (entry.body != null) {
-      return BodyWidget(
-        body: entry.body,
-        ellipsize: ellipsize,
-        padding: EdgeInsets.only(
-          top: 12.0,
-          left: 2.0,
-          right: 2.0,
-          bottom: 2.0,
-        ),
-      );
-    } else {
-      return Container();
-    }
   }
 
   Widget _drawEmbed(Entry entry) {

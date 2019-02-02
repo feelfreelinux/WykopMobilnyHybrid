@@ -19,17 +19,24 @@ class EntryFooterWidget extends StatelessWidget {
         children: <Widget>[
           FavoriteButton(
             isFavorite: false,
-            onClicked: () {},
+            onTap: () {},
           ),
           CommentsButton(
             count: entry.commentsCount,
-            onClicked: () {
-              if (this.isClickable) {
-                ;
+            onTap: () {
+              if (isClickable) {
+                Navigator.push(
+                  context,
+                  Utils.getPageTransition(
+                    EntryScreen(
+                      entryId: entry.id,
+                    ),
+                  ),
+                );
               }
             },
           ),
-          ShareButton(onClicked: () {}),
+          ShareButton(onTap: () {}),
         ],
       ),
     );

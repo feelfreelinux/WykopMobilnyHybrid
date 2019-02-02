@@ -19,13 +19,14 @@ class LinkFooterWidget extends StatelessWidget {
         children: <Widget>[
           FavoriteButton(
             isFavorite: false,
-            onClicked: () {},
+            onTap: () {},
           ),
           CommentsButton(
             count: link.commentsCount,
-            onClicked: () {
+            onTap: () {
               if (isClickable) {
-                Navigator.of(context).push(
+                Navigator.push(
+                  context,
                   Utils.getPageTransition(
                     LinkScreen(
                       linkId: link.id,
@@ -35,7 +36,7 @@ class LinkFooterWidget extends StatelessWidget {
               }
             },
           ),
-          ShareButton(onClicked: () {}),
+          ShareButton(onTap: () {}),
         ],
       ),
     );
