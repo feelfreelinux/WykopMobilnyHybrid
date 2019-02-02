@@ -22,7 +22,7 @@ class BodyWidget extends StatelessWidget {
     return Padding(
       padding: padding,
       child: HtmlWidget(
-          blackText: blackTheme,
+          blackText: false,
           html: body != null
               ? body.length > 300 && ellipsize
                   ? body.substring(0, 200) + '...'

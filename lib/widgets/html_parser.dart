@@ -29,7 +29,7 @@ class HtmlWidget extends StatelessWidget {
     return new Container(
       
       child:
-      _HtmlParser(context, textTheme: blackText ? Themes.darkTheme().textTheme : Theme.of(context).textTheme).parseFromStr(html
+      _HtmlParser(context, blackText: blackText).parseFromStr(html
           .replaceAll('<cite> ', '<cite>')
           .replaceAll('<br /> ', '<br/>')
           .replaceAll('&quot;', '"'))
@@ -42,9 +42,9 @@ class _HtmlParser {
   final Map appContext;
   final bool nested;
 
-  final TextTheme textTheme;
+  final bool blackText;
 
-  _HtmlParser(this.context, {this.nested: false, this.appContext: const {}, this.textTheme});
+  _HtmlParser(this.context, {this.nested: false, this.appContext: const {}, this.blackText = false});
 
   List<Widget> _widgets = [];
   List<TextSpan> _currentTextSpans = [];
@@ -80,7 +80,7 @@ class _HtmlParser {
         text: trimmedText,
         style: style ??
             TextStyle(
-                color: textTheme.headline.color,
+                color: blackText ? Colors.black : Theme.of(context).textTheme.headline.color,
                 height: 1.1)));
   }
 
