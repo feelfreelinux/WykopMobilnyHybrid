@@ -49,6 +49,9 @@ class EntryScreen extends StatelessWidget {
                       loadEntry(entryId.toString(), entryId, Completer()));
                 },
                 builder: (context, ids) {
+                  if (ids.length == 0) {
+                    return Center(child: CircularProgressIndicator());
+                  }
                   return RefreshIndicator(
                     onRefresh: () {
                       var completer = new Completer();
