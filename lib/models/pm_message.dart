@@ -23,7 +23,7 @@ abstract class PmMessage
           ? Embed.fromResponse(response: response.embed)
           : null,
       body: response.body,
-      isSentFromUser: response.status == "received",
+      isSentFromUser: response.direction != "received",
       app: response.app,
     );
   }

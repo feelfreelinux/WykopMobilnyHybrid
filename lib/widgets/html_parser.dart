@@ -51,7 +51,6 @@ class _HtmlParser {
     _tryCloseCurrentTextSpan();
 
     return new Container(
-        width: MediaQuery.of(context).size.width,
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start, children: _widgets));
   }
