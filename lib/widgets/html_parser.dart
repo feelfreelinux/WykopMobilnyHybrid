@@ -8,6 +8,7 @@ import 'package:owmflutter/navigator/navigator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/screens/screens.dart';
+import 'package:owmflutter/themes.dart';
 
 import 'dart:ui';
 
@@ -18,16 +19,21 @@ import 'dart:ui';
  * Base from `wiki-flutter` client. Thanks a lot!
 */
 class HtmlWidget extends StatelessWidget {
-  const HtmlWidget({Key key, this.html}) : super(key: key);
+  const HtmlWidget({Key key, this.html, this.blackText = false}) : super(key: key);
 
   final String html;
+  final bool blackText;
 
   @override
   Widget build(BuildContext context) {
-    return new _HtmlParser(context).parseFromStr(html
-        .replaceAll('<cite> ', '<cite>')
-        .replaceAll('<br /> ', '<br/>')
-        .replaceAll('&quot;', '"'));
+    return new Container(
+      
+      child:
+      _HtmlParser(context, textTheme: blackText ? Themes.darkTheme().textTheme : Theme.of(context).textTheme).parseFromStr(html
+          .replaceAll('<cite> ', '<cite>')
+          .replaceAll('<br /> ', '<br/>')
+          .replaceAll('&quot;', '"'))
+    );
   }
 }
 
@@ -38,8 +44,7 @@ class _HtmlParser {
 
   final TextTheme textTheme;
 
-  _HtmlParser(this.context, {this.nested: false, this.appContext: const {}})
-      : textTheme = Theme.of(context).textTheme;
+  _HtmlParser(this.context, {this.nested: false, this.appContext: const {}, this.textTheme});
 
   List<Widget> _widgets = [];
   List<TextSpan> _currentTextSpans = [];
@@ -75,7 +80,7 @@ class _HtmlParser {
         text: trimmedText,
         style: style ??
             TextStyle(
-                color: Theme.of(context).textTheme.headline.color,
+                color: textTheme.headline.color,
                 height: 1.1)));
   }
 
@@ -107,7 +112,9 @@ class _HtmlParser {
       case 'a':
         if (element.attributes['href'].startsWith('spoiler:')) {
           _tryCloseCurrentTextSpan();
-          _widgets.add(new SpoilerWidget());
+          _widgets.add(new SpoilerWidget(
+              text: element.attributes['href']
+                  .substring(8, element.attributes['href'].length)));
           return;
         } else if (element.attributes['href'].startsWith('#')) {
           _currentTextSpans.add(ClickableTextSpan(

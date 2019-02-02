@@ -26,7 +26,8 @@ class EntryCommentWidget extends StatelessWidget {
                   child: StoreConnector<AppState, VoidCallback>(
                     converter: (store) => () => store
                         .dispatch(deleteEntryComment(commentId, Completer())),
-                    builder: (context, deleteCommentCallback) => SupaGestureDetector(
+                    builder: (context, deleteCommentCallback) =>
+                        SupaGestureDetector(
                           onDoubleTap: () {
                             // Quote action
                             OwmKeys.inputBarKey.currentState
@@ -82,6 +83,7 @@ class EntryCommentWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 18.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,12 +122,16 @@ class EntryCommentWidget extends StatelessWidget {
 
   Widget _drawBody(EntryComment comment) {
     if (comment.body != null) {
-      return BodyWidget(body: comment.body, ellipsize: false, padding: EdgeInsets.only(
+      return BodyWidget(
+        body: comment.body,
+        ellipsize: false,
+        padding: EdgeInsets.only(
           top: 2.0,
           left: 12.0,
           right: 2.0,
           bottom: 12.0,
-        ),);
+        ),
+      );
     } else {
       return Container();
     }

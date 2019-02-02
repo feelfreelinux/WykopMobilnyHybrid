@@ -38,6 +38,7 @@ class EntryWidget extends StatelessWidget {
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: 18.0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

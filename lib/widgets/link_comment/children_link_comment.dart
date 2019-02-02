@@ -20,7 +20,9 @@ class ChildrenLinkCommentWidget extends StatelessWidget {
             converter: (store) =>
                 store.state.entitiesState.linkComments[commentId],
             builder: (context, comment) {
-              return Column(children: _buildLinkComment(comment, context));
+              return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: _buildLinkComment(comment, context));
             }));
   }
 
@@ -120,10 +122,9 @@ class ChildrenLinkCommentWidget extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(left: 8.0),
                 child: StoreConnector<AppState, VoidCallback>(
-                  converter: (store) =>
-                      () => {},
+                  converter: (store) => () => {},
                   builder: (context, callback) => VoteButton(
-                    negativeIcon: true,
+                      negativeIcon: true,
                       isSelected: comment.isVoted,
                       count: -(comment.voteCount - comment.voteCountPlus),
                       onClicked: () {

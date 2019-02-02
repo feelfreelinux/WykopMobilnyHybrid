@@ -22,7 +22,9 @@ class TopLinkCommentWidget extends StatelessWidget {
                   padding: EdgeInsets.only(bottom: 8.0),
                   child: Material(
                       color: Theme.of(context).cardColor,
-                      child: Column(children: _buildLinkComment(comment))));
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: _buildLinkComment(comment))));
             }));
   }
 
