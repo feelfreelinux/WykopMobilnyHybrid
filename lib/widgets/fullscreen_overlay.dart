@@ -38,8 +38,8 @@ class FullscreenOverlay extends ModalRoute<void> {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
         child: SafeArea(
-            child: _buildOverlayContent(context),
-          ),
+          child: _buildOverlayContent(context),
+        ),
       ),
     );
   }
@@ -51,15 +51,12 @@ class FullscreenOverlay extends ModalRoute<void> {
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation, Widget child) {
-          return new SlideTransition(
-            position: new Tween<Offset>(
-              begin: const Offset(0.0, 1.0),
-              end: Offset.zero,
-            ).animate(animation),
-            child: child,
-           );
+    return FadeTransition(
+        opacity: Tween<double>(begin: 0.0, end: 1.0).animate(animation),
+        child: child);
   }
 }
+
 // Based on stackoverflow@51908187
 class CupertinoFullscreenOverlay extends CupertinoPageRoute {
   final Widget child;
@@ -96,8 +93,8 @@ class CupertinoFullscreenOverlay extends CupertinoPageRoute {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
         child: SafeArea(
-            child: _buildOverlayContent(context),
-          ),
+          child: _buildOverlayContent(context),
+        ),
       ),
     );
   }
