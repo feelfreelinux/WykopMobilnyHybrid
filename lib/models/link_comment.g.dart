@@ -18,6 +18,8 @@ class _$LinkComment extends LinkComment {
   @override
   final int voteCountPlus;
   @override
+  final int userVote;
+  @override
   final int parentId;
   @override
   final List<int> childrenIds;
@@ -39,6 +41,7 @@ class _$LinkComment extends LinkComment {
       this.body,
       this.voteCount,
       this.voteCountPlus,
+      this.userVote,
       this.parentId,
       this.childrenIds,
       this.isVoted,
@@ -57,6 +60,9 @@ class _$LinkComment extends LinkComment {
     }
     if (voteCountPlus == null) {
       throw new BuiltValueNullFieldError('LinkComment', 'voteCountPlus');
+    }
+    if (userVote == null) {
+      throw new BuiltValueNullFieldError('LinkComment', 'userVote');
     }
     if (parentId == null) {
       throw new BuiltValueNullFieldError('LinkComment', 'parentId');
@@ -91,6 +97,7 @@ class _$LinkComment extends LinkComment {
         body == other.body &&
         voteCount == other.voteCount &&
         voteCountPlus == other.voteCountPlus &&
+        userVote == other.userVote &&
         parentId == other.parentId &&
         childrenIds == other.childrenIds &&
         isVoted == other.isVoted &&
@@ -109,10 +116,14 @@ class _$LinkComment extends LinkComment {
                         $jc(
                             $jc(
                                 $jc(
-                                    $jc($jc($jc(0, id.hashCode), date.hashCode),
-                                        body.hashCode),
-                                    voteCount.hashCode),
-                                voteCountPlus.hashCode),
+                                    $jc(
+                                        $jc(
+                                            $jc($jc(0, id.hashCode),
+                                                date.hashCode),
+                                            body.hashCode),
+                                        voteCount.hashCode),
+                                    voteCountPlus.hashCode),
+                                userVote.hashCode),
                             parentId.hashCode),
                         childrenIds.hashCode),
                     isVoted.hashCode),
@@ -129,6 +140,7 @@ class _$LinkComment extends LinkComment {
           ..add('body', body)
           ..add('voteCount', voteCount)
           ..add('voteCountPlus', voteCountPlus)
+          ..add('userVote', userVote)
           ..add('parentId', parentId)
           ..add('childrenIds', childrenIds)
           ..add('isVoted', isVoted)
@@ -161,6 +173,10 @@ class LinkCommentBuilder implements Builder<LinkComment, LinkCommentBuilder> {
   int _voteCountPlus;
   int get voteCountPlus => _$this._voteCountPlus;
   set voteCountPlus(int voteCountPlus) => _$this._voteCountPlus = voteCountPlus;
+
+  int _userVote;
+  int get userVote => _$this._userVote;
+  set userVote(int userVote) => _$this._userVote = userVote;
 
   int _parentId;
   int get parentId => _$this._parentId;
@@ -195,6 +211,7 @@ class LinkCommentBuilder implements Builder<LinkComment, LinkCommentBuilder> {
       _body = _$v.body;
       _voteCount = _$v.voteCount;
       _voteCountPlus = _$v.voteCountPlus;
+      _userVote = _$v.userVote;
       _parentId = _$v.parentId;
       _childrenIds = _$v.childrenIds;
       _isVoted = _$v.isVoted;
@@ -230,6 +247,7 @@ class LinkCommentBuilder implements Builder<LinkComment, LinkCommentBuilder> {
               body: body,
               voteCount: voteCount,
               voteCountPlus: voteCountPlus,
+              userVote: userVote,
               parentId: parentId,
               childrenIds: childrenIds,
               isVoted: isVoted,

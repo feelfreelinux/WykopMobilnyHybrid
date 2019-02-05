@@ -15,6 +15,8 @@ abstract class LinkComment implements Built<LinkComment, LinkCommentBuilder> {
 
   int get voteCountPlus;
 
+  int get userVote;
+
   int get parentId;
 
   List<int> get childrenIds;
@@ -35,6 +37,7 @@ abstract class LinkComment implements Built<LinkComment, LinkCommentBuilder> {
         date: response.date,
         body: response.body,
         isBlocked: response.isBlocked,
+        userVote: response.userVote,
         voteCountPlus: response.voteCountPlus,
         childrenIds: childrenIds,
         parentId: response.parentId,

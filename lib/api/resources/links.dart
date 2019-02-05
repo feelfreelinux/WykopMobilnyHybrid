@@ -1,5 +1,6 @@
 import 'package:owmflutter/api/api.dart';
 import 'package:built_collection/built_collection.dart';
+import 'package:owmflutter/models/models.dart';
 
 class LinksApi extends ApiResource {
   LinksApi(ApiClient client) : super(client);
@@ -16,5 +17,35 @@ class LinksApi extends ApiResource {
         await client.request('links', 'comments', api: [linkId.toString()]);
     return normalizeLinkCommentsResponse(BuiltList.from(
         client.deserializeList(LinkCommentResponse.serializer, items)));
+  }
+
+  Future<Result> commentVoteUp(LinkComment link) async {
+    var voteCount = await client
+        .request('links', 'commentvoteup', api: [link.id.toString()]);
+    var updatedLink = link.rebuild((b) => b
+      ..voteCount = int.parse(voteCount["vote_count"])
+      ..isVoted = true);
+
+    return normalizeLinkComment(updatedLink);
+  }
+
+  Future<Result> commentVoteRemove(LinkComment link) async {
+    var voteCount = await client
+        .request('links', 'commentvotecancel', api: [link.id.toString()]);
+    var updatedLink = link.rebuild((b) => b
+      ..voteCount = int.parse(voteCount["vote_count"])
+      ..isVoted = false);
+
+    return normalizeLinkComment(updatedLink);
+  }
+
+  Future<Result> commentVoteDown(LinkComment link) async {
+    var voteCount = await client
+        .request('links', 'commentvotedown', api: [link.id.toString()]);
+    var updatedLink = link.rebuild((b) => b
+      ..voteCount = int.parse(voteCount["vote_count"])
+      ..isVoted = true);
+
+    return normalizeLinkComment(updatedLink);
   }
 }

@@ -94,6 +94,13 @@ Result normalizeLinkCommentsResponse(
           .rebuild((b) => b..linkComments.addAll(linkCommentsMap)));
 }
 
+Result normalizeLinkComment(LinkComment linkComment) {
+  return Result(
+      state: EntitiesState().rebuild((b) =>
+          b.linkComments.putIfAbsent(linkComment.id, () => linkComment)),
+      result: [linkComment.id]);
+}
+
 Result normalizeEntryCommentsResponse(
     BuiltList<EntryCommentResponse> comments) {
   var mappedComments = comments == null
