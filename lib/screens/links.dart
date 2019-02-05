@@ -73,13 +73,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
               )
             : TabBarView(
-                physics: NeverScrollableScrollPhysics(),
                 children: [
                   LinksList(
-                      converterCallback: (store) =>
-                          store.state.linksState.promotedState,
-                      loadDataCallback: (store, refresh, completer) =>
-                          store.dispatch(loadPromoted(refresh, completer))),
+                    converterCallback: (store) =>
+                        store.state.linksState.promotedState,
+                    loadDataCallback: (store, refresh, completer) =>
+                        store.dispatch(loadPromoted(refresh, completer)),
+                  ),
                   Center(
                     child: Text('Niezaimplementowane'),
                   ),
@@ -89,8 +89,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   NotLoggedWidget(
                     icon: Icons.favorite,
                     text: "Ulubione znaleziska",
-                    child: Center(
-                      child: Text('Niezaimplementowane'),
+                    child: LinksList(
+                      converterCallback: (store) =>
+                          store.state.linksState.favoriteState,
+                      loadDataCallback: (store, refresh, completer) =>
+                          store.dispatch(loadLinksFavorite(refresh, completer)),
                     ),
                   ),
                 ],

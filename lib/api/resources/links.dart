@@ -12,6 +12,19 @@ class LinksApi extends ApiResource {
         BuiltList.from(client.deserializeList(LinkResponse.serializer, items)));
   }
 
+  Future<Result> getFavorite(int page) async {
+    var items = await client
+        .request('links', 'observed', named: {'page': page.toString()});
+    return normalizeLinksResponse(
+        BuiltList.from(client.deserializeList(LinkResponse.serializer, items)));
+  }
+
+  Future<Result> getLink(int linkId) async {
+    var items = await client.request('links', 'link', api: [linkId.toString()]);
+    return normalizeLinkResponse(
+        client.deserializeElement(LinkResponse.serializer, items));
+  }
+
   Future<Result> getLinkComments(int linkId) async {
     var items =
         await client.request('links', 'comments', api: [linkId.toString()]);
@@ -47,5 +60,11 @@ class LinksApi extends ApiResource {
       ..isVoted = true);
 
     return normalizeLinkComment(updatedLink);
+  }
+  
+  Future<Result> getRelatedLinks(int linkId) async {
+    var items = await client.request('links', 'related', api: [linkId.toString()]);
+    return normalizeRelatedResponse(BuiltList.from(
+        client.deserializeList(RelatedResponse.serializer, items)));
   }
 }

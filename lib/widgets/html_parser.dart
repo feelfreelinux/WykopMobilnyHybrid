@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'package:html/parser.dart' as html show parse;
 import 'package:html/dom.dart' as html;
+import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/widgets/spoiler.dart';
 import 'package:owmflutter/navigator/navigator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/screens/screens.dart';
+import 'package:owmflutter/themes.dart';
 
 import 'dart:ui';
 
@@ -17,29 +19,32 @@ import 'dart:ui';
  * Base from `wiki-flutter` client. Thanks a lot!
 */
 class HtmlWidget extends StatelessWidget {
-  const HtmlWidget({Key key, this.html}) : super(key: key);
+  const HtmlWidget({Key key, this.html, this.blackText = false}) : super(key: key);
 
   final String html;
+  final bool blackText;
 
   @override
   Widget build(BuildContext context) {
-    return new _HtmlParser(context).parseFromStr(html
-        .replaceAll('<cite> ', '<cite>')
-        .replaceAll('<br /> ', '<br/>')
-        .replaceAll('&quot;', '"'));
+    return new Container(
+      
+      child:
+      _HtmlParser(context, blackText: blackText).parseFromStr(html
+          .replaceAll('<cite> ', '<cite>')
+          .replaceAll('<br /> ', '<br/>')
+          .replaceAll('&quot;', '"'))
+    );
   }
 }
 
 class _HtmlParser {
   final BuildContext context;
-
   final Map appContext;
   final bool nested;
 
-  final TextTheme textTheme;
+  final bool blackText;
 
-  _HtmlParser(this.context, {this.nested: false, this.appContext: const {}})
-      : textTheme = Theme.of(context).textTheme;
+  _HtmlParser(this.context, {this.nested: false, this.appContext: const {}, this.blackText = false});
 
   List<Widget> _widgets = [];
   List<TextSpan> _currentTextSpans = [];
@@ -51,8 +56,8 @@ class _HtmlParser {
     _tryCloseCurrentTextSpan();
 
     return new Container(
-        width: MediaQuery.of(context).size.width,
-        child: Wrap(children: _widgets));
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start, children: _widgets));
   }
 
   void _parseNode(html.Node node) {
@@ -75,7 +80,7 @@ class _HtmlParser {
         text: trimmedText,
         style: style ??
             TextStyle(
-                color: Theme.of(context).textTheme.headline.color,
+                color: blackText ? Colors.black : Theme.of(context).textTheme.headline.color,
                 height: 1.1)));
   }
 
@@ -83,7 +88,8 @@ class _HtmlParser {
     _parseNode(element);
     _tryCloseCurrentTextSpan();
 
-    return new Column(children: _widgets);
+    return new Column(
+        crossAxisAlignment: CrossAxisAlignment.start, children: _widgets);
   }
 
   void _parseElement(html.Element element) {
@@ -106,10 +112,18 @@ class _HtmlParser {
       case 'a':
         if (element.attributes['href'].startsWith('spoiler:')) {
           _tryCloseCurrentTextSpan();
-          _widgets.add(new SpoilerWidget());
+          _widgets.add(new SpoilerWidget(
+              text: element.attributes['href']
+                  .substring(8, element.attributes['href'].length)));
           return;
         } else if (element.attributes['href'].startsWith('#')) {
           _currentTextSpans.add(ClickableTextSpan(
+              onTapDown: () {
+                ActiveGestureDetectorWidget.of(context).changeState(false);
+              },
+              onTapUp: () {
+                ActiveGestureDetectorWidget.of(context).changeState(true);
+              },
               text: element.text,
               onTap: () {
                 Navigator.push(context,
@@ -130,6 +144,12 @@ class _HtmlParser {
             (element.firstChild.nodeType == html.Node.TEXT_NODE)) {
           var url = element.attributes['href'];
           _currentTextSpans.add(ClickableTextSpan(
+              onTapDown: () {
+                ActiveGestureDetectorWidget.of(context).changeState(false);
+              },
+              onTapUp: () {
+                ActiveGestureDetectorWidget.of(context).changeState(true);
+              },
               text: element.text,
               onTap: () {
                 WykopNavigator.handleUrl(context, url);
@@ -148,7 +168,8 @@ class _HtmlParser {
       case 'cite':
         if (!nested) {
           _tryCloseCurrentTextSpan();
-          _widgets.add(Wrap(children: [
+          _widgets.add(
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Container(
                 padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
                 decoration: BoxDecoration(
@@ -202,12 +223,20 @@ class ClickableTextSpan extends TextSpan {
       {TextStyle style,
       String text,
       VoidCallback onTap,
+      VoidCallback onTapUp,
+      VoidCallback onTapDown,
       List<TextSpan> children})
       : super(
             style: style,
             text: text,
             children: children ?? <TextSpan>[],
             recognizer: TapGestureRecognizer()
+              ..onTapDown = (_) {
+                onTapDown();
+              }
+              ..onTapUp = (_) {
+                onTapUp();
+              }
               ..onTap = () {
                 onTap();
               });

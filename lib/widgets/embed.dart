@@ -5,6 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/widgets/embed_full_screen.dart';
 import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
+import 'package:owmflutter/utils/utils.dart';
+import 'package:owmflutter/screens/screens.dart';
+import 'package:owmflutter/widgets/widgets.dart';
+import 'dart:io' show Platform;
 
 class EmbedWidget extends StatefulWidget {
   final Embed embed;
@@ -58,6 +62,10 @@ class _EmbedState extends State<EmbedWidget> {
   Widget build(BuildContext context) {
     String heroTag = 'embedImage${widget.embed.hashCode}';
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTapDown: (_) =>
+          ActiveGestureDetectorWidget.of(context).changeState(false),
+      onTapUp: (_) => ActiveGestureDetectorWidget.of(context).changeState(true),
       onTap: () {
         if (!resized && !loading) {
           this.setState(() {
@@ -136,9 +144,8 @@ class _EmbedState extends State<EmbedWidget> {
       borderRadius: BorderRadius.circular(widget.borderRadius),
       boxShadow: [BoxShadow(color: Color(0x33000000))],
       image: DecorationImage(
-        image: AdvancedNetworkImage(
+        image: NetworkImage(
           widget.embed.preview,
-          useDiskCache: true,
         ),
         alignment: FractionalOffset.topCenter,
         fit: BoxFit.fitWidth,
@@ -172,18 +179,27 @@ class _EmbedState extends State<EmbedWidget> {
   }
 
   // Open fullscreen image viewer
-  openFullscreen() {
+  void openFullscreen() {
     String heroTag = 'embedImage${widget.embed.hashCode}';
 
+    // use different transitions for both platforms
+    Navigator.of(context).push(Platform.isAndroid
+        ? (FullscreenOverlay(
+            child: MediaScreen(
+            embed: widget.embed,
+          )))
+        : CupertinoFullscreenOverlay(
+            child: MediaScreen(
+            embed: widget.embed,
+          )));
+
+    return;
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => EmbedFullScreen(
               heroTag: heroTag,
-              imageProvider: AdvancedNetworkImage(
-                widget.embed.url,
-                useDiskCache: true,
-              ),
+              imageProvider: NetworkImage(widget.embed.url),
             ),
       ),
     );

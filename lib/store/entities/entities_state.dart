@@ -13,11 +13,13 @@ abstract class EntitiesState
   BuiltMap<int, LinkComment> get linkComments;
   BuiltMap<int, Notification> get notifications;
   BuiltMap<int, Author> get authorSuggestions;
+  BuiltMap<int, Related> get relatedLinks;
 
   factory EntitiesState() {
     return _$EntitiesState._(
         entries: new BuiltMap<int, Entry>(),
         linkComments: new BuiltMap<int, LinkComment>(),
+        relatedLinks: new BuiltMap<int, Related>(),
         links: new BuiltMap<int, Link>(),
         notifications: new BuiltMap<int, Notification>(),
         authorSuggestions: new BuiltMap<int, Author>(),

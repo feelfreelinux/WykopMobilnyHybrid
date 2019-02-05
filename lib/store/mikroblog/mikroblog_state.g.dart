@@ -35,6 +35,9 @@ class _$MikroblogStateSerializer
       'newestState',
       serializers.serialize(object.newestState,
           specifiedType: const FullType(ItemListState)),
+      'favoriteState',
+      serializers.serialize(object.favoriteState,
+          specifiedType: const FullType(ItemListState)),
     ];
 
     return result;
@@ -71,6 +74,10 @@ class _$MikroblogStateSerializer
           result.newestState.replace(serializers.deserialize(value,
               specifiedType: const FullType(ItemListState)) as ItemListState);
           break;
+        case 'favoriteState':
+          result.favoriteState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(ItemListState)) as ItemListState);
+          break;
       }
     }
 
@@ -89,6 +96,8 @@ class _$MikroblogState extends MikroblogState {
   final ItemListState activeState;
   @override
   final ItemListState newestState;
+  @override
+  final ItemListState favoriteState;
 
   factory _$MikroblogState([void updates(MikroblogStateBuilder b)]) =>
       (new MikroblogStateBuilder()..update(updates)).build();
@@ -98,7 +107,8 @@ class _$MikroblogState extends MikroblogState {
       this.hot24State,
       this.hot6State,
       this.activeState,
-      this.newestState})
+      this.newestState,
+      this.favoriteState})
       : super._() {
     if (hot12State == null) {
       throw new BuiltValueNullFieldError('MikroblogState', 'hot12State');
@@ -114,6 +124,9 @@ class _$MikroblogState extends MikroblogState {
     }
     if (newestState == null) {
       throw new BuiltValueNullFieldError('MikroblogState', 'newestState');
+    }
+    if (favoriteState == null) {
+      throw new BuiltValueNullFieldError('MikroblogState', 'favoriteState');
     }
   }
 
@@ -133,17 +146,20 @@ class _$MikroblogState extends MikroblogState {
         hot24State == other.hot24State &&
         hot6State == other.hot6State &&
         activeState == other.activeState &&
-        newestState == other.newestState;
+        newestState == other.newestState &&
+        favoriteState == other.favoriteState;
   }
 
   @override
   int get hashCode {
     return $jf($jc(
         $jc(
-            $jc($jc($jc(0, hot12State.hashCode), hot24State.hashCode),
-                hot6State.hashCode),
-            activeState.hashCode),
-        newestState.hashCode));
+            $jc(
+                $jc($jc($jc(0, hot12State.hashCode), hot24State.hashCode),
+                    hot6State.hashCode),
+                activeState.hashCode),
+            newestState.hashCode),
+        favoriteState.hashCode));
   }
 
   @override
@@ -153,7 +169,8 @@ class _$MikroblogState extends MikroblogState {
           ..add('hot24State', hot24State)
           ..add('hot6State', hot6State)
           ..add('activeState', activeState)
-          ..add('newestState', newestState))
+          ..add('newestState', newestState)
+          ..add('favoriteState', favoriteState))
         .toString();
   }
 }
@@ -192,6 +209,12 @@ class MikroblogStateBuilder
   set newestState(ItemListStateBuilder newestState) =>
       _$this._newestState = newestState;
 
+  ItemListStateBuilder _favoriteState;
+  ItemListStateBuilder get favoriteState =>
+      _$this._favoriteState ??= new ItemListStateBuilder();
+  set favoriteState(ItemListStateBuilder favoriteState) =>
+      _$this._favoriteState = favoriteState;
+
   MikroblogStateBuilder();
 
   MikroblogStateBuilder get _$this {
@@ -201,6 +224,7 @@ class MikroblogStateBuilder
       _hot6State = _$v.hot6State?.toBuilder();
       _activeState = _$v.activeState?.toBuilder();
       _newestState = _$v.newestState?.toBuilder();
+      _favoriteState = _$v.favoriteState?.toBuilder();
       _$v = null;
     }
     return this;
@@ -229,7 +253,8 @@ class MikroblogStateBuilder
               hot24State: hot24State.build(),
               hot6State: hot6State.build(),
               activeState: activeState.build(),
-              newestState: newestState.build());
+              newestState: newestState.build(),
+              favoriteState: favoriteState.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -243,6 +268,8 @@ class MikroblogStateBuilder
         activeState.build();
         _$failedField = 'newestState';
         newestState.build();
+        _$failedField = 'favoriteState';
+        favoriteState.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'MikroblogState', _$failedField, e.toString());

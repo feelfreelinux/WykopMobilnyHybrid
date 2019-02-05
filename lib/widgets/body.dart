@@ -5,6 +5,7 @@ class BodyWidget extends StatelessWidget {
   final String body;
   final bool ellipsize;
   final EdgeInsets padding;
+  final bool blackTheme;
   BodyWidget({
     this.body,
     this.ellipsize,
@@ -13,18 +14,24 @@ class BodyWidget extends StatelessWidget {
       right: 12,
       bottom: 12,
     ),
+    this.blackTheme = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: padding,
-      child: HtmlWidget(
-          html: body != null
-              ? body.length > 300 && ellipsize
-                  ? body.substring(0, 200) + '...'
-                  : body
-              : ''),
-    );
+    if (body != null) {
+      return Padding(
+        padding: padding,
+        child: HtmlWidget(
+            blackText: false,
+            html: body != null
+                ? body.length > 300 && ellipsize
+                    ? body.substring(0, 200) + '...'
+                    : body
+                : ''),
+      );
+    } else {
+      return Container();
+    }
   }
 }

@@ -4,6 +4,7 @@ import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/themes.dart';
+import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/keys.dart';
 
 class OwmApp extends StatelessWidget {
@@ -15,7 +16,8 @@ class OwmApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreProvider<AppState>(
         store: store,
-        child: StoreConnector<AppState, bool>( // Required to make app redraw on login
+        child: StoreConnector<AppState, bool>(
+          // Required to make app redraw on login
           converter: (store) => store.state.authState.loggedIn,
           builder: (context, loggedIn) => StoreConnector<AppState, OWMTheme>(
                 onInit: (store) => store.dispatch(ensureTheme()),

@@ -12,20 +12,21 @@ class LinkFooterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 38.0,
+      height: 46.0,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           FavoriteButton(
             isFavorite: false,
-            onClicked: () {},
+            onTap: () {},
           ),
           CommentsButton(
             count: link.commentsCount,
-            onClicked: () {
+            onTap: () {
               if (isClickable) {
-                Navigator.of(context).push(
+                Navigator.push(
+                  context,
                   Utils.getPageTransition(
                     LinkScreen(
                       linkId: link.id,
@@ -35,7 +36,7 @@ class LinkFooterWidget extends StatelessWidget {
               }
             },
           ),
-          ShareButton(onClicked: () {}),
+          ShareButton(onTap: () {}),
         ],
       ),
     );

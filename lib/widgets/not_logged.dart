@@ -4,6 +4,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/store/store.dart';
+import 'package:owmflutter/main.dart';
+import 'dart:async';
 
 class NotLoggedWidget extends StatelessWidget {
   final IconData icon;
@@ -30,13 +32,16 @@ class NotLoggedWidget extends StatelessWidget {
             : Center(
                 child: StoreConnector<AppState, LoginCallback>(
                   converter: (store) =>
-                      (login, token) => store.dispatch(loginUser(token, login)),
+                      (login, token, completer) => store.dispatch(loginUser(token, login, completer)),
                   builder: (context, loginCallback) => GestureDetector(
                         onTap: () async {
                           var result = await platform.invokeMethod(
                               'openLoginScreen',
                               Map.from({'appKey': api.getAppKey()}));
-                          loginCallback(result['login'], result['token']);
+                          var completer = Completer();
+                          loginCallback(result['login'], result['token'], completer);
+                          await completer.future;
+                          RestartWidget.restartApp(context);
                         },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,

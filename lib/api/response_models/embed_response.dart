@@ -8,6 +8,8 @@ abstract class EmbedResponse
   factory EmbedResponse([updates(EmbedResponseBuilder b)]) = _$EmbedResponse;
   String get url;
   String get preview;
+  String get type;
+  bool get animated;
   @nullable
   bool get plus18;
 

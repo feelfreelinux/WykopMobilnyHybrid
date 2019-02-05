@@ -9,6 +9,7 @@ abstract class AuthState implements Built<AuthState, AuthStateBuilder> {
   String get avatarUrl;
   String get accountKey;
   int get color;
+  @nullable
   String get backgroundUrl;
   bool get loggedIn;
 

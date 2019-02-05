@@ -32,13 +32,16 @@ class _$AuthStateSerializer implements StructuredSerializer<AuthState> {
           specifiedType: const FullType(String)),
       'color',
       serializers.serialize(object.color, specifiedType: const FullType(int)),
-      'backgroundUrl',
-      serializers.serialize(object.backgroundUrl,
-          specifiedType: const FullType(String)),
       'loggedIn',
       serializers.serialize(object.loggedIn,
           specifiedType: const FullType(bool)),
     ];
+    if (object.backgroundUrl != null) {
+      result
+        ..add('backgroundUrl')
+        ..add(serializers.serialize(object.backgroundUrl,
+            specifiedType: const FullType(String)));
+    }
 
     return result;
   }
@@ -131,9 +134,6 @@ class _$AuthState extends AuthState {
     }
     if (color == null) {
       throw new BuiltValueNullFieldError('AuthState', 'color');
-    }
-    if (backgroundUrl == null) {
-      throw new BuiltValueNullFieldError('AuthState', 'backgroundUrl');
     }
     if (loggedIn == null) {
       throw new BuiltValueNullFieldError('AuthState', 'loggedIn');

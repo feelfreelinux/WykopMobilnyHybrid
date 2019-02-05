@@ -43,12 +43,31 @@ Result normalizeNotificationsResponse(
           .rebuild((b) => b..notifications.addAll(notificationsMap)));
 }
 
+Result normalizeRelatedResponse(
+    BuiltList<RelatedResponse> relatedLinks) {
+  var relatedMap = relatedResponseListToMap(relatedLinks);
+  var ids = relatedLinks.map((e) => e.id);
+
+  return Result(
+      result: ids.toList(),
+      state: EntitiesState()
+          .rebuild((b) => b..relatedLinks.addAll(relatedMap)));
+}
+
 Map<int, Notification> notificationResponseListToMap(
     BuiltList<NotificationResponse> notifications) {
   var mappedNotifications =
       notifications.map((c) => Notification.mapFromResponse(c));
   return Map<int, Notification>.from(
       Map.fromIterable(mappedNotifications, key: (v) => v.id, value: (v) => v));
+}
+
+Map<int, Related> relatedResponseListToMap(
+    BuiltList<RelatedResponse> relatedLinks) {
+  var mappedRelated =
+      relatedLinks.map((c) => Related.mapFromResponse(c));
+  return Map<int, Related>.from(
+      Map.fromIterable(mappedRelated, key: (v) => v.id, value: (v) => v));
 }
 
 Map<int, Link> linkResponseListToMap(BuiltList<LinkResponse> links) {
@@ -132,6 +151,13 @@ Result normalizeEntryResponse(EntryResponse entry) {
       state: commentsResult.state
           .rebuild((b) => b.entries.putIfAbsent(entry.id, () => mappedEntry)),
       result: ids);
+}
+
+Result normalizeLinkResponse(LinkResponse link) {
+  var mappedLink = Link.mapFromResponse(link);
+  return Result(
+      state: EntitiesState().rebuild((b) => b.links.putIfAbsent(link.id, () => mappedLink)),
+      result: [link.id]);
 }
 
 Result normalizeEntryCommentResponse(EntryCommentResponse entryComment) {

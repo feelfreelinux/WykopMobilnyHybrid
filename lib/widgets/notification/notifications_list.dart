@@ -7,8 +7,10 @@ import 'dart:async';
 class NotificationsList extends StatelessWidget {
   final ConverterCallback converterCallback;
   final LoadDataCallback loadDataCallback;
+  final Widget header;
 
-  NotificationsList({this.converterCallback, this.loadDataCallback});
+  NotificationsList(
+      {this.converterCallback, this.loadDataCallback, this.header});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class NotificationsList extends StatelessWidget {
               var state = converterCallback(store);
               if (state.paginationState.itemIds.isEmpty &&
                   !state.listState.haveReachedEnd) {
-                loadDataCallback(store, true, Completer());
+                loadDataCallback(store, false, Completer());
               }
             },
             builder: (context, state) {
@@ -39,6 +41,7 @@ class NotificationsList extends StatelessWidget {
                       return completer.future;
                     },
                     child: InfiniteList(
+                        header: header,
                         hasReachedEnd: state.listState.haveReachedEnd,
                         loadData: (completer) => callback(false, completer),
                         itemCount: state.paginationState.itemIds.length,

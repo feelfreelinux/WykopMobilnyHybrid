@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
 
 class ShareButton extends StatelessWidget {
-  final VoidCallback onClicked;
-  ShareButton({@required this.onClicked});
+  final bool onlyIcon;
+  final VoidCallback onTap;
+  ShareButton({
+    this.onlyIcon: false,
+    @required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: Padding(
+      onTap: onTap,
+      child: Container(
         padding: EdgeInsets.symmetric(
-          horizontal: 10.0,
+          horizontal: 4.0,
         ),
         child: Row(
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(
-                right: 6.0,
+                right: onlyIcon ? 0.0 : 6.0,
               ),
               child: Icon(
                 Icons.share,
@@ -23,17 +28,18 @@ class ShareButton extends StatelessWidget {
                 color: Theme.of(context).textTheme.caption.color,
               ),
             ),
-            Text(
-              "udostępnij",
-              style: TextStyle(
-                fontSize: 13.0,
-                color: Theme.of(context).textTheme.caption.color,
-              ),
-            ),
+            onlyIcon
+                ? Container()
+                : Text(
+                    "Udostępnij",
+                    style: TextStyle(
+                      fontSize: 13.0,
+                      color: Theme.of(context).textTheme.caption.color,
+                    ),
+                  ),
           ],
         ),
       ),
-      onTap: this.onClicked,
     );
   }
 }

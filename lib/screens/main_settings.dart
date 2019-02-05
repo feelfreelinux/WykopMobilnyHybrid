@@ -6,7 +6,9 @@ import 'package:owmflutter/models/models.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/store/store.dart';
+import 'package:owmflutter/main.dart';
 import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
+import 'dart:async';
 
 class MainSettingsScreen extends StatelessWidget {
   static const platform =
@@ -15,179 +17,131 @@ class MainSettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            elevation: 1.5,
-            leading: _drawBackButton(context),
-            expandedHeight: 180.0,
-            flexibleSpace: FlexibleSpaceBar(
-              background: _drawHeader(),
-            ),
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate(
-              <Widget>[
-                _drawButtonsList(context),
-              ],
-            ),
-          )
-        ],
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 5.0,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        backgroundColor: Theme.of(context).backgroundColor,
+        appBar: AppbarNormalWidget(
+          title: "Ustawienia",
+          actions: <Widget>[
+            _drawThemeButton(),
+          ],
+        ),
+        body: SingleChildScrollView(
+          child: Column(
             children: <Widget>[
-              _drawLogoutButton(),
-              _drawThemeButton(),
+              _drawHeader(),
+              _drawButtonsList(context),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _drawBackButton(BuildContext context) {
-    return IconButton(
-      icon: Container(
-        margin: EdgeInsets.only(
-          bottom: 8.0,
-        ),
-        padding: EdgeInsets.all(4.0),
-        decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor.withOpacity(0.5),
-          shape: BoxShape.circle,
-        ),
-        child: Icon(
-          Icons.close,
-        ),
-      ),
-      onPressed: () {
-        Navigator.of(context).maybePop();
-      },
-    );
+        ));
   }
 
   Widget _drawHeader() {
     return StoreConnector<AppState, AuthState>(
       converter: (store) => store.state.authState,
       builder: (context, authState) {
-        return Stack(
-          children: [
-            authState.loggedIn
-                ? Image(
-                    height: 140.0,
-                    width: MediaQuery.of(context).size.width,
-                    fit: BoxFit.cover,
-                    image: AdvancedNetworkImage(
-                      authState.backgroundUrl,
-                      useDiskCache: true,
-                    ),
-                  )
-                : Container(
-                    height: 140.0,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topRight,
-                        end: Alignment.bottomLeft,
-                        stops: [0.1, 0.5, 0.7, 0.9],
-                        colors: [
-                          Colors.blue[800],
-                          Colors.blue[700],
-                          Colors.blue[600],
-                          Colors.blue[400],
-                        ],
+        return Column(
+          children: <Widget>[
+            Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(
+                    bottom: 40.0,
+                  ),
+                  child: authState.loggedIn && authState.backgroundUrl != null
+                      ? Image(
+                          height: 140.0,
+                          width: MediaQuery.of(context).size.width,
+                          fit: BoxFit.cover,
+                          image: AdvancedNetworkImage(
+                            authState.backgroundUrl,
+                            useDiskCache: true,
+                          ),
+                        )
+                      : Container(
+                          height: 120.0,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topRight,
+                              end: Alignment.bottomLeft,
+                              stops: [0.1, 0.5, 0.7, 0.9],
+                              colors: [
+                                Colors.blue[800],
+                                Colors.blue[700],
+                                Colors.blue[600],
+                                Colors.blue[400],
+                              ],
+                            ),
+                          ),
+                        ),
+                ),
+                Container(
+                  width: 106.0,
+                  child: AvatarWidget(
+                    author: Author.fromAuthState(
+                        avatarUrl: authState.avatarUrl,
+                        username: authState.login,
+                        color: authState.color),
+                    size: 100.0,
+                    genderVisibility: false,
+                  ),
+                ),
+              ],
+            ),
+            StoreConnector<AppState, LoginCallback>(
+              converter: (store) => (login, token, completer) =>
+                  store.dispatch(loginUser(token, login, completer)),
+              builder: (context, loginCallback) => GestureDetector(
+                    onTap: authState.loggedIn
+                        ? () {}
+                        : () async {
+                            var result = await platform.invokeMethod(
+                                'openLoginScreen',
+                                Map.from({'appKey': api.getAppKey()}));
+                            var completer = Completer();
+                            print(result);
+                            loginCallback(
+                                result['login'], result['token'], completer);
+                            await completer.future;
+                            RestartWidget.restartApp(context);
+                          },
+                    child: Container(
+                      padding: EdgeInsets.only(
+                        left: 18.0,
+                        top: 12.0,
+                        right: 18.0,
+                        bottom: 14.0,
+                      ),
+                      child: Text(
+                        authState.loggedIn ? authState.login : "Zaloguj się",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
-            Positioned(
-              width: MediaQuery.of(context).size.width,
-              bottom: 0.0,
+            ),
+            GestureDetector(
               child: Container(
-                padding: EdgeInsets.symmetric(
-                  vertical: 10.0,
-                  horizontal: 18.0,
+                margin: EdgeInsets.only(
+                  bottom: 14.0,
                 ),
-                child: Row(
-                  children: <Widget>[
-                    AvatarWidget(
-                      author: Author.fromAuthState(
-                          avatarUrl: authState.avatarUrl,
-                          username: authState.login,
-                          color: authState.color),
-                      size: 84.0,
-                      genderVisibility: false,
-                    ),
-                    Flexible(
-                      fit: FlexFit.loose,
-                      child: Container(
-                        padding: EdgeInsets.only(
-                          left: 12.0,
-                          top: 36.0,
-                          right: 12.0,
-                        ),
-                        child: StoreConnector<AppState, LoginCallback>(
-                          converter: (store) => (login, token) =>
-                              store.dispatch(loginUser(token, login)),
-                          builder: (context, loginCallback) => GestureDetector(
-                                onTap: authState.loggedIn
-                                    ? () {}
-                                    : () async {
-                                        var result =
-                                            await platform.invokeMethod(
-                                                'openLoginScreen',
-                                                Map.from({
-                                                  'appKey': api.getAppKey()
-                                                }));
-                                        loginCallback(
-                                            result['login'], result['token']);
-                                      },
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      authState.loggedIn
-                                          ? authState.login
-                                          : "Zaloguj się",
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        color: authState.loggedIn
-                                            ? Utils.getAuthorColor(
-                                                Author.fromAuthState(
-                                                    avatarUrl:
-                                                        authState.avatarUrl,
-                                                    username: authState.login,
-                                                    color: authState.color),
-                                                context)
-                                            : Theme.of(context)
-                                                .textTheme
-                                                .caption
-                                                .color,
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    Text(
-                                      authState.loggedIn
-                                          ? "Kliknij, aby zobaczyć swój profil"
-                                          : "Kliknij, aby zalogować się",
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        height: 1.2,
-                                        fontSize: 11.0,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                        ),
-                      ),
-                    )
-                  ],
+                padding: EdgeInsets.symmetric(
+                  vertical: 6.0,
+                  horizontal: 12.0,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                child: Text(
+                  "Edytuj profil",
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             ),
@@ -198,135 +152,207 @@ class MainSettingsScreen extends StatelessWidget {
   }
 
   Widget _drawButtonsList(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        Container(
-          color: Theme.of(context).textTheme.caption.color.withOpacity(0.8),
-          height: 0.1,
-        ),
-        _drawButton(context, "Mój profil", Icons.account_circle, () {}),
-        _drawButton(context, "Historia wyszukiwania", Icons.history, () {}),
-        _drawSeparator(context, "USTAWIENIA APLIKACJI"),
-        _drawButton(context, "Wygląd", Icons.palette, () {}),
-        _drawButton(context, "Tekst i obrazki", Icons.message, () {}),
-        _drawButton(context, "Powiadomienia", Icons.notifications, () {}),
-        _drawButton(context, "Zachowanie", Icons.settings, () {}),
-        _drawSeparator(context, "INFORMACJE APLIKACJI - 1.0.0"),
-        _drawButton(context, "Zgłoś błąd", Icons.bug_report, () {}),
-        _drawButton(context, "Wsparcie", Icons.monetization_on, () {}),
-        _drawButton(context, "O aplikacji", Icons.info, () {}),
-      ],
-    );
-  }
-
-  Widget _drawSeparator(BuildContext context, String title) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 12.0,
-        horizontal: 18.0,
-      ),
-      color: Color(0x267f7f7f),
-      child: Text(
-        title,
-        style: TextStyle(
-          fontSize: 11.5,
-          fontWeight: FontWeight.w600,
-          color: Theme.of(context).textTheme.caption.color.withOpacity(0.5),
-          letterSpacing: 0.2,
-        ),
-      ),
+    return StoreConnector<AppState, AuthState>(
+      onInit: (store) => store.dispatch(syncStateWithApi()),
+      converter: (store) => store.state.authState,
+      builder: (context, authState) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            authState.loggedIn
+                ? _drawButton(
+                    context,
+                    icon: Icons.account_circle,
+                    color: Utils.getAuthorColor(
+                        Author.fromAuthState(
+                            avatarUrl: authState.avatarUrl,
+                            username: authState.login,
+                            color: authState.color),
+                        context),
+                    title: "Twój profil",
+                    onTap: () {},
+                  )
+                : Container(),
+            _drawButton(
+              context,
+              icon: Icons.history,
+              color: Colors.purple,
+              title: "Historia wyszukiwania",
+              onTap: () {},
+            ),
+            authState.loggedIn
+                ? _drawButton(
+                    context,
+                    icon: Icons.block,
+                    color: Colors.red,
+                    title: "Czarna lista",
+                    description: "Lista blokowanych tagów i użytkowników.",
+                    onTap: () {},
+                  )
+                : Container(),
+            StoreConnector<AppState, LoginCallback>(
+              converter: (store) => (login, token, completer) =>
+                  store.dispatch(loginUser(token, login, completer)),
+              builder: (context, loginCallback) {
+                return StoreConnector<AppState, VoidCallback>(
+                  converter: (store) => () => store.dispatch(logoutUser()),
+                  builder: (context, logoutCallback) => _drawButton(
+                        context,
+                        icon: Icons.exit_to_app,
+                        color: Color(0xff050505),
+                        title:
+                            authState.loggedIn ? "Wyloguj się" : "Zaloguj się",
+                        onTap: () async {
+                          if (authState.loggedIn) {
+                            logoutCallback();
+                          } else {
+                            var result = await platform.invokeMethod(
+                                'openLoginScreen',
+                                Map.from({'appKey': api.getAppKey()}));
+                            var completer = Completer();
+                            loginCallback(
+                                result['login'], result['token'], completer);
+                            await completer.future;
+                            RestartWidget.restartApp(context);
+                          }
+                        },
+                      ),
+                );
+              },
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 18.0,
+              ),
+              child: Divider(),
+            ),
+            _drawButton(
+              context,
+              icon: Icons.palette,
+              color: Colors.cyan,
+              title: "Wygląd",
+              description: "Tryb nocny, czy dzienny? Zmień wygląd aplikacji.",
+              onTap: () {},
+            ),
+            _drawButton(context,
+                title: "Obrazki i multimedia",
+                icon: Icons.image,
+                onTap: () {},
+                color: Colors.indigo,
+                description:
+                    "Rozmiar, zwijanie obrazków, odtwarzacz multimediów."),
+            _drawButton(context,
+                title: "Tekst",
+                icon: Icons.chat,
+                onTap: () {},
+                color: Colors.amber,
+                description:
+                    "Wyświetlanie spoilerów, zwijanie długich treści."),
+            _drawButton(context,
+                title: "Powiadomienia",
+                icon: Icons.notifications,
+                onTap: () {},
+                color: Colors.blueAccent,
+                description:
+                    "Włącz, przechwyć lub ustaw czas sprawdzania powiadomień."),
+            _drawButton(context,
+                title: "Zachowanie",
+                icon: Icons.settings,
+                onTap: () {},
+                color: Colors.grey,
+                description: "Filtrowanie i ukrywanie teści, domyślne ekrany."),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 18.0,
+              ),
+              child: Divider(),
+            ),
+            _drawButton(context,
+                title: "Zgłoś błąd",
+                icon: Icons.bug_report,
+                onTap: () {},
+                color: Colors.red,
+                description: "Jeżeli widzisz błąd możesz go tutaj zgłosić."),
+            _drawButton(context,
+                title: "Wsparcie",
+                icon: Icons.monetization_on,
+                onTap: () {},
+                color: Colors.green,
+                description: "Podoba Ci się aplikacja? Wesprzyj jej twórców."),
+            _drawButton(context,
+                title: "O aplikacji", icon: Icons.info, onTap: () {}),
+            Padding(
+              padding: EdgeInsets.only(
+                bottom: 8.0,
+              ),
+            )
+          ],
+        );
+      },
     );
   }
 
   Widget _drawButton(
-      BuildContext context, String title, IconData icon, VoidCallback onTap) {
+    BuildContext context, {
+    IconData icon,
+    String title,
+    String description = "",
+    Color color,
+    VoidCallback onTap,
+  }) {
     return InkWell(
       onTap: onTap,
       child: Padding(
         padding: EdgeInsets.symmetric(
-          vertical: 12,
-          horizontal: 18,
+          vertical: 12.0,
+          horizontal: 18.0,
         ),
         child: Row(
           children: [
-            Padding(
-              padding: EdgeInsets.only(
-                right: 18.0,
+            Container(
+              margin: EdgeInsets.only(
+                right: 16.0,
+              ),
+              padding: EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                color: color ?? Theme.of(context).accentColor,
+                shape: BoxShape.circle,
               ),
               child: Icon(
                 icon,
-                size: 22.0,
-                color: Theme.of(context).textTheme.caption.color,
+                color: Colors.white,
+                //color: Theme.of(context).backgroundColor,
               ),
             ),
-            Expanded(
-              child: Text(
-                title,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 13.0,
-                ),
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    title,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 16.0,
+                    ),
+                  ),
+                  description.length > 0
+                      ? Padding(
+                          padding: EdgeInsets.only(top: 4.0),
+                          child: Text(
+                            description,
+                            style: TextStyle(
+                              fontSize: 12.0,
+                              color: Theme.of(context).textTheme.caption.color,
+                            ),
+                          ),
+                        )
+                      : Container(),
+                ],
               ),
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _drawLogoutButton() {
-    return StoreConnector<AppState, AuthState>(
-      onInit: (store) => store.dispatch(syncStateWithApi()),
-      converter: (store) => store.state.authState,
-      builder: (context, authState) {
-        return StoreConnector<AppState, LoginCallback>(
-          converter: (store) =>
-              (login, token) => store.dispatch(loginUser(token, login)),
-          builder: (context, loginCallback) {
-            return StoreConnector<AppState, VoidCallback>(
-              converter: (store) => () => store.dispatch(logoutUser()),
-              builder: (context, logoutCallback) => InkResponse(
-                    onTap: () async {
-                      if (authState.loggedIn) {
-                        logoutCallback();
-                      } else {
-                        var result = await platform.invokeMethod(
-                            'openLoginScreen',
-                            Map.from({'appKey': api.getAppKey()}));
-                        loginCallback(result['login'], result['token']);
-                      }
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 8.0,
-                        horizontal: 12.0,
-                      ),
-                      child: Row(
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(
-                              right: 8.0,
-                            ),
-                            child: Icon(
-                              Icons.exit_to_app,
-                            ),
-                          ),
-                          Text(
-                            authState.loggedIn ? "Wyloguj" : "Zaloguj",
-                            style: TextStyle(
-                              fontSize: 13.0,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-            );
-          },
-        );
-      },
     );
   }
 

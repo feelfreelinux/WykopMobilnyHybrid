@@ -12,59 +12,124 @@ class NotificationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        key: Key(notificationId.toString()),
-        padding: EdgeInsets.only(top: 0.0, bottom: 3.0),
-        child: Material(
-            color: Theme.of(context).cardColor,
-            elevation: 0.0,
-            child: StoreConnector<AppState, Models.Notification>(
-                converter: (store) =>
-                    store.state.entitiesState.notifications[notificationId],
-                builder: (context, notification) {
-                  return GestureDetector(
-                    onTap: () {
-                      WykopNavigator.handleUrl(context, notification.url);
-                    },
-                    child: Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: AvatarWidget(
-                              author: notification.author, size: 40),
-                        ),
-                        new Flexible(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: new Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                RichText(
-                                    softWrap: true,
-                                    text: TextSpan(
-                                      children: [
-                                        TextSpan(
-                                            text: notification.body.substring(0,
-                                                notification.body.indexOf(' ')),
-                                            style: TextStyle(
-                                                color: Utils.getAuthorColor(
-                                                    notification.author,
-                                                    context))),
-                                        TextSpan(
-                                            text: notification.body.substring(
-                                                notification.body.indexOf(' '),
-                                                notification.body.length),
-                                            style:
-                                                TextStyle(color: Colors.black))
-                                      ],
-                                    ))
-                              ],
+    return StoreConnector<AppState, Models.Notification>(
+      key: Key(notificationId.toString()),
+      converter: (store) =>
+          store.state.entitiesState.notifications[notificationId],
+      builder: (context, notification) {
+        return StoreConnector<AppState, VoidCallback>(
+          converter: (store) =>
+              () => store.dispatch(markNotificationAsRead(notification.id)),
+          builder: (context, markAsRead) => GestureDetector(
+                onTap: () {
+                  markAsRead();
+                  WykopNavigator.handleUrl(context, notification.url);
+                },
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 12.0,
+                        horizontal: 18.0,
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          notification.author != null
+                              ? AvatarWidget(
+                                  author: notification.author,
+                                  size: 36.0,
+                                )
+                              : Container(),
+                          Flexible(
+                            fit: FlexFit.tight,
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                left: 12.0,
+                                right: 8.0,
+                              ),
+                              child: RichText(
+                                text: TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: notification.body.substring(
+                                          0, notification.body.indexOf(' ')),
+                                      style: TextStyle(
+                                        fontSize: 13.5,
+                                        height: 1.1,
+                                        fontWeight: FontWeight.w500,
+                                        color: notification.author != null
+                                            ? Utils.getAuthorColor(
+                                                notification.author, context)
+                                            : Theme.of(context)
+                                                .textTheme
+                                                .headline
+                                                .color,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: notification.body
+                                          .substring(
+                                              notification.body.indexOf(' '),
+                                              notification.body.length)
+                                          .replaceAll('\n', ' '),
+                                      style: TextStyle(
+                                        fontSize: 13.5,
+                                        height: 1.1,
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .headline
+                                            .color,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text: '\n' +
+                                          Utils.getSimpleDate(
+                                              notification.date),
+                                      style: TextStyle(
+                                        fontSize: 11.5,
+                                        height: 1.3,
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .caption
+                                            .color,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
-                        )
-                      ],
+                          Container(
+                            width: 10,
+                            height: 10,
+                            margin: EdgeInsets.only(
+                              top: 4.0,
+                            ),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: notification.isNew
+                                  ? Colors.green
+                                  : Colors.transparent,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  );
-                })));
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: 68.0,
+                        right: 18.0,
+                      ),
+                      child: Divider(
+                        height: 1.0,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+        );
+      },
+    );
   }
 }

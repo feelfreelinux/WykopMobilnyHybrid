@@ -4,16 +4,17 @@ import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'dart:async';
 
-typedef void LoginCallback(String login, String token);
+typedef void LoginCallback(String login, String token, Completer completer);
 
 class AppbarUserWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(
-        vertical: 10,
-        horizontal: 14,
+        vertical: 8.0,
+        horizontal: 12.0,
       ),
       child: StoreConnector<AppState, AuthState>(
         onInit: (store) => store.dispatch(syncStateWithApi()),

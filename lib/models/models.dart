@@ -9,3 +9,6 @@ export 'input_data.dart';
 export 'notification.dart';
 export 'author_suggestion.dart';
 export 'tag_suggestion.dart';
+export 'related.dart';
+export 'conversation.dart';
+export 'pm_message.dart';

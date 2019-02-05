@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/store/store.dart';
-import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'dart:io';
 import 'dart:async';
@@ -15,10 +14,15 @@ import 'package:image_picker/image_picker.dart';
 typedef void SuggestCallback(String q);
 
 typedef Future InputBarCallback(InputData inputData);
+typedef void OnImageStateChangedCallback(File image);
 
 class InputBarWidget extends StatefulWidget {
   final InputBarCallback callback;
-  InputBarWidget(this.callback, {@required Key key}) : super(key: key);
+  final OnImageStateChangedCallback imageStateChanged;
+  final TextEditingController externalController;
+  InputBarWidget(this.callback,
+      {@required Key key, this.externalController, this.imageStateChanged})
+      : super(key: key);
   InputBarWidgetState createState() => InputBarWidgetState();
 }
 
@@ -29,7 +33,19 @@ class InputBarWidgetState extends State<InputBarWidget> {
   bool clickTextField = false;
   bool isEmpty = true;
   bool sending = false;
+
+  bool get hasExternalInput => widget.externalController != null;
+
   File image;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.externalController != null) {
+      this.textController = widget.externalController;
+    }
+    textController.addListener(() => _watchTextChanges());
+  }
 
   final FocusNode focusNode = FocusNode();
   TextEditingController textController = TextEditingController();
@@ -45,9 +61,7 @@ class InputBarWidgetState extends State<InputBarWidget> {
 
   void pickImage(ImageSource source) async {
     var image = await ImagePicker.pickImage(source: source);
-    setState(() {
-      this.image = image;
-    });
+    setImage(image);
   }
 
   void _ensureFocus() {
@@ -105,18 +119,12 @@ class InputBarWidgetState extends State<InputBarWidget> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _drawSuggestions(),
-            _drawInputBar(),
+            hasExternalInput ? Container() : _drawInputBar(),
             _drawButtons(),
           ],
         ),
       ),
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    textController.addListener(() => _watchTextChanges());
   }
 
   @override
@@ -184,9 +192,7 @@ class InputBarWidgetState extends State<InputBarWidget> {
                     SelectedImageWidget(
                         image: this.image,
                         onTap: () {
-                          setState(() {
-                            this.image = null;
-                          });
+                          removeImage();
                         }),
                     Padding(
                       padding: EdgeInsets.only(left: 12.0),
@@ -277,7 +283,7 @@ class InputBarWidgetState extends State<InputBarWidget> {
   }
 
   Widget _drawButtons() {
-    if (showMarkdownBar) {
+    if (showMarkdownBar || hasExternalInput) {
       return Container(
         padding: EdgeInsets.only(
           bottom: 8.0,
@@ -288,38 +294,96 @@ class InputBarWidgetState extends State<InputBarWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: !showTextFormatBar
               ? <Widget>[
-                  _drawIconRound(Icons.text_format, () {
-                    setState(() {
-                      showTextFormatBar = true;
-                    });
-                  }),
                   _drawIconRound(
-                      Icons.link,
-                      () => insertSelectedText("[",
-                          suffix: "](https://wykop.pl)")),
-                  _drawIconRound(Icons.visibility_off,
-                      () => insertSelectedText("\n! ", suffix: "\n")),
-                  _drawIconRound(Icons.list, () => {}),
+                    icon: Icons.text_format,
+                    color: Colors.deepOrange,
+                    onTap: () {
+                      setState(() {
+                        showTextFormatBar = true;
+                      });
+                    },
+                  ),
                   _drawIconRound(
-                      Icons.image, () => this.pickImage(ImageSource.gallery)),
-                  _drawIconRound(Icons.camera_alt,
-                      () => this.pickImage(ImageSource.camera)),
-                  _drawIconRound(Icons.fullscreen, () {}),
+                    icon: Icons.link,
+                    color: Colors.indigo,
+                    onTap: () =>
+                        insertSelectedText("[", suffix: "](https://wykop.pl)"),
+                  ),
+                  _drawIconRound(
+                    icon: Icons.visibility_off,
+                    color: Colors.grey[600],
+                    onTap: () => insertSelectedText("\n! ", suffix: "\n"),
+                  ),
+                  _drawIconRound(
+                    icon: Icons.list,
+                    color: Colors.deepPurple,
+                    onTap: () => {},
+                  ),
+                  _drawIconRound(
+                    icon: Icons.image,
+                    color: Colors.green[600],
+                    onTap: () => this.pickImage(ImageSource.gallery),
+                  ),
+                  _drawIconRound(
+                    icon: Icons.camera_alt,
+                    color: Colors.blueAccent,
+                    onTap: () => this.pickImage(ImageSource.camera),
+                  ),
+                  _drawIconRound(
+                    icon: Icons.fullscreen,
+                    color: Colors.brown,
+                    onTap: () {},
+                  ),
+                  Expanded(child: Container()),
+                  hasExternalInput
+                      ? SendButtonWidget(
+                          onTap: () {
+                            this._sendButtonClicked();
+                          },
+                          isEmpty: isEmpty,
+                          sending: sending,
+                        )
+                      : Container(),
                 ]
               : <Widget>[
-                  _drawIconRound(Icons.arrow_back, () {
-                    setState(() {
-                      showTextFormatBar = false;
-                    });
-                  }),
-                  _drawIconRound(Icons.format_bold,
-                      () => insertSelectedText("**", suffix: "**")),
-                  _drawIconRound(Icons.format_italic,
-                      () => insertSelectedText("_", suffix: "_")),
-                  _drawIconRound(Icons.format_quote,
-                      () => insertSelectedText("\n> ", suffix: "\n")),
                   _drawIconRound(
-                      Icons.code, () => insertSelectedText("`", suffix: "`")),
+                    icon: Icons.arrow_back,
+                    onTap: () {
+                      setState(() {
+                        showTextFormatBar = false;
+                      });
+                    },
+                  ),
+                  _drawIconRound(
+                    icon: Icons.format_bold,
+                    color: Colors.red,
+                    onTap: () => insertSelectedText("**", suffix: "**"),
+                  ),
+                  _drawIconRound(
+                    icon: Icons.format_italic,
+                    color: Colors.indigo,
+                    onTap: () => insertSelectedText("_", suffix: "_"),
+                  ),
+                  _drawIconRound(
+                    icon: Icons.format_quote,
+                    color: Colors.amber[600],
+                    onTap: () => insertSelectedText("\n> ", suffix: "\n"),
+                  ),
+                  _drawIconRound(
+                    icon: Icons.code,
+                    color: Colors.purple,
+                    onTap: () => insertSelectedText("`", suffix: "`"),
+                  ),
+                  Expanded(child: Container()),
+                  hasExternalInput
+                      ? SendButtonWidget(
+                          onTap: () {
+                            this._sendButtonClicked();
+                          },
+                          isEmpty: isEmpty,
+                          sending: sending,
+                        )
+                      : Container(),
                 ],
         ),
       );
@@ -335,36 +399,55 @@ class InputBarWidgetState extends State<InputBarWidget> {
     this
         .widget
         .callback(InputData(body: this.textController.text, file: this.image))
-        .then((_) => setState(() {
-              this.image = null;
-              this.sending = false;
-              this.textController.clear();
-            }));
+        .then((_) {
+      setState(() {
+        this.sending = false;
+        this.textController.clear();
+      });
+      removeImage();
+    });
   }
 
-  Widget _drawIconRound(IconData iconData, VoidCallback onClick) {
+  Widget _drawIconRound({IconData icon, Color color, VoidCallback onTap}) {
     return Container(
       margin: EdgeInsets.symmetric(
         horizontal: 6.0,
       ),
       decoration: BoxDecoration(
+        color: color ?? Theme.of(context).accentColor,
         borderRadius: BorderRadius.circular(30.0),
-        border: Border.all(
-          color: Color(0x337f7f7f),
-        ),
       ),
       child: InkWell(
-        onTap: onClick,
+        onTap: onTap,
         borderRadius: BorderRadius.circular(100.0),
         child: Padding(
-          padding: EdgeInsets.all(4.0),
+          padding: EdgeInsets.all(6.0),
           child: Icon(
-            iconData,
+            icon,
             size: 22.0,
+            color: Colors.white,
           ),
         ),
       ),
     );
+  }
+
+  void setImage(File image) {
+    setState(() {
+      this.image = image;
+    });
+    if (hasExternalInput) {
+      widget.imageStateChanged(image);
+    }
+  }
+
+  void removeImage() {
+    setState(() {
+      this.image = null;
+    });
+    if (hasExternalInput) {
+      widget.imageStateChanged(null);
+    }
   }
 
   String extractSuggestions() {

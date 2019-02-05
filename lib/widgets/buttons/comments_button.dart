@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:owmflutter/utils/utils.dart';
 
 class CommentsButton extends StatelessWidget {
   final num count;
-  final VoidCallback onClicked;
-  CommentsButton({@required this.count, this.onClicked});
+  final bool onlyIcon;
+  final VoidCallback onTap;
+  CommentsButton({
+    @required this.count,
+    this.onlyIcon: false,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: onTap,
       child: Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: 10.0,
+          horizontal: 4.0,
         ),
         child: Row(
           children: <Widget>[
@@ -26,7 +33,15 @@ class CommentsButton extends StatelessWidget {
               ),
             ),
             Text(
-              count.toString() + " " + _polishPlural(count),
+              count.toString() +
+                  (onlyIcon
+                      ? ""
+                      : " " +
+                          Utils.polishPlural(
+                              count: count,
+                              first: "komentarz",
+                              many: "komentarzy",
+                              other: "komentarze")),
               style: TextStyle(
                 fontSize: 13.0,
                 color: Theme.of(context).textTheme.caption.color,
@@ -35,19 +50,6 @@ class CommentsButton extends StatelessWidget {
           ],
         ),
       ),
-      onTap: this.onClicked,
     );
-  }
-
-  String _polishPlural(num value) {
-    if (value == 1) {
-      return "komentarz";
-    } else if (value % 10 >= 2 &&
-        value % 10 <= 4 &&
-        (value % 100 < 10 || value % 100 >= 20)) {
-      return "komentarze";
-    } else {
-      return "komentarzy";
-    }
   }
 }

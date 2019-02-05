@@ -29,9 +29,6 @@ class _$NotificationResponseSerializer
       serializers.serialize(object.date, specifiedType: const FullType(String)),
       'type',
       serializers.serialize(object.type, specifiedType: const FullType(String)),
-      'author',
-      serializers.serialize(object.author,
-          specifiedType: const FullType(AuthorResponse)),
     ];
     if (object.body != null) {
       result
@@ -56,6 +53,12 @@ class _$NotificationResponseSerializer
         ..add('new')
         ..add(serializers.serialize(object.isNew,
             specifiedType: const FullType(bool)));
+    }
+    if (object.author != null) {
+      result
+        ..add('author')
+        ..add(serializers.serialize(object.author,
+            specifiedType: const FullType(AuthorResponse)));
     }
 
     return result;
@@ -151,9 +154,6 @@ class _$NotificationResponse extends NotificationResponse {
     }
     if (type == null) {
       throw new BuiltValueNullFieldError('NotificationResponse', 'type');
-    }
-    if (author == null) {
-      throw new BuiltValueNullFieldError('NotificationResponse', 'author');
     }
   }
 
@@ -290,12 +290,12 @@ class NotificationResponseBuilder
               url: url,
               type: type,
               isNew: isNew,
-              author: author.build());
+              author: _author?.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'author';
-        author.build();
+        _author?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'NotificationResponse', _$failedField, e.toString());

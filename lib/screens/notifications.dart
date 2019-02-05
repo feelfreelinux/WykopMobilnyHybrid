@@ -31,7 +31,7 @@ class NotificationsScreen extends StatelessWidget {
               icon: Icons.mail,
               text: "Prywatne wiadomości",
               child: Center(
-                child: Text('Niezaimplementowane'),
+                child: ConversationsList(),
               ),
             ),
             NotLoggedWidget(
@@ -53,7 +53,6 @@ class NotificationsScreen extends StatelessWidget {
                       .dispatch(loadHashTagNotifications(refresh, completer))),
             ),
           ],
-          physics: NeverScrollableScrollPhysics(),
         ),
       ),
     );

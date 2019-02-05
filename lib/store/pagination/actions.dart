@@ -47,6 +47,7 @@ ThunkAction<AppState> loadItems(String type, bool refresh,
       store.dispatch(AddItems(itemIds: results.result, type: type + "_ITEMS"));
       completer.complete();
     } catch (e) {
+      throw(e);
       store.dispatch(SetLoading(type: type, isLoading: false));
       store.dispatch(SetErrorAction(error: e, type: type));
       completer.completeError(e);

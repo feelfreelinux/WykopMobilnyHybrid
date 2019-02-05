@@ -31,9 +31,14 @@ class InfiniteList extends StatefulWidget {
   final int itemCount;
   final bool hasReachedEnd;
   final ItemBuilder itemBuilder;
+  final Widget header;
   final LoadMoreDataCallback loadData;
   InfiniteList(
-      {this.itemBuilder, this.hasReachedEnd, this.itemCount, this.loadData});
+      {@required this.itemBuilder,
+      @required this.hasReachedEnd,
+      @required this.itemCount,
+      @required this.loadData,
+      this.header});
 
   @override
   _InfiniteListState createState() => _InfiniteListState();
@@ -67,12 +72,52 @@ class _InfiniteListState extends State<InfiniteList> {
 
   @override
   Widget build(BuildContext context) {
+    /*return ScrollConfiguration(
+        behavior: NotSuddenJumpScrollBehavior(),
+        child: CustomScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          slivers: [
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  if (index == widget.itemCount - 1) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: widget.hasReachedEnd
+                            ? Column(children: [
+                                Text('To jest już koniec :)'),
+                                Image.asset(
+                                  'rogal.png',
+                                  width: 100,
+                                  height: 100,
+                                )
+                              ])
+                            : CircularProgressIndicator(),
+                      ),
+                    );
+                  }
+
+                  return widget.itemBuilder(context, index);
+                },
+                childCount: widget.itemCount,
+              ),
+            )
+          ],
+          controller: _scrollController,
+        ));*/
     return ScrollConfiguration(
         behavior: NotSuddenJumpScrollBehavior(),
         child: ListView.builder(
           physics: NotSuddenJumpPhysics(),
-          itemCount: widget.itemCount + 1,
+          itemCount: widget.header != null
+              ? widget.itemCount + 2
+              : widget.itemCount + 1,
           itemBuilder: (context, index) {
+            if (widget.header != null && index == 0) {
+              return widget.header;
+            }
+
             if (index == widget.itemCount) {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -90,8 +135,11 @@ class _InfiniteListState extends State<InfiniteList> {
                 ),
               );
             }
-
-            return widget.itemBuilder(context, index);
+            if (widget.header == null) {
+              return widget.itemBuilder(context, index);
+            } else {
+              return widget.itemBuilder(context, index - 1);
+            }
           },
           controller: _scrollController,
         ));

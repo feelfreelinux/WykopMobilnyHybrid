@@ -14,8 +14,13 @@ class EntryList extends StatefulWidget {
   final ConverterCallback converterCallback;
   final LoadDataCallback loadDataCallback;
   final String actionType;
+  final Widget header;
 
-  EntryList({this.converterCallback, this.loadDataCallback, this.actionType});
+  EntryList(
+      {this.converterCallback,
+      this.loadDataCallback,
+      this.actionType,
+      this.header});
 
   @override
   EntryListState createState() {
@@ -33,9 +38,10 @@ class EntryListState extends State<EntryList> {
             converter: (store) => widget.converterCallback(store),
             onInit: (store) {
               var state = widget.converterCallback(store);
-              if (state.paginationState.itemIds.isEmpty &&
-                  !state.listState.haveReachedEnd) {
-                widget.loadDataCallback(store, true, Completer());
+              if (state == null ||
+                  state.paginationState.itemIds.isEmpty &&
+                      !state.listState.haveReachedEnd) {
+                widget.loadDataCallback(store, false, Completer());
               }
             },
             builder: (context, state) {
@@ -43,6 +49,7 @@ class EntryListState extends State<EntryList> {
                   state.listState.isLoading && state.listState.page == 1) {
                 return Center(child: CircularProgressIndicator());
               }
+
               return StoreConnector<AppState, ListRefreshCallback>(
                   converter: (store) {
                 return (bool refresh, Completer completer) =>
@@ -60,6 +67,7 @@ class EntryListState extends State<EntryList> {
                           widget.converterCallback(store).errorState,
                       hasData: () => state.paginationState.itemIds.isNotEmpty,
                       child: InfiniteList(
+                          header: widget.header,
                           hasReachedEnd: state.listState.haveReachedEnd,
                           loadData: (completer) => callback(false, completer),
                           itemCount: state.paginationState.itemIds.length,

@@ -12,20 +12,21 @@ class EntryFooterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 38.0,
+      height: 46.0,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           FavoriteButton(
             isFavorite: false,
-            onClicked: () {},
+            onTap: () {},
           ),
           CommentsButton(
             count: entry.commentsCount,
-            onClicked: () {
-              if (this.isClickable) {
-                Navigator.of(context).push(
+            onTap: () {
+              if (isClickable) {
+                Navigator.push(
+                  context,
                   Utils.getPageTransition(
                     EntryScreen(
                       entryId: entry.id,
@@ -35,7 +36,7 @@ class EntryFooterWidget extends StatelessWidget {
               }
             },
           ),
-          ShareButton(onClicked: () {}),
+          ShareButton(onTap: () {}),
         ],
       ),
     );

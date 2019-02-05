@@ -28,6 +28,7 @@ abstract class NotificationResponse
   @BuiltValueField(wireName: 'new')
   bool get isNew;
 
+  @nullable
   AuthorResponse get author;
 
   NotificationResponse._();
