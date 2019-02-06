@@ -9,6 +9,8 @@ abstract class LinkCommentResponse
   factory LinkCommentResponse([updates(LinkCommentResponseBuilder b)]) =
       _$LinkCommentResponse;
   int get id;
+  @BuiltValueField(wireName: "link_id")
+  String get link;
   String get date;
 
   @nullable

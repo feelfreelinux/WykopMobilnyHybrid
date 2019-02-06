@@ -25,6 +25,8 @@ class _$LinkCommentResponseSerializer
     final result = <Object>[
       'id',
       serializers.serialize(object.id, specifiedType: const FullType(int)),
+      'link_id',
+      serializers.serialize(object.link, specifiedType: const FullType(String)),
       'date',
       serializers.serialize(object.date, specifiedType: const FullType(String)),
       'vote_count',
@@ -80,6 +82,10 @@ class _$LinkCommentResponseSerializer
           result.id = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
+        case 'link_id':
+          result.link = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
         case 'date':
           result.date = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
@@ -127,6 +133,8 @@ class _$LinkCommentResponse extends LinkCommentResponse {
   @override
   final int id;
   @override
+  final String link;
+  @override
   final String date;
   @override
   final String body;
@@ -150,6 +158,7 @@ class _$LinkCommentResponse extends LinkCommentResponse {
 
   _$LinkCommentResponse._(
       {this.id,
+      this.link,
       this.date,
       this.body,
       this.userVote,
@@ -162,6 +171,9 @@ class _$LinkCommentResponse extends LinkCommentResponse {
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('LinkCommentResponse', 'id');
+    }
+    if (link == null) {
+      throw new BuiltValueNullFieldError('LinkCommentResponse', 'link');
     }
     if (date == null) {
       throw new BuiltValueNullFieldError('LinkCommentResponse', 'date');
@@ -197,6 +209,7 @@ class _$LinkCommentResponse extends LinkCommentResponse {
     if (identical(other, this)) return true;
     return other is LinkCommentResponse &&
         id == other.id &&
+        link == other.link &&
         date == other.date &&
         body == other.body &&
         userVote == other.userVote &&
@@ -217,7 +230,9 @@ class _$LinkCommentResponse extends LinkCommentResponse {
                     $jc(
                         $jc(
                             $jc(
-                                $jc($jc($jc(0, id.hashCode), date.hashCode),
+                                $jc(
+                                    $jc($jc($jc(0, id.hashCode), link.hashCode),
+                                        date.hashCode),
                                     body.hashCode),
                                 userVote.hashCode),
                             voteCount.hashCode),
@@ -232,6 +247,7 @@ class _$LinkCommentResponse extends LinkCommentResponse {
   String toString() {
     return (newBuiltValueToStringHelper('LinkCommentResponse')
           ..add('id', id)
+          ..add('link', link)
           ..add('date', date)
           ..add('body', body)
           ..add('userVote', userVote)
@@ -252,6 +268,10 @@ class LinkCommentResponseBuilder
   int _id;
   int get id => _$this._id;
   set id(int id) => _$this._id = id;
+
+  String _link;
+  String get link => _$this._link;
+  set link(String link) => _$this._link = link;
 
   String _date;
   String get date => _$this._date;
@@ -296,6 +316,7 @@ class LinkCommentResponseBuilder
   LinkCommentResponseBuilder get _$this {
     if (_$v != null) {
       _id = _$v.id;
+      _link = _$v.link;
       _date = _$v.date;
       _body = _$v.body;
       _userVote = _$v.userVote;
@@ -330,6 +351,7 @@ class LinkCommentResponseBuilder
       _$result = _$v ??
           new _$LinkCommentResponse._(
               id: id,
+              link: link,
               date: date,
               body: body,
               userVote: userVote,

@@ -20,11 +20,13 @@ class _$LinkComment extends LinkComment {
   @override
   final int userVote;
   @override
+  final String linkId;
+  @override
   final int parentId;
   @override
   final List<int> childrenIds;
   @override
-  final bool isVoted;
+  final LinkCommentVoteState voteState;
   @override
   final bool isBlocked;
   @override
@@ -42,9 +44,10 @@ class _$LinkComment extends LinkComment {
       this.voteCount,
       this.voteCountPlus,
       this.userVote,
+      this.linkId,
       this.parentId,
       this.childrenIds,
-      this.isVoted,
+      this.voteState,
       this.isBlocked,
       this.author,
       this.embed})
@@ -64,14 +67,17 @@ class _$LinkComment extends LinkComment {
     if (userVote == null) {
       throw new BuiltValueNullFieldError('LinkComment', 'userVote');
     }
+    if (linkId == null) {
+      throw new BuiltValueNullFieldError('LinkComment', 'linkId');
+    }
     if (parentId == null) {
       throw new BuiltValueNullFieldError('LinkComment', 'parentId');
     }
     if (childrenIds == null) {
       throw new BuiltValueNullFieldError('LinkComment', 'childrenIds');
     }
-    if (isVoted == null) {
-      throw new BuiltValueNullFieldError('LinkComment', 'isVoted');
+    if (voteState == null) {
+      throw new BuiltValueNullFieldError('LinkComment', 'voteState');
     }
     if (isBlocked == null) {
       throw new BuiltValueNullFieldError('LinkComment', 'isBlocked');
@@ -98,9 +104,10 @@ class _$LinkComment extends LinkComment {
         voteCount == other.voteCount &&
         voteCountPlus == other.voteCountPlus &&
         userVote == other.userVote &&
+        linkId == other.linkId &&
         parentId == other.parentId &&
         childrenIds == other.childrenIds &&
-        isVoted == other.isVoted &&
+        voteState == other.voteState &&
         isBlocked == other.isBlocked &&
         author == other.author &&
         embed == other.embed;
@@ -118,15 +125,17 @@ class _$LinkComment extends LinkComment {
                                 $jc(
                                     $jc(
                                         $jc(
-                                            $jc($jc(0, id.hashCode),
-                                                date.hashCode),
-                                            body.hashCode),
-                                        voteCount.hashCode),
-                                    voteCountPlus.hashCode),
-                                userVote.hashCode),
+                                            $jc(
+                                                $jc($jc(0, id.hashCode),
+                                                    date.hashCode),
+                                                body.hashCode),
+                                            voteCount.hashCode),
+                                        voteCountPlus.hashCode),
+                                    userVote.hashCode),
+                                linkId.hashCode),
                             parentId.hashCode),
                         childrenIds.hashCode),
-                    isVoted.hashCode),
+                    voteState.hashCode),
                 isBlocked.hashCode),
             author.hashCode),
         embed.hashCode));
@@ -141,9 +150,10 @@ class _$LinkComment extends LinkComment {
           ..add('voteCount', voteCount)
           ..add('voteCountPlus', voteCountPlus)
           ..add('userVote', userVote)
+          ..add('linkId', linkId)
           ..add('parentId', parentId)
           ..add('childrenIds', childrenIds)
-          ..add('isVoted', isVoted)
+          ..add('voteState', voteState)
           ..add('isBlocked', isBlocked)
           ..add('author', author)
           ..add('embed', embed))
@@ -178,6 +188,10 @@ class LinkCommentBuilder implements Builder<LinkComment, LinkCommentBuilder> {
   int get userVote => _$this._userVote;
   set userVote(int userVote) => _$this._userVote = userVote;
 
+  String _linkId;
+  String get linkId => _$this._linkId;
+  set linkId(String linkId) => _$this._linkId = linkId;
+
   int _parentId;
   int get parentId => _$this._parentId;
   set parentId(int parentId) => _$this._parentId = parentId;
@@ -186,9 +200,10 @@ class LinkCommentBuilder implements Builder<LinkComment, LinkCommentBuilder> {
   List<int> get childrenIds => _$this._childrenIds;
   set childrenIds(List<int> childrenIds) => _$this._childrenIds = childrenIds;
 
-  bool _isVoted;
-  bool get isVoted => _$this._isVoted;
-  set isVoted(bool isVoted) => _$this._isVoted = isVoted;
+  LinkCommentVoteState _voteState;
+  LinkCommentVoteState get voteState => _$this._voteState;
+  set voteState(LinkCommentVoteState voteState) =>
+      _$this._voteState = voteState;
 
   bool _isBlocked;
   bool get isBlocked => _$this._isBlocked;
@@ -212,9 +227,10 @@ class LinkCommentBuilder implements Builder<LinkComment, LinkCommentBuilder> {
       _voteCount = _$v.voteCount;
       _voteCountPlus = _$v.voteCountPlus;
       _userVote = _$v.userVote;
+      _linkId = _$v.linkId;
       _parentId = _$v.parentId;
       _childrenIds = _$v.childrenIds;
-      _isVoted = _$v.isVoted;
+      _voteState = _$v.voteState;
       _isBlocked = _$v.isBlocked;
       _author = _$v.author?.toBuilder();
       _embed = _$v.embed?.toBuilder();
@@ -248,9 +264,10 @@ class LinkCommentBuilder implements Builder<LinkComment, LinkCommentBuilder> {
               voteCount: voteCount,
               voteCountPlus: voteCountPlus,
               userVote: userVote,
+              linkId: linkId,
               parentId: parentId,
               childrenIds: childrenIds,
-              isVoted: isVoted,
+              voteState: voteState,
               isBlocked: isBlocked,
               author: author.build(),
               embed: _embed?.build());

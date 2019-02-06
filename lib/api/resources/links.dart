@@ -33,37 +33,42 @@ class LinksApi extends ApiResource {
   }
 
   Future<Result> commentVoteUp(LinkComment link) async {
-    var voteCount = await client
-        .request('links', 'commentvoteup', api: [link.id.toString()]);
+    var voteCount = await client.request('links', 'commentvoteup',
+        api: [link.linkId, link.id.toString()]);
     var updatedLink = link.rebuild((b) => b
-      ..voteCount = int.parse(voteCount["vote_count"])
-      ..isVoted = true);
+      ..voteCount = voteCount["vote_count"]
+      ..voteCountPlus = voteCount["vote_count_plus"]
+      ..voteState = LinkCommentVoteState.UP_VOTED);
 
     return normalizeLinkComment(updatedLink);
   }
 
   Future<Result> commentVoteRemove(LinkComment link) async {
-    var voteCount = await client
-        .request('links', 'commentvotecancel', api: [link.id.toString()]);
+    var voteCount = await client.request('links', 'commentvotecancel',
+        api: [link.linkId, link.id.toString()]);
     var updatedLink = link.rebuild((b) => b
-      ..voteCount = int.parse(voteCount["vote_count"])
-      ..isVoted = false);
+      ..voteCount = voteCount["vote_count"]
+      ..voteCountPlus = voteCount["vote_count_plus"]
+      ..voteState = LinkCommentVoteState.NOT_VOTED);
 
     return normalizeLinkComment(updatedLink);
   }
 
   Future<Result> commentVoteDown(LinkComment link) async {
-    var voteCount = await client
-        .request('links', 'commentvotedown', api: [link.id.toString()]);
+    var voteCount = await client.request('links', 'CommentVoteDown',
+        api: [link.linkId, link.id.toString()]);
+    print(voteCount);
     var updatedLink = link.rebuild((b) => b
-      ..voteCount = int.parse(voteCount["vote_count"])
-      ..isVoted = true);
+      ..voteCount = voteCount["vote_count"]
+      ..voteCountPlus = voteCount["vote_count_plus"]
+      ..voteState = LinkCommentVoteState.DOWN_VOTED);
 
     return normalizeLinkComment(updatedLink);
   }
-  
+
   Future<Result> getRelatedLinks(int linkId) async {
-    var items = await client.request('links', 'related', api: [linkId.toString()]);
+    var items =
+        await client.request('links', 'related', api: [linkId.toString()]);
     return normalizeRelatedResponse(BuiltList.from(
         client.deserializeList(RelatedResponse.serializer, items)));
   }

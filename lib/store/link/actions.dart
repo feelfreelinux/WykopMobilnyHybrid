@@ -3,6 +3,7 @@ import 'package:redux_thunk/redux_thunk.dart';
 import 'package:redux/redux.dart';
 import 'dart:async';
 import 'package:owmflutter/api/api.dart';
+import 'package:owmflutter/models/models.dart';
 
 class SetLinkComments implements TypedAction {
   final List<List<int>> ids;
@@ -24,7 +25,6 @@ ThunkAction<AppState> loadLinkComments(int linkId, Completer completer) {
       });
       var result = await api.links.getLinkComments(linkId);
 
-
       store.dispatch(AddEntitiesAction(entities: result.state));
       var comments = result.result
           .map((e) => List<int>.from([e]
@@ -45,6 +45,43 @@ ThunkAction<AppState> loadLinkComments(int linkId, Completer completer) {
       completer.completeError(e);
       store.dispatch(
           SetErrorAction(error: e, type: LINK_PREFIX + linkId.toString()));
+    }
+  };
+}
+
+ThunkAction<AppState> voteLinkComment(int id, bool downVote) {
+  return (Store<AppState> store) async {
+    var comment = store.state.entitiesState.linkComments[id];
+    try {
+      switch (comment.voteState) {
+        case LinkCommentVoteState.UP_VOTED:
+          {
+            var result = await api.links.commentVoteRemove(comment);
+            store.dispatch(AddEntitiesAction(entities: result.state));
+            break;
+          }
+        case LinkCommentVoteState.DOWN_VOTED:
+          {
+            var result = await api.links.commentVoteRemove(comment);
+            store.dispatch(AddEntitiesAction(entities: result.state));
+            break;
+          }
+        case LinkCommentVoteState.NOT_VOTED:
+          {
+            if (downVote) {
+              var result = await api.links.commentVoteDown(comment);
+              store.dispatch(AddEntitiesAction(entities: result.state));
+            } else {
+              var result = await api.links.commentVoteUp(comment);
+              store.dispatch(AddEntitiesAction(entities: result.state));
+            }
+
+            break;
+          }
+      }
+    } catch (e) {
+      throw (e);
+      store.dispatch(SetErrorAction(error: e));
     }
   };
 }

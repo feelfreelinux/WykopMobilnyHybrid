@@ -160,9 +160,9 @@ class LinkCommentWidget extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 8.0),
             child: StoreConnector<AppState, VoidCallback>(
-              converter: (store) => () => {},
+              converter: (store) => () => store.dispatch(voteLinkComment(commentId, false)),
               builder: (context, callback) => VoteButton(
-                    isSelected: comment.isVoted,
+                    isSelected: comment.voteState == LinkCommentVoteState.UP_VOTED,
                     count: comment.voteCountPlus,
                     onClicked: () {
                       callback();
@@ -173,10 +173,10 @@ class LinkCommentWidget extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 8.0),
             child: StoreConnector<AppState, VoidCallback>(
-              converter: (store) => () => {},
+              converter: (store) => () => store.dispatch(voteLinkComment(commentId, true)),
               builder: (context, callback) => VoteButton(
                     negativeIcon: true,
-                    isSelected: comment.isVoted,
+                    isSelected: comment.voteState == LinkCommentVoteState.DOWN_VOTED,
                     count: -(comment.voteCount - comment.voteCountPlus),
                     onClicked: () {
                       callback();
