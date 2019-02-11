@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/models/models.dart';
+import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/store/store.dart';
+import 'package:owmflutter/utils/utils.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'dart:io';
 import 'dart:async';
@@ -267,18 +269,68 @@ class InputBarWidgetState extends State<InputBarWidget> {
     );
   }
 
+  void _insertSuggestion(String suggestion) {
+    var initialSelectionStart = textController.selection.start;
+    var allNodes = textController.text
+        .substring(0, textController.selection.start)
+        .split(suggestion[0]);
+    var currentSuggestion = allNodes.last;
+    var replacedWithSuggestion = textController.text.substring(
+            0, textController.selection.start - currentSuggestion.length) +
+        suggestion.substring(1) +
+        ' ';
+
+    setState(() {
+      textController.text = replacedWithSuggestion +
+          textController.text.substring(textController.selection.start);
+      textController.selection = TextSelection.fromPosition(TextPosition(
+          offset: initialSelectionStart -
+              currentSuggestion.length +
+              suggestion.length)); // quick maffs
+    });
+  }
+
   Widget _drawSuggestions() {
-    return StoreConnector<AppState, SuggestionsState>(
-      converter: (store) => store.state.suggestionsState,
-      builder: (context, suggestions) {
-        return Column(
-            children: List()
-              ..addAll(suggestions.authorSuggestions
-                  .map((s) => Text(s.login))
-                  .toList())
-              ..addAll(
-                  suggestions.tagSuggestions.map((s) => Text(s.tag)).toList()));
-      },
+    return StoreConnector<AppState, VoidCallback>(
+      converter: (store) =>
+          () => store.dispatch(loadSuggestions("dupa", Completer())),
+      builder: (context, clearSuggestionsCallback) =>
+          StoreConnector<AppState, SuggestionsState>(
+            converter: (store) => store.state.suggestionsState,
+            builder: (context, suggestions) {
+              return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: List()
+                    ..addAll(suggestions.authorSuggestions
+                        .sublist(
+                            0,
+                            suggestions.authorSuggestions.length < 5
+                                ? suggestions.authorSuggestions.length
+                                : 5)
+                        .map((s) => new UserSuggestionWidget(
+                              applySuggestion: () {
+                                this._insertSuggestion('@' + s.login);
+                                clearSuggestionsCallback();
+                              },
+                              suggestion: s,
+                            ))
+                        .toList())
+                    ..addAll(suggestions.tagSuggestions
+                        .sublist(
+                            0,
+                            suggestions.tagSuggestions.length < 5
+                                ? suggestions.tagSuggestions.length
+                                : 5)
+                        .map((s) => new TagSuggestionWidget(
+                              applySuggestion: () {
+                                this._insertSuggestion(s.tag);
+                                clearSuggestionsCallback();
+                              },
+                              suggestion: s,
+                            ))
+                        .toList()));
+            },
+          ),
     );
   }
 
@@ -461,5 +513,63 @@ class InputBarWidgetState extends State<InputBarWidget> {
       return q;
     }
     return null;
+  }
+}
+
+class TagSuggestionWidget extends StatelessWidget {
+  final TagSuggestion suggestion;
+  final VoidCallback applySuggestion;
+  const TagSuggestionWidget({
+    this.applySuggestion,
+    this.suggestion,
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: this.applySuggestion,
+      child: Container(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(this.suggestion.tag +
+              " (" +
+              this.suggestion.followers.toString() +
+              ")"),
+        ),
+      ),
+    );
+  }
+}
+
+class UserSuggestionWidget extends StatelessWidget {
+  final AuthorSuggestion suggestion;
+  final VoidCallback applySuggestion;
+  const UserSuggestionWidget({
+    this.suggestion,
+    this.applySuggestion,
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var author = Author.fromAuthState(
+        username: suggestion.login,
+        avatarUrl: suggestion.avatar,
+        color: suggestion.color);
+    return InkWell(
+      onTap: this.applySuggestion,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(children: [
+          AvatarWidget(author: author, size: 20),
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Text(this.suggestion.login,
+                style: TextStyle(color: Utils.getAuthorColor(author, context))),
+          ),
+        ]),
+      ),
+    );
   }
 }
