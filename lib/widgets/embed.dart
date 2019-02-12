@@ -62,10 +62,6 @@ class _EmbedState extends State<EmbedWidget> {
   Widget build(BuildContext context) {
     String heroTag = 'embedImage${widget.embed.hashCode}';
     return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTapDown: (_) =>
-          ActiveGestureDetectorWidget.of(context).changeState(false),
-      onTapUp: (_) => ActiveGestureDetectorWidget.of(context).changeState(true),
       onTap: () {
         if (!resized && !loading) {
           this.setState(() {

@@ -8,7 +8,7 @@ class BodyWidget extends StatelessWidget {
   final bool blackTheme;
   BodyWidget({
     this.body,
-    this.ellipsize,
+    this.ellipsize = false,
     this.padding: const EdgeInsets.only(
       left: 12,
       right: 12,

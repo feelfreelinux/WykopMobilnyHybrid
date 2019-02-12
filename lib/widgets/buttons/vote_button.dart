@@ -74,12 +74,6 @@ class VoteButtonState extends State<VoteButton> {
           ],
         ),
       ),
-      onTapDown: (_) {
-        ActiveGestureDetectorWidget.of(context).changeState(false);
-      },
-      onTapUp: (_) {
-        ActiveGestureDetectorWidget.of(context).changeState(true);
-      },
       onTap: () {
         this.widget.onClicked();
       },

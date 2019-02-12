@@ -18,34 +18,10 @@ class EntryCommentWidget extends StatelessWidget {
         converter: (store) =>
             store.state.entitiesState.entryComments[commentId],
         builder: (context, comment) {
-          return StoreConnector<AppState, AuthState>(
-            converter: (store) => store.state.authState,
-            builder: (context, authState) => Material(
-                  key: Key(commentId.toString()),
-                  color: Theme.of(context).cardColor,
-                  child: StoreConnector<AppState, VoidCallback>(
-                    converter: (store) => () => store
-                        .dispatch(deleteEntryComment(commentId, Completer())),
-                    builder: (context, deleteCommentCallback) =>
-                        SupaGestureDetector(
-                          onDoubleTap: () {
-                            // Quote action
-                            OwmKeys.inputBarKey.currentState
-                                .quoteText(comment.author, comment.body);
-                          },
-                          onTap: () {
-                            // Reply action
-                            OwmKeys.inputBarKey.currentState
-                                .replyToUser(comment.author);
-                          },
-                          onLongPress: () {
-                            _showActionsDialog(context, comment, authState,
-                                deleteCommentCallback);
-                          },
-                          child: _buildEntryCommentBody(comment, context),
-                        ),
-                  ),
-                ),
+          return Material(
+            key: Key(commentId.toString()),
+            color: Theme.of(context).cardColor,
+            child: _buildEntryCommentBody(comment, context),
           );
         });
   }
@@ -106,16 +82,7 @@ class EntryCommentWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     _drawHeader(context, comment),
-                    BodyWidget(
-                      body: comment.body,
-                      ellipsize: false,
-                      padding: EdgeInsets.only(
-                        top: 2.0,
-                        left: 12.0,
-                        right: 2.0,
-                        bottom: 12.0,
-                      ),
-                    ),
+                    _drawBody(comment),
                     _drawEmbed(comment),
                   ],
                 ),
@@ -129,6 +96,41 @@ class EntryCommentWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget _drawBody(EntryComment comment) {
+    return StoreConnector<AppState, AuthState>(
+        converter: (store) => store.state.authState,
+        builder: (context, authState) => StoreConnector<AppState, VoidCallback>(
+              converter: (store) => () =>
+                  store.dispatch(deleteEntryComment(commentId, Completer())),
+              builder: (context, deleteCommentCallback) => SupaGestureDetector(
+                    onDoubleTap: () {
+                      // Quote action
+                      OwmKeys.inputBarKey.currentState
+                          .quoteText(comment.author, comment.body);
+                    },
+                    onTap: () {
+                      // Reply action
+                      OwmKeys.inputBarKey.currentState
+                          .replyToUser(comment.author);
+                    },
+                    onLongPress: () {
+                      _showActionsDialog(
+                          context, comment, authState, deleteCommentCallback);
+                    },
+                    child: BodyWidget(
+                      body: comment.body,
+                      ellipsize: false,
+                      padding: EdgeInsets.only(
+                        top: 2.0,
+                        left: 12.0,
+                        right: 2.0,
+                        bottom: 12.0,
+                      ),
+                    ),
+                  ),
+            ));
   }
 
   Widget _drawEmbed(EntryComment comment) {
