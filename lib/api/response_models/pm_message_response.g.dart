@@ -20,8 +20,6 @@ class _$PmMessageResponseSerializer
   Iterable serialize(Serializers serializers, PmMessageResponse object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'id',
-      serializers.serialize(object.id, specifiedType: const FullType(String)),
       'date',
       serializers.serialize(object.date, specifiedType: const FullType(String)),
       'direction',
@@ -73,10 +71,6 @@ class _$PmMessageResponseSerializer
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'id':
-          result.id = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
-          break;
         case 'date':
           result.date = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
@@ -114,8 +108,6 @@ class _$PmMessageResponseSerializer
 
 class _$PmMessageResponse extends PmMessageResponse {
   @override
-  final String id;
-  @override
   final String date;
   @override
   final String body;
@@ -134,8 +126,7 @@ class _$PmMessageResponse extends PmMessageResponse {
       (new PmMessageResponseBuilder()..update(updates)).build();
 
   _$PmMessageResponse._(
-      {this.id,
-      this.date,
+      {this.date,
       this.body,
       this.status,
       this.direction,
@@ -143,9 +134,6 @@ class _$PmMessageResponse extends PmMessageResponse {
       this.embed,
       this.author})
       : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('PmMessageResponse', 'id');
-    }
     if (date == null) {
       throw new BuiltValueNullFieldError('PmMessageResponse', 'date');
     }
@@ -166,7 +154,6 @@ class _$PmMessageResponse extends PmMessageResponse {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is PmMessageResponse &&
-        id == other.id &&
         date == other.date &&
         body == other.body &&
         status == other.status &&
@@ -182,9 +169,7 @@ class _$PmMessageResponse extends PmMessageResponse {
         $jc(
             $jc(
                 $jc(
-                    $jc(
-                        $jc($jc($jc(0, id.hashCode), date.hashCode),
-                            body.hashCode),
+                    $jc($jc($jc(0, date.hashCode), body.hashCode),
                         status.hashCode),
                     direction.hashCode),
                 app.hashCode),
@@ -195,7 +180,6 @@ class _$PmMessageResponse extends PmMessageResponse {
   @override
   String toString() {
     return (newBuiltValueToStringHelper('PmMessageResponse')
-          ..add('id', id)
           ..add('date', date)
           ..add('body', body)
           ..add('status', status)
@@ -210,10 +194,6 @@ class _$PmMessageResponse extends PmMessageResponse {
 class PmMessageResponseBuilder
     implements Builder<PmMessageResponse, PmMessageResponseBuilder> {
   _$PmMessageResponse _$v;
-
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
 
   String _date;
   String get date => _$this._date;
@@ -249,7 +229,6 @@ class PmMessageResponseBuilder
 
   PmMessageResponseBuilder get _$this {
     if (_$v != null) {
-      _id = _$v.id;
       _date = _$v.date;
       _body = _$v.body;
       _status = _$v.status;
@@ -281,7 +260,6 @@ class PmMessageResponseBuilder
     try {
       _$result = _$v ??
           new _$PmMessageResponse._(
-              id: id,
               date: date,
               body: body,
               status: status,

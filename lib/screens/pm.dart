@@ -32,6 +32,9 @@ class PmScreen extends StatelessWidget {
             child: FutureBuilder<List<PmMessage>>(
                 future: api.pm.getMessages(conversation.author.login),
                 builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    print(snapshot.error.toString());
+                  }
                   if (snapshot.hasData) {
                     return ListView.builder(
                         reverse: true,

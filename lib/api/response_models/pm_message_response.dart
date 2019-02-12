@@ -8,8 +8,6 @@ abstract class PmMessageResponse
     implements Built<PmMessageResponse,PmMessageResponseBuilder> {
   factory PmMessageResponse([updates(PmMessageResponseBuilder b)]) =
       _$PmMessageResponse;
-  String get id;
-
   String get date;
 
   @nullable
