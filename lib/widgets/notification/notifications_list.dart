@@ -10,7 +10,7 @@ class NotificationsList extends StatelessWidget {
   final Widget header;
 
   NotificationsList(
-      {this.converterCallback, this.loadDataCallback, this.header});
+      {this.converterCallback, this.loadDataCallback, this.header, String pageKey}) : super(key: PageStorageKey(pageKey));
 
   @override
   Widget build(BuildContext context) {

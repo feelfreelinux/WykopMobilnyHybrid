@@ -38,6 +38,7 @@ class NotificationsScreen extends StatelessWidget {
               icon: Icons.notifications,
               text: "Powiadomienia",
               child: NotificationsList(
+                  pageKey: "Notifications",
                   converterCallback: (store) =>
                       store.state.notificationsState.notificationsState,
                   loadDataCallback: (store, refresh, completer) =>
@@ -47,6 +48,7 @@ class NotificationsScreen extends StatelessWidget {
               icon: OwmGlyphs.ic_navi_my_wykop,
               text: "Obserwowane tagi",
               child: NotificationsList(
+                  pageKey: "HashNotifications",
                   converterCallback: (store) =>
                       store.state.notificationsState.hashTagsState,
                   loadDataCallback: (store, refresh, completer) => store

@@ -20,16 +20,19 @@ class BodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (body != null) {
-      return Padding(
-        padding: padding,
-        child: HtmlWidget(
-            blackText: false,
-            html: body != null
-                ? body.length > 300 && ellipsize
-                    ? body.substring(0, 200) + '...'
-                    : body
-                : ''),
-      );
+      return Column(children: [
+        Padding(
+          padding: padding,
+          child: HtmlWidget(
+              blackText: false,
+              html: body != null
+                  ? body.length > 300 && ellipsize
+                      ? body.substring(0, 200) + '...'
+                      : body
+                  : ''),
+        ),
+        ellipsize ? Text('Czytaj dalej') : Container(),
+      ]);
     } else {
       return Container();
     }

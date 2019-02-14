@@ -14,99 +14,69 @@ class TagScreen extends StatefulWidget {
 class _MainCollapsingToolbarState extends State<TagScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: DefaultTabController(
-        length: 3,
-        child: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return <Widget>[
-              SliverAppBar(
-                elevation: 2.0,
-                expandedHeight: 190,
-                pinned: true,
-                titleSpacing: 0,
-                title: Text("#" + widget.tag),
-                /*bottom: new TabBar(
-                  tabs: [
-                    Tab(text: 'WSZYSTKO'),
-                    Tab(text: 'ZNALEZISKA'),
-                    Tab(text: 'WPISY'),
-                  ],
-                  isScrollable: true,
-                  indicator: BubbleTabIndicator(
-                    indicatorHeight: 26.0,
-                    indicatorColor: Theme.of(context).accentColor,
-                    tabBarIndicatorSize: TabBarIndicatorSize.tab,
-                    insets: EdgeInsets.symmetric(
-                      horizontal: 3.0,
-                    ),
-                  ),
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  labelColor: Colors.white,
-                  labelStyle: TextStyle(
-                    fontSize: 11.0,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  labelPadding: EdgeInsets.symmetric(
-                    vertical: 18.0,
-                    horizontal: 14.0,
-                  ),
-                  unselectedLabelColor: Colors.grey[600],
-                ),*/
-
-                flexibleSpace: FlexibleSpaceBar(
-                    background: Column(children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 150,
-                    child: Image(
-                      image: AdvancedNetworkImage(
-                          "https://www.wykop.pl/cdn/c3397992/profile_background-feelfree_RyD5ErCHQ2.jpg"),
-                      fit: BoxFit.fitWidth,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                        "Rozmowy o aktualnych wydarzeniach związanych z królową sportów motorowych oraz miejsce na wspomnienia pięknych momentów związanych z tym sportem"),
-                  ),
-                ])),
-              ),
-              SliverPersistentHeader(
-                delegate: _SliverAppBarDelegate(
-                  AppbarPreferredSize(child: _renderDropdown()),
-                ),
-                floating: true,
-              ),
-            ];
-          },
-          body: Center(
-            child: TabBarView(children: [
-              EntryLinkList(
-                  actionType: TAG_INDEX_PREFIX + widget.tag,
-                  converterCallback: (store) =>
-                      store.state.tagsState?.states[widget.tag]?.indexState,
-                  loadDataCallback: (store, refresh, completer) => store
-                      .dispatch(loadTagIndex(widget.tag, refresh, completer))),
-              LinksList(
-                  actionType: TAG_LINKS_PREFIX + widget.tag,
-                  converterCallback: (store) =>
-                      store.state.tagsState.states[widget.tag].linksState,
-                  loadDataCallback: (store, refresh, completer) => store
-                      .dispatch(loadTagLinks(widget.tag, refresh, completer))),
-              EntryList(
-                  actionType: TAG_ENTRIES_PREFIX + widget.tag,
-                  converterCallback: (store) =>
-                      store.state.tagsState.states[widget.tag].entriesState,
-                  loadDataCallback: (store, refresh, completer) =>
-                      store.dispatch(
-                          loadTagEntries(widget.tag, refresh, completer))),
-            ], physics: NeverScrollableScrollPhysics()),
-          ),
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppbarNormalWidget(
+          title: '#' + widget.tag,
+          actions: <Widget>[
+                        IconButton(
+              icon: Icon(Icons.visibility),
+              onPressed: () {},
+              tooltip: "Obserwuj",
+            ),
+            IconButton(
+              icon: Icon(Icons.lock),
+              onPressed: () {},
+              tooltip: "Zablokuj",
+            ),
+          ],
         ),
+        body: TabBarView(children: [
+          EntryLinkList(
+              header: _drawHeader(),
+              actionType: TAG_INDEX_PREFIX + widget.tag,
+              converterCallback: (store) =>
+                  store.state.tagsState?.states[widget.tag]?.indexState,
+              loadDataCallback: (store, refresh, completer) =>
+                  store.dispatch(loadTagIndex(widget.tag, refresh, completer))),
+          LinksList(
+              header: _drawHeader(),
+              actionType: TAG_LINKS_PREFIX + widget.tag,
+              converterCallback: (store) =>
+                  store.state.tagsState.states[widget.tag].linksState,
+              loadDataCallback: (store, refresh, completer) =>
+                  store.dispatch(loadTagLinks(widget.tag, refresh, completer))),
+          EntryList(
+              header: _drawHeader(),
+              actionType: TAG_ENTRIES_PREFIX + widget.tag,
+              converterCallback: (store) =>
+                  store.state.tagsState.states[widget.tag].entriesState,
+              loadDataCallback: (store, refresh, completer) => store
+                  .dispatch(loadTagEntries(widget.tag, refresh, completer))),
+        ], physics: NeverScrollableScrollPhysics()),
       ),
     );
+  }
+
+  Widget _drawHeader() {
+    return Column(children: [
+      Container(
+        width: MediaQuery.of(context).size.width,
+        height: 150,
+        child: Image(
+          image: AdvancedNetworkImage(
+              "https://www.wykop.pl/cdn/c3397992/profile_background-feelfree_RyD5ErCHQ2.jpg"),
+          fit: BoxFit.fitWidth,
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Text(
+            "Rozmowy o aktualnych wydarzeniach związanych z królową sportów motorowych oraz miejsce na wspomnienia pięknych momentów związanych z tym sportem"),
+      ),
+      _renderDropdown()
+    ]);
   }
 
   Widget _renderDropdown() {

@@ -15,7 +15,7 @@ class EntryLinkList extends StatelessWidget {
       {this.converterCallback,
       this.actionType,
       this.loadDataCallback,
-      this.header});
+      this.header}) : super(key: PageStorageKey(actionType));
 
   @override
   Widget build(BuildContext context) {
