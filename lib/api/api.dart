@@ -15,6 +15,7 @@ export 'response_models/serializers.dart';
 export 'normalizers.dart';
 export 'client.dart';
 export 'resources/pm.dart';
+export 'resources/profiles.dart';
 export 'resources/api_resource.dart';
 export 'resources/entries.dart';
 export 'resources/users.dart';
@@ -55,6 +56,7 @@ class WykopApiClient {
   UsersApi users;
   MyWykopApi mywykop;
   TagsApi tags;
+  ProfilesApi profiles;
   NotificationsApi notifications;
   SuggestApi suggest;
   EmbedApi embed;
@@ -81,6 +83,7 @@ class WykopApiClient {
     this.tags = TagsApi(_client);
     this.pm = PmApi(_client);
     this.suggest = SuggestApi(_client);
+    this.profiles =ProfilesApi(_client);
     this.embed = EmbedApi(_client);
     this.search = SearchApi(_client);
     this.notifications = NotificationsApi(_client);

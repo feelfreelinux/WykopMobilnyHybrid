@@ -19,6 +19,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   EntryScreensState get entryScreensState;
   LinkScreensState get linkScreensState;
   TagsState get tagsState;
+  ProfilesState get profilesState;
 
   factory AppState() {
     return _$AppState._(
@@ -30,6 +31,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
         mikroblogState: MikroblogState(),
         myWykopState: MyWykopState(),
         tagsState: TagsState(),
+        profilesState: ProfilesState(),
         notificationsState: NotificationsState(),
         entitiesState: EntitiesState(),
         linkScreensState: LinkScreensState(),

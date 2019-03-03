@@ -54,6 +54,9 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
       'tagsState',
       serializers.serialize(object.tagsState,
           specifiedType: const FullType(TagsState)),
+      'profilesState',
+      serializers.serialize(object.profilesState,
+          specifiedType: const FullType(ProfilesState)),
     ];
 
     return result;
@@ -122,6 +125,10 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
           result.tagsState.replace(serializers.deserialize(value,
               specifiedType: const FullType(TagsState)) as TagsState);
           break;
+        case 'profilesState':
+          result.profilesState.replace(serializers.deserialize(value,
+              specifiedType: const FullType(ProfilesState)) as ProfilesState);
+          break;
       }
     }
 
@@ -154,6 +161,8 @@ class _$AppState extends AppState {
   final LinkScreensState linkScreensState;
   @override
   final TagsState tagsState;
+  @override
+  final ProfilesState profilesState;
 
   factory _$AppState([void updates(AppStateBuilder b)]) =>
       (new AppStateBuilder()..update(updates)).build();
@@ -170,7 +179,8 @@ class _$AppState extends AppState {
       this.mikroblogState,
       this.entryScreensState,
       this.linkScreensState,
-      this.tagsState})
+      this.tagsState,
+      this.profilesState})
       : super._() {
     if (authState == null) {
       throw new BuiltValueNullFieldError('AppState', 'authState');
@@ -208,6 +218,9 @@ class _$AppState extends AppState {
     if (tagsState == null) {
       throw new BuiltValueNullFieldError('AppState', 'tagsState');
     }
+    if (profilesState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'profilesState');
+    }
   }
 
   @override
@@ -232,7 +245,8 @@ class _$AppState extends AppState {
         mikroblogState == other.mikroblogState &&
         entryScreensState == other.entryScreensState &&
         linkScreensState == other.linkScreensState &&
-        tagsState == other.tagsState;
+        tagsState == other.tagsState &&
+        profilesState == other.profilesState;
   }
 
   @override
@@ -247,18 +261,20 @@ class _$AppState extends AppState {
                                 $jc(
                                     $jc(
                                         $jc(
-                                            $jc($jc(0, authState.hashCode),
-                                                themeState.hashCode),
-                                            entitiesState.hashCode),
-                                        searchState.hashCode),
-                                    suggestionsState.hashCode),
-                                linksState.hashCode),
-                            myWykopState.hashCode),
-                        notificationsState.hashCode),
-                    mikroblogState.hashCode),
-                entryScreensState.hashCode),
-            linkScreensState.hashCode),
-        tagsState.hashCode));
+                                            $jc(
+                                                $jc($jc(0, authState.hashCode),
+                                                    themeState.hashCode),
+                                                entitiesState.hashCode),
+                                            searchState.hashCode),
+                                        suggestionsState.hashCode),
+                                    linksState.hashCode),
+                                myWykopState.hashCode),
+                            notificationsState.hashCode),
+                        mikroblogState.hashCode),
+                    entryScreensState.hashCode),
+                linkScreensState.hashCode),
+            tagsState.hashCode),
+        profilesState.hashCode));
   }
 
   @override
@@ -275,7 +291,8 @@ class _$AppState extends AppState {
           ..add('mikroblogState', mikroblogState)
           ..add('entryScreensState', entryScreensState)
           ..add('linkScreensState', linkScreensState)
-          ..add('tagsState', tagsState))
+          ..add('tagsState', tagsState)
+          ..add('profilesState', profilesState))
         .toString();
   }
 }
@@ -353,6 +370,12 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _$this._tagsState ??= new TagsStateBuilder();
   set tagsState(TagsStateBuilder tagsState) => _$this._tagsState = tagsState;
 
+  ProfilesStateBuilder _profilesState;
+  ProfilesStateBuilder get profilesState =>
+      _$this._profilesState ??= new ProfilesStateBuilder();
+  set profilesState(ProfilesStateBuilder profilesState) =>
+      _$this._profilesState = profilesState;
+
   AppStateBuilder();
 
   AppStateBuilder get _$this {
@@ -369,6 +392,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _entryScreensState = _$v.entryScreensState?.toBuilder();
       _linkScreensState = _$v.linkScreensState?.toBuilder();
       _tagsState = _$v.tagsState?.toBuilder();
+      _profilesState = _$v.profilesState?.toBuilder();
       _$v = null;
     }
     return this;
@@ -404,7 +428,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
               mikroblogState: mikroblogState.build(),
               entryScreensState: entryScreensState.build(),
               linkScreensState: linkScreensState.build(),
-              tagsState: tagsState.build());
+              tagsState: tagsState.build(),
+              profilesState: profilesState.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -432,6 +457,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
         linkScreensState.build();
         _$failedField = 'tagsState';
         tagsState.build();
+        _$failedField = 'profilesState';
+        profilesState.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'AppState', _$failedField, e.toString());

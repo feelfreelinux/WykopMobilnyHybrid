@@ -25,6 +25,10 @@ export 'tags/tags_state.dart';
 export 'tags/reducer.dart';
 export 'tags/actions.dart';
 
+export 'profiles/profiles_state.dart';
+export 'profiles/reducer.dart';
+export 'profiles/actions.dart';
+
 export 'list/list_state.dart';
 export 'list/actions.dart';
 export 'list/reducer.dart';

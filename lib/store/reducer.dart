@@ -10,6 +10,7 @@ AppState appReducer(AppState state, action) {
     ..myWykopState.replace(myWykopReducer(state.myWykopState, action))
     ..tagsState.replace(tagReducer(state.tagsState, action))
     ..themeState.replace(themeReducer(state.themeState, action))
+    ..profilesState.replace(profilesReducer(state.profilesState, action))
     ..notificationsState
         .replace(notificationsReducer(state.notificationsState, action))
     ..searchState.replace(searchReducer(state.searchState, action))

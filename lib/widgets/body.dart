@@ -30,8 +30,7 @@ class BodyWidget extends StatelessWidget {
                       ? body.substring(0, 200) + '...'
                       : body
                   : ''),
-        ),
-        ellipsize ? Text('Czytaj dalej') : Container(),
+        )
       ]);
     } else {
       return Container();
