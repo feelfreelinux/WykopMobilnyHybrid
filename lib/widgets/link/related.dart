@@ -127,46 +127,63 @@ class RelatedWidget extends StatelessWidget {
   }
 
   Widget _drawLinkFavicon(BuildContext context, String link) {
-    return GestureDetector(
-      onTap: () => Utils.launchURL(link),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.all(6.0),
-            decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(100),
-            ),
-            child: Image(
-              image: AdvancedNetworkImage(
-                'http://s2.googleusercontent.com/s2/favicons?domain_url=' +
-                    link,
-              ),
-              height: 10.0,
-              width: 10.0,
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 6.0,
-              ),
-              child: Text(
-                link
-                    .replaceAll('https://', '')
-                    .replaceAll('http://', '')
-                    .replaceAll('www.', '')
-                    .split('/')[0],
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 12.0,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        GestureDetector(
+          onTap: () => Utils.launchURL(link),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(6.0),
+                decoration: BoxDecoration(
+                  color: Colors.grey.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: Image(
+                  image: AdvancedNetworkImage(
+                    'http://s2.googleusercontent.com/s2/favicons?domain_url=' +
+                        link,
+                  ),
+                  height: 12.0,
+                  width: 12.0,
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 6.0,
+                ),
+                child: Text(
+                  link
+                      .replaceAll('https://', '')
+                      .replaceAll('http://', '')
+                      .replaceAll('www.', '')
+                      .split('/')[0],
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 12.0,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        GestureDetector(
+          child: Container(
+            padding: EdgeInsets.all(4.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              color: Colors.grey.withOpacity(0.1),
+            ),
+            child: Icon(
+              Icons.share,
+              size: 16.0,
+              color: Theme.of(context).textTheme.caption.color,
             ),
           ),
-        ],
-      ),
+        )
+      ],
     );
   }
 }

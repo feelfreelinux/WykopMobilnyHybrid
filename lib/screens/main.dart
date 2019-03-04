@@ -27,8 +27,16 @@ class _MainScreenState extends State<MainScreen> {
       resizeToAvoidBottomPadding: false,
       key: OwmKeys.mainScaffoldKey,
       body: _children[_currentIndex],
-      bottomNavigationBar: BottomAppBar(
-        color: Theme.of(context).primaryColor,
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 2.0,
+            ),
+          ],
+          color: Theme.of(context).primaryColor,
+        ),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

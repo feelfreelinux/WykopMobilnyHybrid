@@ -47,6 +47,13 @@ class MainSettingsScreen extends StatelessWidget {
                   margin: EdgeInsets.only(
                     bottom: 40.0,
                   ),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0x33000000),
+                      ),
+                    ],
+                  ),
                   child: authState.loggedIn && authState.backgroundUrl != null
                       ? Image(
                           height: 140.0,
@@ -58,17 +65,14 @@ class MainSettingsScreen extends StatelessWidget {
                           ),
                         )
                       : Container(
-                          height: 120.0,
+                          height: 140.0,
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
                               begin: Alignment.topRight,
                               end: Alignment.bottomLeft,
-                              stops: [0.1, 0.5, 0.7, 0.9],
                               colors: [
-                                Colors.blue[800],
-                                Colors.blue[700],
-                                Colors.blue[600],
-                                Colors.blue[400],
+                                Color(0xff2e6e99),
+                                Color(0xff4383af),
                               ],
                             ),
                           ),
@@ -122,29 +126,31 @@ class MainSettingsScreen extends StatelessWidget {
                     ),
                   ),
             ),
-            GestureDetector(
-              child: Container(
-                margin: EdgeInsets.only(
-                  bottom: 14.0,
-                ),
-                padding: EdgeInsets.symmetric(
-                  vertical: 6.0,
-                  horizontal: 12.0,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                child: Text(
-                  "Edytuj profil",
-                  style: TextStyle(
-                    fontSize: 12.0,
-                    color: Colors.black87,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ),
+            authState.loggedIn
+                ? GestureDetector(
+                    child: Container(
+                      margin: EdgeInsets.only(
+                        bottom: 14.0,
+                      ),
+                      padding: EdgeInsets.symmetric(
+                        vertical: 6.0,
+                        horizontal: 12.0,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[400].withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: Text(
+                        "Edytuj profil",
+                        style: TextStyle(
+                          fontSize: 13.0,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  )
+                : Container(),
           ],
         );
       },
@@ -199,7 +205,7 @@ class MainSettingsScreen extends StatelessWidget {
                   builder: (context, logoutCallback) => _drawButton(
                         context,
                         icon: Icons.exit_to_app,
-                        color: Color(0xff050505),
+                        color: Colors.grey[850],
                         title:
                             authState.loggedIn ? "Wyloguj się" : "Zaloguj się",
                         onTap: () async {

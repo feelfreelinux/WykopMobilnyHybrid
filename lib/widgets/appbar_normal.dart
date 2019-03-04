@@ -19,15 +19,25 @@ class AppbarNormalWidget extends PreferredSize {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      title: Text(title ?? ''),
-      leading: leading,
-      actions: actions,
-      elevation: 1.5,
-      iconTheme: IconThemeData(
-        color: iconColor,
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 2.0,
+          ),
+        ],
       ),
-      titleSpacing: 0.0,
+      child: AppBar(
+        title: Text(title ?? ''),
+        leading: leading,
+        actions: actions,
+        elevation: 0.0,
+        iconTheme: IconThemeData(
+          color: iconColor,
+        ),
+        titleSpacing: 0.0,
+      ),
     );
   }
 }

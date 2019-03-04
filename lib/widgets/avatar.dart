@@ -38,7 +38,11 @@ class AvatarWidget extends StatelessWidget {
         height: size,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Theme.of(context).backgroundColor,
+          boxShadow: [
+            BoxShadow(
+              color: Color(0x33000000),
+            ),
+          ],
           image: DecorationImage(
             fit: BoxFit.fill,
             image: author.avatar.length != 0

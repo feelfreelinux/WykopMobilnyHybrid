@@ -7,6 +7,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/store/store.dart';
 import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
 import 'vote_counter.dart';
+import 'package:owmflutter/owm_glyphs.dart';
 
 class LinkOpenedWidget extends StatelessWidget {
   final int linkId;
@@ -87,9 +88,57 @@ class LinkOpenedWidget extends StatelessWidget {
                   horizontal: 18.0,
                 ),
               ),
+              _drawCommentHeader(context, link),
             ],
           );
         },
+      ),
+    );
+  }
+
+  Widget _drawCommentHeader(BuildContext context, Link link) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: 18.0,
+        top: 14.0,
+        right: 18.0,
+        bottom: 2.0,
+      ),
+      child: Row(
+        children: <Widget>[
+          Text(
+            link.commentsCount.toString(),
+            style: TextStyle(
+              fontSize: 16.5,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          Text(
+            " " +
+                Utils.polishPlural(
+                  count: link.commentsCount,
+                  first: "Komentarz",
+                  many: "Komentarzy",
+                  other: "Komentarze",
+                ),
+            style: TextStyle(
+              fontSize: 16.5,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          Expanded(child: Container()),
+          GestureDetector(
+            child: Icon(
+              OwmGlyphs.ic_sort,
+            ),
+            onTap: () {
+              //TODO add sorting comments
+              Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text('Niezaimplementowano'),
+              ));
+            },
+          ),
+        ],
       ),
     );
   }
@@ -106,32 +155,25 @@ class LinkOpenedWidget extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Text(
-                "Powiązane",
+                link.relatedCount.toString(),
+                style: TextStyle(
+                  fontSize: 16.5,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              Text(
+                " " +
+                    Utils.polishPlural(
+                      count: link.relatedCount,
+                      first: "Powiązany",
+                      many: "Powiązanych",
+                      other: "Powiązane",
+                    ),
                 style: TextStyle(
                   fontSize: 16.5,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              link.relatedCount > 0
-                  ? Container(
-                      margin: EdgeInsets.only(left: 6.0),
-                      padding: EdgeInsets.symmetric(
-                        vertical: 1.0,
-                        horizontal: 6.0,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.grey.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        link.relatedCount.toString(),
-                        style: TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    )
-                  : Container(),
               Expanded(child: Container()),
               GestureDetector(
                 child: Container(
@@ -140,14 +182,13 @@ class LinkOpenedWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(20)),
                   padding: EdgeInsets.symmetric(
                     vertical: 4.0,
-                    horizontal: 9.0,
+                    horizontal: 10.0,
                   ),
                   child: Text(
                     "Dodaj link",
                     style: TextStyle(
-                      fontSize: 11.0,
+                      fontSize: 12.0,
                       color: Colors.white,
-                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),

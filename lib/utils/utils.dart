@@ -74,11 +74,7 @@ class Utils {
         return Colors.green[800];
       }
     } else {
-      if (negativeIcon) {
-        return Colors.red[800].withOpacity(0.1);
-      } else {
-        return Colors.green[800].withOpacity(0.1);
-      }
+      return Colors.grey.withOpacity(0.1);
     }
   }
 

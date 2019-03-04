@@ -112,8 +112,16 @@ class InputBarWidgetState extends State<InputBarWidget> {
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: Duration(milliseconds: 300),
-      child: BottomAppBar(
-        color: Theme.of(context).primaryColor,
+      child: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 2.0,
+            ),
+          ],
+          color: Theme.of(context).primaryColor,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -27,50 +27,60 @@ class AppbarTabsWidget extends PreferredSize {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      automaticallyImplyLeading: false,
-      leading: this.showCurrentUser ? AppbarUserWidget() : null,
-      title: Container(
-        color: Theme.of(context).primaryColor,
-        child: TabBar(
-          tabs: tabs,
-          isScrollable: true,
-          indicator: BubbleTabIndicator(
-            indicatorHeight: 26.0,
-            indicatorColor: Theme.of(context).accentColor,
-            tabBarIndicatorSize: TabBarIndicatorSize.tab,
-            insets: EdgeInsets.symmetric(
-              horizontal: 3.0,
-            ),
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 2.0,
           ),
-          indicatorSize: TabBarIndicatorSize.tab,
-          labelColor: Colors.white,
-          labelStyle: TextStyle(
-            fontSize: 11.0,
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-          ),
-          labelPadding: EdgeInsets.symmetric(
-            vertical: 18.0,
-            horizontal: 14.0,
-          ),
-          unselectedLabelColor: Colors.grey[600],
-        ),
+        ],
       ),
-      actions: actions ??
-          <Widget>[
-            IconButton(
-              iconSize: 26.0,
-              icon: Icon(Icons.search),
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              onPressed: onPressedSearch ?? () {},
-              tooltip: "Szukaj",
+      child: AppBar(
+        automaticallyImplyLeading: false,
+        leading: this.showCurrentUser ? AppbarUserWidget() : null,
+        title: Container(
+          color: Theme.of(context).primaryColor,
+          child: TabBar(
+            tabs: tabs,
+            isScrollable: true,
+            indicator: BubbleTabIndicator(
+              indicatorHeight: 26.0,
+              indicatorColor: Theme.of(context).accentColor,
+              tabBarIndicatorSize: TabBarIndicatorSize.tab,
+              insets: EdgeInsets.symmetric(
+                horizontal: 3.0,
+              ),
             ),
-          ],
-      elevation: 1.5,
-      centerTitle: true,
-      titleSpacing: 0.0,
+            indicatorSize: TabBarIndicatorSize.tab,
+            labelColor: Colors.white,
+            labelStyle: TextStyle(
+              fontSize: 11.0,
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+            ),
+            labelPadding: EdgeInsets.symmetric(
+              vertical: 18.0,
+              horizontal: 14.0,
+            ),
+            unselectedLabelColor: Colors.grey[600],
+          ),
+        ),
+        actions: actions ??
+            <Widget>[
+              IconButton(
+                iconSize: 26.0,
+                icon: Icon(Icons.search),
+                highlightColor: Colors.transparent,
+                splashColor: Colors.transparent,
+                onPressed: onPressedSearch ?? () {},
+                tooltip: "Szukaj",
+              ),
+            ],
+        elevation: 0.0,
+        centerTitle: true,
+        titleSpacing: 0.0,
+      ),
     );
   }
 }

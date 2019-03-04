@@ -10,7 +10,7 @@ class VoteButton extends StatefulWidget {
   final bool negativeIcon;
   final bool onlyIcon;
   final double fontSize;
-  final EdgeInsets padding;
+  final EdgeInsets margin;
   VoteButton({
     @required this.onClicked,
     @required this.isSelected,
@@ -18,7 +18,7 @@ class VoteButton extends StatefulWidget {
     this.negativeIcon: false,
     this.onlyIcon: false,
     this.fontSize: 14.0,
-    this.padding: const EdgeInsets.all(4.0),
+    this.margin,
   });
 
   @override
@@ -33,7 +33,8 @@ class VoteButtonState extends State<VoteButton> {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       child: Container(
-        padding: widget.padding,
+        margin: widget.margin,
+        padding: EdgeInsets.all(4.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
           color: Utils.voteBackgroundStateColor(

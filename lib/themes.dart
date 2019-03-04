@@ -5,11 +5,11 @@ class Themes {
     return ThemeData(
       brightness: Brightness.light,
       accentColor: Color(0xff4383af),
-      primaryColor: Color(0xffffffff),
-      primaryColorDark: Color(0xfff0f0f0),
-      backgroundColor: Color(0xffffffff),
-      cardColor: Color(0xffffffff),
-      bottomAppBarColor: Color(0xffffffff),
+      primaryColor: Colors.white,
+      scaffoldBackgroundColor: Colors.white,
+      backgroundColor: Colors.white,
+      cardColor: Colors.white,
+      bottomAppBarColor: Colors.white,
     );
   }
 
@@ -17,11 +17,11 @@ class Themes {
     return ThemeData(
       brightness: Brightness.dark,
       accentColor: Color(0xff4383af),
-      primaryColor: Color(0xff292929),
-      primaryColorDark: Color(0xff212121),
+      primaryColor: Color(0xff2c2c2c),
+      scaffoldBackgroundColor: Color(0xff2c2c2c),
       backgroundColor: Color(0xff2c2c2c),
       cardColor: Color(0xff2c2c2c),
-      bottomAppBarColor: Color(0xff292929),
+      bottomAppBarColor: Color(0xff2c2c2c),
     );
   }
 }

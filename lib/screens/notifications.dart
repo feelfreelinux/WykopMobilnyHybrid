@@ -15,24 +15,13 @@ class NotificationsScreen extends StatelessWidget {
             Tab(text: "POWIADOMIENIA"),
             Tab(text: "TAGI"),
           ],
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.more_vert),
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              onPressed: () {},
-              tooltip: "Więcej",
-            ),
-          ],
         ),
         body: TabBarView(
           children: [
             NotLoggedWidget(
               icon: Icons.mail,
               text: "Prywatne wiadomości",
-              child: Center(
-                child: ConversationsList(),
-              ),
+              child: ConversationsList(),
             ),
             NotLoggedWidget(
               icon: Icons.notifications,
