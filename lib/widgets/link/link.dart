@@ -38,7 +38,7 @@ class LinkWidget extends StatelessWidget {
                       date: link.date,
                       fontSize: 14.0,
                       padding: EdgeInsets.symmetric(
-                        vertical: 12.0,
+                        vertical: 10.0,
                       ),
                     ),
                     VoteCounterWidget(

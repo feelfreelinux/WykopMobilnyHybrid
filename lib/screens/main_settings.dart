@@ -16,7 +16,11 @@ class MainSettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    final mqData = MediaQuery.of(context);
+    final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
+    return MediaQuery(
+      data: mqDataNew,
+      child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppbarNormalWidget(
           title: "Ustawienia",
@@ -31,7 +35,9 @@ class MainSettingsScreen extends StatelessWidget {
               _drawButtonsList(context),
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget _drawHeader() {
@@ -78,16 +84,14 @@ class MainSettingsScreen extends StatelessWidget {
                           ),
                         ),
                 ),
-                Container(
-                  width: 106.0,
-                  child: AvatarWidget(
-                    author: Author.fromAuthState(
-                        avatarUrl: authState.avatarUrl,
-                        username: authState.login,
-                        color: authState.color),
-                    size: 100.0,
-                    genderVisibility: false,
-                  ),
+                AvatarWidget(
+                  author: Author.fromAuthState(
+                      avatarUrl: authState.avatarUrl,
+                      username: authState.login,
+                      color: authState.color),
+                  size: 100.0,
+                  badge: Colors.transparent,
+                  genderVisibility: false,
                 ),
               ],
             ),

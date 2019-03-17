@@ -31,15 +31,16 @@ class NotLoggedWidget extends StatelessWidget {
             ? child
             : Center(
                 child: StoreConnector<AppState, LoginCallback>(
-                  converter: (store) =>
-                      (login, token, completer) => store.dispatch(loginUser(token, login, completer)),
+                  converter: (store) => (login, token, completer) =>
+                      store.dispatch(loginUser(token, login, completer)),
                   builder: (context, loginCallback) => GestureDetector(
                         onTap: () async {
                           var result = await platform.invokeMethod(
                               'openLoginScreen',
                               Map.from({'appKey': api.getAppKey()}));
                           var completer = Completer();
-                          loginCallback(result['login'], result['token'], completer);
+                          loginCallback(
+                              result['login'], result['token'], completer);
                           await completer.future;
                           RestartWidget.restartApp(context);
                         },

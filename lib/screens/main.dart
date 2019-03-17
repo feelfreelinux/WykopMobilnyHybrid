@@ -23,30 +23,35 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      key: OwmKeys.mainScaffoldKey,
-      body: _children[_currentIndex],
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              blurRadius: 2.0,
-            ),
-          ],
-          color: Theme.of(context).primaryColor,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            _iconButton(Icons.home, 0, "Strona główna"),
-            _iconButton(Icons.add_box, 1, "Mikroblog"),
-            _addNewButton(),
-            _iconButton(Icons.loyalty, 2, "Mój Wykop"),
-            _iconButton(Icons.mail, 3, "Powiadomienia", badge: 0),
-          ],
+    final mqData = MediaQuery.of(context);
+    final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
+    return MediaQuery(
+      data: mqDataNew,
+      child: Scaffold(
+        resizeToAvoidBottomPadding: false,
+        key: OwmKeys.mainScaffoldKey,
+        body: _children[_currentIndex],
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 2.0,
+              ),
+            ],
+            color: Theme.of(context).primaryColor,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              _iconButton(Icons.home, 0, "Strona główna"),
+              _iconButton(Icons.add_box, 1, "Mikroblog"),
+              _addNewButton(),
+              _iconButton(Icons.loyalty, 2, "Mój Wykop"),
+              _iconButton(Icons.mail, 3, "Powiadomienia", badge: 0),
+            ],
+          ),
         ),
       ),
     );
@@ -64,8 +69,7 @@ class _MainScreenState extends State<MainScreen> {
         ),
         tooltip: "Dodaj",
         foregroundColor: Theme.of(context).primaryColor,
-        backgroundColor:
-            Theme.of(context).textTheme.caption.color.withOpacity(0.45),
+        backgroundColor: Theme.of(context).iconTheme.color.withOpacity(0.40),
         elevation: 0.0,
         onPressed: () {
           _showWriteBottomSheet(context);
@@ -76,9 +80,13 @@ class _MainScreenState extends State<MainScreen> {
 
   void _showWriteBottomSheet(BuildContext context) {
     showModalBottomSheet<void>(
-        context: context,
-        builder: (BuildContext context) {
-          return NotLoggedWidget(
+      context: context,
+      builder: (BuildContext context) {
+        final mqData = MediaQuery.of(context);
+        final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
+        return MediaQuery(
+          data: mqDataNew,
+          child: NotLoggedWidget(
             icon: Icons.account_circle,
             fullText: "Dodawanie treści będzie możliwe po zalogowaniu.",
             child: Container(
@@ -140,11 +148,8 @@ class _MainScreenState extends State<MainScreen> {
                     child: FloatingActionButton(
                       child: Icon(Icons.close),
                       foregroundColor: Theme.of(context).primaryColor,
-                      backgroundColor: Theme.of(context)
-                          .textTheme
-                          .caption
-                          .color
-                          .withOpacity(0.45),
+                      backgroundColor:
+                          Theme.of(context).iconTheme.color.withOpacity(0.40),
                       elevation: 0.0,
                       onPressed: () {
                         Navigator.pop(context);
@@ -154,8 +159,10 @@ class _MainScreenState extends State<MainScreen> {
                 ],
               ),
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 
   Widget _iconAddNewButton({
@@ -228,10 +235,11 @@ class _MainScreenState extends State<MainScreen> {
                       horizontal: 3.0,
                     ),
                     child: Text(
-                      badge.toString(),
+                      badge <= 99 ? badge.toString() : "+99",
                       style: TextStyle(
                         fontSize: 8.0,
                         color: Colors.white,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   )
@@ -240,8 +248,8 @@ class _MainScreenState extends State<MainScreen> {
         ],
       ),
       color: _currentIndex == index
-          ? Theme.of(context).textTheme.headline.color
-          : Theme.of(context).textTheme.caption.color.withOpacity(0.45),
+          ? Theme.of(context).iconTheme.color
+          : Theme.of(context).iconTheme.color.withOpacity(0.40),
       onPressed: () => this.setState(() {
             this._currentIndex = index;
           }),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/store/store.dart';
+import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:owmflutter/screens/screens.dart';
 
 class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
@@ -10,6 +12,46 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool isSearching = false;
   String searchQuery = "";
+
+  Widget topIcon(String title, String tag, IconData icon) {
+    return GestureDetector(
+      onTap: () {
+                Navigator.push(context,
+                    Utils.getPageTransition(TagScreen(tag: tag)));
+              },
+          child: Container(
+        padding: EdgeInsets.symmetric(
+          vertical: 12.0,
+          horizontal: 9.0,
+        ),
+        child: Column(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(0.2),
+                shape: BoxShape.circle,
+              ),
+              margin: EdgeInsets.only(
+                left: 4.0,
+                top: 2.0,
+                right: 4.0,
+                bottom: 6.0,
+              ),
+              padding: EdgeInsets.all(10.0),
+              child: Icon(icon),
+            ),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 11.0,
+                fontWeight: FontWeight.w600,
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +80,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   });
                 },
                 tabs: <Widget>[
-                  Tab(text: 'GŁÓWNA'),
-                  Tab(text: 'WYKOPALISKO'),
-                  Tab(text: 'HITY'),
-                  Tab(text: 'ULUBIONE'),
+                  Tab(text: 'Główna'),
+                  Tab(text: 'Wykopalisko'),
+                  Tab(text: 'Hity'),
+                  Tab(text: 'Ulubione'),
                 ],
               ),
         body: isSearching
@@ -75,6 +117,37 @@ class _HomeScreenState extends State<HomeScreen> {
             : TabBarView(
                 children: [
                   LinksList(
+                    header: Column(
+                      children: <Widget>[
+                        SingleChildScrollView(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 9.0,
+                            ),
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: <Widget>[
+                                topIcon("Ciekawostki", "ciekawostki", Icons.lightbulb_outline),
+                                topIcon("Nauka", "nauka", Icons.school),
+                                topIcon("Historia", "historia", Icons.calendar_today),
+                                topIcon("Rozrywka", "rozrywka", Icons.videogame_asset),
+                                topIcon("Sport", "sport", Icons.rowing),
+                                topIcon("Motoryzacja", "motoryzacja", Icons.motorcycle),
+                                topIcon("Syria", "syria", Icons.place),
+                                topIcon("Świat", "swiat", Icons.public),
+                                topIcon("SpaceX", "spacex", Icons.whatshot),
+                                topIcon(
+                                    "Programowanie", "programowanie", Icons.code),
+                                topIcon("Technologia", "technologia", Icons.wifi_tethering),
+                                topIcon("AMA", "ama", Icons.question_answer),
+                              ],
+                            )),
+                        DividerWidget(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 18.0,
+                          ),
+                        ),
+                      ],
+                    ),
                     converterCallback: (store) =>
                         store.state.linksState.promotedState,
                     loadDataCallback: (store, refresh, completer) =>

@@ -34,12 +34,12 @@ class _MikroblogScreenState extends State<MikroblogScreen> {
               )
             : AppbarTabsWidget(
                 tabs: <Widget>[
-                  Tab(text: 'NOWE'),
-                  Tab(text: 'AKTYWNE'),
-                  Tab(text: 'GORĄCE 6H'),
-                  Tab(text: 'GORĄCE 12H'),
-                  Tab(text: 'GORĄCE 24H'),
-                  Tab(text: 'ULUBIONE'),
+                  Tab(text: 'Nowe'),
+                  Tab(text: 'Aktywne'),
+                  Tab(text: 'Gorące 6H'),
+                  Tab(text: 'Gorące 12H'),
+                  Tab(text: 'Gorące 24H'),
+                  Tab(text: 'Ulubione'),
                 ],
                 onPressedSearch: () {
                   setState(() {

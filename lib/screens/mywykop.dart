@@ -12,10 +12,10 @@ class MyWykopScreen extends StatelessWidget {
         appBar: AppbarTabsWidget(
           onPressedSearch: () {},
           tabs: <Widget>[
-            Tab(text: 'WSZYSTKO'),
-            Tab(text: 'TAGI'),
-            Tab(text: 'UŻYTKOWNICY'),
-            Tab(text: 'LISTA TAGÓW'),
+            Tab(text: 'Mój Wykop'),
+            Tab(text: 'Tagi'),
+            Tab(text: 'Użytkownicy'),
+            Tab(text: 'Lista tagów'),
           ],
         ),
         body: TabBarView(

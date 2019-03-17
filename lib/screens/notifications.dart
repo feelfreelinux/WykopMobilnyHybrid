@@ -11,9 +11,9 @@ class NotificationsScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppbarTabsWidget(
           tabs: <Widget>[
-            Tab(text: "WIADOMOŚCI"),
-            Tab(text: "POWIADOMIENIA"),
-            Tab(text: "TAGI"),
+            Tab(text: "Wiadomości"),
+            Tab(text: "Powiadomienia"),
+            Tab(text: "Tagi"),
           ],
         ),
         body: TabBarView(

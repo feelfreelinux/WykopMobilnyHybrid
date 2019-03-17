@@ -36,8 +36,8 @@ class LinkCommentWidget extends StatelessWidget {
             ? Container()
             : Positioned(
                 height: 35.0,
-                left: 35.5,
-                right: MediaQuery.of(context).size.width - 38.5,
+                left: 35.0,
+                right: MediaQuery.of(context).size.width - 38.0,
                 child: Container(
                   child: Container(
                     width: 4.0,
@@ -49,8 +49,8 @@ class LinkCommentWidget extends StatelessWidget {
             ? Container()
             : Positioned.fill(
                 top: 34.0,
-                left: 35.5,
-                right: MediaQuery.of(context).size.width - 38.5,
+                left: 35.0,
+                right: MediaQuery.of(context).size.width - 38.0,
                 child: Container(
                   child: Container(
                     width: 4.0,
@@ -60,13 +60,13 @@ class LinkCommentWidget extends StatelessWidget {
               ),
         Padding(
           padding: EdgeInsets.only(
-            left: 18.0,
-            top: 12.0,
+            left: 15.0,
+            top: 10.0,
             bottom: 10.0,
           ),
           child: AvatarWidget(
             author: comment.author,
-            size: 36.0,
+            size: 38.0,
           ),
         ),
         Padding(
@@ -81,6 +81,11 @@ class LinkCommentWidget extends StatelessWidget {
               BodyWidget(
                 body: comment.body,
                 ellipsize: false,
+                padding: EdgeInsets.only(
+                  left: 12.0,
+                  right: 18.0,
+                  bottom: 10.0,
+                ),
               ),
               _drawEmbed(comment),
             ],
@@ -111,7 +116,7 @@ class LinkCommentWidget extends StatelessWidget {
         ),
         child: EmbedWidget(
           embed: comment.embed,
-          reducedWidth: 88.0,
+          reducedWidth: 86.0,
           borderRadius: 10.0,
         ),
       );

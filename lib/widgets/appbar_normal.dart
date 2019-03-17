@@ -29,7 +29,14 @@ class AppbarNormalWidget extends PreferredSize {
         ],
       ),
       child: AppBar(
-        title: Text(title ?? ''),
+        title: Text(
+          title ?? '',
+          style: TextStyle(
+            height: 0.9,
+            fontSize: 20.0,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
         leading: leading,
         actions: actions,
         elevation: 0.0,

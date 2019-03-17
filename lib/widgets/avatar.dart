@@ -5,21 +5,27 @@ class AvatarWidget extends StatelessWidget {
   final Author author;
   final double size;
   final bool genderVisibility;
+  final Color badge;
   final List<BoxShadow> boxShadow;
   AvatarWidget({
     @required this.author,
     @required this.size,
     this.genderVisibility: true,
+    this.badge,
     this.boxShadow,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        _drawAvatar(context),
-        _drawGender(context),
-      ],
+    return Container(
+      width: size * 1.15,
+      height: size * 1.15,
+      child: Stack(
+        children: <Widget>[
+          _drawAvatar(context),
+          _drawGender(context),
+        ],
+      ),
     );
   }
 
@@ -29,29 +35,39 @@ class AvatarWidget extends StatelessWidget {
         boxShadow: boxShadow,
         shape: BoxShape.circle,
         border: Border.all(
-          color: Theme.of(context).cardColor,
+          color: badge ?? Theme.of(context).cardColor,
           width: size / 30,
         ),
       ),
       child: Container(
-        width: size,
-        height: size,
         decoration: BoxDecoration(
+          boxShadow: boxShadow,
           shape: BoxShape.circle,
-          boxShadow: [
-            BoxShadow(
-              color: Color(0x33000000),
+          border: Border.all(
+            color: Theme.of(context).cardColor,
+            width: size / 30,
+          ),
+        ),
+        child: Container(
+          width: size,
+          height: size,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Color(0x33000000),
+              ),
+            ],
+            image: DecorationImage(
+              fit: BoxFit.fill,
+              image: author.avatar.length != 0
+                  ? NetworkImage(
+                      author.avatar,
+                    )
+                  : AssetImage(
+                      'assets/avatar.png',
+                    ),
             ),
-          ],
-          image: DecorationImage(
-            fit: BoxFit.fill,
-            image: author.avatar.length != 0
-                ? NetworkImage(
-                    author.avatar,
-                  )
-                : AssetImage(
-                    'assets/avatar.png',
-                  ),
           ),
         ),
       ),
@@ -69,7 +85,7 @@ class AvatarWidget extends StatelessWidget {
             shape: BoxShape.circle,
             border: Border.all(
               color: Theme.of(context).cardColor,
-              width: size / 30,
+              width: size / 15,
             ),
           ),
           child: Container(
