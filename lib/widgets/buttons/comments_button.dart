@@ -38,10 +38,11 @@ class CommentsButton extends StatelessWidget {
                       ? ""
                       : " " +
                           Utils.polishPlural(
-                              count: count,
-                              first: "komentarz",
-                              many: "komentarzy",
-                              other: "komentarze")),
+                            count: count,
+                            first: "komentarz",
+                            many: "komentarzy",
+                            other: "komentarze",
+                          )),
               style: TextStyle(
                 fontSize: 13.0,
                 color: Theme.of(context).textTheme.caption.color,

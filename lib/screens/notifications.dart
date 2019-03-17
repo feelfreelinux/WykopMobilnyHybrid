@@ -11,18 +11,9 @@ class NotificationsScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppbarTabsWidget(
           tabs: <Widget>[
-            Tab(text: "WIADOMOŚCI"),
-            Tab(text: "POWIADOMIENIA"),
-            Tab(text: "TAGI"),
-          ],
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.more_vert),
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              onPressed: () {},
-              tooltip: "Więcej",
-            ),
+            Tab(text: "Wiadomości"),
+            Tab(text: "Powiadomienia"),
+            Tab(text: "Tagi"),
           ],
         ),
         body: TabBarView(
@@ -30,9 +21,7 @@ class NotificationsScreen extends StatelessWidget {
             NotLoggedWidget(
               icon: Icons.mail,
               text: "Prywatne wiadomości",
-              child: Center(
-                child: ConversationsList(),
-              ),
+              child: ConversationsList(),
             ),
             NotLoggedWidget(
               icon: Icons.notifications,

@@ -24,8 +24,8 @@ class EntryInputScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: StoreConnector<AppState, dynamic>(
-        converter: (store) =>
-            (inputData, completer) => store.dispatch(addEntry(inputData, completer)),
+        converter: (store) => (inputData, completer) =>
+            store.dispatch(addEntry(inputData, completer)),
         builder: (context, callback) {
           return InputScreen(
               inputType: InputType.ENTRY,
@@ -79,10 +79,8 @@ class _InputScreenState extends State<InputScreen> {
         bottomNavigationBar: StoreConnector<AppState, dynamic>(
             converter: (store) => (Completer completer, InputData inputData) =>
                 store.dispatch(addEntryComment(0, inputData, completer)),
-            builder: (context, callback) => InputBarWidget(
-                    widget.sendCallback,
-                    key: inputBarKey,
-                    externalController: textController,
+            builder: (context, callback) => InputBarWidget(widget.sendCallback,
+                    key: inputBarKey, externalController: textController,
                     imageStateChanged: (image) {
                   setState(() {
                     this.image = image;

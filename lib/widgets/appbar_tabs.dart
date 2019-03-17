@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/widgets/widgets.dart';
-import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'dart:async';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/store/store.dart';
@@ -27,50 +26,95 @@ class AppbarTabsWidget extends PreferredSize {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      automaticallyImplyLeading: false,
-      leading: this.showCurrentUser ? AppbarUserWidget() : null,
-      title: Container(
-        color: Theme.of(context).primaryColor,
-        child: TabBar(
-          tabs: tabs,
-          isScrollable: true,
-          indicator: BubbleTabIndicator(
-            indicatorHeight: 26.0,
-            indicatorColor: Theme.of(context).accentColor,
-            tabBarIndicatorSize: TabBarIndicatorSize.tab,
-            insets: EdgeInsets.symmetric(
-              horizontal: 3.0,
-            ),
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 2.0,
           ),
-          indicatorSize: TabBarIndicatorSize.tab,
-          labelColor: Colors.white,
-          labelStyle: TextStyle(
-            fontSize: 11.0,
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-          ),
-          labelPadding: EdgeInsets.symmetric(
-            vertical: 18.0,
-            horizontal: 14.0,
-          ),
-          unselectedLabelColor: Colors.grey[600],
-        ),
+        ],
       ),
-      actions: actions ??
-          <Widget>[
-            IconButton(
-              iconSize: 26.0,
-              icon: Icon(Icons.search),
-              highlightColor: Colors.transparent,
-              splashColor: Colors.transparent,
-              onPressed: onPressedSearch ?? () {},
-              tooltip: "Szukaj",
+      child: AppBar(
+        automaticallyImplyLeading: false,
+        leading: Container(
+          color: Theme.of(context).primaryColor,
+          child: this.showCurrentUser ? AppbarUserWidget() : null,
+        ),
+        title: Stack(
+          children: <Widget>[
+            Container(
+              color: Theme.of(context).primaryColor,
+              child: TabBar(
+                tabs: tabs,
+                isScrollable: true,
+                indicatorColor: Theme.of(context).primaryColor.withOpacity(0.0),
+                labelStyle: TextStyle(
+                  height: 1.15,
+                  fontSize: 22.0,
+                  fontWeight: FontWeight.w700,
+                ),
+                unselectedLabelStyle: TextStyle(
+                  height: 1.60,
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.w600,
+                ),
+                labelPadding: EdgeInsets.symmetric(
+                  vertical: 0.0,
+                  horizontal: 14.0,
+                ),
+                unselectedLabelColor: Colors.grey[600],
+              ),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  width: 8.0,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      colors: [
+                        Theme.of(context).primaryColor,
+                        Theme.of(context).primaryColor.withOpacity(0.0),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  width: 8.0,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      colors: [
+                        Theme.of(context).primaryColor.withOpacity(0.0),
+                        Theme.of(context).primaryColor,
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            )
           ],
-      elevation: 1.5,
-      centerTitle: true,
-      titleSpacing: 0.0,
+        ),
+        actions: actions ??
+            <Widget>[
+              Container(
+                color: Theme.of(context).primaryColor,
+                child: IconButton(
+                  iconSize: 26.0,
+                  icon: Icon(Icons.search),
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.transparent,
+                  onPressed: onPressedSearch ?? () {},
+                  tooltip: "Szukaj",
+                ),
+              ),
+            ],
+        elevation: 0.0,
+        centerTitle: true,
+        titleSpacing: 0.0,
+      ),
     );
   }
 }
