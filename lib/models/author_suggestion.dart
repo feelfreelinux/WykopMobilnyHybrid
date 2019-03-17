@@ -3,7 +3,8 @@ import 'package:owmflutter/api/api.dart';
 
 part 'author_suggestion.g.dart';
 
-abstract class AuthorSuggestion implements Built<AuthorSuggestion, AuthorSuggestionBuilder> {
+abstract class AuthorSuggestion
+    implements Built<AuthorSuggestion, AuthorSuggestionBuilder> {
   int get color;
   String get avatar;
   String get login;

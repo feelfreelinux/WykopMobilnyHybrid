@@ -1,5 +1,6 @@
 import 'package:owmflutter/api/api.dart';
 import 'package:built_collection/built_collection.dart';
+import 'package:flutter/material.dart';
 
 class TagsApi extends ApiResource {
   TagsApi(ApiClient client) : super(client);
@@ -21,7 +22,7 @@ class TagsApi extends ApiResource {
   Future<Result> getEntries(String tag, int page) async {
     var items = await client.request('tags', 'entries',
         api: [tag], named: {'page': page.toString()});
-    print(items);
+    debugPrint(items);
     return normalizeEntriesResponse(BuiltList.from(
         client.deserializeList(EntryResponse.serializer, items)));
   }

@@ -69,4 +69,3 @@ ThunkAction<AppState> loadEntriesFavorite(bool refresh, Completer completer) {
         completer));
   };
 }
-

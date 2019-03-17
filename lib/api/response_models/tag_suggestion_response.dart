@@ -5,7 +5,8 @@ part 'tag_suggestion_response.g.dart';
 
 abstract class TagSuggestionResponse
     implements Built<TagSuggestionResponse, TagSuggestionResponseBuilder> {
-  factory TagSuggestionResponse([updates(TagSuggestionResponseBuilder b)]) = _$TagSuggestionResponse;
+  factory TagSuggestionResponse([updates(TagSuggestionResponseBuilder b)]) =
+      _$TagSuggestionResponse;
   String get followers;
   String get tag;
 

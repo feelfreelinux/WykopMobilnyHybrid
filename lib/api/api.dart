@@ -75,6 +75,7 @@ class WykopApiClient {
   Future<void> logoutUser() async {
     await this._client.logoutUser();
   }
+
   WykopApiClient() {
     _client.initialize();
     this.entries = EntriesApi(_client);
@@ -83,7 +84,7 @@ class WykopApiClient {
     this.tags = TagsApi(_client);
     this.pm = PmApi(_client);
     this.suggest = SuggestApi(_client);
-    this.profiles =ProfilesApi(_client);
+    this.profiles = ProfilesApi(_client);
     this.embed = EmbedApi(_client);
     this.search = SearchApi(_client);
     this.notifications = NotificationsApi(_client);

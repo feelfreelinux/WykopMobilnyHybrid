@@ -15,7 +15,13 @@ abstract class AuthState implements Built<AuthState, AuthStateBuilder> {
 
   factory AuthState() {
     return _$AuthState._(
-        token: "", login: "", avatarUrl: "", loggedIn: false, accountKey: "", backgroundUrl: "", color: 0);
+        token: "",
+        login: "",
+        avatarUrl: "",
+        loggedIn: false,
+        accountKey: "",
+        backgroundUrl: "",
+        color: 0);
   }
 
   AuthState._();

@@ -5,7 +5,7 @@ import 'package:owmflutter/api/api.dart';
 part 'pm_message_response.g.dart';
 
 abstract class PmMessageResponse
-    implements Built<PmMessageResponse,PmMessageResponseBuilder> {
+    implements Built<PmMessageResponse, PmMessageResponseBuilder> {
   factory PmMessageResponse([updates(PmMessageResponseBuilder b)]) =
       _$PmMessageResponse;
   String get date;
@@ -23,7 +23,7 @@ abstract class PmMessageResponse
 
   @nullable
   EmbedResponse get embed;
-  
+
   @nullable
   AuthorResponse get author;
 

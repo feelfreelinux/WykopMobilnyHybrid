@@ -33,7 +33,7 @@ class _ErrorHandlerWidgetState extends State<ErrorHandlerWidget> {
           StoreConnector<AppState, bool>(onWillChange: (state) {
             if (widget.hasData()) {
               if (state && !showingDialog) {
-                print('error się stał');
+                debugPrint('error się stał');
                 setState(() {
                   showingDialog = true;
                 });

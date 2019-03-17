@@ -16,6 +16,7 @@ import 'package:convert/convert.dart';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:http/http.dart' as http;
 import 'dart:io';
+import 'package:flutter/material.dart';
 
 /*
  * Handles request signing, retrying, deserializing, saving auth tokens,
@@ -33,7 +34,7 @@ class ApiClient extends http.BaseClient {
           request.fields.values.join(',');
     }
 
-    print(toSign);
+    debugPrint(toSign);
     request.headers['apisign'] = generateMd5(toSign);
     request.headers['User-Agent'] = 'OWMHYBRID';
 
@@ -49,7 +50,7 @@ class ApiClient extends http.BaseClient {
           originalPath.substring(0, originalPath.indexOf("/userkey/")) +
               "/userkey/" +
               authResponse["userkey"];
-      print(originalPath);
+      debugPrint(originalPath);
 
       this.credentials.refreshToken = authResponse["userkey"];
       await saveAuthCreds(this.credentials);
@@ -82,11 +83,13 @@ class ApiClient extends http.BaseClient {
       this.checkedCreds = true;
     }
   }
+
   Future<void> logoutUser() async {
     await saveAuthCreds(AuthCredentials());
     this.credentials = await loadAuthCreds();
     this.checkedCreds = true;
   }
+
   void initialize() {
     loadSecrets().then((keys) => this._secrets = keys);
   }
@@ -136,7 +139,8 @@ class ApiClient extends http.BaseClient {
           "POST", Uri.parse("https://a2.wykop.pl" + path));
       post.forEach((key, value) => multipartRequest.fields[key] = value);
       if (image != null) {
-        multipartRequest.files.add(await http.MultipartFile.fromPath("embed", image.path));
+        multipartRequest.files
+            .add(await http.MultipartFile.fromPath("embed", image.path));
       }
       response = await http.Response.fromStream(await send(multipartRequest));
     }
@@ -171,7 +175,13 @@ class AuthCredentials {
   final String backgroundUrl;
   final int color;
   String refreshToken;
-  AuthCredentials({this.token, this.avatarUrl, this.login, this.refreshToken, this.color, this.backgroundUrl});
+  AuthCredentials(
+      {this.token,
+      this.avatarUrl,
+      this.login,
+      this.refreshToken,
+      this.color,
+      this.backgroundUrl});
 }
 
 class ApiSecrets {

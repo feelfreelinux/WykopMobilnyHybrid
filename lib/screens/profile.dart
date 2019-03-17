@@ -20,7 +20,7 @@ class _MainCollapsingToolbarState extends State<ProfileScreen> {
         appBar: AppbarNormalWidget(
           title: '@' + widget.profile,
           actions: <Widget>[
-                        IconButton(
+            IconButton(
               icon: Icon(Icons.visibility),
               onPressed: () {},
               tooltip: "Obserwuj",
@@ -36,10 +36,10 @@ class _MainCollapsingToolbarState extends State<ProfileScreen> {
           EntryLinkList(
               header: _drawHeader(),
               actionType: PROFILE_ACTIONS_PREFIX + widget.profile,
-              converterCallback: (store) =>
-                  store.state.profilesState?.states[widget.profile]?.actionsState,
-              loadDataCallback: (store, refresh, completer) =>
-                  store.dispatch(loadTagIndex(widget.profile, refresh, completer))),
+              converterCallback: (store) => store
+                  .state.profilesState?.states[widget.profile]?.actionsState,
+              loadDataCallback: (store, refresh, completer) => store
+                  .dispatch(loadTagIndex(widget.profile, refresh, completer))),
         ], physics: NeverScrollableScrollPhysics()),
       ),
     );
@@ -58,8 +58,7 @@ class _MainCollapsingToolbarState extends State<ProfileScreen> {
           children: [
             DropdownButtonHideUnderline(
               child: DropdownButton<String>(
-                items: <String>['AKCJE']
-                    .map((String value) {
+                items: <String>['AKCJE'].map((String value) {
                   return new DropdownMenuItem<String>(
                     value: value,
                     child: new Text(value,

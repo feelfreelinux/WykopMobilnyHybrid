@@ -12,7 +12,9 @@ abstract class ItemListState
 
   factory ItemListState() {
     return _$ItemListState._(
-        paginationState: PaginationState(), listState: new ListState(), errorState: new ErrorState());
+        paginationState: PaginationState(),
+        listState: new ListState(),
+        errorState: new ErrorState());
   }
 
   ItemListState._();

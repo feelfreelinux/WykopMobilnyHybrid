@@ -13,7 +13,9 @@ LinkScreensState linkScreenReducer(LinkScreensState state, action) {
                 (k) => k
                   ..replace(_linkScreenReducer(newState.states[id], action))
                   ..errorState.replace(createErrorReducer(
-                      newState.states[id].errorState,  LINK_PREFIX + id, action)),
+                      newState.states[id].errorState,
+                      LINK_PREFIX + id,
+                      action)),
               )));
   } else {
     return state;
@@ -25,13 +27,15 @@ Reducer<LinkScreenState> _linkScreenReducer = combineReducers([
   TypedReducer<LinkScreenState, SetRelatedLinks>(_setRelatedLinks),
 ]);
 
-LinkScreenState _setLinkComments(LinkScreenState state, SetLinkComments action) {
+LinkScreenState _setLinkComments(
+    LinkScreenState state, SetLinkComments action) {
   return state.rebuild((b) => b
     ..comments.clear()
     ..comments.addAll(action.ids));
 }
 
-LinkScreenState _setRelatedLinks(LinkScreenState state, SetRelatedLinks action) {
+LinkScreenState _setRelatedLinks(
+    LinkScreenState state, SetRelatedLinks action) {
   return state.rebuild((b) => b
     ..relatedLinks.clear()
     ..relatedLinks.addAll(action.ids));

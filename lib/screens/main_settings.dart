@@ -106,7 +106,7 @@ class MainSettingsScreen extends StatelessWidget {
                                 'openLoginScreen',
                                 Map.from({'appKey': api.getAppKey()}));
                             var completer = Completer();
-                            print(result);
+                            debugPrint(result);
                             loginCallback(
                                 result['login'], result['token'], completer);
                             await completer.future;

@@ -27,10 +27,7 @@ abstract class Author implements Built<Author, AuthorBuilder> {
 
   factory Author.fromAuthState({String username, String avatarUrl, int color}) {
     return _$Author._(
-        color: color,
-        avatar: avatarUrl,
-        login: username,
-        sex: AuthorSex.OTHER);
+        color: color, avatar: avatarUrl, login: username, sex: AuthorSex.OTHER);
   }
   Author._();
 }
