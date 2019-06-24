@@ -1,4 +1,4 @@
-<img src="https://i.imgur.com/nNt0ZEN.png" height="33%" width="33%"/><img src="https://i.imgur.com/IbIz1CT.png" height="33%" width="33%"/><img src="https://i.imgur.com/GYhOZE2.png" height="33%" width="33%"/>
+<img src="https://i.imgur.com/jbbqqRq.png" height="33%" width="33%"/><img src="https://i.imgur.com/nNt0ZEN.png" height="33%" width="33%"/><img src="https://i.imgur.com/IbIz1CT.png" height="33%" width="33%"/>
 
 # Wykop Mobilny (Hybird)
 
