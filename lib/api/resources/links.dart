@@ -1,6 +1,7 @@
 import 'package:owmflutter/api/api.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:owmflutter/models/models.dart';
+import 'package:flutter/material.dart';
 
 class LinksApi extends ApiResource {
   LinksApi(ApiClient client) : super(client);
@@ -57,7 +58,7 @@ class LinksApi extends ApiResource {
   Future<Result> commentVoteDown(LinkComment link) async {
     var voteCount = await client.request('links', 'CommentVoteDown',
         api: [link.linkId, link.id.toString()]);
-    print(voteCount);
+    debugPrint(voteCount);
     var updatedLink = link.rebuild((b) => b
       ..voteCount = voteCount["vote_count"]
       ..voteCountPlus = voteCount["vote_count_plus"]

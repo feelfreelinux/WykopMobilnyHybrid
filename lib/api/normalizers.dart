@@ -43,15 +43,14 @@ Result normalizeNotificationsResponse(
           .rebuild((b) => b..notifications.addAll(notificationsMap)));
 }
 
-Result normalizeRelatedResponse(
-    BuiltList<RelatedResponse> relatedLinks) {
+Result normalizeRelatedResponse(BuiltList<RelatedResponse> relatedLinks) {
   var relatedMap = relatedResponseListToMap(relatedLinks);
   var ids = relatedLinks.map((e) => e.id);
 
   return Result(
       result: ids.toList(),
-      state: EntitiesState()
-          .rebuild((b) => b..relatedLinks.addAll(relatedMap)));
+      state:
+          EntitiesState().rebuild((b) => b..relatedLinks.addAll(relatedMap)));
 }
 
 Map<int, Notification> notificationResponseListToMap(
@@ -64,8 +63,7 @@ Map<int, Notification> notificationResponseListToMap(
 
 Map<int, Related> relatedResponseListToMap(
     BuiltList<RelatedResponse> relatedLinks) {
-  var mappedRelated =
-      relatedLinks.map((c) => Related.mapFromResponse(c));
+  var mappedRelated = relatedLinks.map((c) => Related.mapFromResponse(c));
   return Map<int, Related>.from(
       Map.fromIterable(mappedRelated, key: (v) => v.id, value: (v) => v));
 }
@@ -115,8 +113,8 @@ Result normalizeLinkCommentsResponse(
 
 Result normalizeLinkComment(LinkComment linkComment) {
   return Result(
-      state: EntitiesState().rebuild((b) =>
-          b.linkComments.putIfAbsent(linkComment.id, () => linkComment)),
+      state: EntitiesState().rebuild(
+          (b) => b.linkComments.putIfAbsent(linkComment.id, () => linkComment)),
       result: [linkComment.id]);
 }
 
@@ -156,15 +154,16 @@ Result normalizeEntryResponse(EntryResponse entry) {
 Result normalizeLinkResponse(LinkResponse link) {
   var mappedLink = Link.mapFromResponse(link);
   return Result(
-      state: EntitiesState().rebuild((b) => b.links.putIfAbsent(link.id, () => mappedLink)),
+      state: EntitiesState()
+          .rebuild((b) => b.links.putIfAbsent(link.id, () => mappedLink)),
       result: [link.id]);
 }
 
 Result normalizeEntryCommentResponse(EntryCommentResponse entryComment) {
   var mappedEntryComment = EntryComment.mapFromResponse(entryComment);
   return Result(
-      state: EntitiesState()
-          .rebuild((b) => b.entryComments.putIfAbsent(entryComment.id, () => mappedEntryComment)),
+      state: EntitiesState().rebuild((b) => b.entryComments
+          .putIfAbsent(entryComment.id, () => mappedEntryComment)),
       result: [mappedEntryComment.id]);
 }
 

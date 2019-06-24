@@ -19,7 +19,8 @@ import 'dart:ui';
  * Base from `wiki-flutter` client. Thanks a lot!
 */
 class HtmlWidget extends StatelessWidget {
-  const HtmlWidget({Key key, this.html, this.blackText = false}) : super(key: key);
+  const HtmlWidget({Key key, this.html, this.blackText = false})
+      : super(key: key);
 
   final String html;
   final bool blackText;
@@ -27,13 +28,10 @@ class HtmlWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Container(
-      
-      child:
-      _HtmlParser(context, blackText: blackText).parseFromStr(html
-          .replaceAll('<cite> ', '<cite>')
-          .replaceAll('<br /> ', '<br/>')
-          .replaceAll('&quot;', '"'))
-    );
+        child: _HtmlParser(context, blackText: blackText).parseFromStr(html
+            .replaceAll('<cite> ', '<cite>')
+            .replaceAll('<br /> ', '<br/>')
+            .replaceAll('&quot;', '"')));
   }
 }
 
@@ -44,7 +42,8 @@ class _HtmlParser {
 
   final bool blackText;
 
-  _HtmlParser(this.context, {this.nested: false, this.appContext: const {}, this.blackText = false});
+  _HtmlParser(this.context,
+      {this.nested: false, this.appContext: const {}, this.blackText = false});
 
   List<Widget> _widgets = [];
   List<TextSpan> _currentTextSpans = [];
@@ -80,7 +79,9 @@ class _HtmlParser {
         text: trimmedText,
         style: style ??
             TextStyle(
-                color: blackText ? Colors.black : Theme.of(context).textTheme.headline.color,
+                color: blackText
+                    ? Colors.black
+                    : Theme.of(context).textTheme.headline.color,
                 height: 1.1)));
   }
 

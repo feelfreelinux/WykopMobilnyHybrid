@@ -40,14 +40,18 @@ class _SupaGestureDetectorState extends State<SupaGestureDetector> {
       onTap: !isActive
           ? null
           : () {
-            widget.onTap();
+              widget.onTap();
             },
-      onDoubleTap: !isActive ? null : () {
-        widget.onDoubleTap();
-      },
-      onLongPress: !isActive ? null : () {
-        widget.onLongPress();
-      },
+      onDoubleTap: !isActive
+          ? null
+          : () {
+              widget.onDoubleTap();
+            },
+      onLongPress: !isActive
+          ? null
+          : () {
+              widget.onLongPress();
+            },
       child: ActiveGestureDetectorWidget(
           onActiveStateChanged: (active) {
             setState(() {

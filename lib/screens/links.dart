@@ -16,10 +16,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget topIcon(String title, String tag, IconData icon) {
     return GestureDetector(
       onTap: () {
-                Navigator.push(context,
-                    Utils.getPageTransition(TagScreen(tag: tag)));
-              },
-          child: Container(
+        Navigator.push(context, Utils.getPageTransition(TagScreen(tag: tag)));
+      },
+      child: Container(
         padding: EdgeInsets.symmetric(
           vertical: 12.0,
           horizontal: 9.0,
@@ -126,18 +125,23 @@ class _HomeScreenState extends State<HomeScreen> {
                             scrollDirection: Axis.horizontal,
                             child: Row(
                               children: <Widget>[
-                                topIcon("Ciekawostki", "ciekawostki", Icons.lightbulb_outline),
+                                topIcon("Ciekawostki", "ciekawostki",
+                                    Icons.lightbulb_outline),
                                 topIcon("Nauka", "nauka", Icons.school),
-                                topIcon("Historia", "historia", Icons.calendar_today),
-                                topIcon("Rozrywka", "rozrywka", Icons.videogame_asset),
+                                topIcon("Historia", "historia",
+                                    Icons.calendar_today),
+                                topIcon("Rozrywka", "rozrywka",
+                                    Icons.videogame_asset),
                                 topIcon("Sport", "sport", Icons.rowing),
-                                topIcon("Motoryzacja", "motoryzacja", Icons.motorcycle),
+                                topIcon("Motoryzacja", "motoryzacja",
+                                    Icons.motorcycle),
                                 topIcon("Syria", "syria", Icons.place),
                                 topIcon("Świat", "swiat", Icons.public),
                                 topIcon("SpaceX", "spacex", Icons.whatshot),
-                                topIcon(
-                                    "Programowanie", "programowanie", Icons.code),
-                                topIcon("Technologia", "technologia", Icons.wifi_tethering),
+                                topIcon("Programowanie", "programowanie",
+                                    Icons.code),
+                                topIcon("Technologia", "technologia",
+                                    Icons.wifi_tethering),
                                 topIcon("AMA", "ama", Icons.question_answer),
                               ],
                             )),

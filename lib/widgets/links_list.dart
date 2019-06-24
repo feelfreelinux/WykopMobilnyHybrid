@@ -14,7 +14,8 @@ class LinksList extends StatelessWidget {
       {this.converterCallback,
       this.loadDataCallback,
       this.actionType,
-      this.header}) : super(key: PageStorageKey(actionType));
+      this.header})
+      : super(key: PageStorageKey(actionType));
 
   @override
   Widget build(BuildContext context) {

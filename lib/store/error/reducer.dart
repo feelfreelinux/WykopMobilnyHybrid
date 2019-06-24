@@ -1,9 +1,9 @@
 import 'package:redux/redux.dart';
 import 'package:owmflutter/store/store.dart';
+import 'package:flutter/material.dart';
 
 ErrorState createErrorReducer(ErrorState state, String type, action) {
   if (action is TypedAction && action.type == type) {
-    print(action);
     return combineReducers<ErrorState>(
       [
         TypedReducer<ErrorState, SetErrorAction>(_setError),
@@ -13,21 +13,22 @@ ErrorState createErrorReducer(ErrorState state, String type, action) {
   }
   return state;
 }
+
 Reducer<ErrorState> errorReducer = combineReducers<ErrorState>([
   TypedReducer<ErrorState, SetErrorAction>(_setError),
   TypedReducer<ErrorState, DismissErrorAction>(_dismissError),
 ]);
 
 ErrorState _setError(ErrorState state, SetErrorAction action) {
-  print(action.type);
-  print("wtf");
+  debugPrint(action.type);
+  debugPrint("wtf");
   return state.rebuild((b) => b
     ..exception = action.error
     ..isDismissed = false);
 }
 
 ErrorState _dismissError(ErrorState state, DismissErrorAction action) {
-  print("DISMISSED");
-  print(action.type);
+  debugPrint("DISMISSED");
+  debugPrint(action.type);
   return state.rebuild((b) => b..isDismissed = true);
 }

@@ -5,7 +5,7 @@ import 'package:owmflutter/api/api.dart';
 part 'conversation_response.g.dart';
 
 abstract class ConversationResponse
-    implements Built<ConversationResponse,ConversationResponseBuilder> {
+    implements Built<ConversationResponse, ConversationResponseBuilder> {
   factory ConversationResponse([updates(ConversationResponseBuilder b)]) =
       _$ConversationResponse;
   @BuiltValueField(wireName: "last_update")
@@ -13,7 +13,7 @@ abstract class ConversationResponse
 
   @nullable
   String get status;
-  
+
   @nullable
   AuthorResponse get receiver;
 

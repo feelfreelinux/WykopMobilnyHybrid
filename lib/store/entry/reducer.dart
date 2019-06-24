@@ -16,7 +16,9 @@ EntryScreensState entryScreenReducer(EntryScreensState state, action) {
                 (k) => k
                   ..replace(_entryScreenReducer(newState.states[id], action))
                   ..errorState.replace(createErrorReducer(
-                      newState.states[id].errorState, ENTRY_PREFIX + id, action)),
+                      newState.states[id].errorState,
+                      ENTRY_PREFIX + id,
+                      action)),
               )));
   } else {
     return state;

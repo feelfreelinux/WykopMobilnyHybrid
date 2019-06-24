@@ -66,7 +66,7 @@ LinkCommentVoteState getVoteState(int userVote) {
       return LinkCommentVoteState.NOT_VOTED;
     case 1:
       return LinkCommentVoteState.UP_VOTED;
-    case -1: 
+    case -1:
       return LinkCommentVoteState.DOWN_VOTED;
     default:
       return LinkCommentVoteState.NOT_VOTED;

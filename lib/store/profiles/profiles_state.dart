@@ -5,7 +5,8 @@ import 'package:owmflutter/store/store.dart';
 
 part 'profiles_state.g.dart';
 
-abstract class ProfilesState implements Built<ProfilesState, ProfilesStateBuilder> {
+abstract class ProfilesState
+    implements Built<ProfilesState, ProfilesStateBuilder> {
   BuiltMap<String, ProfileState> get states;
 
   factory ProfilesState() {
@@ -16,12 +17,12 @@ abstract class ProfilesState implements Built<ProfilesState, ProfilesStateBuilde
   static Serializer<ProfilesState> get serializer => _$profilesStateSerializer;
 }
 
-abstract class ProfileState implements Built<ProfileState, ProfileStateBuilder> {
+abstract class ProfileState
+    implements Built<ProfileState, ProfileStateBuilder> {
   ItemListState get actionsState;
 
   factory ProfileState() {
-    return _$ProfileState._(
-        actionsState: ItemListState());
+    return _$ProfileState._(actionsState: ItemListState());
   }
 
   ProfileState._();

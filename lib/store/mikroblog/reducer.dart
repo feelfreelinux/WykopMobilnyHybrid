@@ -15,6 +15,6 @@ MikroblogState mikroblogReducer(MikroblogState state, action) {
         .replace(itemListReducer(MIKROBLOG_HOT6, state.hot6State, action))
     ..hot12State
         .replace(itemListReducer(MIKROBLOG_HOT12, state.hot12State, action))
-    ..favoriteState
-        .replace(itemListReducer(MIKROBLOG_FAVORITE, state.favoriteState, action)));
+    ..favoriteState.replace(
+        itemListReducer(MIKROBLOG_FAVORITE, state.favoriteState, action)));
 }

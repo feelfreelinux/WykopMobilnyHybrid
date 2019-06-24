@@ -26,7 +26,8 @@ abstract class LinkScreenState
   ErrorState get errorState;
 
   factory LinkScreenState() {
-    return _$LinkScreenState._(comments: ([]), relatedLinks: ([]), errorState: ErrorState());
+    return _$LinkScreenState._(
+        comments: ([]), relatedLinks: ([]), errorState: ErrorState());
   }
 
   LinkScreenState._();

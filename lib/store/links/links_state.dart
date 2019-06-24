@@ -9,7 +9,8 @@ abstract class LinksState implements Built<LinksState, LinksStateBuilder> {
   ItemListState get favoriteState;
 
   factory LinksState() {
-    return _$LinksState._(promotedState: ItemListState(), favoriteState: ItemListState());
+    return _$LinksState._(
+        promotedState: ItemListState(), favoriteState: ItemListState());
   }
 
   LinksState._();

@@ -6,8 +6,8 @@ class EntriesApi extends ApiResource {
   EntriesApi(ApiClient client) : super(client);
 
   Future<Result> getFavorite(int page) async {
-    var items = await client.request('entries', 'observed',
-        named: {'page': page.toString()});
+    var items = await client
+        .request('entries', 'observed', named: {'page': page.toString()});
     return normalizeEntriesResponse(BuiltList.from(
         client.deserializeList(EntryResponse.serializer, items)));
   }
@@ -46,21 +46,25 @@ class EntriesApi extends ApiResource {
   }
 
   Future<Result> deleteEntryComment(int id) async {
-    var items = await client.request('entries', 'commentdelete', api: [id.toString()]);
+    var items =
+        await client.request('entries', 'commentdelete', api: [id.toString()]);
     return normalizeEntryCommentResponse(
         client.deserializeElement(EntryCommentResponse.serializer, items));
   }
 
   Future<Result> addEntryComment(Entry entry, InputData data) async {
     await client.request('entries', 'commentadd',
-        api: [entry.id.toString()], post: {'body': data.body}, image: data.file);
+        api: [entry.id.toString()],
+        post: {'body': data.body},
+        image: data.file);
     return normalizeEntry(entry);
   }
 
   Future<Result> addEntry(InputData data) async {
     var entry = await client.request('entries', 'add',
         post: {'body': data.body}, image: data.file);
-    return normalizeEntryResponse(client.deserializeElement(EntryResponse.serializer, entry));
+    return normalizeEntryResponse(
+        client.deserializeElement(EntryResponse.serializer, entry));
   }
 
   Future<Result> voteUp(Entry entry) async {
@@ -76,8 +80,7 @@ class EntriesApi extends ApiResource {
   Future<Result> markFavorite(Entry entry) async {
     var voteCount =
         await client.request('entries', 'voteup', api: [entry.id.toString()]);
-    var updatedEntry = entry.rebuild((b) => b
-      ..isVoted = true);
+    var updatedEntry = entry.rebuild((b) => b..isVoted = true);
 
     return normalizeEntry(updatedEntry);
   }

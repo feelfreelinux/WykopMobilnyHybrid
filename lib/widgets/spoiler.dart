@@ -16,9 +16,9 @@ class _SpoilerWidgetState extends State<SpoilerWidget> {
       return Container(
         color: Colors.black,
         child: BodyWidget(
-          padding: EdgeInsets.all(4),
-          blackTheme: true,
-          body: Uri.decodeFull(widget.text).replaceAll('+', ' ')),
+            padding: EdgeInsets.all(4),
+            blackTheme: true,
+            body: Uri.decodeFull(widget.text).replaceAll('+', ' ')),
       );
     } else {
       return GestureDetector(

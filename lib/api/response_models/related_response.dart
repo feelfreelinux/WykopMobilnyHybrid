@@ -6,7 +6,8 @@ part 'related_response.g.dart';
 
 abstract class RelatedResponse
     implements Built<RelatedResponse, RelatedResponseBuilder> {
-  factory RelatedResponse([updates(RelatedResponseBuilder b)]) = _$RelatedResponse;
+  factory RelatedResponse([updates(RelatedResponseBuilder b)]) =
+      _$RelatedResponse;
   int get id;
   String get title;
 
@@ -18,5 +19,6 @@ abstract class RelatedResponse
   AuthorResponse get author;
 
   RelatedResponse._();
-  static Serializer<RelatedResponse> get serializer => _$relatedResponseSerializer;
+  static Serializer<RelatedResponse> get serializer =>
+      _$relatedResponseSerializer;
 }

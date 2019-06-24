@@ -110,7 +110,7 @@ class _MediaScreenState extends State<MediaScreen> {
             return Center(child: CircularProgressIndicator());
           });
     } catch (e) {
-      print("Launching url due to player exception " + e.toString());
+      debugPrint("Launching url due to player exception " + e.toString());
       launchUrl(context, widget.embed.url);
       Navigator.pop(context);
     }

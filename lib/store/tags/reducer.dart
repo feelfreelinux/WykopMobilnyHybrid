@@ -1,13 +1,14 @@
 import 'package:owmflutter/store/store.dart';
+import 'package:flutter/material.dart';
 
 /*
   Reducer that directs actions of all tags screens into their reducers.
 **/
 TagsState tagReducer(TagsState state, action) {
   if (action is TypedAction && action.type.startsWith("TAG_")) {
-    print(action.type);
+    debugPrint(action.type);
     var tag = action.type.split('_')[2];
-    print(tag);
+    debugPrint(tag);
     var newState =
         state.rebuild((b) => b..states.putIfAbsent(tag, () => TagState()));
     return newState.rebuild((e) => e

@@ -5,8 +5,7 @@ import 'package:owmflutter/models/models.dart';
 
 part 'pm_message.g.dart';
 
-abstract class PmMessage
-    implements Built<PmMessage, PmMessageBuilder> {
+abstract class PmMessage implements Built<PmMessage, PmMessageBuilder> {
   factory PmMessage([updates(PmMessageBuilder b)]) = _$PmMessage;
   String get date;
   String get body;

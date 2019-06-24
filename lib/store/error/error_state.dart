@@ -9,8 +9,7 @@ abstract class ErrorState implements Built<ErrorState, ErrorStateBuilder> {
   bool get isDismissed;
 
   factory ErrorState() {
-    return _$ErrorState._(
-        exception: null, isDismissed: true);
+    return _$ErrorState._(exception: null, isDismissed: true);
   }
 
   ErrorState._();

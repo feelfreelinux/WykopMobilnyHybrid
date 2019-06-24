@@ -40,7 +40,9 @@ abstract class Notification
       body: response.body,
       isNew: response.isNew,
       itemId: response.itemId,
-      author: response.author != null ? Author.fromResponse(response: response.author) : null,
+      author: response.author != null
+          ? Author.fromResponse(response: response.author)
+          : null,
     );
   }
 
