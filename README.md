@@ -1,6 +1,8 @@
-# OWM flutter
+<img src="https://i.imgur.com/nNt0ZEN.png" height="33%" width="33%"/><img src="https://i.imgur.com/IbIz1CT.png" height="33%" width="33%"/><img src="https://i.imgur.com/GYhOZE2.png" height="33%" width="33%"/>
 
-Hybrid port of [WykopMobilny](https://github.com/feelfreelinux/WykopMobilny)
+# Wykop Mobilny (Hybird)
+
+Flutter port of [WykopMobilny](https://github.com/feelfreelinux/WykopMobilny)
 
 # Setting up
 
