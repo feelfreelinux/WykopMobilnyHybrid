@@ -111,8 +111,8 @@ class _InfiniteListState extends State<InfiniteList> {
         child: ListView.builder(
           physics: NotSuddenJumpPhysics(),
           itemCount: widget.header != null
-              ? widget.itemCount + 2
-              : widget.itemCount + 1,
+              ? widget.itemCount + 1
+              : widget.itemCount + 0,
           itemBuilder: (context, index) {
             if (widget.header != null && index == 0) {
               return widget.header;
