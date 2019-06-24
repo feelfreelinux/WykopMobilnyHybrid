@@ -43,7 +43,7 @@ flutter_icons:
   android: "launcher_icon" 
   adaptive_icon_background: "#ff5f98f4"
   ios: true
-  image_path: "assets/rogal.png"
+  image_path: "assets/app_icon.png"
 
 flutter:
   uses-material-design: true
@@ -56,3 +56,4 @@ flutter:
     - rogal.png
     - kosmo_bg.png
     - avatar.png
+    - app_icon.png
