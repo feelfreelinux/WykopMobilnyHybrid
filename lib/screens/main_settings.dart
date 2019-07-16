@@ -7,7 +7,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/main.dart';
-import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'dart:async';
 
 class MainSettingsScreen extends StatelessWidget {

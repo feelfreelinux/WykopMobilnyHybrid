@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/widgets/widgets.dart';
-import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 
 class ProfileScreen extends StatefulWidget {

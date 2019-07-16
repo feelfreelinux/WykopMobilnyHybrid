@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/widgets/widgets.dart';
-import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 
 class TagScreen extends StatefulWidget {
   final String tag;

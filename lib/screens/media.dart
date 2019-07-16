@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/utils.dart';
@@ -72,13 +72,13 @@ class _MediaScreenState extends State<MediaScreen> {
         : widget.embed.url;
     return Container(
       child: PhotoView(
+        backgroundDecoration: BoxDecoration(color: Colors.transparent),
         loadingChild: Container(
           height: MediaQuery.of(context).size.height,
           child: Column(
             children: [LinearProgressIndicator()],
           ),
         ),
-        backgroundColor: Colors.transparent,
         imageProvider: AdvancedNetworkImage(url),
         minScale: PhotoViewComputedScale.contained,
         maxScale: PhotoViewComputedScale.covered * 1.1,
