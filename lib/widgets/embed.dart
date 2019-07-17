@@ -29,12 +29,12 @@ class _EmbedState extends State<EmbedWidget> {
   bool resized = false;
   bool nsfw = false;
   var imageResolver;
-  var imageSizeListener;
+  ImageStreamListener imageSizeListener;
 
   @override
   void initState() {
     super.initState();
-    imageSizeListener = (ImageInfo image, bool _) => updateImageSize(image);
+    imageSizeListener = new ImageStreamListener((ImageInfo image, bool synchronousCall) { updateImageSize(image); });
 
     // First, fetch image size for sizedbox calculations
     imageResolver =
