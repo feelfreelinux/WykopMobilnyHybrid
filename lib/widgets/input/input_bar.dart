@@ -22,9 +22,20 @@ class InputBarWidget extends StatefulWidget {
   final InputBarCallback callback;
   final OnImageStateChangedCallback imageStateChanged;
   final TextEditingController externalController;
-  InputBarWidget(this.callback,
-      {@required Key key, this.externalController, this.imageStateChanged})
-      : super(key: key);
+  final Color iconsColor;
+  final bool shadow;
+  final String hintText;
+
+  InputBarWidget(
+    this.callback, {
+    @required Key key,
+    this.externalController,
+    this.imageStateChanged,
+    this.iconsColor,
+    this.shadow = true,
+    this.hintText = 'Treść komentarza',
+  }) : super(key: key);
+
   InputBarWidgetState createState() => InputBarWidgetState();
 }
 
@@ -113,26 +124,24 @@ class InputBarWidgetState extends State<InputBarWidget> {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: Duration(milliseconds: 300),
-      child: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              blurRadius: 2.0,
-            ),
-          ],
-          color: Theme.of(context).primaryColor,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _drawSuggestions(),
-            hasExternalInput ? Container() : _drawInputBar(),
-            _drawButtons(),
-          ],
-        ),
+      duration: Duration(milliseconds: 200),
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(widget.shadow ? 0.1 : 0.0),
+            blurRadius: widget.shadow ? 1.0 : 0.0,
+          ),
+        ],
+        color: Theme.of(context).primaryColor,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _drawSuggestions(),
+          hasExternalInput ? Container() : _drawInputBar(),
+          _drawButtons(),
+        ],
       ),
     );
   }
@@ -175,10 +184,12 @@ class InputBarWidgetState extends State<InputBarWidget> {
                     showMarkdownBar ? false : clickTextField ? false : true;
               });
             },
+            iconColor: widget.iconsColor,
           ),
           MediaButtonWidget(
             show: showMediaButton,
             onTap: () => this.pickImage(ImageSource.gallery),
+            iconColor: widget.iconsColor,
           ),
           Expanded(
             child: Container(
@@ -192,9 +203,9 @@ class InputBarWidgetState extends State<InputBarWidget> {
                   bottom: 1.0,
                 ),
                 decoration: BoxDecoration(
-                  color: Color(0x267f7f7f),
+                  color: Utils.backgroundGreyOpacity(context),
                   borderRadius: BorderRadius.all(
-                    Radius.circular(16.0),
+                    Radius.circular(20.0),
                   ),
                 ),
                 child: Column(
@@ -223,42 +234,43 @@ class InputBarWidgetState extends State<InputBarWidget> {
                                         loadSuggestions(q, Completer())),
                                     builder: (context, suggestCallback) =>
                                         TextField(
-                                          focusNode: focusNode,
-                                          cursorWidth: 1.5,
-                                          cursorRadius: Radius.circular(20.0),
-                                          onChanged: (text) {
-                                            suggestCallback(
-                                                extractSuggestions());
-                                          },
-                                          style: DefaultTextStyle.of(context)
-                                              .style
-                                              .merge(
-                                                TextStyle(fontSize: 14.0),
-                                              ),
-                                          maxLines: null,
-                                          controller: this.textController,
-                                          keyboardType: TextInputType.multiline,
-                                          onTap: () {
-                                            setState(() {
-                                              showMediaButton = false;
-                                              clickTextField = true;
-                                            });
-                                          },
-                                          decoration: InputDecoration(
-                                            contentPadding:
-                                                EdgeInsets.symmetric(
-                                              vertical: 8.0,
-                                            ),
-                                            border: InputBorder.none,
-                                            hintText: 'Treść komentarza',
+                                      focusNode: focusNode,
+                                      cursorWidth: 1.5,
+                                      cursorRadius: Radius.circular(20.0),
+                                      onChanged: (text) {
+                                        suggestCallback(extractSuggestions());
+                                      },
+                                      style: DefaultTextStyle.of(context)
+                                          .style
+                                          .merge(
+                                            TextStyle(fontSize: 16.0),
                                           ),
+                                      maxLines: null,
+                                      controller: this.textController,
+                                      keyboardType: TextInputType.multiline,
+                                      onTap: () {
+                                        setState(() {
+                                          showMediaButton = false;
+                                          clickTextField = true;
+                                        });
+                                      },
+                                      decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.symmetric(
+                                          vertical: 8.0,
                                         ),
+                                        border: InputBorder.none,
+                                        hintText: widget.hintText,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                          EmoticonButtonWidget(onTap: () {}),
+                          EmoticonButtonWidget(
+                            onTap: () {},
+                            iconColor: widget.iconsColor,
+                          ),
                         ],
                       ),
                     ),
@@ -271,6 +283,7 @@ class InputBarWidgetState extends State<InputBarWidget> {
             },
             isEmpty: isEmpty,
             sending: sending,
+            iconColor: widget.iconsColor,
           ),
         ],
       ),
@@ -304,41 +317,41 @@ class InputBarWidgetState extends State<InputBarWidget> {
           () => store.dispatch(loadSuggestions("dupa", Completer())),
       builder: (context, clearSuggestionsCallback) =>
           StoreConnector<AppState, SuggestionsState>(
-            converter: (store) => store.state.suggestionsState,
-            builder: (context, suggestions) {
-              return Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: List()
-                    ..addAll(suggestions.authorSuggestions
-                        .sublist(
-                            0,
-                            suggestions.authorSuggestions.length < 5
-                                ? suggestions.authorSuggestions.length
-                                : 5)
-                        .map((s) => new UserSuggestionWidget(
-                              applySuggestion: () {
-                                this._insertSuggestion('@' + s.login);
-                                clearSuggestionsCallback();
-                              },
-                              suggestion: s,
-                            ))
-                        .toList())
-                    ..addAll(suggestions.tagSuggestions
-                        .sublist(
-                            0,
-                            suggestions.tagSuggestions.length < 5
-                                ? suggestions.tagSuggestions.length
-                                : 5)
-                        .map((s) => new TagSuggestionWidget(
-                              applySuggestion: () {
-                                this._insertSuggestion(s.tag);
-                                clearSuggestionsCallback();
-                              },
-                              suggestion: s,
-                            ))
-                        .toList()));
-            },
-          ),
+        converter: (store) => store.state.suggestionsState,
+        builder: (context, suggestions) {
+          return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: List()
+                ..addAll(suggestions.authorSuggestions
+                    .sublist(
+                        0,
+                        suggestions.authorSuggestions.length < 5
+                            ? suggestions.authorSuggestions.length
+                            : 5)
+                    .map((s) => new UserSuggestionWidget(
+                          applySuggestion: () {
+                            this._insertSuggestion('@' + s.login);
+                            clearSuggestionsCallback();
+                          },
+                          suggestion: s,
+                        ))
+                    .toList())
+                ..addAll(suggestions.tagSuggestions
+                    .sublist(
+                        0,
+                        suggestions.tagSuggestions.length < 5
+                            ? suggestions.tagSuggestions.length
+                            : 5)
+                    .map((s) => new TagSuggestionWidget(
+                          applySuggestion: () {
+                            this._insertSuggestion(s.tag);
+                            clearSuggestionsCallback();
+                          },
+                          suggestion: s,
+                        ))
+                    .toList()));
+        },
+      ),
     );
   }
 

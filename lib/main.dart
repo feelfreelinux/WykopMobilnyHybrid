@@ -4,8 +4,11 @@ import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart' show thunkMiddleware;
 import 'package:owmflutter/app.dart';
 import 'package:flutter/services.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 void main() {
+  timeago.setLocaleMessages('pl', timeago.PlMessages());
+  
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));

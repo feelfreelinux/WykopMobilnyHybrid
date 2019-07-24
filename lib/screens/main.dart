@@ -35,8 +35,8 @@ class _MainScreenState extends State<MainScreen> {
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                blurRadius: 2.0,
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 1.0,
               ),
             ],
             color: Theme.of(context).primaryColor,
@@ -59,7 +59,7 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget _addNewButton() {
     return Container(
-      margin: EdgeInsets.all(8.0),
+      margin: EdgeInsets.all(10.0),
       width: 36.0,
       height: 36.0,
       child: FloatingActionButton(

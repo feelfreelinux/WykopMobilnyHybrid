@@ -12,7 +12,7 @@ class SelectedImageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (this.image != null) {
+    if (image != null) {
       return Container(
         margin: EdgeInsets.only(
           left: 5.0,

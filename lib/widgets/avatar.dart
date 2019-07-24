@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:owmflutter/models/models.dart';
+import 'package:owmflutter/utils/utils.dart';
 
 class AvatarWidget extends StatelessWidget {
   final Author author;
@@ -48,27 +50,41 @@ class AvatarWidget extends StatelessWidget {
             width: size / 30,
           ),
         ),
-        child: Container(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Color(0x33000000),
+        child: Stack(
+          children: <Widget>[
+            Container(
+              width: size,
+              height: size,
+              padding: EdgeInsets.all(size / 4.5),
+              decoration: BoxDecoration(
+                color: Utils.backgroundGreyOpacity(context),
+                shape: BoxShape.circle,
               ),
-            ],
-            image: DecorationImage(
-              fit: BoxFit.fill,
-              image: author.avatar.length != 0
-                  ? NetworkImage(
-                      author.avatar,
-                    )
-                  : AssetImage(
-                      'assets/avatar.png',
-                    ),
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                    Theme.of(context).iconTheme.color),
+                strokeWidth: size / 18.0,
+              ),
             ),
-          ),
+            Container(
+              width: size,
+              height: size,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: author.avatar.length != 0
+                      ? AdvancedNetworkImage(
+                          author.avatar,
+                          useDiskCache: true,
+                        )
+                      : AssetImage(
+                          'assets/avatar.png',
+                        ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:owmflutter/keys.dart';
 import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'dart:async';
@@ -19,7 +20,7 @@ class NotificationsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
+        //decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
         child: StoreConnector<AppState, ItemListState>(
             converter: (store) => converterCallback(store),
             onInit: (store) {

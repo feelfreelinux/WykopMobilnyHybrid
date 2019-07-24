@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 class MarkdownButtonWidget extends StatelessWidget {
   final bool show;
   final VoidCallback onTap;
+  final Color iconColor;
   MarkdownButtonWidget({
     @required this.show,
     @required this.onTap,
+    this.iconColor,
   });
 
   @override
@@ -21,8 +23,8 @@ class MarkdownButtonWidget extends StatelessWidget {
           padding: EdgeInsets.all(6.0),
           child: Icon(
             show ? Icons.remove_circle : Icons.add_circle,
-            size: 26.0,
-            color: Theme.of(context).accentColor,
+            size: 28.0,
+            color: iconColor ?? Theme.of(context).accentColor,
           ),
         ),
       ),

@@ -1,25 +1,35 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'package:owmflutter/models/models.dart';
+import 'package:owmflutter/owm_glyphs.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/store/store.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'vote_counter.dart';
+import 'votes_buttons.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/screens/screens.dart';
 
-class LinkWidget extends StatelessWidget {
+class LinkWidget extends StatefulWidget {
   final int linkId;
+
   LinkWidget({this.linkId});
+
+  _LinkWidgetState createState() => _LinkWidgetState();
+}
+
+class _LinkWidgetState extends State<LinkWidget> {
+  bool showButtonsState = false;
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      key: Key(linkId.toString()),
+      key: Key(widget.linkId.toString()),
       color: Theme.of(context).cardColor,
       child: StoreConnector<AppState, Link>(
-        converter: (store) => store.state.entitiesState.links[linkId],
+        converter: (store) => store.state.entitiesState.links[widget.linkId],
         builder: (context, link) {
           if (link == null) {
             return Container();
@@ -31,26 +41,39 @@ class LinkWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
+                Stack(
                   children: <Widget>[
-                    AuthorWidget(
-                      author: link.author,
-                      date: link.date,
-                      fontSize: 14.0,
-                      padding: EdgeInsets.symmetric(
-                        vertical: 10.0,
-                      ),
+                    Row(
+                      children: <Widget>[
+                        AuthorWidget(
+                          author: link.author,
+                          date: link.date,
+                          fontSize: 14.0,
+                          padding: EdgeInsets.symmetric(
+                            vertical: 10.0,
+                          ),
+                        ),
+                        VoteCounterWidget(
+                          voteState: "",
+                          onTap: () {
+                            setState(() {
+                              showButtonsState = !showButtonsState;
+                            });
+                          },
+                          count: link.voteCount,
+                          size: 48.0,
+                          isHot: link.isHot,
+                          padding: EdgeInsets.symmetric(
+                            vertical: 12.0,
+                          ),
+                        ),
+                      ],
                     ),
-                    VoteCounterWidget(
-                      voteState: "",
-                      onClicked: () {},
-                      count: link.voteCount,
-                      size: 48.0,
-                      isHot: link.isHot,
-                      padding: EdgeInsets.symmetric(
-                        vertical: 12.0,
-                      ),
-                    ),
+                    VotesButtonsWidget(
+                      showButtonsState: showButtonsState,
+                      onTapUpVote: () {},
+                      onTapDownVote: () {},
+                    )
                   ],
                 ),
                 GestureDetector(
@@ -63,13 +86,13 @@ class LinkWidget extends StatelessWidget {
                   ),
                 ),
                 GestureDetector(
-                  key: Key(linkId.toString()),
+                  key: Key(widget.linkId.toString()),
                   onTap: () {
                     Navigator.push(
                       context,
                       Utils.getPageTransition(
                         LinkScreen(
-                          linkId: linkId,
+                          linkId: widget.linkId,
                         ),
                       ),
                     );

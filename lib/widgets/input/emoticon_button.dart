@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 class EmoticonButtonWidget extends StatelessWidget {
   final VoidCallback onTap;
+  final Color iconColor;
   EmoticonButtonWidget({
     @required this.onTap,
+    this.iconColor,
   });
 
   @override
@@ -12,10 +14,10 @@ class EmoticonButtonWidget extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(100.0),
       child: Padding(
-        padding: EdgeInsets.all(4.0),
+        padding: EdgeInsets.all(5.0),
         child: Icon(
           Icons.mood,
-          color: Theme.of(context).accentColor,
+          color: iconColor ?? Theme.of(context).accentColor,
         ),
       ),
     );

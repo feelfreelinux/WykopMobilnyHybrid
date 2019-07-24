@@ -43,7 +43,7 @@ class LinkOpenedWidget extends StatelessWidget {
                     ),
                     VoteCounterWidget(
                       voteState: "",
-                      onClicked: () {},
+                      onTap: () {},
                       count: link.voteCount,
                       size: 48.0,
                       isHot: link.isHot,

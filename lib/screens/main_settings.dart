@@ -23,6 +23,14 @@ class MainSettingsScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppbarNormalWidget(
+          padding: EdgeInsets.symmetric(horizontal: 8.0),
+          leading: AppBarButton(
+            icon: Icons.close,
+            onTap: () => Navigator.of(context).pop(),
+            round: true,
+            iconSize: 26.0,
+            iconPadding: EdgeInsets.all(5.0),
+          ),
           title: "Ustawienia",
           actions: <Widget>[
             _drawThemeButton(),
@@ -99,36 +107,36 @@ class MainSettingsScreen extends StatelessWidget {
               converter: (store) => (login, token, completer) =>
                   store.dispatch(loginUser(token, login, completer)),
               builder: (context, loginCallback) => GestureDetector(
-                    onTap: authState.loggedIn
-                        ? () {}
-                        : () async {
-                            var result = await platform.invokeMethod(
-                                'openLoginScreen',
-                                Map.from({'appKey': api.getAppKey()}));
-                            var completer = Completer();
-                            debugPrint(result);
-                            loginCallback(
-                                result['login'], result['token'], completer);
-                            await completer.future;
-                            RestartWidget.restartApp(context);
-                          },
-                    child: Container(
-                      padding: EdgeInsets.only(
-                        left: 18.0,
-                        top: 12.0,
-                        right: 18.0,
-                        bottom: 14.0,
-                      ),
-                      child: Text(
-                        authState.loggedIn ? authState.login : "Zaloguj się",
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 22.0,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+                onTap: authState.loggedIn
+                    ? () {}
+                    : () async {
+                        var result = await platform.invokeMethod(
+                            'openLoginScreen',
+                            Map.from({'appKey': api.getAppKey()}));
+                        var completer = Completer();
+                        debugPrint(result);
+                        loginCallback(
+                            result['login'], result['token'], completer);
+                        await completer.future;
+                        RestartWidget.restartApp(context);
+                      },
+                child: Container(
+                  padding: EdgeInsets.only(
+                    left: 18.0,
+                    top: 12.0,
+                    right: 18.0,
+                    bottom: 14.0,
+                  ),
+                  child: Text(
+                    authState.loggedIn ? authState.login : "Zaloguj się",
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
+                ),
+              ),
             ),
             authState.loggedIn
                 ? GestureDetector(
@@ -141,14 +149,13 @@ class MainSettingsScreen extends StatelessWidget {
                         horizontal: 12.0,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.grey[400].withOpacity(0.5),
+                        color: Utils.backgroundGreyOpacity(context),
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                       child: Text(
                         "Edytuj profil",
                         style: TextStyle(
                           fontSize: 13.0,
-                          color: Colors.black,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -207,26 +214,25 @@ class MainSettingsScreen extends StatelessWidget {
                 return StoreConnector<AppState, VoidCallback>(
                   converter: (store) => () => store.dispatch(logoutUser()),
                   builder: (context, logoutCallback) => _drawButton(
-                        context,
-                        icon: Icons.exit_to_app,
-                        color: Colors.grey[850],
-                        title:
-                            authState.loggedIn ? "Wyloguj się" : "Zaloguj się",
-                        onTap: () async {
-                          if (authState.loggedIn) {
-                            logoutCallback();
-                          } else {
-                            var result = await platform.invokeMethod(
-                                'openLoginScreen',
-                                Map.from({'appKey': api.getAppKey()}));
-                            var completer = Completer();
-                            loginCallback(
-                                result['login'], result['token'], completer);
-                            await completer.future;
-                            RestartWidget.restartApp(context);
-                          }
-                        },
-                      ),
+                    context,
+                    icon: Icons.exit_to_app,
+                    color: Colors.grey[850],
+                    title: authState.loggedIn ? "Wyloguj się" : "Zaloguj się",
+                    onTap: () async {
+                      if (authState.loggedIn) {
+                        logoutCallback();
+                      } else {
+                        var result = await platform.invokeMethod(
+                            'openLoginScreen',
+                            Map.from({'appKey': api.getAppKey()}));
+                        var completer = Completer();
+                        loginCallback(
+                            result['login'], result['token'], completer);
+                        await completer.future;
+                        RestartWidget.restartApp(context);
+                      }
+                    },
+                  ),
                 );
               },
             ),
@@ -370,22 +376,20 @@ class MainSettingsScreen extends StatelessWidget {
     return StoreConnector<AppState, OWMTheme>(
       converter: (store) => store.state.themeState.currentTheme,
       builder: (context, currentTheme) => StoreConnector<AppState, dynamic>(
-            converter: (store) =>
-                (OWMTheme theme) => store.dispatch(setTheme(theme)),
-            builder: (context, callback) => IconButton(
-                  onPressed: () => callback(currentTheme == OWMTheme.DARK_THEME
-                      ? OWMTheme.LIGHT_THEME
-                      : OWMTheme.DARK_THEME),
-                  icon: Icon(
-                    currentTheme == OWMTheme.DARK_THEME
-                        ? Icons.wb_sunny
-                        : Icons.brightness_2,
-                  ),
-                  tooltip: currentTheme == OWMTheme.DARK_THEME
-                      ? "Styl dzienny"
-                      : "Styl nocny",
-                ),
-          ),
+        converter: (store) =>
+            (OWMTheme theme) => store.dispatch(setTheme(theme)),
+        builder: (context, callback) => AppBarButton(
+          icon: currentTheme == OWMTheme.DARK_THEME
+              ? Icons.wb_sunny
+              : Icons.brightness_2,
+          onTap: () => callback(currentTheme == OWMTheme.DARK_THEME
+              ? OWMTheme.LIGHT_THEME
+              : OWMTheme.DARK_THEME),
+          round: true,
+          iconSize: 22.0,
+          iconPadding: EdgeInsets.all(7.0),
+        ),
+      ),
     );
   }
 }

@@ -183,6 +183,7 @@ class LinkCommentWidget extends StatelessWidget {
         StoreConnector<AppState, VoidCallback>(
           converter: (store) =>
               () => store.dispatch(voteLinkComment(commentId, true)),
+              // TODO: Nie wyświetla stanu zmiany
           builder: (context, callback) => VoteButton(
                 negativeIcon: true,
                 margin: EdgeInsets.only(

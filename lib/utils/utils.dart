@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'dart:io' show Platform;
@@ -29,24 +31,61 @@ class Utils {
     }
   }
 
-  static Route getPageTransition(Widget screen) {
+  static Route getPageSlideToUp(Widget screen) {
     if (Platform.isAndroid) {
       return PageRouteBuilder(
-          opaque: true,
-          pageBuilder: (BuildContext context, Animation<double> animation,
-              Animation<double> secondaryAnimation) {
-            return screen;
-          },
-          transitionsBuilder: (context, animation1, animation2, child) {
-            return FadeTransition(
-                opacity:
-                    Tween<double>(begin: 0.0, end: 1.0).animate(animation1),
-                child: child);
-          },
-          transitionDuration: Duration(milliseconds: 400));
+        barrierColor: Colors.black26,
+        opaque: true,
+        pageBuilder: (BuildContext context, Animation<double> animation,
+            Animation<double> secondaryAnimation) {
+          return screen;
+        },
+        transitionsBuilder: (BuildContext context, Animation<double> animation,
+            Animation<double> secondaryAnimation, Widget child) {
+          return new SlideTransition(
+            position: Tween<Offset>(
+              begin: Offset(0.0, 1.0),
+              end: Offset(0.0, 0.0),
+            ).animate(
+              CurvedAnimation(
+                parent: animation,
+                curve: Interval(0.00, 1.00, curve: Curves.easeInOutQuart),
+              ),
+            ),
+            child: child,
+          );
+        },
+        transitionDuration: Duration(milliseconds: 300),
+      );
     } else {
       return CupertinoPageRoute(builder: (context) => screen);
     }
+  }
+
+  static Route getPageTransition(Widget screen) {
+    if (Platform.isAndroid) {
+      return PageRouteBuilder(
+        opaque: true,
+        pageBuilder: (BuildContext context, Animation<double> animation,
+            Animation<double> secondaryAnimation) {
+          return screen;
+        },
+        transitionsBuilder: (context, animation1, animation2, child) {
+          return FadeTransition(
+              opacity: Tween<double>(begin: 0.0, end: 1.0).animate(animation1),
+              child: child);
+        },
+        transitionDuration: Duration(milliseconds: 400),
+      );
+    } else {
+      return CupertinoPageRoute(builder: (context) => screen);
+    }
+  }
+
+  static String getDateFormat(String date, String format) {
+    var formatter = DateFormat(format ?? 'dd-MM-yyyy');
+    var newDate = DateTime.parse(date);
+    return formatter.format(newDate);
   }
 
   static String getSimpleDate(String date) {
@@ -58,24 +97,48 @@ class Utils {
     if (isSelected) {
       return Colors.white;
     } else {
-      if (negativeIcon) {
-        return Colors.red[800];
-      } else {
-        return Colors.green[800];
-      }
+      return negativeIcon ? Colors.red[800] : Colors.green[800];
     }
   }
 
-  static Color voteBackgroundStateColor({bool isSelected, bool negativeIcon}) {
+  static Color voteBackgroundStateColor(BuildContext context,
+      {bool isSelected, bool isComment, bool negativeIcon}) {
     if (isSelected) {
-      if (negativeIcon) {
-        return Colors.red[800];
-      } else {
-        return Colors.green[800];
-      }
+      return negativeIcon ? Colors.red[800] : Colors.green[800];
     } else {
-      return Colors.grey.withOpacity(0.1);
+      return isComment
+          ? backgroundCommentButton(context)
+          : backgroundGreyOpacity(context);
     }
+  }
+
+  static Color backgroundGreyOpacity(BuildContext context) {
+    return Theme.of(context).iconTheme.color.withOpacity(
+        Theme.of(context).brightness == Brightness.light ? 0.10 : 0.20);
+  }
+
+  static Color backgroundGrey(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.light
+        ? Color(0xfff0f0f0)
+        : Color(0xff282828);
+  }
+
+  static Color backgroundCommentButton(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.light
+        ? Color(0xffffffff)
+        : Color(0xff333333);
+  }
+
+  static BoxDecoration appBarShadow(bool show,
+      {double blurRadius = 2.0, double opacity = 0.2}) {
+    return BoxDecoration(
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(show ? opacity : 0.0),
+          blurRadius: show ? blurRadius : 0.0,
+        ),
+      ],
+    );
   }
 
   static String polishPlural(
@@ -89,6 +152,13 @@ class Utils {
     } else {
       return many; // komentarzy
     }
+  }
+
+  static void CopyToClipboard(BuildContext context, String text) {
+    Clipboard.setData(ClipboardData(text: text));
+    Scaffold.of(context).showSnackBar(SnackBar(
+      content: Text("Skopiowano do schowka"),
+    ));
   }
 
   static void launchURL(String url) async {

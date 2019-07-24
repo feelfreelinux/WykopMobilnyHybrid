@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:owmflutter/utils/utils.dart';
 
 class SendButtonWidget extends StatelessWidget {
   final VoidCallback onTap;
   final bool sending;
   final bool isEmpty;
+  final Color iconColor;
   SendButtonWidget({
     @required this.onTap,
     @required this.sending,
     @required this.isEmpty,
+    this.iconColor,
   });
 
   @override
@@ -29,8 +32,10 @@ class SendButtonWidget extends StatelessWidget {
                 )
               : Icon(
                   Icons.send,
-                  size: 26.0,
-                  color: isEmpty ? Colors.grey : Theme.of(context).accentColor,
+                  size: 28.0,
+                  color: isEmpty
+                      ? Utils.backgroundGreyOpacity(context)
+                      : iconColor ?? Theme.of(context).accentColor,
                 ),
         ),
       ),

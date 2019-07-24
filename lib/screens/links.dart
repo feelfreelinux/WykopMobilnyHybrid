@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: <Widget>[
             Container(
               decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.2),
+                color: Utils.backgroundGreyOpacity(context),
                 shape: BoxShape.circle,
               ),
               margin: EdgeInsets.only(
@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 right: 4.0,
                 bottom: 6.0,
               ),
-              padding: EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(12.0),
               child: Icon(icon),
             ),
             Text(

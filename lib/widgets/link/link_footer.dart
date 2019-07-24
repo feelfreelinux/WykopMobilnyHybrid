@@ -3,6 +3,7 @@ import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/utils/utils.dart';
+import 'package:share/share.dart';
 
 class LinkFooterWidget extends StatelessWidget {
   final Link link;
@@ -36,7 +37,11 @@ class LinkFooterWidget extends StatelessWidget {
               }
             },
           ),
-          ShareButton(onTap: () {}),
+          ShareButton(onTap: () {
+            Share.share(link.title +
+                "\nhttps://www.wykop.pl/link/" +
+                link.id.toString());
+          }),
         ],
       ),
     );

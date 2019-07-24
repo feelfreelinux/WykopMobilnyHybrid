@@ -20,9 +20,7 @@ class EntryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       key: Key(entryId.toString()),
-      padding: EdgeInsets.only(
-        bottom: 0.0,
-      ),
+      padding: EdgeInsets.only(),
       child: Material(
         color: Theme.of(context).cardColor,
         child: StoreConnector<AppState, Entry>(
@@ -40,8 +38,7 @@ class EntryWidget extends StatelessWidget {
                         author: entry.author,
                         date: entry.date,
                         fontSize: 14.0,
-                        padding:
-                            EdgeInsets.only(top: 12.0, bottom: 0.0, right: 4.0),
+                        padding: EdgeInsets.only(top: 6.0, right: 4.0),
                       ),
                       _drawVoteButton(entry),
                     ],
@@ -49,9 +46,7 @@ class EntryWidget extends StatelessWidget {
                   _drawBody(context, entry),
                   _drawEmbed(entry),
                   EntryFooterWidget(entry, this.isClickable),
-                  Divider(
-                    height: 1.0,
-                  ),
+                  Divider(height: 1.0),
                 ],
               ),
             );
@@ -73,7 +68,7 @@ class EntryWidget extends StatelessWidget {
         body: entry.body,
         ellipsize: ellipsize,
         padding: EdgeInsets.only(
-          top: 12.0,
+          top: 8.0,
           left: 2.0,
           right: 2.0,
           bottom: 2.0,
@@ -84,18 +79,16 @@ class EntryWidget extends StatelessWidget {
 
   Widget _drawVoteButton(Entry entry) {
     return Padding(
-      padding: EdgeInsets.only(
-        right: 0.0,
-      ),
+      padding: EdgeInsets.only(top: 6.0),
       child: StoreConnector<AppState, VoidCallback>(
         converter: (state) => () => state.dispatch(voteEntry(entryId)),
         builder: (context, callback) => VoteButton(
-              isSelected: entry.isVoted,
-              count: entry.voteCount,
-              onClicked: () {
-                callback();
-              },
-            ),
+          isSelected: entry.isVoted,
+          count: entry.voteCount,
+          onClicked: () {
+            callback();
+          },
+        ),
       ),
     );
   }
@@ -103,7 +96,7 @@ class EntryWidget extends StatelessWidget {
   Widget _drawEmbed(Entry entry) {
     if (entry.embed != null) {
       return Container(
-        padding: EdgeInsets.only(top: 14.0, bottom: 2.0),
+        padding: EdgeInsets.only(top: 12.0, bottom: 2.0),
         child: EmbedWidget(
           embed: entry.embed,
           borderRadius: 14.0,

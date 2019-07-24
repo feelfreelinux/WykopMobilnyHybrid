@@ -20,42 +20,50 @@ class NotificationWidget extends StatelessWidget {
         return StoreConnector<AppState, VoidCallback>(
           converter: (store) =>
               () => store.dispatch(markNotificationAsRead(notification.id)),
-          builder: (context, markAsRead) => GestureDetector(
-                onTap: () {
-                  markAsRead();
-                  WykopNavigator.handleUrl(context, notification.url);
-                },
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 12.0,
-                        horizontal: 18.0,
+          builder: (context, markAsRead) => InkWell(
+            onTap: () {
+              markAsRead();
+              WykopNavigator.handleUrl(context, notification.url);
+            },
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: 6.0,
+                    bottom: 6.0,
+                    left: 14.0,
+                    right: 18.0,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Visibility(
+                        visible: notification.author != null,
+                        child: AvatarWidget(
+                          author: notification.author,
+                          size: 52.0,
+                        ),
                       ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          notification.author != null
-                              ? AvatarWidget(
-                                  author: notification.author,
-                                  size: 36.0,
-                                )
-                              : Container(),
-                          Flexible(
-                            fit: FlexFit.tight,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                left: 12.0,
-                                right: 8.0,
-                              ),
-                              child: RichText(
+                      Flexible(
+                        fit: FlexFit.tight,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            left: 10.0,
+                            right: 8.0,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              RichText(
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
                                 text: TextSpan(
                                   children: [
                                     TextSpan(
                                       text: notification.body.substring(
                                           0, notification.body.indexOf(' ')),
                                       style: TextStyle(
-                                        fontSize: 13.5,
+                                        fontSize: 15.0,
                                         height: 1.1,
                                         fontWeight: FontWeight.w500,
                                         color: notification.author != null
@@ -74,7 +82,7 @@ class NotificationWidget extends StatelessWidget {
                                               notification.body.length)
                                           .replaceAll('\n', ' '),
                                       style: TextStyle(
-                                        fontSize: 13.5,
+                                        fontSize: 15.0,
                                         height: 1.1,
                                         color: Theme.of(context)
                                             .textTheme
@@ -82,52 +90,39 @@ class NotificationWidget extends StatelessWidget {
                                             .color,
                                       ),
                                     ),
-                                    TextSpan(
-                                      text: '\n' +
-                                          Utils.getSimpleDate(
-                                              notification.date),
-                                      style: TextStyle(
-                                        fontSize: 11.5,
-                                        height: 1.3,
-                                        color: Theme.of(context)
-                                            .textTheme
-                                            .caption
-                                            .color,
-                                      ),
-                                    ),
                                   ],
                                 ),
                               ),
-                            ),
+                              Text(
+                                Utils.getSimpleDate(notification.date),
+                                style: TextStyle(
+                                  fontSize: 12.0,
+                                  height: 1.3,
+                                  color:
+                                      Theme.of(context).textTheme.caption.color,
+                                ),
+                              ),
+                            ],
                           ),
-                          Container(
-                            width: 10,
-                            height: 10,
-                            margin: EdgeInsets.only(
-                              top: 4.0,
-                            ),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: notification.isNew
-                                  ? Colors.green
-                                  : Colors.transparent,
-                            ),
+                        ),
+                      ),
+                      Visibility(
+                        visible: notification.isNew,
+                        child: Container(
+                          width: 14.0,
+                          height: 14.0,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.green,
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: 68.0,
-                        right: 18.0,
-                      ),
-                      child: Divider(
-                        height: 1.0,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
+              ],
+            ),
+          ),
         );
       },
     );

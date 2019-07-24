@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:owmflutter/owm_glyphs.dart';
 
 class VoteCounterWidget extends StatelessWidget {
-  final VoidCallback onClicked;
+  final VoidCallback onTap;
   final String voteState;
   final num count;
   final bool isHot;
@@ -10,7 +10,7 @@ class VoteCounterWidget extends StatelessWidget {
   final EdgeInsets padding;
 
   VoteCounterWidget({
-    @required this.onClicked,
+    @required this.onTap,
     @required this.voteState,
     @required this.count,
     @required this.isHot,
@@ -23,7 +23,7 @@ class VoteCounterWidget extends StatelessWidget {
     return Padding(
       padding: padding,
       child: GestureDetector(
-        onTap: onClicked,
+        onTap: onTap,
         child: Stack(
           alignment: Alignment.center,
           children: <Widget>[
@@ -32,10 +32,7 @@ class VoteCounterWidget extends StatelessWidget {
               width: size,
               height: size / 1.28,
               decoration: BoxDecoration(
-                border: Border.all(
-                  color: _frameColor,
-                  width: 3.5,
-                ),
+                border: Border.all(color: _frameColor, width: 3.5),
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
@@ -56,14 +53,13 @@ class VoteCounterWidget extends StatelessWidget {
   }
 
   Widget _hotIcon(BuildContext context) {
-    if (isHot) {
-      return Positioned(
+    return Visibility(
+      visible: isHot,
+      child: Positioned(
         top: 0,
         right: 0,
         child: Container(
-          padding: EdgeInsets.only(
-            bottom: (size / 32),
-          ),
+          padding: EdgeInsets.only(bottom: (size / 32)),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             color: Theme.of(context).cardColor,
@@ -74,10 +70,8 @@ class VoteCounterWidget extends StatelessWidget {
             color: Colors.red,
           ),
         ),
-      );
-    } else {
-      return Container();
-    }
+      ),
+    );
   }
 
   Color get _frameColor {

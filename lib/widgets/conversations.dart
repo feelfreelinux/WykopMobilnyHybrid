@@ -15,13 +15,11 @@ class ConversationsList extends StatelessWidget {
             itemCount: snapshot.data.length,
             itemBuilder: (context, index) {
               var conversation = snapshot.data[index];
-              return GestureDetector(
+              return InkWell(
                 onTap: () {
                   Navigator.of(context).push(
                     Utils.getPageTransition(
-                      PmScreen(
-                        conversation: conversation,
-                      ),
+                      PmScreen(conversation: conversation),
                     ),
                   );
                 },
@@ -29,19 +27,22 @@ class ConversationsList extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.symmetric(
-                        vertical: 10.0,
-                        horizontal: 18.0,
+                      padding: EdgeInsets.only(
+                        top: 6.0,
+                        bottom: 6.0,
+                        left: 14.0,
+                        right: 18.0,
                       ),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          conversation.author != null
-                              ? AvatarWidget(
-                                  author: conversation.author,
-                                  size: 46.0,
-                                )
-                              : Container(),
+                          Visibility(
+                            visible: conversation.author != null,
+                            child: AvatarWidget(
+                              author: conversation.author,
+                              size: 52.0,
+                            ),
+                          ),
                           Flexible(
                             fit: FlexFit.tight,
                             child: Padding(
@@ -49,44 +50,36 @@ class ConversationsList extends StatelessWidget {
                                 left: 12.0,
                                 right: 8.0,
                               ),
-                              child: RichText(
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: conversation.author.login,
-                                      style: TextStyle(
-                                        fontSize: 15.0,
-                                        height: 1.1,
-                                        fontWeight: FontWeight.w500,
-                                        color: Utils.getAuthorColor(
-                                            conversation.author, context),
-                                      ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    conversation.author.login,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 16.0,
+                                      height: 1.1,
+                                      fontWeight: FontWeight.w500,
                                     ),
-                                    TextSpan(
-                                      text: '\n' +
-                                          Utils.getSimpleDate(
-                                              conversation.lastUpdate),
-                                      style: TextStyle(
-                                        fontSize: 13.0,
-                                        height: 1.3,
-                                        color: Theme.of(context)
-                                            .textTheme
-                                            .caption
-                                            .color,
-                                      ),
+                                  ),
+                                  Text(
+                                    Utils.getSimpleDate(
+                                        conversation.lastUpdate),
+                                    style: TextStyle(
+                                      fontSize: 14.0,
+                                      height: 1.3,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .caption
+                                          .color,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
                         ],
-                      ),
-                    ),
-                    DividerWidget(
-                      padding: EdgeInsets.only(
-                        left: 78.0,
-                        right: 18.0,
                       ),
                     ),
                   ],
