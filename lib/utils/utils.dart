@@ -5,8 +5,27 @@ import 'package:intl/intl.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'dart:io' show Platform;
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
 
+InAppBrowser inAppBrowserFallback = new InAppBrowser();
+ChromeSafariBrowser chromeSafariBrowser =
+    new ChromeSafariBrowser(inAppBrowserFallback);
+
+void launchUrl(String url, { BuildContext context }) async {
+  var hex = "#000000";
+  if (context != null) {
+    hex = Theme.of(context).primaryColor.value.toRadixString(16);
+  }
+  chromeSafariBrowser.open(url, options: {
+    "addShareButton": false,
+    "toolbarBackgroundColor": hex,
+    "dismissButtonStyle": 1,
+    "preferredBarTintColor": "#000000",
+  }, optionsFallback: {
+    "toolbarTopBackgroundColor": "#000000",
+    "closeButtonCaption": "Close"
+  });
+}
 class Utils {
   static Color getAuthorColor(Author author, BuildContext context) {
     switch (author.color) {
@@ -162,10 +181,6 @@ class Utils {
   }
 
   static void launchURL(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Nie można załadować linku';
-    }
+      launchUrl(url);
   }
 }

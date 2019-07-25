@@ -5,7 +5,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:owmflutter/api/api.dart';
-import 'package:owmflutter/utils.dart';
+import 'package:owmflutter/utils/utils.dart';
 import 'dart:async';
 
 class MediaScreen extends StatefulWidget {
@@ -111,7 +111,7 @@ class _MediaScreenState extends State<MediaScreen> {
           });
     } catch (e) {
       debugPrint("Launching url due to player exception " + e.toString());
-      launchUrl(context, widget.embed.url);
+      launchUrl(widget.embed.url, context: context);
       Navigator.pop(context);
     }
   }

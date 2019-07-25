@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'wykop_url_parsers.dart';
 import 'package:owmflutter/screens/screens.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:owmflutter/utils/utils.dart';
 
 class WykopNavigator {
@@ -48,9 +47,8 @@ class WykopNavigator {
 
       Navigator.of(context).push(Utils.getPageTransition(widget));
     } catch (e) {
-      if (await canLaunch(url)) {
-        launch(url);
-      }
+        launchUrl(url);
+      
     }
   }
 }
