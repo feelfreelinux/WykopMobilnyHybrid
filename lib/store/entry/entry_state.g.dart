@@ -19,7 +19,7 @@ class _$EntryScreensStateSerializer
   final String wireName = 'EntryScreensState';
 
   @override
-  Iterable serialize(Serializers serializers, EntryScreensState object,
+  Iterable<Object> serialize(Serializers serializers, EntryScreensState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'states',
@@ -34,7 +34,8 @@ class _$EntryScreensStateSerializer
   }
 
   @override
-  EntryScreensState deserialize(Serializers serializers, Iterable serialized,
+  EntryScreensState deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new EntryScreensStateBuilder();
 
@@ -49,7 +50,7 @@ class _$EntryScreensStateSerializer
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(String),
                 const FullType(EntryScreenState)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
       }
     }
@@ -66,7 +67,7 @@ class _$EntryScreenStateSerializer
   final String wireName = 'EntryScreenState';
 
   @override
-  Iterable serialize(Serializers serializers, EntryScreenState object,
+  Iterable<Object> serialize(Serializers serializers, EntryScreenState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'ids',
@@ -81,7 +82,8 @@ class _$EntryScreenStateSerializer
   }
 
   @override
-  EntryScreenState deserialize(Serializers serializers, Iterable serialized,
+  EntryScreenState deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new EntryScreenStateBuilder();
 
@@ -112,7 +114,8 @@ class _$EntryScreensState extends EntryScreensState {
   @override
   final BuiltMap<String, EntryScreenState> states;
 
-  factory _$EntryScreensState([void updates(EntryScreensStateBuilder b)]) =>
+  factory _$EntryScreensState(
+          [void Function(EntryScreensStateBuilder) updates]) =>
       (new EntryScreensStateBuilder()..update(updates)).build();
 
   _$EntryScreensState._({this.states}) : super._() {
@@ -122,7 +125,7 @@ class _$EntryScreensState extends EntryScreensState {
   }
 
   @override
-  EntryScreensState rebuild(void updates(EntryScreensStateBuilder b)) =>
+  EntryScreensState rebuild(void Function(EntryScreensStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -177,7 +180,7 @@ class EntryScreensStateBuilder
   }
 
   @override
-  void update(void updates(EntryScreensStateBuilder b)) {
+  void update(void Function(EntryScreensStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -208,7 +211,8 @@ class _$EntryScreenState extends EntryScreenState {
   @override
   final ErrorState errorState;
 
-  factory _$EntryScreenState([void updates(EntryScreenStateBuilder b)]) =>
+  factory _$EntryScreenState(
+          [void Function(EntryScreenStateBuilder) updates]) =>
       (new EntryScreenStateBuilder()..update(updates)).build();
 
   _$EntryScreenState._({this.ids, this.errorState}) : super._() {
@@ -221,7 +225,7 @@ class _$EntryScreenState extends EntryScreenState {
   }
 
   @override
-  EntryScreenState rebuild(void updates(EntryScreenStateBuilder b)) =>
+  EntryScreenState rebuild(void Function(EntryScreenStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -284,7 +288,7 @@ class EntryScreenStateBuilder
   }
 
   @override
-  void update(void updates(EntryScreenStateBuilder b)) {
+  void update(void Function(EntryScreenStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -310,4 +314,4 @@ class EntryScreenStateBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

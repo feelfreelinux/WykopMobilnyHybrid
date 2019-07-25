@@ -16,23 +16,6 @@ class EntryScreen extends StatefulWidget {
 
 class _EntryScreenState extends State<EntryScreen>
     with SingleTickerProviderStateMixin {
-  bool appbarShadow = false;
-  bool inputShadow = true;
-
-  _appbarShadow(bool visible) {
-    if (visible != appbarShadow)
-      setState(() {
-        appbarShadow = visible;
-      });
-  }
-
-  _inputShadow(bool visible) {
-    if (visible != inputShadow)
-      setState(() {
-        inputShadow = visible;
-      });
-  }
-
   @override
   Widget build(BuildContext context) {
     final mqData = MediaQuery.of(context);
@@ -53,13 +36,11 @@ class _EntryScreenState extends State<EntryScreen>
                 callback(completer, inputData);
                 return completer.future;
               },
-              shadow: inputShadow,
               key: OwmKeys.inputBarKey,
             ),
           ),
           resizeToAvoidBottomPadding: false,
           appBar: AppbarNormalWidget(
-            shadow: appbarShadow,
             padding: EdgeInsets.only(right: 8.0),
             actions: <Widget>[
               AppBarButton(
@@ -104,25 +85,7 @@ class _EntryScreenState extends State<EntryScreen>
                               ?.states[entryId.toString()]?.errorState ??
                           ErrorState(),
                       hasData: () => ids.isNotEmpty,
-                      child: NotificationListener<ScrollNotification>(
-                        onNotification: (scrollNotification) {
-                          if (scrollNotification is ScrollUpdateNotification) {
-                            if (scrollNotification.metrics.pixels <
-                                scrollNotification.metrics.maxScrollExtent) {
-                              _appbarShadow(true);
-                              _inputShadow(true);
-                            }
-                            if (scrollNotification.metrics.pixels >=
-                                scrollNotification.metrics.maxScrollExtent) {
-                              _inputShadow(false);
-                            }
-                            if (scrollNotification.metrics.pixels <=
-                                scrollNotification.metrics.minScrollExtent) {
-                              _appbarShadow(false);
-                            }
-                          }
-                          return;
-                        },
+                      child: ShadowNotificationListener(
                         child: ListView.builder(
                           physics: AlwaysScrollableScrollPhysics(),
                           itemCount: ids.length,

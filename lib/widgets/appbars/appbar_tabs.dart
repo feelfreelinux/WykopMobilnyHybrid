@@ -13,13 +13,11 @@ class AppbarTabsWidget extends StatefulWidget implements PreferredSizeWidget {
   final List<Widget> tabs;
   final VoidCallback onPressedSearch;
   final List<Widget> actions;
-  final bool shadow;
 
   AppbarTabsWidget({
     @required this.tabs,
     this.onPressedSearch,
     this.actions,
-    this.shadow = false,
   });
 
   @override
@@ -31,88 +29,94 @@ class AppbarTabsWidget extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _AppbarTabsWidgetState extends State<AppbarTabsWidget> {
-  
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 200),
-      decoration: Utils.appBarShadow(widget.shadow),
-      child: AppBar(
-        automaticallyImplyLeading: false,
-        title: Container(
-          padding: EdgeInsets.symmetric(horizontal: 8.0),
-          child: Row(
-            children: <Widget>[
-              AppbarUserWidget(),
-              Expanded(
-                child: Stack(
-                  children: <Widget>[
-                    Container(
-                      color: Theme.of(context).primaryColor,
-                      child: TabBar(
-                        tabs: widget.tabs,
-                        isScrollable: true,
-                        indicatorColor:
-                            Theme.of(context).primaryColor.withOpacity(0.0),
-                        labelStyle: TextStyle(
-                          height: 1.45,
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.w700,
+    return StoreConnector<AppState, bool>(
+      converter: (store) => store.state.globalListState.showListShadow,
+      builder: (context, shadow) => AnimatedContainer(
+        duration: Duration(milliseconds: 200),
+        decoration: Utils.appBarShadow(shadow),
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          title: Container(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              children: <Widget>[
+                AppbarUserWidget(),
+                Expanded(
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        color: Theme.of(context).primaryColor,
+                        child: TabBar(
+                          tabs: widget.tabs,
+                          isScrollable: true,
+                          indicatorColor:
+                              Theme.of(context).primaryColor.withOpacity(0.0),
+                          labelStyle: TextStyle(
+                            height: 1.45,
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.w700,
+                          ),
+                          unselectedLabelStyle: TextStyle(
+                            height: 2.20,
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          labelPadding: EdgeInsets.symmetric(
+                            vertical: 0.0,
+                            horizontal: 14.0,
+                          ),
+                          unselectedLabelColor: Colors.grey[600],
                         ),
-                        unselectedLabelStyle: TextStyle(
-                          height: 2.20,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        labelPadding: EdgeInsets.symmetric(
-                          vertical: 0.0,
-                          horizontal: 14.0,
-                        ),
-                        unselectedLabelColor: Colors.grey[600],
                       ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Container(
-                          width: 8.0,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.centerLeft,
-                              colors: [
-                                Theme.of(context).primaryColor,
-                                Theme.of(context).primaryColor.withOpacity(0.0),
-                              ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Container(
+                            width: 8.0,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                colors: [
+                                  Theme.of(context).primaryColor,
+                                  Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(0.0),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          width: 8.0,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.centerLeft,
-                              colors: [
-                                Theme.of(context).primaryColor.withOpacity(0.0),
-                                Theme.of(context).primaryColor,
-                              ],
+                          Container(
+                            width: 8.0,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                colors: [
+                                  Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(0.0),
+                                  Theme.of(context).primaryColor,
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    )
-                  ],
+                        ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              AppBarButton(
-                  icon: Icons.search,
-                  round: true,
-                  onTap: widget.onPressedSearch ?? () {}),
-            ],
+                AppBarButton(
+                    icon: Icons.search,
+                    round: true,
+                    onTap: widget.onPressedSearch ?? () {}),
+              ],
+            ),
           ),
+          elevation: 0.0,
+          centerTitle: true,
+          titleSpacing: 0.0,
         ),
-        elevation: 0.0,
-        centerTitle: true,
-        titleSpacing: 0.0,
       ),
     );
   }

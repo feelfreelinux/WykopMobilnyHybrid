@@ -67,13 +67,11 @@ class _LinkScreenState extends State<LinkScreen>
                 callback(completer, inputData);
                 return completer.future;
               },
-              shadow: inputShadow,
               key: OwmKeys.inputBarKey,
             ),
           ),
           resizeToAvoidBottomPadding: false,
           appBar: AppbarNormalWidget(
-            shadow: appbarShadow,
             padding: EdgeInsets.only(right: 8.0),
             actions: <Widget>[
               AppBarButton(
@@ -117,26 +115,7 @@ class _LinkScreenState extends State<LinkScreen>
                                 ?.states[linkId.toString()]?.errorState ??
                             ErrorState(),
                         hasData: () => commentIds.isNotEmpty,
-                        child: NotificationListener<ScrollNotification>(
-                          onNotification: (scrollNotification) {
-                            if (scrollNotification
-                                is ScrollUpdateNotification) {
-                              if (scrollNotification.metrics.pixels <
-                                  scrollNotification.metrics.maxScrollExtent) {
-                                _appbarShadow(true);
-                                _inputShadow(true);
-                              }
-                              if (scrollNotification.metrics.pixels >=
-                                  scrollNotification.metrics.maxScrollExtent) {
-                                _inputShadow(false);
-                              }
-                              if (scrollNotification.metrics.pixels <=
-                                  scrollNotification.metrics.minScrollExtent) {
-                                _appbarShadow(false);
-                              }
-                            }
-                            return;
-                          },
+                        child: ShadowNotificationListener(
                           child: ListView.builder(
                             physics: AlwaysScrollableScrollPhysics(),
                             itemCount: commentIds.length + 1,

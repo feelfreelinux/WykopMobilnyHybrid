@@ -16,7 +16,7 @@ class _$ConversationSerializer implements StructuredSerializer<Conversation> {
   final String wireName = 'Conversation';
 
   @override
-  Iterable serialize(Serializers serializers, Conversation object,
+  Iterable<Object> serialize(Serializers serializers, Conversation object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'lastUpdate',
@@ -31,7 +31,7 @@ class _$ConversationSerializer implements StructuredSerializer<Conversation> {
   }
 
   @override
-  Conversation deserialize(Serializers serializers, Iterable serialized,
+  Conversation deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ConversationBuilder();
 
@@ -62,7 +62,7 @@ class _$Conversation extends Conversation {
   @override
   final Author author;
 
-  factory _$Conversation([void updates(ConversationBuilder b)]) =>
+  factory _$Conversation([void Function(ConversationBuilder) updates]) =>
       (new ConversationBuilder()..update(updates)).build();
 
   _$Conversation._({this.lastUpdate, this.author}) : super._() {
@@ -75,7 +75,7 @@ class _$Conversation extends Conversation {
   }
 
   @override
-  Conversation rebuild(void updates(ConversationBuilder b)) =>
+  Conversation rebuild(void Function(ConversationBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -135,7 +135,7 @@ class ConversationBuilder
   }
 
   @override
-  void update(void updates(ConversationBuilder b)) {
+  void update(void Function(ConversationBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -161,4 +161,4 @@ class ConversationBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

@@ -15,7 +15,7 @@ class _$PmMessageSerializer implements StructuredSerializer<PmMessage> {
   final String wireName = 'PmMessage';
 
   @override
-  Iterable serialize(Serializers serializers, PmMessage object,
+  Iterable<Object> serialize(Serializers serializers, PmMessage object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'date',
@@ -38,12 +38,11 @@ class _$PmMessageSerializer implements StructuredSerializer<PmMessage> {
         ..add(serializers.serialize(object.app,
             specifiedType: const FullType(String)));
     }
-
     return result;
   }
 
   @override
-  PmMessage deserialize(Serializers serializers, Iterable serialized,
+  PmMessage deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new PmMessageBuilder();
 
@@ -92,7 +91,7 @@ class _$PmMessage extends PmMessage {
   @override
   final String app;
 
-  factory _$PmMessage([void updates(PmMessageBuilder b)]) =>
+  factory _$PmMessage([void Function(PmMessageBuilder) updates]) =>
       (new PmMessageBuilder()..update(updates)).build();
 
   _$PmMessage._(
@@ -110,7 +109,7 @@ class _$PmMessage extends PmMessage {
   }
 
   @override
-  PmMessage rebuild(void updates(PmMessageBuilder b)) =>
+  PmMessage rebuild(void Function(PmMessageBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -194,7 +193,7 @@ class PmMessageBuilder implements Builder<PmMessage, PmMessageBuilder> {
   }
 
   @override
-  void update(void updates(PmMessageBuilder b)) {
+  void update(void Function(PmMessageBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -225,4 +224,4 @@ class PmMessageBuilder implements Builder<PmMessage, PmMessageBuilder> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

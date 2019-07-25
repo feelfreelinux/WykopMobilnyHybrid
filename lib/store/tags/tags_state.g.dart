@@ -16,7 +16,7 @@ class _$TagsStateSerializer implements StructuredSerializer<TagsState> {
   final String wireName = 'TagsState';
 
   @override
-  Iterable serialize(Serializers serializers, TagsState object,
+  Iterable<Object> serialize(Serializers serializers, TagsState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'states',
@@ -29,7 +29,7 @@ class _$TagsStateSerializer implements StructuredSerializer<TagsState> {
   }
 
   @override
-  TagsState deserialize(Serializers serializers, Iterable serialized,
+  TagsState deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new TagsStateBuilder();
 
@@ -44,7 +44,7 @@ class _$TagsStateSerializer implements StructuredSerializer<TagsState> {
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(String),
                 const FullType(TagState)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
       }
     }
@@ -60,7 +60,7 @@ class _$TagStateSerializer implements StructuredSerializer<TagState> {
   final String wireName = 'TagState';
 
   @override
-  Iterable serialize(Serializers serializers, TagState object,
+  Iterable<Object> serialize(Serializers serializers, TagState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'indexState',
@@ -78,7 +78,7 @@ class _$TagStateSerializer implements StructuredSerializer<TagState> {
   }
 
   @override
-  TagState deserialize(Serializers serializers, Iterable serialized,
+  TagState deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new TagStateBuilder();
 
@@ -111,7 +111,7 @@ class _$TagsState extends TagsState {
   @override
   final BuiltMap<String, TagState> states;
 
-  factory _$TagsState([void updates(TagsStateBuilder b)]) =>
+  factory _$TagsState([void Function(TagsStateBuilder) updates]) =>
       (new TagsStateBuilder()..update(updates)).build();
 
   _$TagsState._({this.states}) : super._() {
@@ -121,7 +121,7 @@ class _$TagsState extends TagsState {
   }
 
   @override
-  TagsState rebuild(void updates(TagsStateBuilder b)) =>
+  TagsState rebuild(void Function(TagsStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -172,7 +172,7 @@ class TagsStateBuilder implements Builder<TagsState, TagsStateBuilder> {
   }
 
   @override
-  void update(void updates(TagsStateBuilder b)) {
+  void update(void Function(TagsStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -205,7 +205,7 @@ class _$TagState extends TagState {
   @override
   final ItemListState linksState;
 
-  factory _$TagState([void updates(TagStateBuilder b)]) =>
+  factory _$TagState([void Function(TagStateBuilder) updates]) =>
       (new TagStateBuilder()..update(updates)).build();
 
   _$TagState._({this.indexState, this.entriesState, this.linksState})
@@ -222,7 +222,7 @@ class _$TagState extends TagState {
   }
 
   @override
-  TagState rebuild(void updates(TagStateBuilder b)) =>
+  TagState rebuild(void Function(TagStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -295,7 +295,7 @@ class TagStateBuilder implements Builder<TagState, TagStateBuilder> {
   }
 
   @override
-  void update(void updates(TagStateBuilder b)) {
+  void update(void Function(TagStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -328,4 +328,4 @@ class TagStateBuilder implements Builder<TagState, TagStateBuilder> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

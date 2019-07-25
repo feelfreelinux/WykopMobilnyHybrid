@@ -34,7 +34,7 @@ class _$LinkComment extends LinkComment {
   @override
   final Embed embed;
 
-  factory _$LinkComment([void updates(LinkCommentBuilder b)]) =>
+  factory _$LinkComment([void Function(LinkCommentBuilder) updates]) =>
       (new LinkCommentBuilder()..update(updates)).build();
 
   _$LinkComment._(
@@ -88,7 +88,7 @@ class _$LinkComment extends LinkComment {
   }
 
   @override
-  LinkComment rebuild(void updates(LinkCommentBuilder b)) =>
+  LinkComment rebuild(void Function(LinkCommentBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -248,7 +248,7 @@ class LinkCommentBuilder implements Builder<LinkComment, LinkCommentBuilder> {
   }
 
   @override
-  void update(void updates(LinkCommentBuilder b)) {
+  void update(void Function(LinkCommentBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -289,4 +289,4 @@ class LinkCommentBuilder implements Builder<LinkComment, LinkCommentBuilder> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

@@ -15,7 +15,7 @@ class _$ErrorStateSerializer implements StructuredSerializer<ErrorState> {
   final String wireName = 'ErrorState';
 
   @override
-  Iterable serialize(Serializers serializers, ErrorState object,
+  Iterable<Object> serialize(Serializers serializers, ErrorState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'isDismissed',
@@ -28,12 +28,11 @@ class _$ErrorStateSerializer implements StructuredSerializer<ErrorState> {
         ..add(serializers.serialize(object.exception,
             specifiedType: const FullType(Exception)));
     }
-
     return result;
   }
 
   @override
-  ErrorState deserialize(Serializers serializers, Iterable serialized,
+  ErrorState deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ErrorStateBuilder();
 
@@ -64,7 +63,7 @@ class _$ErrorState extends ErrorState {
   @override
   final bool isDismissed;
 
-  factory _$ErrorState([void updates(ErrorStateBuilder b)]) =>
+  factory _$ErrorState([void Function(ErrorStateBuilder) updates]) =>
       (new ErrorStateBuilder()..update(updates)).build();
 
   _$ErrorState._({this.exception, this.isDismissed}) : super._() {
@@ -74,7 +73,7 @@ class _$ErrorState extends ErrorState {
   }
 
   @override
-  ErrorState rebuild(void updates(ErrorStateBuilder b)) =>
+  ErrorState rebuild(void Function(ErrorStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -133,7 +132,7 @@ class ErrorStateBuilder implements Builder<ErrorState, ErrorStateBuilder> {
   }
 
   @override
-  void update(void updates(ErrorStateBuilder b)) {
+  void update(void Function(ErrorStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -146,4 +145,4 @@ class ErrorStateBuilder implements Builder<ErrorState, ErrorStateBuilder> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

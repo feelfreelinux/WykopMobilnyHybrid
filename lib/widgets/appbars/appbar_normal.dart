@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/widgets/widgets.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:owmflutter/store/store.dart';
 
 class AppbarNormalWidget extends StatefulWidget implements PreferredSizeWidget {
   final String title;
@@ -9,7 +11,6 @@ class AppbarNormalWidget extends StatefulWidget implements PreferredSizeWidget {
   final Color iconColor;
   final EdgeInsets padding;
   final EdgeInsets titlePadding;
-  final bool shadow;
 
   AppbarNormalWidget({
     this.title,
@@ -19,7 +20,6 @@ class AppbarNormalWidget extends StatefulWidget implements PreferredSizeWidget {
     this.leading,
     this.padding,
     this.titlePadding = const EdgeInsets.symmetric(horizontal: 8.0),
-    this.shadow = true,
   });
 
   @override
@@ -33,48 +33,51 @@ class AppbarNormalWidget extends StatefulWidget implements PreferredSizeWidget {
 class _AppbarNormalWidgetState extends State<AppbarNormalWidget> {
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 200),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(widget.shadow ? 0.2 : 0.0),
-            blurRadius: widget.shadow ? 2.0 : 0.0,
-          ),
-        ],
-      ),
-      child: AppBar(
-        automaticallyImplyLeading: false,
-        title: Container(
-          padding: widget.padding,
-          child: Row(
-            children: <Widget>[
-              widget.leading ??
-                  AppBarButton(
-                    icon: Icons.arrow_back,
-                    onTap: () => Navigator.of(context).pop(),
-                    iconSize: 28.0,
-                  ),
-              Expanded(
-                child: widget.center ??
-                    Container(
-                      padding: widget.titlePadding,
-                      child: Text(
-                        widget.title ?? '',
-                        style: TextStyle(
-                          height: 0.9,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w700,
+    return StoreConnector<AppState, bool>(
+      converter: (store) => store.state.globalListState.showListShadow,
+      builder: (context, shadow) => AnimatedContainer(
+        duration: Duration(milliseconds: 200),
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(shadow ? 0.2 : 0.0),
+              blurRadius: shadow ? 2.0 : 0.0,
+            ),
+          ],
+        ),
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          title: Container(
+            padding: widget.padding,
+            child: Row(
+              children: <Widget>[
+                widget.leading ??
+                    AppBarButton(
+                      icon: Icons.arrow_back,
+                      onTap: () => Navigator.of(context).pop(),
+                      iconSize: 28.0,
+                    ),
+                Expanded(
+                  child: widget.center ??
+                      Container(
+                        padding: widget.titlePadding,
+                        child: Text(
+                          widget.title ?? '',
+                          style: TextStyle(
+                            height: 0.9,
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
-                    ),
-              ),
-              Row(children: widget.actions ?? <Widget>[]),
-            ],
+                ),
+                Row(children: widget.actions ?? <Widget>[]),
+              ],
+            ),
           ),
+          elevation: 0.0,
+          titleSpacing: 0.0,
         ),
-        elevation: 0.0,
-        titleSpacing: 0.0,
       ),
     );
   }

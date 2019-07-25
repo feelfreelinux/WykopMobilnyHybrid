@@ -17,7 +17,7 @@ class _$NotificationsStateSerializer
   final String wireName = 'NotificationsState';
 
   @override
-  Iterable serialize(Serializers serializers, NotificationsState object,
+  Iterable<Object> serialize(Serializers serializers, NotificationsState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'hashTagsState',
@@ -32,7 +32,8 @@ class _$NotificationsStateSerializer
   }
 
   @override
-  NotificationsState deserialize(Serializers serializers, Iterable serialized,
+  NotificationsState deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new NotificationsStateBuilder();
 
@@ -63,7 +64,8 @@ class _$NotificationsState extends NotificationsState {
   @override
   final ItemListState notificationsState;
 
-  factory _$NotificationsState([void updates(NotificationsStateBuilder b)]) =>
+  factory _$NotificationsState(
+          [void Function(NotificationsStateBuilder) updates]) =>
       (new NotificationsStateBuilder()..update(updates)).build();
 
   _$NotificationsState._({this.hashTagsState, this.notificationsState})
@@ -78,7 +80,8 @@ class _$NotificationsState extends NotificationsState {
   }
 
   @override
-  NotificationsState rebuild(void updates(NotificationsStateBuilder b)) =>
+  NotificationsState rebuild(
+          void Function(NotificationsStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -144,7 +147,7 @@ class NotificationsStateBuilder
   }
 
   @override
-  void update(void updates(NotificationsStateBuilder b)) {
+  void update(void Function(NotificationsStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -174,4 +177,4 @@ class NotificationsStateBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

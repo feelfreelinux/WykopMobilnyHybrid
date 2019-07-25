@@ -20,7 +20,8 @@ class _$EntryCommentResponseSerializer
   final String wireName = 'EntryCommentResponse';
 
   @override
-  Iterable serialize(Serializers serializers, EntryCommentResponse object,
+  Iterable<Object> serialize(
+      Serializers serializers, EntryCommentResponse object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'id',
@@ -52,12 +53,12 @@ class _$EntryCommentResponseSerializer
         ..add(serializers.serialize(object.embed,
             specifiedType: const FullType(EmbedResponse)));
     }
-
     return result;
   }
 
   @override
-  EntryCommentResponse deserialize(Serializers serializers, Iterable serialized,
+  EntryCommentResponse deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new EntryCommentResponseBuilder();
 
@@ -119,7 +120,7 @@ class _$EntryCommentResponse extends EntryCommentResponse {
   final EmbedResponse embed;
 
   factory _$EntryCommentResponse(
-          [void updates(EntryCommentResponseBuilder b)]) =>
+          [void Function(EntryCommentResponseBuilder) updates]) =>
       (new EntryCommentResponseBuilder()..update(updates)).build();
 
   _$EntryCommentResponse._(
@@ -146,7 +147,8 @@ class _$EntryCommentResponse extends EntryCommentResponse {
   }
 
   @override
-  EntryCommentResponse rebuild(void updates(EntryCommentResponseBuilder b)) =>
+  EntryCommentResponse rebuild(
+          void Function(EntryCommentResponseBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -251,7 +253,7 @@ class EntryCommentResponseBuilder
   }
 
   @override
-  void update(void updates(EntryCommentResponseBuilder b)) {
+  void update(void Function(EntryCommentResponseBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -286,4 +288,4 @@ class EntryCommentResponseBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

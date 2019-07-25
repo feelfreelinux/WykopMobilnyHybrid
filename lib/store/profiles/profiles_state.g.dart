@@ -18,7 +18,7 @@ class _$ProfilesStateSerializer implements StructuredSerializer<ProfilesState> {
   final String wireName = 'ProfilesState';
 
   @override
-  Iterable serialize(Serializers serializers, ProfilesState object,
+  Iterable<Object> serialize(Serializers serializers, ProfilesState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'states',
@@ -31,7 +31,8 @@ class _$ProfilesStateSerializer implements StructuredSerializer<ProfilesState> {
   }
 
   @override
-  ProfilesState deserialize(Serializers serializers, Iterable serialized,
+  ProfilesState deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ProfilesStateBuilder();
 
@@ -46,7 +47,7 @@ class _$ProfilesStateSerializer implements StructuredSerializer<ProfilesState> {
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(String),
                 const FullType(ProfileState)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
       }
     }
@@ -62,7 +63,7 @@ class _$ProfileStateSerializer implements StructuredSerializer<ProfileState> {
   final String wireName = 'ProfileState';
 
   @override
-  Iterable serialize(Serializers serializers, ProfileState object,
+  Iterable<Object> serialize(Serializers serializers, ProfileState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'actionsState',
@@ -74,7 +75,7 @@ class _$ProfileStateSerializer implements StructuredSerializer<ProfileState> {
   }
 
   @override
-  ProfileState deserialize(Serializers serializers, Iterable serialized,
+  ProfileState deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ProfileStateBuilder();
 
@@ -99,7 +100,7 @@ class _$ProfilesState extends ProfilesState {
   @override
   final BuiltMap<String, ProfileState> states;
 
-  factory _$ProfilesState([void updates(ProfilesStateBuilder b)]) =>
+  factory _$ProfilesState([void Function(ProfilesStateBuilder) updates]) =>
       (new ProfilesStateBuilder()..update(updates)).build();
 
   _$ProfilesState._({this.states}) : super._() {
@@ -109,7 +110,7 @@ class _$ProfilesState extends ProfilesState {
   }
 
   @override
-  ProfilesState rebuild(void updates(ProfilesStateBuilder b)) =>
+  ProfilesState rebuild(void Function(ProfilesStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -162,7 +163,7 @@ class ProfilesStateBuilder
   }
 
   @override
-  void update(void updates(ProfilesStateBuilder b)) {
+  void update(void Function(ProfilesStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -191,7 +192,7 @@ class _$ProfileState extends ProfileState {
   @override
   final ItemListState actionsState;
 
-  factory _$ProfileState([void updates(ProfileStateBuilder b)]) =>
+  factory _$ProfileState([void Function(ProfileStateBuilder) updates]) =>
       (new ProfileStateBuilder()..update(updates)).build();
 
   _$ProfileState._({this.actionsState}) : super._() {
@@ -201,7 +202,7 @@ class _$ProfileState extends ProfileState {
   }
 
   @override
-  ProfileState rebuild(void updates(ProfileStateBuilder b)) =>
+  ProfileState rebuild(void Function(ProfileStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -255,7 +256,7 @@ class ProfileStateBuilder
   }
 
   @override
-  void update(void updates(ProfileStateBuilder b)) {
+  void update(void Function(ProfileStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -281,4 +282,4 @@ class ProfileStateBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

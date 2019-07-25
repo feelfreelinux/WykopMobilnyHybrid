@@ -20,7 +20,8 @@ class _$ConversationResponseSerializer
   final String wireName = 'ConversationResponse';
 
   @override
-  Iterable serialize(Serializers serializers, ConversationResponse object,
+  Iterable<Object> serialize(
+      Serializers serializers, ConversationResponse object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'last_update',
@@ -39,12 +40,12 @@ class _$ConversationResponseSerializer
         ..add(serializers.serialize(object.receiver,
             specifiedType: const FullType(AuthorResponse)));
     }
-
     return result;
   }
 
   @override
-  ConversationResponse deserialize(Serializers serializers, Iterable serialized,
+  ConversationResponse deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ConversationResponseBuilder();
 
@@ -82,7 +83,7 @@ class _$ConversationResponse extends ConversationResponse {
   final AuthorResponse receiver;
 
   factory _$ConversationResponse(
-          [void updates(ConversationResponseBuilder b)]) =>
+          [void Function(ConversationResponseBuilder) updates]) =>
       (new ConversationResponseBuilder()..update(updates)).build();
 
   _$ConversationResponse._({this.lastUpdate, this.status, this.receiver})
@@ -93,7 +94,8 @@ class _$ConversationResponse extends ConversationResponse {
   }
 
   @override
-  ConversationResponse rebuild(void updates(ConversationResponseBuilder b)) =>
+  ConversationResponse rebuild(
+          void Function(ConversationResponseBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -163,7 +165,7 @@ class ConversationResponseBuilder
   }
 
   @override
-  void update(void updates(ConversationResponseBuilder b)) {
+  void update(void Function(ConversationResponseBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -192,4 +194,4 @@ class ConversationResponseBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

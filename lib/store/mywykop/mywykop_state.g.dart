@@ -16,7 +16,7 @@ class _$MyWykopStateSerializer implements StructuredSerializer<MyWykopState> {
   final String wireName = 'MyWykopState';
 
   @override
-  Iterable serialize(Serializers serializers, MyWykopState object,
+  Iterable<Object> serialize(Serializers serializers, MyWykopState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'indexState',
@@ -28,7 +28,7 @@ class _$MyWykopStateSerializer implements StructuredSerializer<MyWykopState> {
   }
 
   @override
-  MyWykopState deserialize(Serializers serializers, Iterable serialized,
+  MyWykopState deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new MyWykopStateBuilder();
 
@@ -53,7 +53,7 @@ class _$MyWykopState extends MyWykopState {
   @override
   final ItemListState indexState;
 
-  factory _$MyWykopState([void updates(MyWykopStateBuilder b)]) =>
+  factory _$MyWykopState([void Function(MyWykopStateBuilder) updates]) =>
       (new MyWykopStateBuilder()..update(updates)).build();
 
   _$MyWykopState._({this.indexState}) : super._() {
@@ -63,7 +63,7 @@ class _$MyWykopState extends MyWykopState {
   }
 
   @override
-  MyWykopState rebuild(void updates(MyWykopStateBuilder b)) =>
+  MyWykopState rebuild(void Function(MyWykopStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -117,7 +117,7 @@ class MyWykopStateBuilder
   }
 
   @override
-  void update(void updates(MyWykopStateBuilder b)) {
+  void update(void Function(MyWykopStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -142,4 +142,4 @@ class MyWykopStateBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

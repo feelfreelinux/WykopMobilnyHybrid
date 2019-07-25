@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:owmflutter/store/store.dart';
 import 'dart:async';
+
+import 'package:owmflutter/widgets/shadow_notification_listener.dart';
 
 /*
  * Works around flutter#20495
@@ -47,7 +51,6 @@ class InfiniteList extends StatefulWidget {
 class _InfiniteListState extends State<InfiniteList> {
   ScrollController _scrollController = ScrollController();
   bool isLoading = false;
-  bool appbarShadow = false;
 
   @override
   void initState() {
@@ -69,13 +72,6 @@ class _InfiniteListState extends State<InfiniteList> {
         widget.loadData(completer);
       }
     });
-  }
-
-  _appbarShadow(bool visible) { //TODO Zrobić cień tabappbara <<<
-    if (visible != appbarShadow)
-      setState(() {
-        appbarShadow = visible;
-      });
   }
 
   @override
@@ -116,20 +112,7 @@ class _InfiniteListState extends State<InfiniteList> {
         ));*/
     return ScrollConfiguration(
       behavior: NotSuddenJumpScrollBehavior(),
-      child: NotificationListener<ScrollNotification>(
-        onNotification: (scrollNotification) {
-          if (scrollNotification is ScrollUpdateNotification) {
-            if (scrollNotification.metrics.pixels <
-                scrollNotification.metrics.maxScrollExtent) {
-              _appbarShadow(true);
-            }
-            if (scrollNotification.metrics.pixels <=
-                scrollNotification.metrics.minScrollExtent) {
-              _appbarShadow(false);
-            }
-          }
-          return;
-        },
+      child: ShadowNotificationListener(
         child: ListView.builder(
           physics: NotSuddenJumpPhysics(),
           itemCount: widget.header != null

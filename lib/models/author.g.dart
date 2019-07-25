@@ -16,7 +16,7 @@ class _$Author extends Author {
   @override
   final AuthorSex sex;
 
-  factory _$Author([void updates(AuthorBuilder b)]) =>
+  factory _$Author([void Function(AuthorBuilder) updates]) =>
       (new AuthorBuilder()..update(updates)).build();
 
   _$Author._({this.color, this.avatar, this.login, this.sex}) : super._() {
@@ -35,7 +35,7 @@ class _$Author extends Author {
   }
 
   @override
-  Author rebuild(void updates(AuthorBuilder b)) =>
+  Author rebuild(void Function(AuthorBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -110,7 +110,7 @@ class AuthorBuilder implements Builder<Author, AuthorBuilder> {
   }
 
   @override
-  void update(void updates(AuthorBuilder b)) {
+  void update(void Function(AuthorBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -123,4 +123,4 @@ class AuthorBuilder implements Builder<Author, AuthorBuilder> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

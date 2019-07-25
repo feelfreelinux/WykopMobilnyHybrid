@@ -20,6 +20,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   LinkScreensState get linkScreensState;
   TagsState get tagsState;
   ProfilesState get profilesState;
+  GlobalListState get globalListState;
 
   factory AppState() {
     return _$AppState._(
@@ -35,7 +36,8 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
         notificationsState: NotificationsState(),
         entitiesState: EntitiesState(),
         linkScreensState: LinkScreensState(),
-        entryScreensState: EntryScreensState());
+        entryScreensState: EntryScreensState(),
+        globalListState: GlobalListState());
   }
 
   AppState._();

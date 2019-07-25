@@ -4,6 +4,7 @@ AppState appReducer(AppState state, action) {
   return state.rebuild((b) => b
     ..entitiesState.replace(entitiesReducer(state.entitiesState, action))
     ..authState.replace(authReducer(state.authState, action))
+    ..globalListState.replace(globalListStateReducer(state.globalListState, action))
     ..entryScreensState
         .replace(entryScreenReducer(state.entryScreensState, action))
     ..linksState.replace(linksReducer(state.linksState, action))

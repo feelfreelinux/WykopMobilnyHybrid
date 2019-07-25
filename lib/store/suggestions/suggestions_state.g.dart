@@ -17,7 +17,7 @@ class _$SuggestionsStateSerializer
   final String wireName = 'SuggestionsState';
 
   @override
-  Iterable serialize(Serializers serializers, SuggestionsState object,
+  Iterable<Object> serialize(Serializers serializers, SuggestionsState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'authorSuggestions',
@@ -34,7 +34,8 @@ class _$SuggestionsStateSerializer
   }
 
   @override
-  SuggestionsState deserialize(Serializers serializers, Iterable serialized,
+  SuggestionsState deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new SuggestionsStateBuilder();
 
@@ -69,7 +70,8 @@ class _$SuggestionsState extends SuggestionsState {
   @override
   final List<TagSuggestion> tagSuggestions;
 
-  factory _$SuggestionsState([void updates(SuggestionsStateBuilder b)]) =>
+  factory _$SuggestionsState(
+          [void Function(SuggestionsStateBuilder) updates]) =>
       (new SuggestionsStateBuilder()..update(updates)).build();
 
   _$SuggestionsState._({this.authorSuggestions, this.tagSuggestions})
@@ -84,7 +86,7 @@ class _$SuggestionsState extends SuggestionsState {
   }
 
   @override
-  SuggestionsState rebuild(void updates(SuggestionsStateBuilder b)) =>
+  SuggestionsState rebuild(void Function(SuggestionsStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -148,7 +150,7 @@ class SuggestionsStateBuilder
   }
 
   @override
-  void update(void updates(SuggestionsStateBuilder b)) {
+  void update(void Function(SuggestionsStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -163,4 +165,4 @@ class SuggestionsStateBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

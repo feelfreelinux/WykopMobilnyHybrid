@@ -20,7 +20,8 @@ class _$NotificationResponseSerializer
   final String wireName = 'NotificationResponse';
 
   @override
-  Iterable serialize(Serializers serializers, NotificationResponse object,
+  Iterable<Object> serialize(
+      Serializers serializers, NotificationResponse object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'id',
@@ -60,12 +61,12 @@ class _$NotificationResponseSerializer
         ..add(serializers.serialize(object.author,
             specifiedType: const FullType(AuthorResponse)));
     }
-
     return result;
   }
 
   @override
-  NotificationResponse deserialize(Serializers serializers, Iterable serialized,
+  NotificationResponse deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new NotificationResponseBuilder();
 
@@ -133,7 +134,7 @@ class _$NotificationResponse extends NotificationResponse {
   final AuthorResponse author;
 
   factory _$NotificationResponse(
-          [void updates(NotificationResponseBuilder b)]) =>
+          [void Function(NotificationResponseBuilder) updates]) =>
       (new NotificationResponseBuilder()..update(updates)).build();
 
   _$NotificationResponse._(
@@ -158,7 +159,8 @@ class _$NotificationResponse extends NotificationResponse {
   }
 
   @override
-  NotificationResponse rebuild(void updates(NotificationResponseBuilder b)) =>
+  NotificationResponse rebuild(
+          void Function(NotificationResponseBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -273,7 +275,7 @@ class NotificationResponseBuilder
   }
 
   @override
-  void update(void updates(NotificationResponseBuilder b)) {
+  void update(void Function(NotificationResponseBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -307,4 +309,4 @@ class NotificationResponseBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

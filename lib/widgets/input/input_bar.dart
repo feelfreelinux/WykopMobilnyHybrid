@@ -23,7 +23,6 @@ class InputBarWidget extends StatefulWidget {
   final OnImageStateChangedCallback imageStateChanged;
   final TextEditingController externalController;
   final Color iconsColor;
-  final bool shadow;
   final String hintText;
 
   InputBarWidget(
@@ -32,7 +31,6 @@ class InputBarWidget extends StatefulWidget {
     this.externalController,
     this.imageStateChanged,
     this.iconsColor,
-    this.shadow = true,
     this.hintText = 'Treść komentarza',
   }) : super(key: key);
 
@@ -123,25 +121,28 @@ class InputBarWidgetState extends State<InputBarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 200),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(widget.shadow ? 0.1 : 0.0),
-            blurRadius: widget.shadow ? 1.0 : 0.0,
-          ),
-        ],
-        color: Theme.of(context).primaryColor,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _drawSuggestions(),
-          hasExternalInput ? Container() : _drawInputBar(),
-          _drawButtons(),
-        ],
+    return StoreConnector<AppState, bool>(
+      converter: (store) => store.state.globalListState.showInputShadow,
+      builder: (context, shadow) => AnimatedContainer(
+        duration: Duration(milliseconds: 200),
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(shadow ? 0.1 : 0.0),
+              blurRadius: shadow ? 1.0 : 0.0,
+            ),
+          ],
+          color: Theme.of(context).primaryColor,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _drawSuggestions(),
+            hasExternalInput ? Container() : _drawInputBar(),
+            _drawButtons(),
+          ],
+        ),
       ),
     );
   }

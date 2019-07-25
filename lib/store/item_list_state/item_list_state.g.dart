@@ -16,7 +16,7 @@ class _$ItemListStateSerializer implements StructuredSerializer<ItemListState> {
   final String wireName = 'ItemListState';
 
   @override
-  Iterable serialize(Serializers serializers, ItemListState object,
+  Iterable<Object> serialize(Serializers serializers, ItemListState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'paginationState',
@@ -34,7 +34,8 @@ class _$ItemListStateSerializer implements StructuredSerializer<ItemListState> {
   }
 
   @override
-  ItemListState deserialize(Serializers serializers, Iterable serialized,
+  ItemListState deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ItemListStateBuilder();
 
@@ -72,7 +73,7 @@ class _$ItemListState extends ItemListState {
   @override
   final ErrorState errorState;
 
-  factory _$ItemListState([void updates(ItemListStateBuilder b)]) =>
+  factory _$ItemListState([void Function(ItemListStateBuilder) updates]) =>
       (new ItemListStateBuilder()..update(updates)).build();
 
   _$ItemListState._({this.paginationState, this.listState, this.errorState})
@@ -89,7 +90,7 @@ class _$ItemListState extends ItemListState {
   }
 
   @override
-  ItemListState rebuild(void updates(ItemListStateBuilder b)) =>
+  ItemListState rebuild(void Function(ItemListStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -162,7 +163,7 @@ class ItemListStateBuilder
   }
 
   @override
-  void update(void updates(ItemListStateBuilder b)) {
+  void update(void Function(ItemListStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -195,4 +196,4 @@ class ItemListStateBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

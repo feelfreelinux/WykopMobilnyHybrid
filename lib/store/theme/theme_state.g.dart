@@ -15,7 +15,7 @@ class _$ThemeStateSerializer implements StructuredSerializer<ThemeState> {
   final String wireName = 'ThemeState';
 
   @override
-  Iterable serialize(Serializers serializers, ThemeState object,
+  Iterable<Object> serialize(Serializers serializers, ThemeState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'currentTheme',
@@ -27,7 +27,7 @@ class _$ThemeStateSerializer implements StructuredSerializer<ThemeState> {
   }
 
   @override
-  ThemeState deserialize(Serializers serializers, Iterable serialized,
+  ThemeState deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ThemeStateBuilder();
 
@@ -52,7 +52,7 @@ class _$ThemeState extends ThemeState {
   @override
   final OWMTheme currentTheme;
 
-  factory _$ThemeState([void updates(ThemeStateBuilder b)]) =>
+  factory _$ThemeState([void Function(ThemeStateBuilder) updates]) =>
       (new ThemeStateBuilder()..update(updates)).build();
 
   _$ThemeState._({this.currentTheme}) : super._() {
@@ -62,7 +62,7 @@ class _$ThemeState extends ThemeState {
   }
 
   @override
-  ThemeState rebuild(void updates(ThemeStateBuilder b)) =>
+  ThemeState rebuild(void Function(ThemeStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -114,7 +114,7 @@ class ThemeStateBuilder implements Builder<ThemeState, ThemeStateBuilder> {
   }
 
   @override
-  void update(void updates(ThemeStateBuilder b)) {
+  void update(void Function(ThemeStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -126,4 +126,4 @@ class ThemeStateBuilder implements Builder<ThemeState, ThemeStateBuilder> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

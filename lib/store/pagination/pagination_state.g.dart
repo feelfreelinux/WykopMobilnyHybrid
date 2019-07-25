@@ -17,7 +17,7 @@ class _$PaginationStateSerializer
   final String wireName = 'PaginationState';
 
   @override
-  Iterable serialize(Serializers serializers, PaginationState object,
+  Iterable<Object> serialize(Serializers serializers, PaginationState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'itemIds',
@@ -30,7 +30,8 @@ class _$PaginationStateSerializer
   }
 
   @override
-  PaginationState deserialize(Serializers serializers, Iterable serialized,
+  PaginationState deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new PaginationStateBuilder();
 
@@ -44,7 +45,7 @@ class _$PaginationStateSerializer
           result.itemIds.replace(serializers.deserialize(value,
                   specifiedType:
                       const FullType(BuiltList, const [const FullType(int)]))
-              as BuiltList);
+              as BuiltList<dynamic>);
           break;
       }
     }
@@ -57,7 +58,7 @@ class _$PaginationState extends PaginationState {
   @override
   final BuiltList<int> itemIds;
 
-  factory _$PaginationState([void updates(PaginationStateBuilder b)]) =>
+  factory _$PaginationState([void Function(PaginationStateBuilder) updates]) =>
       (new PaginationStateBuilder()..update(updates)).build();
 
   _$PaginationState._({this.itemIds}) : super._() {
@@ -67,7 +68,7 @@ class _$PaginationState extends PaginationState {
   }
 
   @override
-  PaginationState rebuild(void updates(PaginationStateBuilder b)) =>
+  PaginationState rebuild(void Function(PaginationStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -120,7 +121,7 @@ class PaginationStateBuilder
   }
 
   @override
-  void update(void updates(PaginationStateBuilder b)) {
+  void update(void Function(PaginationStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -145,4 +146,4 @@ class PaginationStateBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

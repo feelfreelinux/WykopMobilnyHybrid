@@ -15,7 +15,7 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
   final String wireName = 'AppState';
 
   @override
-  Iterable serialize(Serializers serializers, AppState object,
+  Iterable<Object> serialize(Serializers serializers, AppState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'authState',
@@ -57,13 +57,16 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
       'profilesState',
       serializers.serialize(object.profilesState,
           specifiedType: const FullType(ProfilesState)),
+      'globalListState',
+      serializers.serialize(object.globalListState,
+          specifiedType: const FullType(GlobalListState)),
     ];
 
     return result;
   }
 
   @override
-  AppState deserialize(Serializers serializers, Iterable serialized,
+  AppState deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new AppStateBuilder();
 
@@ -129,6 +132,11 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
           result.profilesState.replace(serializers.deserialize(value,
               specifiedType: const FullType(ProfilesState)) as ProfilesState);
           break;
+        case 'globalListState':
+          result.globalListState.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(GlobalListState))
+              as GlobalListState);
+          break;
       }
     }
 
@@ -163,8 +171,10 @@ class _$AppState extends AppState {
   final TagsState tagsState;
   @override
   final ProfilesState profilesState;
+  @override
+  final GlobalListState globalListState;
 
-  factory _$AppState([void updates(AppStateBuilder b)]) =>
+  factory _$AppState([void Function(AppStateBuilder) updates]) =>
       (new AppStateBuilder()..update(updates)).build();
 
   _$AppState._(
@@ -180,7 +190,8 @@ class _$AppState extends AppState {
       this.entryScreensState,
       this.linkScreensState,
       this.tagsState,
-      this.profilesState})
+      this.profilesState,
+      this.globalListState})
       : super._() {
     if (authState == null) {
       throw new BuiltValueNullFieldError('AppState', 'authState');
@@ -221,10 +232,13 @@ class _$AppState extends AppState {
     if (profilesState == null) {
       throw new BuiltValueNullFieldError('AppState', 'profilesState');
     }
+    if (globalListState == null) {
+      throw new BuiltValueNullFieldError('AppState', 'globalListState');
+    }
   }
 
   @override
-  AppState rebuild(void updates(AppStateBuilder b)) =>
+  AppState rebuild(void Function(AppStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -246,7 +260,8 @@ class _$AppState extends AppState {
         entryScreensState == other.entryScreensState &&
         linkScreensState == other.linkScreensState &&
         tagsState == other.tagsState &&
-        profilesState == other.profilesState;
+        profilesState == other.profilesState &&
+        globalListState == other.globalListState;
   }
 
   @override
@@ -262,19 +277,23 @@ class _$AppState extends AppState {
                                     $jc(
                                         $jc(
                                             $jc(
-                                                $jc($jc(0, authState.hashCode),
-                                                    themeState.hashCode),
-                                                entitiesState.hashCode),
-                                            searchState.hashCode),
-                                        suggestionsState.hashCode),
-                                    linksState.hashCode),
-                                myWykopState.hashCode),
-                            notificationsState.hashCode),
-                        mikroblogState.hashCode),
-                    entryScreensState.hashCode),
-                linkScreensState.hashCode),
-            tagsState.hashCode),
-        profilesState.hashCode));
+                                                $jc(
+                                                    $jc(
+                                                        $jc(0,
+                                                            authState.hashCode),
+                                                        themeState.hashCode),
+                                                    entitiesState.hashCode),
+                                                searchState.hashCode),
+                                            suggestionsState.hashCode),
+                                        linksState.hashCode),
+                                    myWykopState.hashCode),
+                                notificationsState.hashCode),
+                            mikroblogState.hashCode),
+                        entryScreensState.hashCode),
+                    linkScreensState.hashCode),
+                tagsState.hashCode),
+            profilesState.hashCode),
+        globalListState.hashCode));
   }
 
   @override
@@ -292,7 +311,8 @@ class _$AppState extends AppState {
           ..add('entryScreensState', entryScreensState)
           ..add('linkScreensState', linkScreensState)
           ..add('tagsState', tagsState)
-          ..add('profilesState', profilesState))
+          ..add('profilesState', profilesState)
+          ..add('globalListState', globalListState))
         .toString();
   }
 }
@@ -376,6 +396,12 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   set profilesState(ProfilesStateBuilder profilesState) =>
       _$this._profilesState = profilesState;
 
+  GlobalListStateBuilder _globalListState;
+  GlobalListStateBuilder get globalListState =>
+      _$this._globalListState ??= new GlobalListStateBuilder();
+  set globalListState(GlobalListStateBuilder globalListState) =>
+      _$this._globalListState = globalListState;
+
   AppStateBuilder();
 
   AppStateBuilder get _$this {
@@ -393,6 +419,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
       _linkScreensState = _$v.linkScreensState?.toBuilder();
       _tagsState = _$v.tagsState?.toBuilder();
       _profilesState = _$v.profilesState?.toBuilder();
+      _globalListState = _$v.globalListState?.toBuilder();
       _$v = null;
     }
     return this;
@@ -407,7 +434,7 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   }
 
   @override
-  void update(void updates(AppStateBuilder b)) {
+  void update(void Function(AppStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -429,7 +456,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
               entryScreensState: entryScreensState.build(),
               linkScreensState: linkScreensState.build(),
               tagsState: tagsState.build(),
-              profilesState: profilesState.build());
+              profilesState: profilesState.build(),
+              globalListState: globalListState.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -459,6 +487,8 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
         tagsState.build();
         _$failedField = 'profilesState';
         profilesState.build();
+        _$failedField = 'globalListState';
+        globalListState.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'AppState', _$failedField, e.toString());
@@ -470,4 +500,4 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

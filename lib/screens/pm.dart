@@ -19,23 +19,6 @@ class PmScreen extends StatefulWidget {
 
 class _PmScreenState extends State<PmScreen>
     with SingleTickerProviderStateMixin {
-  bool appbarShadow = true;
-  bool inputShadow = false;
-
-  _appbarShadow(bool visible) {
-    if (visible != appbarShadow)
-      setState(() {
-        appbarShadow = visible;
-      });
-  }
-
-  _inputShadow(bool visible) {
-    if (visible != inputShadow)
-      setState(() {
-        inputShadow = visible;
-      });
-  }
-
   @override
   Widget build(BuildContext context) {
     final mqData = MediaQuery.of(context);
@@ -55,13 +38,11 @@ class _PmScreenState extends State<PmScreen>
               },
               key: OwmKeys.inputBarKey,
               iconsColor: Colors.deepOrange,
-              shadow: inputShadow,
               hintText: "Napisz wiadomość",
             ),
           ),
           resizeToAvoidBottomPadding: false,
           appBar: AppbarNormalWidget(
-            shadow: appbarShadow,
             leading: AppBarButton(
               icon: Icons.arrow_back,
               onTap: () => Navigator.of(context).pop(),
@@ -83,9 +64,7 @@ class _PmScreenState extends State<PmScreen>
               }
               if (snapshot.hasData) {
                 return PmWidget(
-                  snapshot: snapshot,
-                  appbarShadow: _appbarShadow,
-                  inputShadow: _inputShadow,
+                  snapshot: snapshot
                 );
               }
               return Center(child: CircularProgressIndicator());

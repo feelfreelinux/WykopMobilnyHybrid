@@ -16,7 +16,7 @@ class _$EntitiesStateSerializer implements StructuredSerializer<EntitiesState> {
   final String wireName = 'EntitiesState';
 
   @override
-  Iterable serialize(Serializers serializers, EntitiesState object,
+  Iterable<Object> serialize(Serializers serializers, EntitiesState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'entries',
@@ -53,7 +53,8 @@ class _$EntitiesStateSerializer implements StructuredSerializer<EntitiesState> {
   }
 
   @override
-  EntitiesState deserialize(Serializers serializers, Iterable serialized,
+  EntitiesState deserialize(
+      Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new EntitiesStateBuilder();
 
@@ -68,49 +69,49 @@ class _$EntitiesStateSerializer implements StructuredSerializer<EntitiesState> {
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(int),
                 const FullType(Entry)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
         case 'entryComments':
           result.entryComments.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(int),
                 const FullType(EntryComment)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
         case 'links':
           result.links.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(int),
                 const FullType(Link)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
         case 'linkComments':
           result.linkComments.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(int),
                 const FullType(LinkComment)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
         case 'notifications':
           result.notifications.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(int),
                 const FullType(Notification)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
         case 'authorSuggestions':
           result.authorSuggestions.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(int),
                 const FullType(Author)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
         case 'relatedLinks':
           result.relatedLinks.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltMap, const [
                 const FullType(int),
                 const FullType(Related)
-              ])) as BuiltMap);
+              ])) as BuiltMap<dynamic, dynamic>);
           break;
       }
     }
@@ -135,7 +136,7 @@ class _$EntitiesState extends EntitiesState {
   @override
   final BuiltMap<int, Related> relatedLinks;
 
-  factory _$EntitiesState([void updates(EntitiesStateBuilder b)]) =>
+  factory _$EntitiesState([void Function(EntitiesStateBuilder) updates]) =>
       (new EntitiesStateBuilder()..update(updates)).build();
 
   _$EntitiesState._(
@@ -171,7 +172,7 @@ class _$EntitiesState extends EntitiesState {
   }
 
   @override
-  EntitiesState rebuild(void updates(EntitiesStateBuilder b)) =>
+  EntitiesState rebuild(void Function(EntitiesStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -287,7 +288,7 @@ class EntitiesStateBuilder
   }
 
   @override
-  void update(void updates(EntitiesStateBuilder b)) {
+  void update(void Function(EntitiesStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -332,4 +333,4 @@ class EntitiesStateBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

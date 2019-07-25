@@ -12,7 +12,7 @@ class _$TagSuggestion extends TagSuggestion {
   @override
   final int followers;
 
-  factory _$TagSuggestion([void updates(TagSuggestionBuilder b)]) =>
+  factory _$TagSuggestion([void Function(TagSuggestionBuilder) updates]) =>
       (new TagSuggestionBuilder()..update(updates)).build();
 
   _$TagSuggestion._({this.tag, this.followers}) : super._() {
@@ -25,7 +25,7 @@ class _$TagSuggestion extends TagSuggestion {
   }
 
   @override
-  TagSuggestion rebuild(void updates(TagSuggestionBuilder b)) =>
+  TagSuggestion rebuild(void Function(TagSuggestionBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -85,7 +85,7 @@ class TagSuggestionBuilder
   }
 
   @override
-  void update(void updates(TagSuggestionBuilder b)) {
+  void update(void Function(TagSuggestionBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -98,4 +98,4 @@ class TagSuggestionBuilder
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

@@ -15,7 +15,7 @@ class _$ListStateSerializer implements StructuredSerializer<ListState> {
   final String wireName = 'ListState';
 
   @override
-  Iterable serialize(Serializers serializers, ListState object,
+  Iterable<Object> serialize(Serializers serializers, ListState object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
       'isLoading',
@@ -32,7 +32,7 @@ class _$ListStateSerializer implements StructuredSerializer<ListState> {
   }
 
   @override
-  ListState deserialize(Serializers serializers, Iterable serialized,
+  ListState deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new ListStateBuilder();
 
@@ -69,7 +69,7 @@ class _$ListState extends ListState {
   @override
   final num page;
 
-  factory _$ListState([void updates(ListStateBuilder b)]) =>
+  factory _$ListState([void Function(ListStateBuilder) updates]) =>
       (new ListStateBuilder()..update(updates)).build();
 
   _$ListState._({this.isLoading, this.haveReachedEnd, this.page}) : super._() {
@@ -85,7 +85,7 @@ class _$ListState extends ListState {
   }
 
   @override
-  ListState rebuild(void updates(ListStateBuilder b)) =>
+  ListState rebuild(void Function(ListStateBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -153,7 +153,7 @@ class ListStateBuilder implements Builder<ListState, ListStateBuilder> {
   }
 
   @override
-  void update(void updates(ListStateBuilder b)) {
+  void update(void Function(ListStateBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -167,4 +167,4 @@ class ListStateBuilder implements Builder<ListState, ListStateBuilder> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

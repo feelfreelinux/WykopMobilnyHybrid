@@ -18,7 +18,7 @@ class _$Embed extends Embed {
   @override
   final bool plus18;
 
-  factory _$Embed([void updates(EmbedBuilder b)]) =>
+  factory _$Embed([void Function(EmbedBuilder) updates]) =>
       (new EmbedBuilder()..update(updates)).build();
 
   _$Embed._({this.preview, this.url, this.type, this.isAnimated, this.plus18})
@@ -38,7 +38,7 @@ class _$Embed extends Embed {
   }
 
   @override
-  Embed rebuild(void updates(EmbedBuilder b)) =>
+  Embed rebuild(void Function(EmbedBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -121,7 +121,7 @@ class EmbedBuilder implements Builder<Embed, EmbedBuilder> {
   }
 
   @override
-  void update(void updates(EmbedBuilder b)) {
+  void update(void Function(EmbedBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -139,4 +139,4 @@ class EmbedBuilder implements Builder<Embed, EmbedBuilder> {
   }
 }
 
-// ignore_for_file: always_put_control_body_on_new_line,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
