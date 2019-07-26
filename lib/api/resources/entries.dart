@@ -1,44 +1,53 @@
 import 'package:owmflutter/api/api.dart';
 import 'package:built_collection/built_collection.dart';
+import 'package:owmflutter/api/api.dart' as prefix0;
 import 'package:owmflutter/models/models.dart';
 
 class EntriesApi extends ApiResource {
   EntriesApi(ApiClient client) : super(client);
-
-  Future<Result> getFavorite(int page) async {
+  Future<List<Entry>> getFavorite(int page) async {
     var items = await client
         .request('entries', 'observed', named: {'page': page.toString()});
-    return normalizeEntriesResponse(BuiltList.from(
-        client.deserializeList(EntryResponse.serializer, items)));
+    return client
+        .deserializeList(EntryResponse.serializer, items)
+        .map((e) => Entry.mapFromResponse(e))
+        .toList();
   }
 
-  Future<Result> getHot(int page, String period) async {
+  Future<List<Entry>> getHot(int page, String period) async {
     var items = await client.request('entries', 'hot',
         named: {'period': period, 'page': page.toString()});
-    return normalizeEntriesResponse(BuiltList.from(
-        client.deserializeList(EntryResponse.serializer, items)));
+    return client
+        .deserializeList(EntryResponse.serializer, items)
+        .map((e) => Entry.mapFromResponse(e))
+        .toList();
   }
 
-  Future<Result> getNewest(int page) async {
+  Future<List<Entry>> getNewest(int page) async {
     var items = await client
         .request('entries', 'stream', named: {'page': page.toString()});
-    return normalizeEntriesResponse(BuiltList.from(
-        client.deserializeList(EntryResponse.serializer, items)));
+    return client
+        .deserializeList(EntryResponse.serializer, items)
+        .map((e) => Entry.mapFromResponse(e))
+        .toList();
   }
 
-  Future<Result> getActive(int page) async {
+  Future<List<Entry>> getActive(int page) async {
     var items = await client
         .request('entries', 'active', named: {'page': page.toString()});
-    return normalizeEntriesResponse(BuiltList.from(
-        client.deserializeList(EntryResponse.serializer, items)));
+    return client
+        .deserializeList(EntryResponse.serializer, items)
+        .map((e) => Entry.mapFromResponse(e))
+        .toList();
   }
 
-  Future<Result> getEntry(int id) async {
+  Future<Entry> getEntry(int id) async {
     var items = await client.request('entries', 'entry', api: [id.toString()]);
-    return normalizeEntryResponse(
-        client.deserializeElement(EntryResponse.serializer, items));
+    return Entry.mapFromResponse(
+      client.deserializeElement(EntryResponse.serializer, items),
+    );
   }
-
+/*
   Future<Result> deleteEntry(int id) async {
     var items = await client.request('entries', 'delete', api: [id.toString()]);
     return normalizeEntryResponse(
@@ -65,36 +74,31 @@ class EntriesApi extends ApiResource {
         post: {'body': data.body}, image: data.file);
     return normalizeEntryResponse(
         client.deserializeElement(EntryResponse.serializer, entry));
-  }
+  }*/
 
-  Future<Result> voteUp(Entry entry) async {
+  Future<int> voteUp(int id) async {
     var voteCount =
-        await client.request('entries', 'voteup', api: [entry.id.toString()]);
-    var updatedEntry = entry.rebuild((b) => b
-      ..voteCount = int.parse(voteCount["vote_count"])
-      ..isVoted = true);
+        await client.request('entries', 'voteup', api: [id.toString()]);
 
-    return normalizeEntry(updatedEntry);
+    return int.parse(voteCount["vote_count"]);
   }
-
+/*
   Future<Result> markFavorite(Entry entry) async {
     var voteCount =
         await client.request('entries', 'voteup', api: [entry.id.toString()]);
     var updatedEntry = entry.rebuild((b) => b..isVoted = true);
+    print(voteCount);
 
     return normalizeEntry(updatedEntry);
+  }*/
+
+  Future<int> voteDown(int id) async {
+    var voteCount =
+        await client.request('entries', 'voteremove', api: [id.toString()]);
+    print(voteCount);
+    return int.parse(voteCount["vote_count"]);
   }
-
-  Future<Result> voteDown(Entry entry) async {
-    var voteCount = await client
-        .request('entries', 'voteremove', api: [entry.id.toString()]);
-    var updatedEntry = entry.rebuild((b) => b
-      ..voteCount = int.parse(voteCount["vote_count"])
-      ..isVoted = false);
-
-    return normalizeEntry(updatedEntry);
-  }
-
+/*
   Future<Result> commentVoteUp(EntryComment entry) async {
     var voteCount = await client
         .request('entries', 'commentvoteup', api: [entry.id.toString()]);
@@ -113,5 +117,5 @@ class EntriesApi extends ApiResource {
       ..isVoted = false);
 
     return normalizeEntryComment(updatedEntry);
-  }
+  }*/
 }

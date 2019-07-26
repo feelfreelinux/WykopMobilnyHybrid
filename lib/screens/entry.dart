@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:owmflutter/store/store.dart';
+import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/keys.dart';
 import 'dart:async';
 
+import 'package:provider/provider.dart';
+
 class EntryScreen extends StatefulWidget {
+  final EntryModel model;
   final int entryId;
 
-  EntryScreen({Key key, @required this.entryId}) : super(key: key);
+  EntryScreen({Key key, this.model, this.entryId}) : super(key: key);
 
   _EntryScreenState createState() => _EntryScreenState();
 }
@@ -20,100 +22,58 @@ class _EntryScreenState extends State<EntryScreen>
   Widget build(BuildContext context) {
     final mqData = MediaQuery.of(context);
     final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
-    final entryId = widget.entryId;
 
-    return _SystemPadding(
-      child: MediaQuery(
-        data: mqDataNew,
-        child: Scaffold(
-          backgroundColor: Theme.of(context).backgroundColor,
-          bottomNavigationBar: StoreConnector<AppState, dynamic>(
-            converter: (store) => (Completer completer, InputData inputData) =>
-                store.dispatch(addEntryComment(entryId, inputData, completer)),
-            builder: (context, callback) => InputBarWidget(
-              (inputData) {
-                var completer = Completer();
-                callback(completer, inputData);
-                return completer.future;
-              },
-              key: OwmKeys.inputBarKey,
-            ),
-          ),
-          resizeToAvoidBottomPadding: false,
-          appBar: AppbarNormalWidget(
-            padding: EdgeInsets.only(right: 8.0),
-            actions: <Widget>[
-              AppBarButton(
-                icon: Icons.refresh,
-                round: true,
-              ),
-              AppBarButton(
-                icon: Icons.more_vert,
-                round: true,
-              )
-            ],
-          ),
-          body: StoreConnector<AppState, dynamic>(
-            converter: (store) => (completer) => store
-                .dispatch(loadEntry(entryId.toString(), entryId, completer)),
-            builder: (context, callback) => StoreConnector<AppState, List<int>>(
-              converter: (store) => store
-                          .state.entryScreensState.states[entryId.toString()] !=
-                      null
-                  ? store.state.entryScreensState.states[entryId.toString()].ids
-                  : [],
-              onInit: (store) {
-                store.dispatch(
-                    loadEntry(entryId.toString(), entryId, Completer()));
-              },
-              builder: (context, ids) {
-                if (ids.length == 0) {
-                  return Center(child: CircularProgressIndicator());
-                }
-                return RefreshIndicator(
-                  onRefresh: () {
-                    var completer = new Completer();
-                    callback(completer);
-                    return completer.future;
-                  },
-                  child: ScrollConfiguration(
-                    behavior: NotSuddenJumpScrollBehavior(),
-                    child: ErrorHandlerWidget(
-                      errorType: ENTRY_PREFIX + entryId.toString(),
-                      errorStateConverter: (store) =>
-                          store.state.entryScreensState
-                              ?.states[entryId.toString()]?.errorState ??
-                          ErrorState(),
-                      hasData: () => ids.isNotEmpty,
-                      child: ShadowNotificationListener(
-                        child: ListView.builder(
-                          physics: AlwaysScrollableScrollPhysics(),
-                          itemCount: ids.length,
-                          itemBuilder: (context, index) {
-                            if (index == 0) {
-                              return Padding(
-                                padding: EdgeInsets.only(bottom: 12.0),
-                                child: EntryWidget(
-                                  ellipsize: false,
-                                  entryId: entryId,
-                                  isClickable: false,
-                                ),
-                              );
-                            } else {
-                              return EntryCommentWidget(
-                                commentId: ids[index],
-                              );
-                            }
+    return ChangeNotifierProvider.value(
+      value: (widget.model ?? (EntryModel()..setId(widget.entryId))..updateEntry()),
+      child: Consumer<EntryModel>(
+        builder: (context, model, _) =>
+            model.isLoading && model.body == null
+                ? Center(child: CircularProgressIndicator())
+                : _SystemPadding(
+                    child: MediaQuery(
+                      data: mqDataNew,
+                      child: Scaffold(
+                        backgroundColor: Theme.of(context).backgroundColor,
+                        bottomNavigationBar: InputBarWidget(
+                          (inputData) {},
+                          key: OwmKeys.inputBarKey,
+                        ),
+                        resizeToAvoidBottomPadding: false,
+                        appBar: AppbarNormalWidget(
+                          padding: EdgeInsets.only(right: 8.0),
+                          actions: <Widget>[
+                            AppBarButton(
+                              icon: Icons.refresh,
+                              round: true,
+                            ),
+                            AppBarButton(
+                              icon: Icons.more_vert,
+                              round: true,
+                            )
+                          ],
+                        ),
+                        body: RefreshIndicator(
+                          onRefresh: () {
+                            return model.updateEntry();
                           },
+                          child: ScrollConfiguration(
+                            behavior: NotSuddenJumpScrollBehavior(),
+                            child: InfiniteList(
+                              header: NewEntryWidget(ellipsize: false),
+                              itemCount: model.comments.length,
+                              itemBuilder: (context, index) =>
+                                  ChangeNotifierProvider<EntryCommentModel>(
+                                builder: (context) => EntryCommentModel()
+                                  ..setData(model.comments[index]),
+                                child: EntryCommentWidget(),
+                              ),
+                              loadData: (page) => {},
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                );
-              },
-            ),
-          ),
-        ),
       ),
     );
   }

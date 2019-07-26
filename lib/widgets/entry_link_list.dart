@@ -1,77 +1,63 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:owmflutter/store/store.dart';
-import 'package:owmflutter/widgets/widgets.dart';
 import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:owmflutter/model/model.dart';
+import 'package:owmflutter/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
-class EntryLinkList extends StatelessWidget {
-  final ConverterCallback converterCallback;
-  final LoadDataCallback loadDataCallback;
+class EntriesLinksList extends StatefulWidget {
+  final dynamic builder;
   final Widget header;
-  // screen type in redux used in error handling
-  final String actionType;
 
-  EntryLinkList(
-      {this.converterCallback,
-      this.actionType,
-      this.loadDataCallback,
-      this.header})
-      : super(key: PageStorageKey(actionType));
+  EntriesLinksList({this.builder, this.header});
+
+  @override
+  EntriesLinksListState createState() {
+    return new EntriesLinksListState();
+  }
+}
+
+class EntriesLinksListState extends State<EntriesLinksList> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
-        child: StoreConnector<AppState, ItemListState>(
-            converter: (store) => converterCallback(store),
-            onInit: (store) {
-              var state = converterCallback(store);
-              if (state == null ||
-                  state.paginationState.itemIds.isEmpty &&
-                      !state.listState.haveReachedEnd) {
-                loadDataCallback(store, false, Completer());
-              }
-            },
-            builder: (context, state) {
-              if (state == null ||
-                  state.listState.isLoading && state.listState.page == 1) {
-                return Center(child: CircularProgressIndicator());
-              }
-              return StoreConnector<AppState, ListRefreshCallback>(
-                  converter: (store) {
-                return (bool refresh, Completer completer) =>
-                    loadDataCallback(store, refresh, completer);
-              }, builder: (context, callback) {
-                return RefreshIndicator(
-                  onRefresh: () {
-                    var completer = Completer();
-                    callback(true, completer);
-                    return completer.future;
-                  },
-                  child: ErrorHandlerWidget(
-                    errorType: actionType,
-                    errorStateConverter: (store) =>
-                        converterCallback(store).errorState,
-                    hasData: () => state.paginationState.itemIds.isNotEmpty,
-                    child: InfiniteList(
-                        header: header,
-                        hasReachedEnd: state.listState.haveReachedEnd,
-                        loadData: (completer) => callback(false, completer),
-                        itemCount: state.paginationState.itemIds.length,
-                        itemBuilder: (context, index) {
-                          if (state.paginationState.itemIds[index] > 99999999) {
-                            return EntryWidget(
-                                entryId: state.paginationState.itemIds[index] ~/
-                                    1000,
-                                ellipsize: true);
-                          } else {
-                            return LinkWidget(
-                                linkId: state.paginationState.itemIds[index]);
-                          }
-                        }),
+      decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
+      child: ChangeNotifierProvider<EntryLinkListModel>(
+        builder: widget.builder,
+        child: Consumer<EntryLinkListModel>(
+          builder: (context, model, _) => RefreshIndicator(
+            onRefresh: () => model.refresh(),
+            child: model.isLoading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : InfiniteList(
+                    header: widget.header,
+                    loadData: (completer) async {
+                      await model.loadMoreEntryLinks();
+                    },
+                    itemCount: model.entryLinks.length,
+                    itemBuilder: (context, index) {
+                      if (model.entryLinks[index].hasEntry) {
+                        return ListenableProvider<EntryModel>(
+                          builder: (context) => EntryModel()
+                            ..setData(model.entryLinks[index].entry),
+                          child: NewEntryWidget(ellipsize: true),
+                        );
+                      } else {
+                        return ListenableProvider<LinkModel>(
+                          builder: (context) => LinkModel()
+                            ..setData(model.entryLinks[index].link),
+                          child: NewLinkWidget(),
+                        );
+                      }
+                    },
                   ),
-                );
-              });
-            }));
+          ),
+        ),
+      ),
+    );
   }
 }

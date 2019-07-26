@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/models/models.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/api/api.dart';
-import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/main.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'dart:async';
+
+import 'package:provider/provider.dart';
 
 class MainSettingsScreen extends StatelessWidget {
   static const platform =
@@ -49,9 +50,8 @@ class MainSettingsScreen extends StatelessWidget {
   }
 
   Widget _drawHeader() {
-    return StoreConnector<AppState, AuthState>(
-      converter: (store) => store.state.authState,
-      builder: (context, authState) {
+    return Consumer<AuthStateModel>(
+      builder: (context, authStateModel, _) {
         return Column(
           children: <Widget>[
             Stack(
@@ -68,13 +68,13 @@ class MainSettingsScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: authState.loggedIn && authState.backgroundUrl != null
+                  child: authStateModel.login != null && authStateModel.backgroundUrl != null
                       ? Image(
                           height: 140.0,
                           width: MediaQuery.of(context).size.width,
                           fit: BoxFit.cover,
                           image: AdvancedNetworkImage(
-                            authState.backgroundUrl,
+                            authStateModel.backgroundUrl,
                             useDiskCache: true,
                           ),
                         )
@@ -94,30 +94,24 @@ class MainSettingsScreen extends StatelessWidget {
                 ),
                 AvatarWidget(
                   author: Author.fromAuthState(
-                      avatarUrl: authState.avatarUrl,
-                      username: authState.login,
-                      color: authState.color),
+                      avatarUrl: authStateModel.avatarUrl,
+                      username: authStateModel.login,
+                      color: authStateModel.color),
                   size: 100.0,
                   badge: Colors.transparent,
                   genderVisibility: false,
                 ),
               ],
             ),
-            StoreConnector<AppState, LoginCallback>(
-              converter: (store) => (login, token, completer) =>
-                  store.dispatch(loginUser(token, login, completer)),
-              builder: (context, loginCallback) => GestureDetector(
-                onTap: authState.loggedIn
+            GestureDetector(
+                onTap: authStateModel.login != null
                     ? () {}
                     : () async {
                         var result = await platform.invokeMethod(
                             'openLoginScreen',
                             Map.from({'appKey': api.getAppKey()}));
-                        var completer = Completer();
-                        debugPrint(result);
-                        loginCallback(
-                            result['login'], result['token'], completer);
-                        await completer.future;
+                        await authStateModel.loginUser(
+                            result['login'], result['token']);
                         RestartWidget.restartApp(context);
                       },
                 child: Container(
@@ -128,7 +122,7 @@ class MainSettingsScreen extends StatelessWidget {
                     bottom: 14.0,
                   ),
                   child: Text(
-                    authState.loggedIn ? authState.login : "Zaloguj się",
+                    authStateModel.login ?? "Zaloguj się",
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: 22.0,
@@ -137,8 +131,8 @@ class MainSettingsScreen extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-            authState.loggedIn
+            
+            authStateModel.login != null 
                 ? GestureDetector(
                     child: Container(
                       margin: EdgeInsets.only(
@@ -169,22 +163,20 @@ class MainSettingsScreen extends StatelessWidget {
   }
 
   Widget _drawButtonsList(BuildContext context) {
-    return StoreConnector<AppState, AuthState>(
-      onInit: (store) => store.dispatch(syncStateWithApi()),
-      converter: (store) => store.state.authState,
-      builder: (context, authState) {
+    return Consumer<AuthStateModel>(
+      builder: (context, authStateModel, _) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            authState.loggedIn
+            authStateModel.loggedIn
                 ? _drawButton(
                     context,
                     icon: Icons.account_circle,
                     color: Utils.getAuthorColor(
                         Author.fromAuthState(
-                            avatarUrl: authState.avatarUrl,
-                            username: authState.login,
-                            color: authState.color),
+                            avatarUrl: authStateModel.avatarUrl,
+                            username: authStateModel.login,
+                            color: authStateModel.color),
                         context),
                     title: "Twój profil",
                     onTap: () {},
@@ -197,7 +189,7 @@ class MainSettingsScreen extends StatelessWidget {
               title: "Historia wyszukiwania",
               onTap: () {},
             ),
-            authState.loggedIn
+            authStateModel.loggedIn
                 ? _drawButton(
                     context,
                     icon: Icons.block,
@@ -207,35 +199,24 @@ class MainSettingsScreen extends StatelessWidget {
                     onTap: () {},
                   )
                 : Container(),
-            StoreConnector<AppState, LoginCallback>(
-              converter: (store) => (login, token, completer) =>
-                  store.dispatch(loginUser(token, login, completer)),
-              builder: (context, loginCallback) {
-                return StoreConnector<AppState, VoidCallback>(
-                  converter: (store) => () => store.dispatch(logoutUser()),
-                  builder: (context, logoutCallback) => _drawButton(
+            _drawButton(
                     context,
                     icon: Icons.exit_to_app,
                     color: Colors.grey[850],
-                    title: authState.loggedIn ? "Wyloguj się" : "Zaloguj się",
+                    title: authStateModel.loggedIn ? "Wyloguj się" : "Zaloguj się",
                     onTap: () async {
-                      if (authState.loggedIn) {
-                        logoutCallback();
+                      if (authStateModel.loggedIn) {
+                        authStateModel.logoutUser();
                       } else {
                         var result = await platform.invokeMethod(
                             'openLoginScreen',
                             Map.from({'appKey': api.getAppKey()}));
-                        var completer = Completer();
-                        loginCallback(
-                            result['login'], result['token'], completer);
-                        await completer.future;
+                        await authStateModel.loginUser(
+                            result['login'], result['token']);
                         RestartWidget.restartApp(context);
                       }
                     },
                   ),
-                );
-              },
-            ),
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: 18.0,
@@ -373,6 +354,14 @@ class MainSettingsScreen extends StatelessWidget {
   }
 
   Widget _drawThemeButton() {
+return AppBarButton(
+          icon: Icons.wb_sunny,
+          onTap: () => {},
+          round: true,
+          iconSize: 22.0,
+          iconPadding: EdgeInsets.all(7.0),
+        );
+    /*
     return StoreConnector<AppState, OWMTheme>(
       converter: (store) => store.state.themeState.currentTheme,
       builder: (context, currentTheme) => StoreConnector<AppState, dynamic>(
@@ -390,6 +379,6 @@ class MainSettingsScreen extends StatelessWidget {
           iconPadding: EdgeInsets.all(7.0),
         ),
       ),
-    );
+    );*/
   }
 }

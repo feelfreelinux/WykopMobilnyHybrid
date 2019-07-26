@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:owmflutter/store/store.dart';
+import 'package:owmflutter/api/api.dart';
+import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/owm_glyphs.dart';
 
@@ -23,12 +24,11 @@ class MyWykopScreen extends StatelessWidget {
             NotLoggedWidget(
               icon: Icons.loyalty,
               fullText: "Mój wykop będzie widoczny po zalogowaniu.",
-              child: EntryLinkList(
-                  actionType: MYWYKOP_INDEX,
-                  converterCallback: (store) =>
-                      store.state.myWykopState.indexState,
-                  loadDataCallback: (store, refresh, completer) =>
-                      store.dispatch(loadIndex(refresh, completer))),
+              child: EntriesLinksList(
+                builder: (context) => EntryLinkListModel(
+                  loadEntryLinks: (page) => api.mywykop.getIndex(page),
+                ),
+              ),
             ),
             NotLoggedWidget(
               icon: OwmGlyphs.ic_navi_my_wykop,

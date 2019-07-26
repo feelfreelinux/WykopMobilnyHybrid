@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
+import 'package:owmflutter/model/auth_model.dart';
 import 'package:owmflutter/screens/screens.dart';
-import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/utils/utils.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'dart:async';
+
+import 'package:provider/provider.dart';
 
 typedef void LoginCallback(String login, String token, Completer completer);
 
@@ -21,10 +22,8 @@ class AppbarUserWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: margin,
-      child: StoreConnector<AppState, AuthState>(
-        onInit: (store) => store.dispatch(syncStateWithApi()),
-        converter: (store) => store.state.authState,
-        builder: (context, authState) {
+      child: Consumer<AuthStateModel>(
+        builder: (context, authState, _) {
           return GestureDetector(
             onTap: () {
               Navigator.of(context).push(

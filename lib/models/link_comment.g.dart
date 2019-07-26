@@ -24,7 +24,7 @@ class _$LinkComment extends LinkComment {
   @override
   final int parentId;
   @override
-  final List<int> childrenIds;
+  final List<LinkComment> children;
   @override
   final LinkCommentVoteState voteState;
   @override
@@ -46,7 +46,7 @@ class _$LinkComment extends LinkComment {
       this.userVote,
       this.linkId,
       this.parentId,
-      this.childrenIds,
+      this.children,
       this.voteState,
       this.isBlocked,
       this.author,
@@ -73,8 +73,8 @@ class _$LinkComment extends LinkComment {
     if (parentId == null) {
       throw new BuiltValueNullFieldError('LinkComment', 'parentId');
     }
-    if (childrenIds == null) {
-      throw new BuiltValueNullFieldError('LinkComment', 'childrenIds');
+    if (children == null) {
+      throw new BuiltValueNullFieldError('LinkComment', 'children');
     }
     if (voteState == null) {
       throw new BuiltValueNullFieldError('LinkComment', 'voteState');
@@ -106,7 +106,7 @@ class _$LinkComment extends LinkComment {
         userVote == other.userVote &&
         linkId == other.linkId &&
         parentId == other.parentId &&
-        childrenIds == other.childrenIds &&
+        children == other.children &&
         voteState == other.voteState &&
         isBlocked == other.isBlocked &&
         author == other.author &&
@@ -134,7 +134,7 @@ class _$LinkComment extends LinkComment {
                                     userVote.hashCode),
                                 linkId.hashCode),
                             parentId.hashCode),
-                        childrenIds.hashCode),
+                        children.hashCode),
                     voteState.hashCode),
                 isBlocked.hashCode),
             author.hashCode),
@@ -152,7 +152,7 @@ class _$LinkComment extends LinkComment {
           ..add('userVote', userVote)
           ..add('linkId', linkId)
           ..add('parentId', parentId)
-          ..add('childrenIds', childrenIds)
+          ..add('children', children)
           ..add('voteState', voteState)
           ..add('isBlocked', isBlocked)
           ..add('author', author)
@@ -196,9 +196,9 @@ class LinkCommentBuilder implements Builder<LinkComment, LinkCommentBuilder> {
   int get parentId => _$this._parentId;
   set parentId(int parentId) => _$this._parentId = parentId;
 
-  List<int> _childrenIds;
-  List<int> get childrenIds => _$this._childrenIds;
-  set childrenIds(List<int> childrenIds) => _$this._childrenIds = childrenIds;
+  List<LinkComment> _children;
+  List<LinkComment> get children => _$this._children;
+  set children(List<LinkComment> children) => _$this._children = children;
 
   LinkCommentVoteState _voteState;
   LinkCommentVoteState get voteState => _$this._voteState;
@@ -229,7 +229,7 @@ class LinkCommentBuilder implements Builder<LinkComment, LinkCommentBuilder> {
       _userVote = _$v.userVote;
       _linkId = _$v.linkId;
       _parentId = _$v.parentId;
-      _childrenIds = _$v.childrenIds;
+      _children = _$v.children;
       _voteState = _$v.voteState;
       _isBlocked = _$v.isBlocked;
       _author = _$v.author?.toBuilder();
@@ -266,7 +266,7 @@ class LinkCommentBuilder implements Builder<LinkComment, LinkCommentBuilder> {
               userVote: userVote,
               linkId: linkId,
               parentId: parentId,
-              childrenIds: childrenIds,
+              children: children,
               voteState: voteState,
               isBlocked: isBlocked,
               author: author.build(),

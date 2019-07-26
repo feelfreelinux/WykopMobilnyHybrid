@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/widgets/widgets.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:owmflutter/store/store.dart';
 
 class AppbarNormalWidget extends StatefulWidget implements PreferredSizeWidget {
   final String title;
@@ -31,11 +29,10 @@ class AppbarNormalWidget extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _AppbarNormalWidgetState extends State<AppbarNormalWidget> {
+  bool shadow = true;
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, bool>(
-      converter: (store) => store.state.globalListState.showListShadow,
-      builder: (context, shadow) => AnimatedContainer(
+    return AnimatedContainer(
         duration: Duration(milliseconds: 200),
         decoration: BoxDecoration(
           boxShadow: [
@@ -77,8 +74,8 @@ class _AppbarNormalWidgetState extends State<AppbarNormalWidget> {
           ),
           elevation: 0.0,
           titleSpacing: 0.0,
-        ),
-      ),
-    );
+        ),);
+      
+    
   }
 }

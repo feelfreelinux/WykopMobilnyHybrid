@@ -1,204 +1,246 @@
 import 'package:flutter/material.dart';
-import 'package:owmflutter/store/store.dart';
+import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/widgets/widgets.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/utils/utils.dart';
+import 'package:owmflutter/keys.dart';
+import 'package:owmflutter/owm_glyphs.dart';
+import 'dart:async';
+
+import 'package:provider/provider.dart';
 
 class LinkCommentWidget extends StatelessWidget {
-  final int commentId;
-  final bool isFirst;
-  final bool isLast;
-  LinkCommentWidget({
-    this.commentId,
-    this.isFirst: false,
-    this.isLast: false,
-  });
+
+  LinkCommentWidget();
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, LinkComment>(
-      key: Key(commentId.toString()),
-      converter: (store) => store.state.entitiesState.linkComments[commentId],
-      builder: (context, comment) {
-        return Container(
-          color: Theme.of(context).cardColor,
-          child: _buildLinkComment(comment, context),
+    return Consumer<LinkCommentModel>(
+      builder: (context, model, _) => Material(
+          key: Key(model.id.toString()),
+          color: Theme.of(context).backgroundColor,
+          child: _buildLinkCommentBody(model, context),
+        ),
         );
-      },
-    );
   }
 
-  Widget _buildLinkComment(LinkComment comment, BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        isFirst
-            ? Container()
-            : Positioned(
-                height: 35.0,
-                left: 35.0,
-                right: MediaQuery.of(context).size.width - 38.0,
-                child: Container(
-                  child: Container(
-                    width: 4.0,
-                    color: Colors.blueGrey.withOpacity(0.4),
-                  ),
-                ),
-              ),
-        isLast
-            ? Container()
-            : Positioned.fill(
-                top: 34.0,
-                left: 35.0,
-                right: MediaQuery.of(context).size.width - 38.0,
-                child: Container(
-                  child: Container(
-                    width: 4.0,
-                    color: Colors.blueGrey.withOpacity(0.4),
-                  ),
-                ),
-              ),
-        Padding(
-          padding: EdgeInsets.only(
-            left: 15.0,
-            top: 10.0,
-            bottom: 10.0,
+  void _showActionsDialog(BuildContext context, LinkCommentModel comment) {
+    /*
+    var actions = [
+      ActionsDialogItem(
+        icon: OwmGlyphs.ic_dig_list,
+        onTap: () {},
+        title: "Lista plusujących",
+      ),
+      ActionsDialogItem(
+        icon: OwmGlyphs.ic_copy_content_light,
+        onTap: () {},
+        title: "Kopiuj treść",
+      ),
+    ];
+
+    if (comment.author.login != authState.login) {
+      actions.add(ActionsDialogItem(
+        icon: OwmGlyphs.ic_report,
+        onTap: () {},
+        title: "Zgłoś",
+      ));
+    } else {
+      actions
+        ..add(ActionsDialogItem(
+          icon: OwmGlyphs.ic_pen,
+          onTap: () {},
+          title: "Edytuj komentarz",
+        ))
+        ..add(ActionsDialogItem(
+          icon: OwmGlyphs.ic_delete,
+          onTap: deleteCommentCallback,
+          title: "Usuń",
+        ));
+    }
+
+    ActionsDialog.showActionsDialog(context, actions);*/
+  }
+
+  Widget _buildLinkCommentBody(LinkCommentModel model, BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(left: 14.0, right: 12.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(top: 6.0, bottom: 12.0),
+            child: AvatarWidget(
+              author: model.author,
+              size: 36.0,
+              //TODO: Add badge
+            ),
           ),
-          child: AvatarWidget(
-            author: comment.author,
-            size: 38.0,
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(
-            left: 56.0,
-            bottom: 4.0,
-          ),
-          child: Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              _drawHeader(context, comment),
-              BodyWidget(
-                body: comment.body,
-                ellipsize: false,
-                padding: EdgeInsets.only(
-                  left: 12.0,
-                  right: 18.0,
-                  bottom: 10.0,
-                ),
+              Stack(
+                children: <Widget>[
+                  Container(
+                    constraints: BoxConstraints.loose(
+                      Size(MediaQuery.of(context).size.width - 82.0,
+                          double.infinity),
+                    ),
+                    decoration: BoxDecoration(
+                      color: Utils.backgroundGrey(context),
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    margin: EdgeInsets.only(left: 8.0, top: 6.0, right: 6.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        _drawHeader(context, model.author),
+                        _drawBody(context, model),
+                        _drawEmbed(model.embed, model.body),
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    top: 2.0,
+                    right: 0.0,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 8.0),
+                      child: VoteButton(
+                          isSelected: model.voteState == LinkCommentVoteState.UP_VOTED,
+                          isComment: true,
+                          count: model.voteCount,
+                          onClicked: () {
+                            model.toggleVote();
+                          },
+                        ),
+                      ),
+                    ),
+                ],
               ),
-              _drawEmbed(comment),
+              Row(
+                children: <Widget>[
+                  _footerText(
+                    context,
+                    padding: EdgeInsets.only(
+                      top: 2.0,
+                      bottom: 4.0,
+                      left: 14.0,
+                    ),
+                    text: Utils.getSimpleDate(model.date),
+                  ),
+                  _footerText(
+                    context,
+                    padding: EdgeInsets.only(
+                      top: 2.0,
+                      bottom: 4.0,
+                    ),
+                    text: "Cytuj",
+                    isButton: true,
+                    onTap: () {
+                      OwmKeys.inputBarKey.currentState
+                          .quoteText(model.author, model.body);
+                    },
+                  ),
+                  _footerText(
+                    context,
+                    padding: EdgeInsets.only(
+                      top: 2.0,
+                      bottom: 4.0,
+                      right: 8.0,
+                    ),
+                    text: "Odpowiedz",
+                    isButton: true,
+                    onTap: () {
+                      OwmKeys.inputBarKey.currentState
+                          .replyToUser(model.author);
+                    },
+                  ),
+                ],
+              )
             ],
           ),
-        ),
-        Positioned(
-          bottom: 0,
-          width: MediaQuery.of(context).size.width,
-          child: DividerWidget(
-            padding: EdgeInsets.only(
-              left: (isFirst && isLast) || isLast ? 18.0 : 68.0,
-              right: 18.0,
-            ),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
-  Widget _drawEmbed(LinkComment comment) {
-    if (comment.embed != null) {
-      return Container(
-        padding: EdgeInsets.only(
-          left: 12.0,
-          right: 18.0,
-          bottom: 18.0,
-          top: (comment.body != null ? 0.0 : 10.0),
+  Widget _drawHeader(BuildContext context, Author author) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: 12.0,
+        right: 66.0,
+        top: 8.0,
+        bottom: 4.0,
+      ),
+      child: Text(
+        author.login,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle(
+          fontWeight: FontWeight.w500,
+          fontSize: 13.5,
+          color: Utils.getAuthorColor(author, context),
         ),
-        child: EmbedWidget(
-          embed: comment.embed,
-          reducedWidth: 86.0,
-          borderRadius: 10.0,
-        ),
-      );
-    } else {
-      return Container();
-    }
+      ),
+    );
   }
 
-  Widget _drawHeader(BuildContext context, LinkComment comment) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Expanded(
-          child: Padding(
+  Widget _drawBody(BuildContext context, LinkCommentModel model) {
+    return SupaGestureDetector(
+          onLongPress: () {
+            _showActionsDialog(context, model);
+          },
+          child: BodyWidget(
+            body: model.body,
+            ellipsize: false,
             padding: EdgeInsets.only(
-              left: 12.0,
-              top: 10.0,
-              right: 18.0,
               bottom: 8.0,
+              left: 12.0,
+              right: 12.0,
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  child: Text(
-                    comment.author.login,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      color: Utils.getAuthorColor(comment.author, context),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 2.0),
-                  child: Text(
-                    Utils.getSimpleDate(comment.date),
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      color: Theme.of(context).textTheme.caption.color,
-                    ),
-                  ),
-                ),
-              ],
+          ),
+        
+    );
+  }
+
+  Widget _drawEmbed(Embed embed, String body) {
+    return Visibility(
+      visible: embed != null,
+      child: Padding(
+        padding: EdgeInsets.only(top: body != null ? 0.0 : 4.0),
+        child: EmbedWidget(
+          embed: embed,
+          borderRadius: 20.0,
+          reducedWidth: 82.0,
+        ),
+      ),
+    );
+  }
+
+  Widget _footerText(
+    BuildContext context, {
+    String text,
+    EdgeInsets padding,
+    bool isButton: false,
+    VoidCallback onTap,
+  }) {
+    return Padding(
+      padding: padding,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+          child: Text(
+            text,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 12.0,
+              color: Theme.of(context).textTheme.caption.color,
+              fontWeight: isButton ? FontWeight.w600 : FontWeight.normal,
             ),
           ),
         ),
-        StoreConnector<AppState, VoidCallback>(
-          converter: (store) =>
-              () => store.dispatch(voteLinkComment(commentId, false)),
-          builder: (context, callback) => VoteButton(
-                margin: EdgeInsets.symmetric(
-                  vertical: 8.0,
-                  horizontal: 4.0,
-                ),
-                isSelected: comment.voteState == LinkCommentVoteState.UP_VOTED,
-                count: comment.voteCountPlus,
-                onClicked: () {
-                  callback();
-                },
-              ),
-        ),
-        StoreConnector<AppState, VoidCallback>(
-          converter: (store) =>
-              () => store.dispatch(voteLinkComment(commentId, true)),
-              // TODO: Nie wyświetla stanu zmiany
-          builder: (context, callback) => VoteButton(
-                negativeIcon: true,
-                margin: EdgeInsets.only(
-                  left: 4.0,
-                  right: 18.0,
-                ),
-                isSelected:
-                    comment.voteState == LinkCommentVoteState.DOWN_VOTED,
-                count: -(comment.voteCount - comment.voteCountPlus),
-                onClicked: () {
-                  callback();
-                },
-              ),
-        ),
-      ],
+      ),
     );
   }
 }

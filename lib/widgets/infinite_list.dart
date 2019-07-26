@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:owmflutter/store/store.dart';
 import 'dart:async';
-
-import 'package:owmflutter/widgets/shadow_notification_listener.dart';
 
 /*
  * Works around flutter#20495
@@ -33,13 +29,11 @@ typedef ItemBuilder = Widget Function(BuildContext, int);
 
 class InfiniteList extends StatefulWidget {
   final int itemCount;
-  final bool hasReachedEnd;
   final ItemBuilder itemBuilder;
   final Widget header;
   final LoadMoreDataCallback loadData;
   InfiniteList(
       {@required this.itemBuilder,
-      @required this.hasReachedEnd,
       @required this.itemCount,
       @required this.loadData,
       this.header});
@@ -56,20 +50,9 @@ class _InfiniteListState extends State<InfiniteList> {
   void initState() {
     super.initState();
     _scrollController.addListener(() {
-      if (!isLoading &&
-          !widget.hasReachedEnd &&
-          _scrollController.position.pixels ==
+      if (_scrollController.position.pixels ==
               _scrollController.position.maxScrollExtent) {
-        var completer = Completer();
-        setState(() {
-          isLoading = true;
-        });
-        completer.future.then((e) {
-          setState(() {
-            isLoading = false;
-          });
-        });
-        widget.loadData(completer);
+        widget.loadData(null);
       }
     });
   }
@@ -112,8 +95,7 @@ class _InfiniteListState extends State<InfiniteList> {
         ));*/
     return ScrollConfiguration(
       behavior: NotSuddenJumpScrollBehavior(),
-      child: ShadowNotificationListener(
-        child: ListView.builder(
+      child: ListView.builder(
           physics: NotSuddenJumpPhysics(),
           itemCount: widget.header != null
               ? widget.itemCount + 1
@@ -123,23 +105,6 @@ class _InfiniteListState extends State<InfiniteList> {
               return widget.header;
             }
 
-            if (index == widget.itemCount) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: widget.hasReachedEnd
-                      ? Column(children: [
-                          Text('To jest już koniec :)'),
-                          Image.asset(
-                            'rogal.png',
-                            width: 100,
-                            height: 100,
-                          )
-                        ])
-                      : CircularProgressIndicator(),
-                ),
-              );
-            }
             if (widget.header == null) {
               return widget.itemBuilder(context, index);
             } else {
@@ -148,7 +113,7 @@ class _InfiniteListState extends State<InfiniteList> {
           },
           controller: _scrollController,
         ),
-      ),
+      
     );
   }
 

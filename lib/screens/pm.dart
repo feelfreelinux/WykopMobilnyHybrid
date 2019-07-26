@@ -4,8 +4,6 @@ import 'package:owmflutter/widgets/pm/pm.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/keys.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/widgets/pm/uset_appbar.dart';
 import 'dart:async';
 
@@ -27,20 +25,15 @@ class _PmScreenState extends State<PmScreen>
       child: MediaQuery(
         data: mqDataNew,
         child: Scaffold(
-          bottomNavigationBar: StoreConnector<AppState, dynamic>(
-            converter: (store) =>
-                (Completer completer, InputData inputData) => {},
-            builder: (context, callback) => InputBarWidget(
+          bottomNavigationBar: InputBarWidget(
               (inputData) {
-                var completer = Completer();
-                callback(completer, inputData);
-                return completer.future;
+
               },
               key: OwmKeys.inputBarKey,
               iconsColor: Colors.deepOrange,
               hintText: "Napisz wiadomość",
             ),
-          ),
+          
           resizeToAvoidBottomPadding: false,
           appBar: AppbarNormalWidget(
             leading: AppBarButton(

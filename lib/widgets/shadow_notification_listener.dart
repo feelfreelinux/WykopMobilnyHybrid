@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:owmflutter/store/store.dart';
-import 'dart:async';
-
+/*
 class ShadowNotificationListener extends StatelessWidget {
   final Widget child;
 
@@ -54,3 +50,4 @@ class ShadowNotificationListener extends StatelessWidget {
     );
   }
 }
+*/

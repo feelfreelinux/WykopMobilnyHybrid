@@ -4,29 +4,31 @@ import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
-class LinksList extends StatefulWidget {
+class EntriesList extends StatefulWidget {
   final dynamic builder;
   final Widget header;
 
-  LinksList({this.builder, this.header});
+  EntriesList({this.builder, this.header});
 
   @override
-  LinksListState createState() {
-    return new LinksListState();
+  EntriesListState createState() {
+    return new EntriesListState();
   }
 }
 
-class LinksListState extends State<LinksList> with AutomaticKeepAliveClientMixin {
+class EntriesListState extends State<EntriesList> with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
+
+ 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
-      child: ChangeNotifierProvider<LinkListModel>(
+      child: ChangeNotifierProvider<EntryListModel>(
         builder: widget.builder,
-        child: Consumer<LinkListModel>(
+        child: Consumer<EntryListModel>(
           builder: (context, model, _) => RefreshIndicator(
             onRefresh: () => model.refresh(),
             child: model.isLoading
@@ -36,15 +38,14 @@ class LinksListState extends State<LinksList> with AutomaticKeepAliveClientMixin
                 : InfiniteList(
                     header: widget.header,
                     loadData: (completer) async {
-                      await model.loadMoreLinks();
-                      completer.complete();
+                      await model.loadMoreEntries();
                     },
-                    itemCount: model.links.length,
+                    itemCount: model.entries.length,
                     itemBuilder: (context, index) {
-                      return ChangeNotifierProvider<LinkModel>(
+                      return ChangeNotifierProvider<EntryModel>(
                         builder: (context) =>
-                            LinkModel()..setData(model.links[index]),
-                        child: NewLinkWidget(),
+                            EntryModel()..setData(model.entries[index]),
+                        child: NewEntryWidget(ellipsize: true),
                       );
                     },
                   ),

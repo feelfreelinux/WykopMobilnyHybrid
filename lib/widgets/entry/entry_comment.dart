@@ -1,34 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:owmflutter/store/store.dart';
+import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/widgets/widgets.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/keys.dart';
 import 'package:owmflutter/owm_glyphs.dart';
 import 'dart:async';
 
-class EntryCommentWidget extends StatelessWidget {
-  final int commentId;
+import 'package:provider/provider.dart';
 
-  EntryCommentWidget({this.commentId});
+class EntryCommentWidget extends StatelessWidget {
+
+  EntryCommentWidget();
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, EntryComment>(
-      converter: (store) => store.state.entitiesState.entryComments[commentId],
-      builder: (context, comment) {
-        return Material(
-          key: Key(commentId.toString()),
+    return Consumer<EntryCommentModel>(
+      builder: (context, model, _) => Material(
+          key: Key(model.id.toString()),
           color: Theme.of(context).backgroundColor,
-          child: _buildEntryCommentBody(comment, context),
+          child: _buildEntryCommentBody(model, context),
+        ),
         );
-      },
-    );
   }
 
-  void _showActionsDialog(BuildContext context, EntryComment comment,
-      AuthState authState, VoidCallback deleteCommentCallback) {
+  void _showActionsDialog(BuildContext context, EntryCommentModel comment) {
+    /*
     var actions = [
       ActionsDialogItem(
         icon: OwmGlyphs.ic_dig_list,
@@ -62,10 +59,10 @@ class EntryCommentWidget extends StatelessWidget {
         ));
     }
 
-    ActionsDialog.showActionsDialog(context, actions);
+    ActionsDialog.showActionsDialog(context, actions);*/
   }
 
-  Widget _buildEntryCommentBody(EntryComment comment, BuildContext context) {
+  Widget _buildEntryCommentBody(EntryCommentModel model, BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(left: 14.0, right: 12.0),
       child: Row(
@@ -74,7 +71,7 @@ class EntryCommentWidget extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: 6.0, bottom: 12.0),
             child: AvatarWidget(
-              author: comment.author,
+              author: model.author,
               size: 36.0,
               //TODO: Add badge
             ),
@@ -97,9 +94,9 @@ class EntryCommentWidget extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        _drawHeader(context, comment),
-                        _drawBody(comment),
-                        _drawEmbed(comment),
+                        _drawHeader(context, model.author),
+                        _drawBody(context, model),
+                        _drawEmbed(model.embed, model.body),
                       ],
                     ),
                   ),
@@ -108,20 +105,16 @@ class EntryCommentWidget extends StatelessWidget {
                     right: 0.0,
                     child: Padding(
                       padding: EdgeInsets.only(left: 8.0),
-                      child: StoreConnector<AppState, VoidCallback>(
-                        converter: (store) =>
-                            () => store.dispatch(voteEntryComment(comment.id)),
-                        builder: (context, callback) => VoteButton(
-                          isSelected: comment.isVoted,
+                      child: VoteButton(
+                          isSelected: model.isVoted,
                           isComment: true,
-                          count: comment.voteCount,
+                          count: model.voteCount,
                           onClicked: () {
-                            callback();
+                            model.toggleVote();
                           },
                         ),
                       ),
                     ),
-                  ),
                 ],
               ),
               Row(
@@ -133,7 +126,7 @@ class EntryCommentWidget extends StatelessWidget {
                       bottom: 4.0,
                       left: 14.0,
                     ),
-                    text: Utils.getSimpleDate(comment.date),
+                    text: Utils.getSimpleDate(model.date),
                   ),
                   _footerText(
                     context,
@@ -145,7 +138,7 @@ class EntryCommentWidget extends StatelessWidget {
                     isButton: true,
                     onTap: () {
                       OwmKeys.inputBarKey.currentState
-                          .quoteText(comment.author, comment.body);
+                          .quoteText(model.author, model.body);
                     },
                   ),
                   _footerText(
@@ -159,7 +152,7 @@ class EntryCommentWidget extends StatelessWidget {
                     isButton: true,
                     onTap: () {
                       OwmKeys.inputBarKey.currentState
-                          .replyToUser(comment.author);
+                          .replyToUser(model.author);
                     },
                   ),
                 ],
@@ -171,7 +164,7 @@ class EntryCommentWidget extends StatelessWidget {
     );
   }
 
-  Widget _drawHeader(BuildContext context, EntryComment comment) {
+  Widget _drawHeader(BuildContext context, Author author) {
     return Padding(
       padding: EdgeInsets.only(
         left: 12.0,
@@ -180,30 +173,24 @@ class EntryCommentWidget extends StatelessWidget {
         bottom: 4.0,
       ),
       child: Text(
-        comment.author.login,
+        author.login,
         overflow: TextOverflow.ellipsis,
         style: TextStyle(
           fontWeight: FontWeight.w500,
           fontSize: 13.5,
-          color: Utils.getAuthorColor(comment.author, context),
+          color: Utils.getAuthorColor(author, context),
         ),
       ),
     );
   }
 
-  Widget _drawBody(EntryComment comment) {
-    return StoreConnector<AppState, AuthState>(
-      converter: (store) => store.state.authState,
-      builder: (context, authState) => StoreConnector<AppState, VoidCallback>(
-        converter: (store) =>
-            () => store.dispatch(deleteEntryComment(commentId, Completer())),
-        builder: (context, deleteCommentCallback) => SupaGestureDetector(
+  Widget _drawBody(BuildContext context, EntryCommentModel model) {
+    return SupaGestureDetector(
           onLongPress: () {
-            _showActionsDialog(
-                context, comment, authState, deleteCommentCallback);
+            _showActionsDialog(context, model);
           },
           child: BodyWidget(
-            body: comment.body,
+            body: model.body,
             ellipsize: false,
             padding: EdgeInsets.only(
               bottom: 8.0,
@@ -211,18 +198,17 @@ class EntryCommentWidget extends StatelessWidget {
               right: 12.0,
             ),
           ),
-        ),
-      ),
+        
     );
   }
 
-  Widget _drawEmbed(EntryComment comment) {
+  Widget _drawEmbed(Embed embed, String body) {
     return Visibility(
-      visible: comment.embed != null,
+      visible: embed != null,
       child: Padding(
-        padding: EdgeInsets.only(top: comment.body != null ? 0.0 : 4.0),
+        padding: EdgeInsets.only(top: body != null ? 0.0 : 4.0),
         child: EmbedWidget(
-          embed: comment.embed,
+          embed: embed,
           borderRadius: 20.0,
           reducedWidth: 82.0,
         ),

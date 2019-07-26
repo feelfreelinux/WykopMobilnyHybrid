@@ -12,3 +12,4 @@ export 'tag_suggestion.dart';
 export 'related.dart';
 export 'conversation.dart';
 export 'pm_message.dart';
+export 'entry_link.dart';

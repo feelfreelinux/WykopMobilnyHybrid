@@ -22,11 +22,11 @@ class PmApi extends ApiResource {
         .map((e) => PmMessage.mapFromResponse(e))
         .toList();
   }
-
+/*
   Future<Result> sendMessage(int page) async {
     var items = await client
         .request('mywykop', 'users', named: {'page': page.toString()});
     return normalizeEntriesResponse(BuiltList.from(
         client.deserializeList(EntryResponse.serializer, items)));
-  }
+  }*/
 }

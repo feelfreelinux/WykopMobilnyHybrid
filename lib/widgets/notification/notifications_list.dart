@@ -1,61 +1,57 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:owmflutter/keys.dart';
-import 'package:owmflutter/store/store.dart';
-import 'package:owmflutter/widgets/widgets.dart';
 import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:owmflutter/model/model.dart';
+import 'package:owmflutter/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
-class NotificationsList extends StatelessWidget {
-  final ConverterCallback converterCallback;
-  final LoadDataCallback loadDataCallback;
+class NotificationsList extends StatefulWidget {
+  final dynamic builder;
   final Widget header;
 
-  NotificationsList(
-      {this.converterCallback,
-      this.loadDataCallback,
-      this.header,
-      String pageKey})
-      : super(key: PageStorageKey(pageKey));
+  NotificationsList({this.builder, this.header});
+
+  @override
+  NotificationsListState createState() {
+    return new NotificationsListState();
+  }
+}
+
+class NotificationsListState extends State<NotificationsList>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Container(
-        //decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
-        child: StoreConnector<AppState, ItemListState>(
-            converter: (store) => converterCallback(store),
-            onInit: (store) {
-              var state = converterCallback(store);
-              if (state.paginationState.itemIds.isEmpty &&
-                  !state.listState.haveReachedEnd) {
-                loadDataCallback(store, false, Completer());
-              }
-            },
-            builder: (context, state) {
-              if (state == null ||
-                  state.listState.isLoading && state.listState.page == 1) {
-                return Center(child: CircularProgressIndicator());
-              }
-              return StoreConnector<AppState, dynamic>(converter: (store) {
-                return (bool refresh, Completer completer) =>
-                    loadDataCallback(store, refresh, completer);
-              }, builder: (context, callback) {
-                return RefreshIndicator(
-                    onRefresh: () {
-                      var completer = Completer();
-                      callback(true, completer);
-                      return completer.future;
+      decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
+      child: ChangeNotifierProvider<NotificationListModel>(
+        builder: widget.builder,
+        child: Consumer<NotificationListModel>(
+          builder: (context, model, _) => RefreshIndicator(
+            onRefresh: () => model.refresh(),
+            child: model.isLoading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : InfiniteList(
+                    header: widget.header,
+                    loadData: (completer) async {
+                      await model.loadMoreNotifications();
                     },
-                    child: InfiniteList(
-                        header: header,
-                        hasReachedEnd: state.listState.haveReachedEnd,
-                        loadData: (completer) => callback(false, completer),
-                        itemCount: state.paginationState.itemIds.length,
-                        itemBuilder: (context, index) {
-                          return NotificationWidget(
-                              notificationId:
-                                  state.paginationState.itemIds[index]);
-                        }));
-              });
-            }));
+                    itemCount: model.notifications.length,
+                    itemBuilder: (context, index) {
+                      return ChangeNotifierProvider<NotificationModel>(
+                        builder: (context) => NotificationModel()
+                          ..setData(model.notifications[index]),
+                        child: NotificationWidget(),
+                      );
+                    },
+                  ),
+          ),
+        ),
+      ),
+    );
   }
 }

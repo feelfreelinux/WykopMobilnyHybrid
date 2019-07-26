@@ -2,12 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'dart:async';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:owmflutter/store/store.dart';
-import 'package:redux/redux.dart';
 
-typedef void SearchCallback(
-    String query, Store<AppState> store, Completer completer);
 
 class AppbarTabsWidget extends StatefulWidget implements PreferredSizeWidget {
   final List<Widget> tabs;
@@ -29,94 +24,88 @@ class AppbarTabsWidget extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _AppbarTabsWidgetState extends State<AppbarTabsWidget> {
+  bool shadow = true;
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, bool>(
-      converter: (store) => store.state.globalListState.showListShadow,
-      builder: (context, shadow) => AnimatedContainer(
-        duration: Duration(milliseconds: 200),
-        decoration: Utils.appBarShadow(shadow),
-        child: AppBar(
-          automaticallyImplyLeading: false,
-          title: Container(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
-            child: Row(
-              children: <Widget>[
-                AppbarUserWidget(),
-                Expanded(
-                  child: Stack(
-                    children: <Widget>[
-                      Container(
-                        color: Theme.of(context).primaryColor,
-                        child: TabBar(
-                          tabs: widget.tabs,
-                          isScrollable: true,
-                          indicatorColor:
-                              Theme.of(context).primaryColor.withOpacity(0.0),
-                          labelStyle: TextStyle(
-                            height: 1.45,
-                            fontSize: 24.0,
-                            fontWeight: FontWeight.w700,
-                          ),
-                          unselectedLabelStyle: TextStyle(
-                            height: 2.20,
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          labelPadding: EdgeInsets.symmetric(
-                            vertical: 0.0,
-                            horizontal: 14.0,
-                          ),
-                          unselectedLabelColor: Colors.grey[600],
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 200),
+      decoration: Utils.appBarShadow(shadow),
+      child: AppBar(
+        automaticallyImplyLeading: false,
+        title: Container(
+          padding: EdgeInsets.symmetric(horizontal: 8.0),
+          child: Row(
+            children: <Widget>[
+              AppbarUserWidget(),
+              Expanded(
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      color: Theme.of(context).primaryColor,
+                      child: TabBar(
+                        tabs: widget.tabs,
+                        isScrollable: true,
+                        indicatorColor:
+                            Theme.of(context).primaryColor.withOpacity(0.0),
+                        labelStyle: TextStyle(
+                          height: 1.45,
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.w700,
                         ),
+                        unselectedLabelStyle: TextStyle(
+                          height: 2.20,
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        labelPadding: EdgeInsets.symmetric(
+                          vertical: 0.0,
+                          horizontal: 14.0,
+                        ),
+                        unselectedLabelColor: Colors.grey[600],
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Container(
-                            width: 8.0,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                colors: [
-                                  Theme.of(context).primaryColor,
-                                  Theme.of(context)
-                                      .primaryColor
-                                      .withOpacity(0.0),
-                                ],
-                              ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                          width: 8.0,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              colors: [
+                                Theme.of(context).primaryColor,
+                                Theme.of(context).primaryColor.withOpacity(0.0),
+                              ],
                             ),
                           ),
-                          Container(
-                            width: 8.0,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                colors: [
-                                  Theme.of(context)
-                                      .primaryColor
-                                      .withOpacity(0.0),
-                                  Theme.of(context).primaryColor,
-                                ],
-                              ),
+                        ),
+                        Container(
+                          width: 8.0,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              colors: [
+                                Theme.of(context).primaryColor.withOpacity(0.0),
+                                Theme.of(context).primaryColor,
+                              ],
                             ),
                           ),
-                        ],
-                      )
-                    ],
-                  ),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
-                AppBarButton(
-                    icon: Icons.search,
-                    round: true,
-                    onTap: widget.onPressedSearch ?? () {}),
-              ],
-            ),
+              ),
+              AppBarButton(
+                  icon: Icons.search,
+                  round: true,
+                  onTap: widget.onPressedSearch ?? () {}),
+            ],
           ),
-          elevation: 0.0,
-          centerTitle: true,
-          titleSpacing: 0.0,
         ),
+        elevation: 0.0,
+        centerTitle: true,
+        titleSpacing: 0.0,
       ),
     );
   }
@@ -125,7 +114,7 @@ class _AppbarTabsWidgetState extends State<AppbarTabsWidget> {
 @immutable
 class SearchAppbarWidget extends PreferredSize {
   final VoidCallback onClosedSearch;
-  final SearchCallback searchCallback;
+  final dynamic searchCallback;
   final bool shadow;
 
   SearchAppbarWidget({
@@ -184,34 +173,30 @@ class SearchAppbarWidget extends PreferredSize {
                         color: Utils.backgroundGreyOpacity(context),
                         borderRadius: BorderRadius.circular(36.0),
                       ),
-                      child: StoreConnector<AppState, dynamic>(
-                        converter: (store) => (query) =>
-                            searchCallback(query, store, Completer()),
-                        builder: (context, callback) => TextField(
-                          cursorWidth: 2.0,
-                          cursorRadius: Radius.circular(20.0),
-                          style: DefaultTextStyle.of(context).style.merge(
-                                TextStyle(
-                                  fontSize: 14.0,
-                                ),
+                      child: TextField(
+                        cursorWidth: 2.0,
+                        cursorRadius: Radius.circular(20.0),
+                        style: DefaultTextStyle.of(context).style.merge(
+                              TextStyle(
+                                fontSize: 14.0,
                               ),
-                          maxLines: 1,
-                          controller: searchInputController,
-                          onSubmitted: (text) {
-                            callback(text);
-                          },
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(vertical: 8.0),
-                            border: InputBorder.none,
-                            hintText: 'Szukaj',
-                            hintStyle: TextStyle(
-                                color: Theme.of(context)
-                                    .textTheme
-                                    .body1
-                                    .color
-                                    .withOpacity(0.7)),
-                          ),
+                            ),
+                        maxLines: 1,
+                        controller: searchInputController,
+                        onSubmitted: (text) {
+                          // callback(text);
+                        },
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(vertical: 8.0),
+                          border: InputBorder.none,
+                          hintText: 'Szukaj',
+                          hintStyle: TextStyle(
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .body1
+                                  .color
+                                  .withOpacity(0.7)),
                         ),
                       ),
                     ),

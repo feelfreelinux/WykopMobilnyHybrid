@@ -12,7 +12,6 @@ export 'response_models/related_response.dart';
 export 'response_models/pm_message_response.dart';
 export 'response_models/conversation_response.dart';
 export 'response_models/serializers.dart';
-export 'normalizers.dart';
 export 'client.dart';
 export 'resources/pm.dart';
 export 'resources/profiles.dart';

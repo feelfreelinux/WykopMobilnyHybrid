@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/keys.dart';
-import 'package:owmflutter/store/store.dart';
+import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/owm_glyphs.dart';
 
@@ -25,24 +26,23 @@ class NotificationsScreen extends StatelessWidget {
               child: ConversationsList(),
             ),
             NotLoggedWidget(
-              icon: Icons.notifications,
-              text: "Powiadomienia",
-              child: NotificationsList(
-                  pageKey: "Notifications",
-                  converterCallback: (store) =>
-                      store.state.notificationsState.notificationsState,
-                  loadDataCallback: (store, refresh, completer) =>
-                      store.dispatch(loadNotifications(refresh, completer))),
-            ),
+                icon: Icons.notifications,
+                text: "Powiadomienia",
+                child: NotificationsList(
+                builder: (context) => NotificationListModel(
+                  loadNewNotifications: (page) =>
+                      api.notifications.getNotifications(page),
+                ),
+              ),),
             NotLoggedWidget(
               icon: OwmGlyphs.ic_navi_my_wykop,
               text: "Obserwowane tagi",
               child: NotificationsList(
-                  pageKey: "HashNotifications",
-                  converterCallback: (store) =>
-                      store.state.notificationsState.hashTagsState,
-                  loadDataCallback: (store, refresh, completer) => store
-                      .dispatch(loadHashTagNotifications(refresh, completer))),
+                builder: (context) => NotificationListModel(
+                  loadNewNotifications: (page) =>
+                      api.notifications.getHashtagNotifications(page),
+                ),
+              ),
             ),
           ],
         ),

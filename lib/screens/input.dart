@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:owmflutter/store/store.dart';
+import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/owm_glyphs.dart';
@@ -9,6 +8,8 @@ import 'package:owmflutter/widgets/input/emoticon_button.dart';
 import 'package:owmflutter/widgets/input/selected_image.dart';
 import 'dart:async';
 import 'dart:io';
+
+import 'package:provider/provider.dart';
 
 enum InputType {
   ENTRY,
@@ -23,18 +24,10 @@ class EntryInputScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: StoreConnector<AppState, dynamic>(
-        converter: (store) => (inputData, completer) =>
-            store.dispatch(addEntry(inputData, completer)),
-        builder: (context, callback) {
-          return InputScreen(
-              inputType: InputType.ENTRY,
-              sendCallback: (inputData) async {
-                var completer = Completer();
-                callback(inputData, completer);
-                await completer.future;
-                return;
-              });
+      child: InputScreen(
+        inputType: InputType.ENTRY,
+        sendCallback: (inputData) async {
+          return;
         },
       ),
     );
@@ -76,16 +69,16 @@ class _InputScreenState extends State<InputScreen> {
   Widget build(BuildContext context) {
     return _SystemPadding(
       child: Scaffold(
-        bottomNavigationBar: StoreConnector<AppState, dynamic>(
-            converter: (store) => (Completer completer, InputData inputData) =>
-                store.dispatch(addEntryComment(0, inputData, completer)),
-            builder: (context, callback) => InputBarWidget(widget.sendCallback,
-                    key: inputBarKey, externalController: textController,
-                    imageStateChanged: (image) {
-                  setState(() {
-                    this.image = image;
-                  });
-                })),
+        bottomNavigationBar: InputBarWidget(
+          widget.sendCallback,
+          key: inputBarKey,
+          externalController: textController,
+          imageStateChanged: (image) {
+            setState(() {
+              this.image = image;
+            });
+          },
+        ),
         resizeToAvoidBottomPadding: false,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(48.0),
@@ -133,32 +126,28 @@ class _InputScreenState extends State<InputScreen> {
                         child: Scrollbar(
                           child: SingleChildScrollView(
                             reverse: true,
-                            child: StoreConnector<AppState, SuggestCallback>(
-                              converter: (store) => (q) => store
-                                  .dispatch(loadSuggestions(q, Completer())),
-                              builder: (context, suggestCallback) => TextField(
-                                    cursorWidth: 1.5,
-                                    cursorRadius: Radius.circular(20.0),
-                                    onChanged: (text) {
-                                      suggestCallback(inputBarKey.currentState
-                                          .extractSuggestions());
-                                    },
-                                    style: DefaultTextStyle.of(context)
-                                        .style
-                                        .merge(
-                                          TextStyle(fontSize: 14.0),
-                                        ),
-                                    maxLines: null,
-                                    controller: this.textController,
-                                    keyboardType: TextInputType.multiline,
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(
-                                        vertical: 8.0,
-                                      ),
-                                      border: InputBorder.none,
-                                      hintText: 'Treść',
+                            child: Consumer<SuggestionsModel>(
+                              builder: (context, model, _) => TextField(
+                                cursorWidth: 1.5,
+                                cursorRadius: Radius.circular(20.0),
+                                onChanged: (text) {
+                                  model.loadSuggestions(inputBarKey.currentState
+                                      .extractSuggestions());
+                                },
+                                style: DefaultTextStyle.of(context).style.merge(
+                                      TextStyle(fontSize: 14.0),
                                     ),
+                                maxLines: null,
+                                controller: this.textController,
+                                keyboardType: TextInputType.multiline,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                    vertical: 8.0,
                                   ),
+                                  border: InputBorder.none,
+                                  hintText: 'Treść',
+                                ),
+                              ),
                             ),
                           ),
                         ),

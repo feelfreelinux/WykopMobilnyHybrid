@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:owmflutter/store/store.dart';
-import 'package:redux/redux.dart';
-import 'package:redux_thunk/redux_thunk.dart' show thunkMiddleware;
 import 'package:owmflutter/app.dart';
 import 'package:flutter/services.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -13,14 +10,10 @@ void main() {
     statusBarColor: Colors.transparent,
   ));
 
-  final store =
-      Store<AppState>(appReducer, initialState: AppState(), middleware: [
-    thunkMiddleware,
-  ]);
+
 
   runApp(RestartWidget(
       child: OwmApp(
-    store: store,
   )));
 }
 

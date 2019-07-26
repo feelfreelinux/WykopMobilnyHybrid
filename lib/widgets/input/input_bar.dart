@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/widgets/widgets.dart';
-import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/utils/utils.dart';
-import 'package:flutter_redux/flutter_redux.dart';
+import 'package:provider/provider.dart';
 import 'dart:io';
 import 'dart:async';
 import 'emoticon_button.dart';
@@ -44,6 +44,7 @@ class InputBarWidgetState extends State<InputBarWidget> {
   bool clickTextField = false;
   bool isEmpty = true;
   bool sending = false;
+  bool shadow = true;
 
   bool get hasExternalInput => widget.externalController != null;
 
@@ -121,28 +122,25 @@ class InputBarWidgetState extends State<InputBarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, bool>(
-      converter: (store) => store.state.globalListState.showInputShadow,
-      builder: (context, shadow) => AnimatedContainer(
-        duration: Duration(milliseconds: 200),
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(shadow ? 0.1 : 0.0),
-              blurRadius: shadow ? 1.0 : 0.0,
-            ),
-          ],
-          color: Theme.of(context).primaryColor,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _drawSuggestions(),
-            hasExternalInput ? Container() : _drawInputBar(),
-            _drawButtons(),
-          ],
-        ),
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 200),
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(shadow ? 0.1 : 0.0),
+            blurRadius: shadow ? 1.0 : 0.0,
+          ),
+        ],
+        color: Theme.of(context).primaryColor,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _drawSuggestions(),
+          hasExternalInput ? Container() : _drawInputBar(),
+          _drawButtons(),
+        ],
       ),
     );
   }
@@ -229,17 +227,15 @@ class InputBarWidgetState extends State<InputBarWidget> {
                               child: Scrollbar(
                                 child: SingleChildScrollView(
                                   reverse: true,
-                                  child:
-                                      StoreConnector<AppState, SuggestCallback>(
-                                    converter: (store) => (q) => store.dispatch(
-                                        loadSuggestions(q, Completer())),
-                                    builder: (context, suggestCallback) =>
+                                  child: Consumer<SuggestionsModel>(
+                                    builder: (context, suggestionsModel, _) =>
                                         TextField(
                                       focusNode: focusNode,
                                       cursorWidth: 1.5,
                                       cursorRadius: Radius.circular(20.0),
                                       onChanged: (text) {
-                                        suggestCallback(extractSuggestions());
+                                        suggestionsModel.loadSuggestions(
+                                            extractSuggestions());
                                       },
                                       style: DefaultTextStyle.of(context)
                                           .style
@@ -313,47 +309,38 @@ class InputBarWidgetState extends State<InputBarWidget> {
   }
 
   Widget _drawSuggestions() {
-    return StoreConnector<AppState, VoidCallback>(
-      converter: (store) =>
-          () => store.dispatch(loadSuggestions("dupa", Completer())),
-      builder: (context, clearSuggestionsCallback) =>
-          StoreConnector<AppState, SuggestionsState>(
-        converter: (store) => store.state.suggestionsState,
-        builder: (context, suggestions) {
-          return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: List()
-                ..addAll(suggestions.authorSuggestions
-                    .sublist(
-                        0,
-                        suggestions.authorSuggestions.length < 5
-                            ? suggestions.authorSuggestions.length
-                            : 5)
-                    .map((s) => new UserSuggestionWidget(
-                          applySuggestion: () {
-                            this._insertSuggestion('@' + s.login);
-                            clearSuggestionsCallback();
-                          },
-                          suggestion: s,
-                        ))
-                    .toList())
-                ..addAll(suggestions.tagSuggestions
-                    .sublist(
-                        0,
-                        suggestions.tagSuggestions.length < 5
-                            ? suggestions.tagSuggestions.length
-                            : 5)
-                    .map((s) => new TagSuggestionWidget(
-                          applySuggestion: () {
-                            this._insertSuggestion(s.tag);
-                            clearSuggestionsCallback();
-                          },
-                          suggestion: s,
-                        ))
-                    .toList()));
-        },
-      ),
-    );
+    return Consumer<SuggestionsModel>(
+        builder: (context, suggestionModel, _) => Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: List()
+              ..addAll(suggestionModel.authorSuggestions
+                  .sublist(
+                      0,
+                      suggestionModel.authorSuggestions.length < 5
+                          ? suggestionModel.authorSuggestions.length
+                          : 5)
+                  .map((s) => new UserSuggestionWidget(
+                        applySuggestion: () {
+                          this._insertSuggestion('@' + s.login);
+                          suggestionModel.clearSuggestions();
+                        },
+                        suggestion: s,
+                      ))
+                  .toList())
+              ..addAll(suggestionModel.tagSuggestions
+                  .sublist(
+                      0,
+                      suggestionModel.tagSuggestions.length < 5
+                          ? suggestionModel.tagSuggestions.length
+                          : 5)
+                  .map((s) => new TagSuggestionWidget(
+                        applySuggestion: () {
+                          this._insertSuggestion(s.tag);
+                          suggestionModel.clearSuggestions();
+                        },
+                        suggestion: s,
+                      ))
+                  .toList())));
   }
 
   Widget _drawButtons() {

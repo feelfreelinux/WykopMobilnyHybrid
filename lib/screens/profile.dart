@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
@@ -33,13 +32,6 @@ class _MainCollapsingToolbarState extends State<ProfileScreen> {
           ],
         ),
         body: TabBarView(children: [
-          EntryLinkList(
-              header: _drawHeader(),
-              actionType: PROFILE_ACTIONS_PREFIX + widget.profile,
-              converterCallback: (store) => store
-                  .state.profilesState?.states[widget.profile]?.actionsState,
-              loadDataCallback: (store, refresh, completer) => store
-                  .dispatch(loadTagIndex(widget.profile, refresh, completer))),
         ], physics: NeverScrollableScrollPhysics()),
       ),
     );

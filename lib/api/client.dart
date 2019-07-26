@@ -3,7 +3,6 @@ export 'response_models/author_response.dart';
 export 'response_models/embed_response.dart';
 export 'response_models/entry_comment_response.dart';
 export 'response_models/serializers.dart';
-export 'normalizers.dart';
 
 import 'dart:async';
 import 'package:built_value/serializer.dart';

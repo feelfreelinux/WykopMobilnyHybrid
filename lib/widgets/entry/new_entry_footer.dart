@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/models/models.dart';
+import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/screens/screens.dart';
-import 'package:owmflutter/utils/utils.dart';
 import 'package:share/share.dart';
+import 'package:owmflutter/model/model.dart';
 
-class LinkFooterWidget extends StatelessWidget {
-  final String linkTitle;
-  final int linkId;
+class NewEntryFooterWidget extends StatelessWidget {
+  final EntryModel entry;
   final bool isClickable;
-  LinkFooterWidget({this.linkTitle, this.linkId, this.isClickable});
+  NewEntryFooterWidget(this.entry, this.isClickable);
 
   @override
   Widget build(BuildContext context) {
@@ -24,24 +24,18 @@ class LinkFooterWidget extends StatelessWidget {
             onTap: () {},
           ),
           CommentsButton(
-            count: 15,
+            count: entry.commentsCount,
             onTap: () {
               if (isClickable) {
                 Navigator.push(
                   context,
-                  Utils.getPageTransition(
-                    LinkScreen(
-                      linkId: linkId,
-                    ),
-                  ),
+                  Utils.getPageTransition(EntryScreen(model: entry)),
                 );
               }
             },
           ),
           ShareButton(onTap: () {
-            Share.share(this.linkTitle +
-                "\nhttps://www.wykop.pl/link/" +
-                linkId.toString());
+            Share.share("https://www.wykop.pl/wpis/" + entry.id.toString());
           }),
         ],
       ),

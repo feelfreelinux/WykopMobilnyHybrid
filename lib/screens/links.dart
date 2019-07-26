@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:owmflutter/store/store.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/widgets/widgets.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:owmflutter/screens/screens.dart';
+import 'package:owmflutter/api/api.dart';
+import 'package:owmflutter/model/model.dart';
 
 class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
@@ -69,7 +69,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   setState(() {
                     searchQuery = q;
                   });
-                  store.dispatch(searchLinks(q, true, completer));
                 },
               )
             : AppbarTabsWidget(
@@ -86,33 +85,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
         body: isSearching
-            ? StoreConnector<AppState, ItemListState>(
-                onInit: (store) => store.dispatch(clearLinks()),
-                converter: (store) => store.state.searchState.linksSearchState,
-                builder: (context, state) => state
-                        .paginationState.itemIds.isNotEmpty
-                    ? LinksList(
-                        converterCallback: (store) =>
-                            store.state.searchState.linksSearchState,
-                        loadDataCallback: (store, refresh, completer) =>
-                            store.dispatch(
-                                searchLinks(searchQuery, refresh, completer)))
-                    : Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.all(12.0),
-                              child: Icon(
-                                Icons.search,
-                                size: 60.0,
-                              ),
-                            ),
-                            Text('Szukaj znaleziska'),
-                          ],
-                        ),
+            ? LinksList(
+                      builder: (context) => LinkListModel(
+                        loadNewLinks: (page) => api.search.searchLinks(page, searchQuery),
                       ),
-              )
+                    )
             : TabBarView(
                 children: [
                   LinksList(
@@ -152,10 +129,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
-                    converterCallback: (store) =>
-                        store.state.linksState.promotedState,
-                    loadDataCallback: (store, refresh, completer) =>
-                        store.dispatch(loadPromoted(refresh, completer)),
+                    builder: (context) => LinkListModel(
+                      loadNewLinks: (page) => api.links.getPromotedNew(page),
+                    ),
                   ),
                   Center(
                     child: Text('Niezaimplementowane'),
@@ -167,10 +143,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     icon: Icons.favorite,
                     text: "Ulubione znaleziska",
                     child: LinksList(
-                      converterCallback: (store) =>
-                          store.state.linksState.favoriteState,
-                      loadDataCallback: (store, refresh, completer) =>
-                          store.dispatch(loadLinksFavorite(refresh, completer)),
+                      builder: (context) => LinkListModel(
+                        loadNewLinks: (page) => api.links.getFavoriteNew(page),
+                      ),
                     ),
                   ),
                 ],

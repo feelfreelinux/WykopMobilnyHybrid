@@ -26,7 +26,7 @@ abstract class LinkComment implements Built<LinkComment, LinkCommentBuilder> {
 
   int get parentId;
 
-  List<int> get childrenIds;
+  List<LinkComment> get children;
 
   LinkCommentVoteState get voteState;
 
@@ -38,7 +38,7 @@ abstract class LinkComment implements Built<LinkComment, LinkCommentBuilder> {
   Embed get embed;
 
   factory LinkComment.mapFromResponse(
-      LinkCommentResponse response, List<int> childrenIds) {
+      LinkCommentResponse response) {
     return _$LinkComment._(
         id: response.id,
         date: response.date,
@@ -46,10 +46,10 @@ abstract class LinkComment implements Built<LinkComment, LinkCommentBuilder> {
         isBlocked: response.isBlocked,
         userVote: response.userVote,
         voteCountPlus: response.voteCountPlus,
-        childrenIds: childrenIds,
         parentId: response.parentId,
         linkId: response.link,
         voteCount: response.voteCount,
+        children: [],
         author: Author.fromResponse(response: response.author),
         voteState: getVoteState(response.userVote),
         embed: (response.embed != null

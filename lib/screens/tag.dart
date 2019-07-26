@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:owmflutter/store/store.dart';
+import 'package:owmflutter/api/api.dart';
+import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 
@@ -40,29 +41,26 @@ class _MainCollapsingToolbarState extends State<TagScreen> {
 
   _drawBody() {
     if (list == "Wszystko") {
-      return EntryLinkList(
-          header: _drawHeader(),
-          actionType: TAG_INDEX_PREFIX + widget.tag,
-          converterCallback: (store) =>
-              store.state.tagsState?.states[widget.tag]?.indexState,
-          loadDataCallback: (store, refresh, completer) =>
-              store.dispatch(loadTagIndex(widget.tag, refresh, completer)));
+      return EntriesLinksList(
+        header: _drawHeader(),
+        builder: (context) => EntryLinkListModel(
+          loadEntryLinks: (page) => api.tags.getIndex(widget.tag, page),
+        ),
+      );
     } else if (list == "Wpisy") {
-      return EntryList(
-          header: _drawHeader(),
-          actionType: TAG_ENTRIES_PREFIX + widget.tag,
-          converterCallback: (store) =>
-              store.state.tagsState.states[widget.tag].entriesState,
-          loadDataCallback: (store, refresh, completer) =>
-              store.dispatch(loadTagEntries(widget.tag, refresh, completer)));
+      return EntriesList(
+        header: _drawHeader(),
+        builder: (context) => EntryListModel(
+          loadNewEntries: (page) => api.tags.getEntries(widget.tag, page),
+        ),
+      );
     } else if (list == "Znaleziska") {
       return LinksList(
-          header: _drawHeader(),
-          actionType: TAG_LINKS_PREFIX + widget.tag,
-          converterCallback: (store) =>
-              store.state.tagsState.states[widget.tag].linksState,
-          loadDataCallback: (store, refresh, completer) =>
-              store.dispatch(loadTagLinks(widget.tag, refresh, completer)));
+        header: _drawHeader(),
+        builder: (context) => LinkListModel(
+          loadNewLinks: (page) => api.tags.getLinks(widget.tag, page),
+        ),
+      );
     }
   }
 

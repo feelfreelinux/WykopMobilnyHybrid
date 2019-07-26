@@ -1,102 +1,96 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:owmflutter/model/link_model.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/widgets/widgets.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:owmflutter/store/store.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
+import 'package:provider/provider.dart';
 import 'vote_counter.dart';
 import 'package:owmflutter/owm_glyphs.dart';
 
 class LinkOpenedWidget extends StatelessWidget {
-  final int linkId;
-  LinkOpenedWidget({this.linkId});
+  LinkOpenedWidget();
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      key: Key(linkId.toString()),
-      color: Theme.of(context).cardColor,
-      child: StoreConnector<AppState, Link>(
-        converter: (store) => store.state.entitiesState.links[linkId],
-        builder: (context, link) {
-          if (link == null) {
-            return Container();
-          }
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 18.0,
-                ),
-                child: Row(
-                  children: <Widget>[
-                    AuthorWidget(
-                      author: link.author,
-                      date: link.date,
-                      fontSize: 14.0,
-                      padding: EdgeInsets.symmetric(
-                        vertical: 12.0,
-                      ),
+    return Consumer<LinkModel>(
+      builder: (context, model, _) => Material(
+        key: Key(model.id.toString()),
+        color: Theme.of(context).cardColor,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 18.0,
+              ),
+              child: Row(
+                children: <Widget>[
+                  AuthorWidget(
+                    author: model.author,
+                    date: model.date,
+                    fontSize: 14.0,
+                    padding: EdgeInsets.symmetric(
+                      vertical: 12.0,
                     ),
-                    VoteCounterWidget(
-                      voteState: "",
-                      onTap: () {},
-                      count: link.voteCount,
-                      size: 48.0,
-                      isHot: link.isHot,
-                      padding: EdgeInsets.symmetric(
-                        vertical: 12.0,
-                      ),
+                  ),
+                  VoteCounterWidget(
+                    voteState: "",
+                    onTap: () {},
+                    count: model.voteCount,
+                    size: 48.0,
+                    isHot: model.isHot,
+                    padding: EdgeInsets.symmetric(
+                      vertical: 12.0,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              GestureDetector(
-                onTap: () => Utils.launchURL(link.sourceUrl),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Stack(
-                      children: [
-                        _drawImage(context, link),
-                        _drawLinkFavicon(context, link),
-                      ],
-                    ),
-                    _drawTitle(context, link),
-                    _drawDescription(link),
-                  ],
-                ),
+            ),
+            GestureDetector(
+              onTap: () => Utils.launchURL(model.sourceUrl),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Stack(
+                    children: [
+                      _drawImage(context, model.preview),
+                      _drawLinkFavicon(context, model.sourceUrl),
+                    ],
+                  ),
+                  _drawTitle(context, model.title),
+                  _drawDescription(model.description),
+                ],
               ),
-              _drawTags(link),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 18.0,
-                ),
-                child: LinkFooterWidget(link, false),
+            ),
+            _drawTags(model.tags),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 18.0,
               ),
-              DividerWidget(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 18.0,
-                ),
+              child: LinkFooterWidget(
+                  linkId: model.id, linkTitle: model.title, isClickable: false),
+            ),
+            DividerWidget(
+              padding: EdgeInsets.symmetric(
+                horizontal: 18.0,
               ),
-              _drawRelated(context, link),
-              DividerWidget(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 18.0,
-                ),
+            ),
+            _drawRelated(context, model),
+            DividerWidget(
+              padding: EdgeInsets.symmetric(
+                horizontal: 18.0,
               ),
-              _drawCommentHeader(context, link),
-            ],
-          );
-        },
+            ),
+            _drawCommentHeader(context, model),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _drawCommentHeader(BuildContext context, Link link) {
+  Widget _drawCommentHeader(BuildContext context, LinkModel link) {
     return Padding(
       padding: EdgeInsets.only(
         left: 18.0,
@@ -143,7 +137,7 @@ class LinkOpenedWidget extends StatelessWidget {
     );
   }
 
-  Widget _drawRelated(BuildContext context, Link link) {
+  Widget _drawRelated(BuildContext context, LinkModel link) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -207,29 +201,21 @@ class LinkOpenedWidget extends StatelessWidget {
             bottom: 18.0,
           ),
           child: link.relatedCount > 0
-              ? StoreConnector<AppState, List<int>>(
-                  converter: (store) =>
-                      store.state.linkScreensState?.states[linkId.toString()]
-                          ?.relatedLinks ??
-                      [],
-                  builder: (context, relatedLinks) {
-                    return SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 8.0,
-                        ),
-                        child: Row(
-                          children: relatedLinks
-                              .map((id) => RelatedWidget(
-                                    id: id,
-                                    count: link.relatedCount,
-                                  ))
-                              .toList(),
-                        ),
-                      ),
-                    );
-                  },
+              ? SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 8.0,
+                    ),
+                    child: Row(
+                      children: link.relatedLinks
+                          .map((id) => RelatedWidget(
+                                related: id,
+                                count: link.relatedCount,
+                              ))
+                          .toList(),
+                    ),
+                  ),
                 )
               : Padding(
                   padding: EdgeInsets.symmetric(
@@ -244,7 +230,7 @@ class LinkOpenedWidget extends StatelessWidget {
     );
   }
 
-  Widget _drawImage(BuildContext context, Link link) {
+  Widget _drawImage(BuildContext context, String preview) {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 180,
@@ -252,8 +238,8 @@ class LinkOpenedWidget extends StatelessWidget {
         boxShadow: [BoxShadow(color: Color(0x33000000))],
         image: DecorationImage(
           image: AdvancedNetworkImage(
-            link.preview != null
-                ? link.preview
+            preview != null
+                ? preview
                 : 'https://www.wykop.pl/cdn/c2526412/no-picture-night.jpg',
             useDiskCache: true,
           ),
@@ -263,7 +249,7 @@ class LinkOpenedWidget extends StatelessWidget {
     );
   }
 
-  Widget _drawLinkFavicon(BuildContext context, Link link) {
+  Widget _drawLinkFavicon(BuildContext context, String sourceUrl) {
     return Positioned(
       right: 0,
       child: Container(
@@ -289,7 +275,7 @@ class LinkOpenedWidget extends StatelessWidget {
               child: Image(
                 image: AdvancedNetworkImage(
                     'http://s2.googleusercontent.com/s2/favicons?domain_url=' +
-                        link.sourceUrl),
+                        sourceUrl),
                 height: 10.0,
                 width: 10.0,
               ),
@@ -299,7 +285,7 @@ class LinkOpenedWidget extends StatelessWidget {
                 horizontal: 4.0,
               ),
               child: Text(
-                link.sourceUrl
+                sourceUrl
                     .replaceAll('https://', '')
                     .replaceAll('http://', '')
                     .replaceAll('www.', '')
@@ -315,7 +301,7 @@ class LinkOpenedWidget extends StatelessWidget {
     );
   }
 
-  Widget _drawTitle(BuildContext context, Link link) {
+  Widget _drawTitle(BuildContext context, String title) {
     return Container(
       padding: EdgeInsets.only(
         left: 18.0,
@@ -323,7 +309,7 @@ class LinkOpenedWidget extends StatelessWidget {
         right: 18.0,
       ),
       child: Text(
-        link.title.replaceAll('&quot;', '"').replaceAll('&amp;', '&'),
+        title,
         style: TextStyle(
           height: 1.1,
           fontSize: 18.0,
@@ -333,7 +319,7 @@ class LinkOpenedWidget extends StatelessWidget {
     );
   }
 
-  Widget _drawDescription(Link link) {
+  Widget _drawDescription(String description) {
     return Padding(
       padding: EdgeInsets.only(
         left: 18.0,
@@ -341,7 +327,7 @@ class LinkOpenedWidget extends StatelessWidget {
         right: 18.0,
       ),
       child: Text(
-        link.description.replaceAll('&quot;', '"').replaceAll('&amp;', '&'),
+        description,
         style: TextStyle(
           height: 1.1,
         ),
@@ -349,7 +335,7 @@ class LinkOpenedWidget extends StatelessWidget {
     );
   }
 
-  Widget _drawTags(Link link) {
+  Widget _drawTags(String tags) {
     return Padding(
       padding: EdgeInsets.only(
         left: 18.0,
@@ -357,7 +343,7 @@ class LinkOpenedWidget extends StatelessWidget {
         right: 18.0,
       ),
       child: Text(
-        link.tags,
+        tags,
         style: TextStyle(
           height: 1.1,
         ),
