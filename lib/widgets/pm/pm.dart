@@ -15,13 +15,15 @@ class PmWidget extends StatefulWidget {
 class _PmWidgetState extends State<PmWidget> {
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      reverse: true,
-      itemCount: widget.snapshot.data.length,
-      itemBuilder: (context, index) {
-        var message = widget.snapshot.data.reversed.toList()[index];
-        return MessageWidget(message: message);
-      },
+    return ShadowNotificationListener(
+          child: ListView.builder(
+        reverse: true,
+        itemCount: widget.snapshot.data.length,
+        itemBuilder: (context, index) {
+          var message = widget.snapshot.data.reversed.toList()[index];
+          return MessageWidget(message: message);
+        },
+      ),
     );
   }
 }

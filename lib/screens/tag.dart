@@ -3,6 +3,7 @@ import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
+import 'package:provider/provider.dart';
 
 class TagScreen extends StatefulWidget {
   final String tag;
@@ -17,24 +18,27 @@ class _MainCollapsingToolbarState extends State<TagScreen> {
   Widget build(BuildContext context) {
     final mqData = MediaQuery.of(context);
     final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
-    return MediaQuery(
-      data: mqDataNew,
-      child: Scaffold(
-        appBar: AppbarNormalWidget(
-          title: "#" + widget.tag,
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.refresh),
-              onPressed: () {},
-              tooltip: "Odśwież",
-            ),
-          ],
+    return ChangeNotifierProvider<ShadowControlModel>(
+      builder: (context) => ShadowControlModel(),
+      child: MediaQuery(
+        data: mqDataNew,
+        child: Scaffold(
+          appBar: AppbarNormalWidget(
+            title: "#" + widget.tag,
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.refresh),
+                onPressed: () {},
+                tooltip: "Odśwież",
+              ),
+            ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.edit),
+            onPressed: () {},
+          ),
+          body: _drawBody(),
         ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.edit),
-          onPressed: () {},
-        ),
-        body: _drawBody(),
       ),
     );
   }
