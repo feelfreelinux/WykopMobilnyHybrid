@@ -23,6 +23,14 @@ abstract class ApiResource {
         .toList();
   }
 
+  LinkComment deserializeLinkComment(dynamic item) {
+    return LinkComment.mapFromResponse(_client.deserializeElement(LinkCommentResponse.serializer, item));
+  }
+
+  EntryComment deserializeEntryComment(dynamic item) {
+    return EntryComment.mapFromResponse(_client.deserializeElement(EntryCommentResponse.serializer, item));
+  }
+
   List<EntryLink> deserializeEntryLinks(dynamic items) {
     return _client
         .deserializeList(EntryLinkResponse.serializer, items)
@@ -44,7 +52,7 @@ abstract class ApiResource {
         .toList();
   }
 
-    List<Related> deserializeRelatedLinks(dynamic items) {
+  List<Related> deserializeRelatedLinks(dynamic items) {
     return _client
         .deserializeList(RelatedResponse.serializer, items)
         .map((e) => Related.mapFromResponse(e))

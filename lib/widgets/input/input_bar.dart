@@ -278,7 +278,7 @@ class InputBarWidgetState extends State<InputBarWidget> {
           ),
           SendButtonWidget(
             onTap: () {
-              this._sendButtonClicked();
+              this._sendButtonClicked(context);
             },
             isEmpty: isEmpty,
             sending: sending,
@@ -401,7 +401,7 @@ class InputBarWidgetState extends State<InputBarWidget> {
                   hasExternalInput
                       ? SendButtonWidget(
                           onTap: () {
-                            this._sendButtonClicked();
+                            this._sendButtonClicked(context);
                           },
                           isEmpty: isEmpty,
                           sending: sending,
@@ -441,7 +441,7 @@ class InputBarWidgetState extends State<InputBarWidget> {
                   hasExternalInput
                       ? SendButtonWidget(
                           onTap: () {
-                            this._sendButtonClicked();
+                            this._sendButtonClicked(context);
                           },
                           isEmpty: isEmpty,
                           sending: sending,
@@ -455,20 +455,19 @@ class InputBarWidgetState extends State<InputBarWidget> {
     }
   }
 
-  void _sendButtonClicked() {
+  void _sendButtonClicked(BuildContext context) async {
     setState(() {
       this.sending = true;
     });
-    this
-        .widget
-        .callback(InputData(body: this.textController.text, file: this.image))
-        .then((_) {
-      setState(() {
-        this.sending = false;
-        this.textController.clear();
-      });
-      removeImage();
+
+    var inputModel = Provider.of<InputModel>(context, listen: false);
+    await inputModel.onInputSubmitted(
+        InputData(body: this.textController.text, file: this.image));
+    setState(() {
+      this.sending = false;
+      this.textController.clear();
     });
+    removeImage();
   }
 
   Widget _drawIconRound({IconData icon, Color color, VoidCallback onTap}) {

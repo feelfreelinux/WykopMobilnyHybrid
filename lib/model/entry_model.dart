@@ -1,8 +1,9 @@
 import 'package:flutter/foundation.dart';
+import 'package:owmflutter/model/input_model.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/api/api.dart';
 
-class EntryModel extends ChangeNotifier {
+class EntryModel extends InputModel {
   int _id;
   String _body;
   String _date;
@@ -62,5 +63,12 @@ class EntryModel extends ChangeNotifier {
       _isVoted = false;
     }
     notifyListeners();
+  }
+
+  @override
+  Future<void> onInputSubmitted(InputData data) async {
+    _comments.add(await api.entries.addEntryComment(_id, data));
+    notifyListeners();
+    updateEntry();
   }
 }
