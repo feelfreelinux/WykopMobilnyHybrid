@@ -68,7 +68,8 @@ class MainSettingsScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: authStateModel.loggedIn && authStateModel.backgroundUrl != null
+                  child: authStateModel.loggedIn &&
+                          authStateModel.backgroundUrl != null
                       ? Image(
                           height: 140.0,
                           width: MediaQuery.of(context).size.width,
@@ -104,35 +105,34 @@ class MainSettingsScreen extends StatelessWidget {
               ],
             ),
             GestureDetector(
-                onTap: authStateModel.loggedIn
-                    ? () {}
-                    : () async {
-                        var result = await platform.invokeMethod(
-                            'openLoginScreen',
-                            Map.from({'appKey': api.getAppKey()}));
-                        print(result);
-                        await authStateModel.loginUser(
-                            result['login'], result['token']);
-                        RestartWidget.restartApp(context);
-                      },
-                child: Container(
-                  padding: EdgeInsets.only(
-                    left: 18.0,
-                    top: 12.0,
-                    right: 18.0,
-                    bottom: 14.0,
-                  ),
-                  child: Text(
-                    authStateModel.login ?? "Zaloguj się",
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 22.0,
-                      fontWeight: FontWeight.w600,
-                    ),
+              onTap: authStateModel.loggedIn
+                  ? () {}
+                  : () async {
+                      var result = await platform.invokeMethod(
+                          'openLoginScreen',
+                          Map.from({'appKey': api.getAppKey()}));
+                      print(result);
+                      await authStateModel.loginUser(
+                          result['login'], result['token']);
+                      RestartWidget.restartApp(context);
+                    },
+              child: Container(
+                padding: EdgeInsets.only(
+                  left: 18.0,
+                  top: 12.0,
+                  right: 18.0,
+                  bottom: 14.0,
+                ),
+                child: Text(
+                  authStateModel.login ?? "Zaloguj się",
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontSize: 22.0,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
-            
+            ),
             authStateModel.loggedIn
                 ? GestureDetector(
                     child: Container(
@@ -201,23 +201,22 @@ class MainSettingsScreen extends StatelessWidget {
                   )
                 : Container(),
             _drawButton(
-                    context,
-                    icon: Icons.exit_to_app,
-                    color: Colors.grey[850],
-                    title: authStateModel.loggedIn ? "Wyloguj się" : "Zaloguj się",
-                    onTap: () async {
-                      if (authStateModel.loggedIn) {
-                        authStateModel.logoutUser();
-                      } else {
-                        var result = await platform.invokeMethod(
-                            'openLoginScreen',
-                            Map.from({'appKey': api.getAppKey()}));
-                        await authStateModel.loginUser(
-                            result['login'], result['token']);
-                        RestartWidget.restartApp(context);
-                      }
-                    },
-                  ),
+              context,
+              icon: Icons.exit_to_app,
+              color: Colors.grey[850],
+              title: authStateModel.loggedIn ? "Wyloguj się" : "Zaloguj się",
+              onTap: () async {
+                if (authStateModel.loggedIn) {
+                  authStateModel.logoutUser();
+                } else {
+                  var result = await platform.invokeMethod(
+                      'openLoginScreen', Map.from({'appKey': api.getAppKey()}));
+                  await authStateModel.loginUser(
+                      result['login'], result['token']);
+                  RestartWidget.restartApp(context);
+                }
+              },
+            ),
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: 18.0,
@@ -355,31 +354,15 @@ class MainSettingsScreen extends StatelessWidget {
   }
 
   Widget _drawThemeButton() {
-return AppBarButton(
-          icon: Icons.wb_sunny,
-          onTap: () => {},
-          round: true,
-          iconSize: 22.0,
-          iconPadding: EdgeInsets.all(7.0),
-        );
-    /*
-    return StoreConnector<AppState, OWMTheme>(
-      converter: (store) => store.state.themeState.currentTheme,
-      builder: (context, currentTheme) => StoreConnector<AppState, dynamic>(
-        converter: (store) =>
-            (OWMTheme theme) => store.dispatch(setTheme(theme)),
-        builder: (context, callback) => AppBarButton(
-          icon: currentTheme == OWMTheme.DARK_THEME
-              ? Icons.wb_sunny
-              : Icons.brightness_2,
-          onTap: () => callback(currentTheme == OWMTheme.DARK_THEME
-              ? OWMTheme.LIGHT_THEME
-              : OWMTheme.DARK_THEME),
-          round: true,
-          iconSize: 22.0,
-          iconPadding: EdgeInsets.all(7.0),
-        ),
+    return OWMSettingListener(
+      rebuildOnChange: (settings) => settings.useDarkThemeStream,
+      builder: (context, settings) => AppBarButton(
+        icon: settings.useDarkTheme ? Icons.wb_sunny : Icons.brightness_2,
+        onTap: () => settings.useDarkTheme = !settings.useDarkTheme,
+        round: true,
+        iconSize: 22.0,
+        iconPadding: EdgeInsets.all(7.0),
       ),
-    );*/
+    );
   }
 }

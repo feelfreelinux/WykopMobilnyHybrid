@@ -10,8 +10,6 @@ void main() {
     statusBarColor: Colors.transparent,
   ));
 
-
-
   runApp(RestartWidget(
       child: OwmApp(
   )));

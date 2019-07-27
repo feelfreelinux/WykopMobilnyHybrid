@@ -223,13 +223,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.7.2+1"
-  flutter_redux:
-    dependency: "direct main"
-    description:
-      name: flutter_redux
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.5.3"
   flutter_svg:
     dependency: transitive
     description:
@@ -466,6 +459,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.4.0"
+  pref_gen:
+    dependency: "direct dev"
+    description:
+      name: pref_gen
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.3"
+  pref_gen_annotations:
+    dependency: "direct main"
+    description:
+      name: pref_gen_annotations
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
+  pref_gen_flutter:
+    dependency: "direct main"
+    description:
+      name: pref_gen_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
   provider:
     dependency: "direct main"
     description:
@@ -501,13 +515,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0"
-  redux_logging:
-    dependency: "direct main"
-    description:
-      name: redux_logging
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.0"
   redux_thunk:
     dependency: "direct main"
     description:
@@ -515,6 +522,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.1"
+  rxdart:
+    dependency: "direct main"
+    description:
+      name: rxdart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.19.0"
   share:
     dependency: "direct main"
     description:
@@ -528,7 +542,7 @@ packages:
       name: shared_preferences
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.3+3"
+    version: "0.4.3"
   shelf:
     dependency: transitive
     description:

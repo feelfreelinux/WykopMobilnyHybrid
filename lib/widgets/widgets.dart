@@ -20,6 +20,7 @@ export 'notification/notifications_list.dart';
 export 'actions_dialog/actions_dialog.dart';
 export 'appbars/appbar_normal.dart';
 export 'appbars/appbar_tabs.dart';
+export 'owm_setting_listener.dart';
 export 'appbars/appbar_user.dart';
 export 'appbars/appbar_button.dart';
 export 'avatar.dart';

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:owmflutter/models/models.dart';
+export 'owm_settings.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'dart:io' show Platform;
 import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
