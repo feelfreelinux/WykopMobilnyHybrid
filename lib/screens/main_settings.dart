@@ -68,7 +68,7 @@ class MainSettingsScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: authStateModel.login != null && authStateModel.backgroundUrl != null
+                  child: authStateModel.loggedIn && authStateModel.backgroundUrl != null
                       ? Image(
                           height: 140.0,
                           width: MediaQuery.of(context).size.width,
@@ -94,9 +94,9 @@ class MainSettingsScreen extends StatelessWidget {
                 ),
                 AvatarWidget(
                   author: Author.fromAuthState(
-                      avatarUrl: authStateModel.avatarUrl,
-                      username: authStateModel.login,
-                      color: authStateModel.color),
+                      avatarUrl: authStateModel.avatarUrl ?? "",
+                      username: authStateModel.login ?? "",
+                      color: authStateModel.color ?? 0),
                   size: 100.0,
                   badge: Colors.transparent,
                   genderVisibility: false,
@@ -104,12 +104,13 @@ class MainSettingsScreen extends StatelessWidget {
               ],
             ),
             GestureDetector(
-                onTap: authStateModel.login != null
+                onTap: authStateModel.loggedIn
                     ? () {}
                     : () async {
                         var result = await platform.invokeMethod(
                             'openLoginScreen',
                             Map.from({'appKey': api.getAppKey()}));
+                        print(result);
                         await authStateModel.loginUser(
                             result['login'], result['token']);
                         RestartWidget.restartApp(context);
@@ -132,7 +133,7 @@ class MainSettingsScreen extends StatelessWidget {
                 ),
               ),
             
-            authStateModel.login != null 
+            authStateModel.loggedIn
                 ? GestureDetector(
                     child: Container(
                       margin: EdgeInsets.only(

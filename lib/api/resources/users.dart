@@ -5,9 +5,12 @@ class UsersApi extends ApiResource {
   UsersApi(ApiClient client) : super(client);
 
   Future<UserProfile> login(String login, String accountKey) async {
+    print(login);
+    print(accountKey);
     var result = await client.request('login', 'index',
         post: {'login': login, 'accountkey': accountKey});
 
+    print(result);
     var credentials = AuthCredentials(
         avatarUrl: result["profile"]["avatar"],
         login: login,
