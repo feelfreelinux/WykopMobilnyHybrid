@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:owmflutter/widgets/widgets.dart';
 
 /*
  * Works around flutter#20495
@@ -51,7 +52,7 @@ class _InfiniteListState extends State<InfiniteList> {
     super.initState();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
-              _scrollController.position.maxScrollExtent) {
+          _scrollController.position.maxScrollExtent) {
         widget.loadData(null);
       }
     });
@@ -95,7 +96,8 @@ class _InfiniteListState extends State<InfiniteList> {
         ));*/
     return ScrollConfiguration(
       behavior: NotSuddenJumpScrollBehavior(),
-      child: ListView.builder(
+      child: ShadowNotificationListener(
+        child: ListView.builder(
           physics: NotSuddenJumpPhysics(),
           itemCount: widget.header != null
               ? widget.itemCount + 1
@@ -113,7 +115,7 @@ class _InfiniteListState extends State<InfiniteList> {
           },
           controller: _scrollController,
         ),
-      
+      ),
     );
   }
 

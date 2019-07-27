@@ -44,7 +44,6 @@ class InputBarWidgetState extends State<InputBarWidget> {
   bool clickTextField = false;
   bool isEmpty = true;
   bool sending = false;
-  bool shadow = true;
 
   bool get hasExternalInput => widget.externalController != null;
 
@@ -122,25 +121,28 @@ class InputBarWidgetState extends State<InputBarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 200),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(shadow ? 0.1 : 0.0),
-            blurRadius: shadow ? 1.0 : 0.0,
-          ),
-        ],
-        color: Theme.of(context).primaryColor,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _drawSuggestions(),
-          hasExternalInput ? Container() : _drawInputBar(),
-          _drawButtons(),
-        ],
+    return Consumer<ShadowControlModel>(
+      builder: (context, shadowControlModel, _) => AnimatedContainer(
+        duration: Duration(milliseconds: 200),
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black
+                  .withOpacity(shadowControlModel.showInputShadow ? 0.1 : 0.0),
+              blurRadius: shadowControlModel.showInputShadow ? 1.0 : 0.0,
+            ),
+          ],
+          color: Theme.of(context).primaryColor,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _drawSuggestions(),
+            hasExternalInput ? Container() : _drawInputBar(),
+            _drawButtons(),
+          ],
+        ),
       ),
     );
   }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:owmflutter/model/entry_list_model.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/api/api.dart';
+import 'package:owmflutter/model/model.dart';
+import 'package:provider/provider.dart';
 
 class MikroblogScreen extends StatefulWidget {
   _MikroblogScreenState createState() => _MikroblogScreenState();
@@ -13,7 +15,9 @@ class _MikroblogScreenState extends State<MikroblogScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
+    return ChangeNotifierProvider<ShadowControlModel>(
+      builder: (context) => ShadowControlModel(),
+      child: DefaultTabController(
       length: 6,
       child: Scaffold(
         resizeToAvoidBottomPadding: false,
@@ -113,6 +117,6 @@ class _MikroblogScreenState extends State<MikroblogScreen> {
                 ],
               ),
       ),
-    );
+    ),);
   }
 }

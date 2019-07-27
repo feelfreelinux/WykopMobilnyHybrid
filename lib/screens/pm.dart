@@ -3,9 +3,10 @@ import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/widgets/pm/pm.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/models/models.dart';
+import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/keys.dart';
 import 'package:owmflutter/widgets/pm/uset_appbar.dart';
-import 'dart:async';
+import 'package:provider/provider.dart';
 
 class PmScreen extends StatefulWidget {
   final Conversation conversation;
@@ -21,47 +22,45 @@ class _PmScreenState extends State<PmScreen>
   Widget build(BuildContext context) {
     final mqData = MediaQuery.of(context);
     final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
-    return _SystemPadding(
-      child: MediaQuery(
-        data: mqDataNew,
-        child: Scaffold(
-          bottomNavigationBar: InputBarWidget(
-              (inputData) {
-
-              },
+    return ChangeNotifierProvider<ShadowControlModel>(
+      builder: (context) => ShadowControlModel(),
+      child: _SystemPadding(
+        child: MediaQuery(
+          data: mqDataNew,
+          child: Scaffold(
+            bottomNavigationBar: InputBarWidget(
+              (inputData) {},
               key: OwmKeys.inputBarKey,
               iconsColor: Colors.deepOrange,
               hintText: "Napisz wiadomość",
             ),
-          
-          resizeToAvoidBottomPadding: false,
-          appBar: AppbarNormalWidget(
-            leading: AppBarButton(
-              icon: Icons.arrow_back,
-              onTap: () => Navigator.of(context).pop(),
-              iconSize: 28.0,
-              iconColor: Colors.deepOrange,
+            resizeToAvoidBottomPadding: false,
+            appBar: AppbarNormalWidget(
+              leading: AppBarButton(
+                icon: Icons.arrow_back,
+                onTap: () => Navigator.of(context).pop(),
+                iconSize: 28.0,
+                iconColor: Colors.deepOrange,
+              ),
+              center: UserAppBar(
+                conversation: widget.conversation,
+                onTap: () {
+                  //TODO: Dodać przekierowanie do profilu
+                },
+              ),
             ),
-            center: UserAppBar(
-              conversation: widget.conversation,
-              onTap: () {
-                //TODO: Dodać przekierowanie do profilu
+            body: FutureBuilder<List<PmMessage>>(
+              future: api.pm.getMessages(widget.conversation.author.login),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  debugPrint(snapshot.error.toString());
+                }
+                if (snapshot.hasData) {
+                  return PmWidget(snapshot: snapshot);
+                }
+                return Center(child: CircularProgressIndicator());
               },
             ),
-          ),
-          body: FutureBuilder<List<PmMessage>>(
-            future: api.pm.getMessages(widget.conversation.author.login),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                debugPrint(snapshot.error.toString());
-              }
-              if (snapshot.hasData) {
-                return PmWidget(
-                  snapshot: snapshot
-                );
-              }
-              return Center(child: CircularProgressIndicator());
-            },
           ),
         ),
       ),

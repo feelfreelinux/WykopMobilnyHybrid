@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:owmflutter/model/shadow_control_model.dart';
 import 'package:owmflutter/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class AppbarNormalWidget extends StatefulWidget implements PreferredSizeWidget {
   final String title;
@@ -29,16 +31,17 @@ class AppbarNormalWidget extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _AppbarNormalWidgetState extends State<AppbarNormalWidget> {
-  bool shadow = true;
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
+    return Consumer<ShadowControlModel>(
+      builder: (context, shadowControlModel, _) => AnimatedContainer(
         duration: Duration(milliseconds: 200),
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(shadow ? 0.2 : 0.0),
-              blurRadius: shadow ? 2.0 : 0.0,
+              color: Colors.black
+                  .withOpacity(shadowControlModel.showTopShadow ? 0.2 : 0.0),
+              blurRadius: shadowControlModel.showTopShadow ? 2.0 : 0.0,
             ),
           ],
         ),
@@ -74,8 +77,8 @@ class _AppbarNormalWidgetState extends State<AppbarNormalWidget> {
           ),
           elevation: 0.0,
           titleSpacing: 0.0,
-        ),);
-      
-    
+        ),
+      ),
+    );
   }
 }

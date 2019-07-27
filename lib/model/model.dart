@@ -9,3 +9,4 @@ export 'entry_comment_model.dart';
 export 'link_comment_model.dart';
 export 'auth_model.dart';
 export 'suggestions_model.dart';
+export 'shadow_control_model.dart';

@@ -24,56 +24,59 @@ class _EntryScreenState extends State<EntryScreen>
     final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
 
     return ChangeNotifierProvider.value(
-      value: (widget.model ?? (EntryModel()..setId(widget.entryId))..updateEntry()),
-      child: Consumer<EntryModel>(
-        builder: (context, model, _) =>
-            model.isLoading && model.body == null
-                ? Center(child: CircularProgressIndicator())
-                : _SystemPadding(
-                    child: MediaQuery(
-                      data: mqDataNew,
-                      child: Scaffold(
-                        backgroundColor: Theme.of(context).backgroundColor,
-                        bottomNavigationBar: InputBarWidget(
-                          (inputData) {},
-                          key: OwmKeys.inputBarKey,
-                        ),
-                        resizeToAvoidBottomPadding: false,
-                        appBar: AppbarNormalWidget(
-                          padding: EdgeInsets.only(right: 8.0),
-                          actions: <Widget>[
-                            AppBarButton(
-                              icon: Icons.refresh,
-                              round: true,
+      value: (widget.model ?? (EntryModel()..setId(widget.entryId))
+        ..updateEntry()),
+      child: ChangeNotifierProvider<ShadowControlModel>(
+        builder: (context) => ShadowControlModel(),
+        child: Consumer<EntryModel>(
+          builder: (context, model, _) => model.isLoading && model.body == null
+              ? Center(child: CircularProgressIndicator())
+              : _SystemPadding(
+                  child: MediaQuery(
+                    data: mqDataNew,
+                    child: Scaffold(
+                      backgroundColor: Theme.of(context).backgroundColor,
+                      bottomNavigationBar: InputBarWidget(
+                        (inputData) {},
+                        key: OwmKeys.inputBarKey,
+                      ),
+                      resizeToAvoidBottomPadding: false,
+                      appBar: AppbarNormalWidget(
+                        padding: EdgeInsets.only(right: 8.0),
+                        actions: <Widget>[
+                          AppBarButton(
+                            icon: Icons.refresh,
+                            round: true,
+                          ),
+                          AppBarButton(
+                            icon: Icons.more_vert,
+                            round: true,
+                          )
+                        ],
+                      ),
+                      body: RefreshIndicator(
+                        onRefresh: () {
+                          return model.updateEntry();
+                        },
+                        child: ScrollConfiguration(
+                          behavior: NotSuddenJumpScrollBehavior(),
+                          child: InfiniteList(
+                            header: NewEntryWidget(ellipsize: false),
+                            itemCount: model.comments.length,
+                            itemBuilder: (context, index) =>
+                                ChangeNotifierProvider<EntryCommentModel>(
+                              builder: (context) => EntryCommentModel()
+                                ..setData(model.comments[index]),
+                              child: EntryCommentWidget(),
                             ),
-                            AppBarButton(
-                              icon: Icons.more_vert,
-                              round: true,
-                            )
-                          ],
-                        ),
-                        body: RefreshIndicator(
-                          onRefresh: () {
-                            return model.updateEntry();
-                          },
-                          child: ScrollConfiguration(
-                            behavior: NotSuddenJumpScrollBehavior(),
-                            child: InfiniteList(
-                              header: NewEntryWidget(ellipsize: false),
-                              itemCount: model.comments.length,
-                              itemBuilder: (context, index) =>
-                                  ChangeNotifierProvider<EntryCommentModel>(
-                                builder: (context) => EntryCommentModel()
-                                  ..setData(model.comments[index]),
-                                child: EntryCommentWidget(),
-                              ),
-                              loadData: (page) => {},
-                            ),
+                            loadData: (page) => {},
                           ),
                         ),
                       ),
                     ),
                   ),
+                ),
+        ),
       ),
     );
   }

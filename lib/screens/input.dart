@@ -67,97 +67,102 @@ class _InputScreenState extends State<InputScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return _SystemPadding(
-      child: Scaffold(
-        bottomNavigationBar: InputBarWidget(
-          widget.sendCallback,
-          key: inputBarKey,
-          externalController: textController,
-          imageStateChanged: (image) {
-            setState(() {
-              this.image = image;
-            });
-          },
-        ),
-        resizeToAvoidBottomPadding: false,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(48.0),
-          child: AppBar(
-            title: Text('Napisz $inputHint'),
-            iconTheme: IconThemeData(
-              color: Colors.blueAccent,
-            ),
-            elevation: 0.0,
+    return ChangeNotifierProvider<ShadowControlModel>(
+      builder: (context) => ShadowControlModel(),
+      child: _SystemPadding(
+        child: Scaffold(
+          bottomNavigationBar: InputBarWidget(
+            widget.sendCallback,
+            key: inputBarKey,
+            externalController: textController,
+            imageStateChanged: (image) {
+              setState(() {
+                this.image = image;
+              });
+            },
           ),
-        ),
-        body: Container(
-          margin: EdgeInsets.symmetric(
-            vertical: 8.0,
-            horizontal: 6.0,
-          ),
-          padding: EdgeInsets.only(
-            top: 1.0,
-            right: 1.0,
-            bottom: 1.0,
-          ),
-          decoration: BoxDecoration(
-            color: Color(0x267f7f7f),
-            borderRadius: BorderRadius.all(
-              Radius.circular(16.0),
+          resizeToAvoidBottomPadding: false,
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(48.0),
+            child: AppBar(
+              title: Text('Napisz $inputHint'),
+              iconTheme: IconThemeData(
+                color: Colors.blueAccent,
+              ),
+              elevation: 0.0,
             ),
           ),
-          child: Column(
-            children: <Widget>[
-              SelectedImageWidget(
-                  image: this.image,
-                  onTap: () {
-                    inputBarKey.currentState.removeImage();
-                  }),
-              Padding(
-                padding: EdgeInsets.only(left: 12.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    Flexible(
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                          maxHeight: 90.0,
-                        ),
-                        child: Scrollbar(
-                          child: SingleChildScrollView(
-                            reverse: true,
-                            child: Consumer<SuggestionsModel>(
-                              builder: (context, model, _) => TextField(
-                                cursorWidth: 1.5,
-                                cursorRadius: Radius.circular(20.0),
-                                onChanged: (text) {
-                                  model.loadSuggestions(inputBarKey.currentState
-                                      .extractSuggestions());
-                                },
-                                style: DefaultTextStyle.of(context).style.merge(
-                                      TextStyle(fontSize: 14.0),
+          body: Container(
+            margin: EdgeInsets.symmetric(
+              vertical: 8.0,
+              horizontal: 6.0,
+            ),
+            padding: EdgeInsets.only(
+              top: 1.0,
+              right: 1.0,
+              bottom: 1.0,
+            ),
+            decoration: BoxDecoration(
+              color: Color(0x267f7f7f),
+              borderRadius: BorderRadius.all(
+                Radius.circular(16.0),
+              ),
+            ),
+            child: Column(
+              children: <Widget>[
+                SelectedImageWidget(
+                    image: this.image,
+                    onTap: () {
+                      inputBarKey.currentState.removeImage();
+                    }),
+                Padding(
+                  padding: EdgeInsets.only(left: 12.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Flexible(
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxHeight: 90.0,
+                          ),
+                          child: Scrollbar(
+                            child: SingleChildScrollView(
+                              reverse: true,
+                              child: Consumer<SuggestionsModel>(
+                                builder: (context, model, _) => TextField(
+                                  cursorWidth: 1.5,
+                                  cursorRadius: Radius.circular(20.0),
+                                  onChanged: (text) {
+                                    model.loadSuggestions(inputBarKey
+                                        .currentState
+                                        .extractSuggestions());
+                                  },
+                                  style:
+                                      DefaultTextStyle.of(context).style.merge(
+                                            TextStyle(fontSize: 14.0),
+                                          ),
+                                  maxLines: null,
+                                  controller: this.textController,
+                                  keyboardType: TextInputType.multiline,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                      vertical: 8.0,
                                     ),
-                                maxLines: null,
-                                controller: this.textController,
-                                keyboardType: TextInputType.multiline,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                    vertical: 8.0,
+                                    border: InputBorder.none,
+                                    hintText: 'Treść',
                                   ),
-                                  border: InputBorder.none,
-                                  hintText: 'Treść',
                                 ),
                               ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    EmoticonButtonWidget(onTap: () {}),
-                  ],
+                      EmoticonButtonWidget(onTap: () {}),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

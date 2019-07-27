@@ -4,6 +4,7 @@ import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/model/model.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
@@ -54,7 +55,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
+    return ChangeNotifierProvider<ShadowControlModel>(
+      builder: (context) => ShadowControlModel(),
+      child: DefaultTabController(
       length: 4,
       child: Scaffold(
         appBar: isSearching
@@ -151,6 +154,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
       ),
-    );
+    ),);
   }
 }

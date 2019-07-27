@@ -3,11 +3,14 @@ import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/owm_glyphs.dart';
+import 'package:provider/provider.dart';
 
 class MyWykopScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
+    return ChangeNotifierProvider<ShadowControlModel>(
+      builder: (context) => ShadowControlModel(),
+      child: DefaultTabController(
       length: 4,
       child: Scaffold(
         appBar: AppbarTabsWidget(
@@ -56,6 +59,6 @@ class MyWykopScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ),);
   }
 }
