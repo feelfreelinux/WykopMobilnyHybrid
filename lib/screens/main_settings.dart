@@ -19,30 +19,33 @@ class MainSettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final mqData = MediaQuery.of(context);
     final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
-    return MediaQuery(
-      data: mqDataNew,
-      child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
-        appBar: AppbarNormalWidget(
-          padding: EdgeInsets.symmetric(horizontal: 8.0),
-          leading: AppBarButton(
-            icon: Icons.close,
-            onTap: () => Navigator.of(context).pop(),
-            round: true,
-            iconSize: 26.0,
-            iconPadding: EdgeInsets.all(5.0),
-          ),
-          title: "Ustawienia",
-          actions: <Widget>[
-            _drawThemeButton(),
-          ],
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              _drawHeader(),
-              _drawButtonsList(context),
+    return ChangeNotifierProvider<ShadowControlModel>(
+      builder: (context) => ShadowControlModel(),
+      child: MediaQuery(
+        data: mqDataNew,
+        child: Scaffold(
+          backgroundColor: Theme.of(context).backgroundColor,
+          appBar: AppbarNormalWidget(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            leading: AppBarButton(
+              icon: Icons.close,
+              onTap: () => Navigator.of(context).pop(),
+              round: true,
+              iconSize: 26.0,
+              iconPadding: EdgeInsets.all(5.0),
+            ),
+            title: "Ustawienia",
+            actions: <Widget>[
+              _drawThemeButton(),
             ],
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                _drawHeader(),
+                _drawButtonsList(context),
+              ],
+            ),
           ),
         ),
       ),
