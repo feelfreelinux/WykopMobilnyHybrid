@@ -13,23 +13,27 @@ class OwmApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<AuthStateModel>(
-      builder: (_) => AuthStateModel(),
-      child: Provider<OWMSettings>(
-        builder: (_) => OWMSettings(SharedPreferencesAdapter()),
-        child: ChangeNotifierProvider<SuggestionsModel>(
-          builder: (_) => SuggestionsModel(),
-          child: Consumer<AuthStateModel>(
-            // Required to make app redraw on login
-            builder: (context, model, _) => OWMSettingListener(
-              rebuildOnChange: (settings) => settings.useDarkThemeStream,
-              builder: (context, settings) => MaterialApp(
-                title: 'Wykop Mobilny',
-                navigatorKey: OwmKeys.navKey,
-                theme: settings.useDarkTheme ? Themes.darkTheme() : Themes.lightTheme(),
-                routes: {
-                  '/': (context) => MainScreen(),
-                },
+    return ErrorHandlerWidget(
+      child: ChangeNotifierProvider<AuthStateModel>(
+        builder: (_) => AuthStateModel(),
+        child: Provider<OWMSettings>(
+          builder: (_) => OWMSettings(SharedPreferencesAdapter()),
+          child: ChangeNotifierProvider<SuggestionsModel>(
+            builder: (_) => SuggestionsModel(),
+            child: Consumer<AuthStateModel>(
+              // Required to make app redraw on login
+              builder: (context, model, _) => OWMSettingListener(
+                rebuildOnChange: (settings) => settings.useDarkThemeStream,
+                builder: (context, settings) => MaterialApp(
+                  title: 'Wykop Mobilny',
+                  navigatorKey: OwmKeys.navKey,
+                  theme: settings.useDarkTheme
+                      ? Themes.darkTheme()
+                      : Themes.lightTheme(),
+                  routes: {
+                    '/': (context) => MainScreen(),
+                  },
+                ),
               ),
             ),
           ),

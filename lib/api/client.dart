@@ -6,7 +6,7 @@ export 'response_models/serializers.dart';
 
 import 'dart:async';
 import 'package:built_value/serializer.dart';
-import 'package:owmflutter/api/api.dart';
+import 'package:owmflutter/api/api.dart' as OWMAPI;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'dart:async' show Future;
@@ -98,6 +98,7 @@ class ApiClient extends http.BaseClient {
       Map<String, String> named: const {},
       Map<String, String> post: const {'owm-get': 'yes'},
       File image}) async {
+        try {
     if (this._secrets == null) {
       this._secrets = await loadSecrets();
     }
@@ -145,17 +146,30 @@ class ApiClient extends http.BaseClient {
     }
 
     return json.decode(response.body)["data"];
+        } catch (e) {
+                OWMAPI.api.errorSink.add(e);
+        }
   }
 
   List<T> deserializeList<T>(Serializer<T> serializer, map) {
-    var list = List<dynamic>.from(map);
-    return list.map((el) {
-      return serializers.deserializeWith(serializer, el);
-    }).toList();
+    try {
+      var list = List<dynamic>.from(map);
+      return list.map((el) {
+        return OWMAPI.serializers.deserializeWith(serializer, el);
+      }).toList();
+    } catch (e) {
+      OWMAPI.api.errorSink.add(e);
+    }
   }
 
   T deserializeElement<T>(Serializer<T> serializer, map) {
-    return serializers.deserializeWith(serializer, (map));
+    try {
+      T item;
+      item = OWMAPI.serializers.deserializeWith(serializer, (map));
+      return item;
+    } catch (e) {
+      OWMAPI.api.errorSink.add(e);
+    }
   }
 }
 
