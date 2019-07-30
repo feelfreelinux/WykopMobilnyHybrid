@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:owmflutter/model/model.dart';
+import 'package:owmflutter/screens/screens.dart';
+import 'package:owmflutter/screens/settings/appearance.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/main.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
-import 'dart:async';
-
 import 'package:provider/provider.dart';
 
 class MainSettingsScreen extends StatelessWidget {
@@ -19,6 +19,7 @@ class MainSettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final mqData = MediaQuery.of(context);
     final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
+
     return ChangeNotifierProvider<ShadowControlModel>(
       builder: (context) => ShadowControlModel(),
       child: MediaQuery(
@@ -26,6 +27,7 @@ class MainSettingsScreen extends StatelessWidget {
         child: Scaffold(
           backgroundColor: Theme.of(context).backgroundColor,
           appBar: AppbarNormalWidget(
+            shadow: true,
             padding: EdgeInsets.symmetric(horizontal: 8.0),
             leading: AppBarButton(
               icon: Icons.close,
@@ -34,10 +36,7 @@ class MainSettingsScreen extends StatelessWidget {
               iconSize: 26.0,
               iconPadding: EdgeInsets.all(5.0),
             ),
-            title: "Ustawienia",
-            actions: <Widget>[
-              _drawThemeButton(),
-            ],
+            actions: <Widget>[_drawThemeButton()],
           ),
           body: SingleChildScrollView(
             child: Column(
@@ -61,19 +60,29 @@ class MainSettingsScreen extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               children: [
                 Container(
-                  margin: EdgeInsets.only(
-                    bottom: 40.0,
-                  ),
+                  margin: EdgeInsets.only(bottom: 40.0),
                   decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color(0x33000000),
-                      ),
-                    ],
+                    boxShadow: [BoxShadow(color: Color(0x33000000))],
                   ),
-                  child: authStateModel.loggedIn &&
-                          authStateModel.backgroundUrl != null
-                      ? Image(
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        height: 140.0,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topRight,
+                            end: Alignment.bottomLeft,
+                            colors: [
+                              Color(0xff2e6e99),
+                              Color(0xff4383af),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Visibility(
+                        visible: authStateModel.loggedIn &&
+                            authStateModel.backgroundUrl != null,
+                        child: Image(
                           height: 140.0,
                           width: MediaQuery.of(context).size.width,
                           fit: BoxFit.cover,
@@ -81,20 +90,10 @@ class MainSettingsScreen extends StatelessWidget {
                             authStateModel.backgroundUrl,
                             useDiskCache: true,
                           ),
-                        )
-                      : Container(
-                          height: 140.0,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topRight,
-                              end: Alignment.bottomLeft,
-                              colors: [
-                                Color(0xff2e6e99),
-                                Color(0xff4383af),
-                              ],
-                            ),
-                          ),
                         ),
+                      ),
+                    ],
+                  ),
                 ),
                 AvatarWidget(
                   author: Author.fromAuthState(
@@ -127,7 +126,9 @@ class MainSettingsScreen extends StatelessWidget {
                   bottom: 14.0,
                 ),
                 child: Text(
-                  authStateModel.login ?? "Zaloguj się",
+                  authStateModel.loggedIn
+                      ? authStateModel.login
+                      : "Zaloguj się",
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 22.0,
@@ -199,7 +200,7 @@ class MainSettingsScreen extends StatelessWidget {
                     icon: Icons.block,
                     color: Colors.red,
                     title: "Czarna lista",
-                    description: "Lista blokowanych tagów i użytkowników.",
+                    description: "Lista blokowanych tagów i użytkowników",
                     onTap: () {},
                   )
                 : Container(),
@@ -231,36 +232,67 @@ class MainSettingsScreen extends StatelessWidget {
               icon: Icons.palette,
               color: Colors.cyan,
               title: "Wygląd",
-              description: "Tryb nocny, czy dzienny? Zmień wygląd aplikacji.",
-              onTap: () {},
+              description: "Tryb nocny, kolor dekoracji",
+              onTap: () {
+                Navigator.push(
+                  context,
+                  Utils.getPageTransition(AppearanceSettingScreen()),
+                );
+              },
             ),
-            _drawButton(context,
-                title: "Obrazki i multimedia",
-                icon: Icons.image,
-                onTap: () {},
-                color: Colors.indigo,
-                description:
-                    "Rozmiar, zwijanie obrazków, odtwarzacz multimediów."),
-            _drawButton(context,
-                title: "Tekst",
-                icon: Icons.chat,
-                onTap: () {},
-                color: Colors.amber,
-                description:
-                    "Wyświetlanie spoilerów, zwijanie długich treści."),
-            _drawButton(context,
-                title: "Powiadomienia",
-                icon: Icons.notifications,
-                onTap: () {},
-                color: Colors.blueAccent,
-                description:
-                    "Włącz, przechwyć lub ustaw czas sprawdzania powiadomień."),
-            _drawButton(context,
-                title: "Zachowanie",
-                icon: Icons.settings,
-                onTap: () {},
-                color: Colors.grey,
-                description: "Filtrowanie i ukrywanie teści, domyślne ekrany."),
+            _drawButton(
+              context,
+              icon: Icons.image,
+              color: Colors.indigo,
+              title: "Obrazki i multimedia",
+              description:
+                  "Wbudowany odtwarzacz, ukrywanie i zwijanie obrazków",
+              onTap: () {
+                Navigator.push(
+                  context,
+                  Utils.getPageTransition(PicturesSettingScreen()),
+                );
+              },
+            ),
+            _drawButton(
+              context,
+              icon: Icons.chat,
+              color: Colors.amber,
+              title: "Tekst",
+              description: "Zwijanie długich wpisów, spoilery, wielkość tekstu",
+              onTap: () {
+                Navigator.push(
+                  context,
+                  Utils.getPageTransition(TextSettingScreen()),
+                );
+              },
+            ),
+            _drawButton(
+              context,
+              title: "Powiadomienia",
+              icon: Icons.notifications,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  Utils.getPageTransition(NotificationsSettingScreen()),
+                );
+              },
+              color: Colors.blueAccent,
+              description: "Przechwyć, częstotliwość sprawdzania, dźwięki",
+            ),
+            _drawButton(
+              context,
+              title: "Zachowanie",
+              icon: Icons.settings,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  Utils.getPageTransition(BehaviorSettingScreen()),
+                );
+              },
+              color: Colors.grey,
+              description: "Domyślne ekrany, ukrywanie i zwijanie teści",
+            ),
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: 18.0,
@@ -271,14 +303,13 @@ class MainSettingsScreen extends StatelessWidget {
                 title: "Zgłoś błąd",
                 icon: Icons.bug_report,
                 onTap: () {},
-                color: Colors.red,
-                description: "Jeżeli widzisz błąd możesz go tutaj zgłosić."),
+                color: Colors.red),
             _drawButton(context,
                 title: "Wsparcie",
                 icon: Icons.monetization_on,
                 onTap: () {},
                 color: Colors.green,
-                description: "Podoba Ci się aplikacja? Wesprzyj jej twórców."),
+                description: "Wesprzyj twórców aplikacji"),
             _drawButton(context,
                 title: "O aplikacji", icon: Icons.info, onTap: () {}),
             Padding(

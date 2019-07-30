@@ -31,7 +31,7 @@ class _PmScreenState extends State<PmScreen>
             bottomNavigationBar: InputBarWidget(
               (inputData) {},
               key: OwmKeys.inputBarKey,
-              iconsColor: Colors.deepOrange,
+              iconsColor: Theme.of(context).accentColor,
               hintText: "Napisz wiadomość",
             ),
             resizeToAvoidBottomPadding: false,
@@ -40,7 +40,7 @@ class _PmScreenState extends State<PmScreen>
                 icon: Icons.arrow_back,
                 onTap: () => Navigator.of(context).pop(),
                 iconSize: 28.0,
-                iconColor: Colors.deepOrange,
+                iconColor: Theme.of(context).accentColor,
               ),
               center: UserAppBar(
                 conversation: widget.conversation,

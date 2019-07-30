@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/model/shadow_control_model.dart';
+import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -11,6 +12,7 @@ class AppbarNormalWidget extends StatefulWidget implements PreferredSizeWidget {
   final Color iconColor;
   final EdgeInsets padding;
   final EdgeInsets titlePadding;
+  final bool shadow;
 
   AppbarNormalWidget({
     this.title,
@@ -20,6 +22,7 @@ class AppbarNormalWidget extends StatefulWidget implements PreferredSizeWidget {
     this.leading,
     this.padding,
     this.titlePadding = const EdgeInsets.symmetric(horizontal: 8.0),
+    this.shadow,
   });
 
   @override
@@ -36,15 +39,8 @@ class _AppbarNormalWidgetState extends State<AppbarNormalWidget> {
     return Consumer<ShadowControlModel>(
       builder: (context, shadowControlModel, _) => AnimatedContainer(
         duration: Duration(milliseconds: 200),
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black
-                  .withOpacity(shadowControlModel.showTopShadow ? 0.2 : 0.0),
-              blurRadius: shadowControlModel.showTopShadow ? 2.0 : 0.0,
-            ),
-          ],
-        ),
+        decoration: Utils.appBarShadow(
+            widget.shadow ?? shadowControlModel.showTopShadow),
         child: AppBar(
           automaticallyImplyLeading: false,
           title: Container(

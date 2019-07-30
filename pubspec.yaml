@@ -33,6 +33,7 @@ dependencies:
   font_awesome: ^5.9.0
   provider: ^3.0.0
   intl: ^0.15.8
+  flutter_material_color_picker: ^1.0.3
 
 dev_dependencies:
   flutter_test:

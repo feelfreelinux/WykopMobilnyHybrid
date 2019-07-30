@@ -24,15 +24,40 @@ class OwmApp extends StatelessWidget {
               // Required to make app redraw on login
               builder: (context, model, _) => OWMSettingListener(
                 rebuildOnChange: (settings) => settings.useDarkThemeStream,
-                builder: (context, settings) => MaterialApp(
-                  title: 'Wykop Mobilny',
-                  navigatorKey: OwmKeys.navKey,
-                  theme: settings.useDarkTheme
-                      ? Themes.darkTheme()
-                      : Themes.lightTheme(),
-                  routes: {
-                    '/': (context) => MainScreen(),
-                  },
+                builder: (context, settings) => OWMSettingListener(
+                  rebuildOnChange: (settings) => settings.accentColorStream,
+                  builder: (context, settings) => MaterialApp(
+                    /*  Super genialny kod mówiącu czy włączyć nocny
+                          W sumie wystarczy też mieć godziny wschodu i zachodu i też się nada
+                          TODO: Jakoś sprawdzać czy to już i zmieniać w locie motyw apki
+
+                      var a = DateTime.now();
+                      var b = DateTime(
+                          a.year,
+                          a.month,
+                          a.day,
+                          int.parse(
+                              settings.autoDarkThemeTimeFrom.split(":")[0]),
+                          int.parse(
+                              settings.autoDarkThemeTimeFrom.split(":")[1]));
+                      var c = DateTime(
+                          a.year,
+                          a.month,
+                          a.day,
+                          int.parse(settings.autoDarkThemeTimeTo.split(":")[0]),
+                          int.parse(
+                              settings.autoDarkThemeTimeTo.split(":")[1]));
+                      bool k = (a.difference(b).inMinutes >= 0) && (a.difference(c).inMinutes <= 0);
+                      */
+                    title: 'Wykop Mobilny',
+                    navigatorKey: OwmKeys.navKey,
+                    theme: settings.useDarkTheme
+                        ? Themes.darkTheme(accentColor: settings.accentColor)
+                        : Themes.lightTheme(accentColor: settings.accentColor),
+                    routes: {
+                      '/': (context) => MainScreen(),
+                    },
+                  ),
                 ),
               ),
             ),

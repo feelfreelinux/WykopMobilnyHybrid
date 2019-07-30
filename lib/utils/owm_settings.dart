@@ -9,7 +9,88 @@ part 'owm_settings.g.dart';
 abstract class OWMSettings implements OWMSettingsPreferences {
   @DefaultValue(false)
   bool useDarkTheme;
+  @DefaultValue(0)
+  int autoDarkTheme;
+  @DefaultValue("20:00")
+  String autoDarkThemeTimeFrom;
+  @DefaultValue("08:00")
+  String autoDarkThemeTimeTo;
+  @DefaultValue(4280391411)
+  int accentColor;
+
+  @DefaultValue(false)
+  bool lowResAvatar;
+  @DefaultValue(true)
+  bool useYoutubePlayer;
+  @DefaultValue(true)
+  bool useOtherPlayer;
+  @DefaultValue(false)
+  bool hiddingLinkThumb;
+  @DefaultValue(false)
+  bool hiddingEntryImage;
+  @DefaultValue(false)
+  bool hiddingCommentImage;
+  @DefaultValue(true)
+  bool shortLongPicture;
+  @DefaultValue(false)
+  bool skipExpandImage;
+  @DefaultValue(false)
+  bool skipShowAdultImage;
+
+  @DefaultValue(true)
+  bool shortLongBody;
+  @DefaultValue(true)
+  bool hideSpoilerText;
+  @DefaultValue(false)
+  bool openSpoilerDialog;
+  @DefaultValue(1.0)
+  double textSize;
+
+  @DefaultValue(true)
+  bool useNotification;
+  @DefaultValue(false)
+  bool usePushNotification;
+  @DefaultValue(15)
+  int timeCheckNotification;
+  @DefaultValue(true)
+  bool useSoundNotification;
+  @DefaultValue(true)
+  bool useVibrationNotification;
+  @DefaultValue(true)
+  bool useSoundApp;
+
+  @DefaultValue(0)
+  int defaultAppScreen;
+  @DefaultValue(0)
+  int defaultLinkScreen;
+  @DefaultValue(0)
+  int defaultEntryScreen;
+  @DefaultValue(0)
+  int defaultMyWykopScreen;
+  @DefaultValue(0)
+  int defaultNotificationScreen;
+  @DefaultValue(false)
+  bool linkOpenBrowser;
+  @DefaultValue(false)
+  bool hideCommentLink;
+  @DefaultValue(true)
+  bool hideAdultImage;
+  @DefaultValue(true)
+  bool hideNsfwImage;
+  @DefaultValue(false)
+  bool expandNewbieContent;
+  @DefaultValue(false)
+  bool expandNoTagContent;
+  @DefaultValue(false)
+  bool hideExpandContent;
+  @DefaultValue(true)
+  bool confirmDelete;
+  @DefaultValue(true)
+  bool confirmSend;
+  @DefaultValue(true)
+  bool confirmExitWriting;
+  @DefaultValue(true)
+  bool confirmExitApp;
 
   factory OWMSettings(PreferenceAdapter adapter) = _$OWMSettings;
 }
-

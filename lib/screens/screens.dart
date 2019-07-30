@@ -10,3 +10,8 @@ export 'mywykop.dart';
 export 'media.dart';
 export 'pm.dart';
 export 'main_settings.dart';
+export 'settings/appearance.dart';
+export 'settings/pictures.dart';
+export 'settings/text.dart';
+export 'settings/behavior.dart';
+export 'settings/notifications.dart';

@@ -1,39 +1,29 @@
 import 'package:flutter/material.dart';
 
 class Themes {
-  static ThemeData lightTheme() {
+  static ThemeData lightTheme({int accentColor}) {
     return ThemeData(
       brightness: Brightness.light,
-      accentColor: Color(0xff4383af),
+      accentColor: Color(accentColor),
       primaryColor: Colors.white,
       scaffoldBackgroundColor: Colors.white,
       backgroundColor: Colors.white,
       cardColor: Colors.white,
       bottomAppBarColor: Colors.white,
+      toggleableActiveColor: Color(accentColor),
     );
   }
 
-  static ThemeData darkTheme() {
+  static ThemeData darkTheme({int accentColor}) {
     return ThemeData(
       brightness: Brightness.dark,
-      accentColor: Color(0xff4383af),
+      accentColor: Color(accentColor),
       primaryColor: Colors.black,
       scaffoldBackgroundColor: Colors.black,
       backgroundColor: Colors.black,
       cardColor: Colors.black,
       bottomAppBarColor: Colors.black,
+      toggleableActiveColor: Color(accentColor),
     );
   }
-  /*
-  static ThemeData darkTheme() {
-    return ThemeData(
-      brightness: Brightness.dark,
-      accentColor: Color(0xff4383af),
-      primaryColor: Color(0xff2c2c2c),
-      scaffoldBackgroundColor: Color(0xff2c2c2c),
-      backgroundColor: Color(0xff2c2c2c),
-      cardColor: Color(0xff2c2c2c),
-      bottomAppBarColor: Color(0xff2c2c2c),
-    );
-  }*/
 }

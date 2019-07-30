@@ -66,7 +66,7 @@ class _MessageWidgetState extends State<MessageWidget>
                       ),
                       decoration: BoxDecoration(
                         color: widget.message.isSentFromUser
-                            ? Colors.deepOrange.withOpacity(0.9)
+                            ? Theme.of(context).accentColor
                             : Utils.backgroundGreyOpacity(context),
                         borderRadius: BorderRadius.circular(20.0),
                       ),
@@ -80,7 +80,7 @@ class _MessageWidgetState extends State<MessageWidget>
                                 : Theme.of(context).textTheme.body1.color,
                             linkColor: widget.message.isSentFromUser
                                 ? Colors.white
-                                : Colors.deepOrange,
+                                : Theme.of(context).accentColor,
                             body: widget.message.body,
                             ellipsize: false,
                             padding: EdgeInsets.symmetric(
