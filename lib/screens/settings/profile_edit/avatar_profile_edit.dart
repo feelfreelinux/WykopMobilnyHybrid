@@ -19,7 +19,7 @@ class _AvatarProfileEditState extends State<AvatarProfileEdit> {
             Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
-                  "Aby Avatar był w najlepszej jakości, dodaj grafikę o rozmiarze minimum 150×150px"),
+                  "Avatar będzie w najlepszej jakości, jeśli dodasz grafikę o minimalnych wymiarach 150×150 pixeli"),
             ),
             AvatarWidget(
               author: Author.fromAuthState(
@@ -35,7 +35,7 @@ class _AvatarProfileEditState extends State<AvatarProfileEdit> {
                 Expanded(
                     child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text("Wybierz nowy Avatar:"),
+                  child: Text("Wybierz nowy avatar:"),
                 )),
                 AppBarButton(
                   icon: Icons.photo,

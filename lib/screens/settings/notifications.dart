@@ -73,98 +73,101 @@ class NotificationsSettingScreen extends StatelessWidget {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) => Dialog(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: EdgeInsets.all(20.0),
-                                      child: Text(
-                                        "Częstotliwość sprawdzania",
-                                        style: TextStyle(
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.w700,
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: EdgeInsets.all(20.0),
+                                        child: Text(
+                                          "Częstotliwość sprawdzania",
+                                          style: TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.w700,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    OWMSettingListener(
-                                      rebuildOnChange: (settings) =>
-                                          settings.timeCheckNotificationStream,
-                                      builder: (context, settings) {
-                                        return Column(
-                                          children: <Widget>[
-                                            RadioListTile(
-                                              groupValue: settings
-                                                  .timeCheckNotification,
-                                              onChanged: (value) {
-                                                settings.timeCheckNotification =
-                                                    value;
-                                                Navigator.of(context).pop();
-                                              },
-                                              value: 15,
-                                              title: Text("Co 15 minut"),
-                                            ),
-                                            RadioListTile(
-                                              groupValue: settings
-                                                  .timeCheckNotification,
-                                              onChanged: (value) {
-                                                settings.timeCheckNotification =
-                                                    value;
-                                                Navigator.of(context).pop();
-                                              },
-                                              value: 30,
-                                              title: Text("Co 30 minut"),
-                                            ),
-                                            RadioListTile(
-                                              groupValue: settings
-                                                  .timeCheckNotification,
-                                              onChanged: (value) {
-                                                settings.timeCheckNotification =
-                                                    value;
-                                                Navigator.of(context).pop();
-                                              },
-                                              value: 60,
-                                              title: Text("Co godzinę"),
-                                            ),
-                                            RadioListTile(
-                                              groupValue: settings
-                                                  .timeCheckNotification,
-                                              onChanged: (value) {
-                                                settings.timeCheckNotification =
-                                                    value;
-                                                Navigator.of(context).pop();
-                                              },
-                                              value: 120,
-                                              title: Text("Co 2 godziny"),
-                                            ),
-                                            RadioListTile(
-                                              groupValue: settings
-                                                  .timeCheckNotification,
-                                              onChanged: (value) {
-                                                settings.timeCheckNotification =
-                                                    value;
-                                                Navigator.of(context).pop();
-                                              },
-                                              value: 240,
-                                              title: Text("Co 4 godziny"),
-                                            ),
-                                            RadioListTile(
-                                              groupValue: settings
-                                                  .timeCheckNotification,
-                                              onChanged: (value) {
-                                                settings.timeCheckNotification =
-                                                    value;
-                                                Navigator.of(context).pop();
-                                              },
-                                              value: 480,
-                                              title: Text("Co 8 godzin"),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    ),
-                                    SizedBox(height: 18.0),
-                                  ],
+                                      OWMSettingListener(
+                                        rebuildOnChange: (settings) => settings
+                                            .timeCheckNotificationStream,
+                                        builder: (context, settings) {
+                                          return Column(
+                                            children: <Widget>[
+                                              RadioListTile(
+                                                groupValue: settings
+                                                    .timeCheckNotification,
+                                                onChanged: (value) {
+                                                  settings.timeCheckNotification =
+                                                      value;
+                                                  Navigator.of(context).pop();
+                                                },
+                                                value: 15,
+                                                title: Text("Co 15 minut"),
+                                              ),
+                                              RadioListTile(
+                                                groupValue: settings
+                                                    .timeCheckNotification,
+                                                onChanged: (value) {
+                                                  settings.timeCheckNotification =
+                                                      value;
+                                                  Navigator.of(context).pop();
+                                                },
+                                                value: 30,
+                                                title: Text("Co 30 minut"),
+                                              ),
+                                              RadioListTile(
+                                                groupValue: settings
+                                                    .timeCheckNotification,
+                                                onChanged: (value) {
+                                                  settings.timeCheckNotification =
+                                                      value;
+                                                  Navigator.of(context).pop();
+                                                },
+                                                value: 60,
+                                                title: Text("Co godzinę"),
+                                              ),
+                                              RadioListTile(
+                                                groupValue: settings
+                                                    .timeCheckNotification,
+                                                onChanged: (value) {
+                                                  settings.timeCheckNotification =
+                                                      value;
+                                                  Navigator.of(context).pop();
+                                                },
+                                                value: 120,
+                                                title: Text("Co 2 godziny"),
+                                              ),
+                                              RadioListTile(
+                                                groupValue: settings
+                                                    .timeCheckNotification,
+                                                onChanged: (value) {
+                                                  settings.timeCheckNotification =
+                                                      value;
+                                                  Navigator.of(context).pop();
+                                                },
+                                                value: 240,
+                                                title: Text("Co 4 godziny"),
+                                              ),
+                                              RadioListTile(
+                                                groupValue: settings
+                                                    .timeCheckNotification,
+                                                onChanged: (value) {
+                                                  settings.timeCheckNotification =
+                                                      value;
+                                                  Navigator.of(context).pop();
+                                                },
+                                                value: 480,
+                                                title: Text("Co 8 godzin"),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      ),
+                                      SizedBox(height: 18.0),
+                                    ],
+                                  ),
                                 ),
                               ),
                             );

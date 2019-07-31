@@ -3,8 +3,9 @@ import 'package:owmflutter/utils/utils.dart';
 
 class InputTextFieldWidget extends StatelessWidget {
   final bool obscureText;
+  final int maxLines;
 
-  InputTextFieldWidget({this.obscureText: false});
+  InputTextFieldWidget({this.obscureText: false, this.maxLines = 1});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +17,7 @@ class InputTextFieldWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: TextField(
+        maxLines: maxLines,
         obscureText: obscureText,
         decoration: InputDecoration(
           border: InputBorder.none,

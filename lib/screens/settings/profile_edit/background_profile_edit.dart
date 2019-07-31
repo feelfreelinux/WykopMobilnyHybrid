@@ -19,7 +19,7 @@ class _BackgroundProfileEditState extends State<BackgroundProfileEdit> {
             Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
-                  "Aby tło profilu było w najlepszej jakości, dodaj grafikę o rozmiarze minimum 1266x200px"),
+                  "Tło profilu będzie w najlepszej jakości, jeśli dodasz grafikę o minimalnych wymiarach 1266x200 pixeli zachowując proporcje 6.35:1"),
             ),
             Container(
               margin: EdgeInsets.symmetric(vertical: 16.0),

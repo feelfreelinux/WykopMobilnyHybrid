@@ -32,16 +32,16 @@ class _$OWMSettings implements OWMSettings {
             _autoDarkThemeTimeToSubject.add(value);
           }))
         .sink;
+    simpleLinkViewSink = (StreamController<bool>.broadcast()
+          ..stream.listen((value) async {
+            await adapter.setBool("simpleLinkView", value);
+            _simpleLinkViewSubject.add(value);
+          }))
+        .sink;
     accentColorSink = (StreamController<int>.broadcast()
           ..stream.listen((value) async {
             await adapter.setInt("accentColor", value);
             _accentColorSubject.add(value);
-          }))
-        .sink;
-    lowResAvatarSink = (StreamController<bool>.broadcast()
-          ..stream.listen((value) async {
-            await adapter.setBool("lowResAvatar", value);
-            _lowResAvatarSubject.add(value);
           }))
         .sink;
     useYoutubePlayerSink = (StreamController<bool>.broadcast()
@@ -54,6 +54,24 @@ class _$OWMSettings implements OWMSettings {
           ..stream.listen((value) async {
             await adapter.setBool("useOtherPlayer", value);
             _useOtherPlayerSubject.add(value);
+          }))
+        .sink;
+    useAutoplaySink = (StreamController<int>.broadcast()
+          ..stream.listen((value) async {
+            await adapter.setInt("useAutoplay", value);
+            _useAutoplaySubject.add(value);
+          }))
+        .sink;
+    highResAvatarSink = (StreamController<bool>.broadcast()
+          ..stream.listen((value) async {
+            await adapter.setBool("highResAvatar", value);
+            _highResAvatarSubject.add(value);
+          }))
+        .sink;
+    highResImageSink = (StreamController<bool>.broadcast()
+          ..stream.listen((value) async {
+            await adapter.setBool("highResImage", value);
+            _highResImageSubject.add(value);
           }))
         .sink;
     hiddingLinkThumbSink = (StreamController<bool>.broadcast()
@@ -188,22 +206,28 @@ class _$OWMSettings implements OWMSettings {
             _linkOpenBrowserSubject.add(value);
           }))
         .sink;
+    imageOpenBrowserSink = (StreamController<bool>.broadcast()
+          ..stream.listen((value) async {
+            await adapter.setBool("imageOpenBrowser", value);
+            _imageOpenBrowserSubject.add(value);
+          }))
+        .sink;
     hideCommentLinkSink = (StreamController<bool>.broadcast()
           ..stream.listen((value) async {
             await adapter.setBool("hideCommentLink", value);
             _hideCommentLinkSubject.add(value);
           }))
         .sink;
+    splitVotesLinkSink = (StreamController<bool>.broadcast()
+          ..stream.listen((value) async {
+            await adapter.setBool("splitVotesLink", value);
+            _splitVotesLinkSubject.add(value);
+          }))
+        .sink;
     hideAdultImageSink = (StreamController<bool>.broadcast()
           ..stream.listen((value) async {
             await adapter.setBool("hideAdultImage", value);
             _hideAdultImageSubject.add(value);
-          }))
-        .sink;
-    hideNsfwImageSink = (StreamController<bool>.broadcast()
-          ..stream.listen((value) async {
-            await adapter.setBool("hideNsfwImage", value);
-            _hideNsfwImageSubject.add(value);
           }))
         .sink;
     expandNewbieContentSink = (StreamController<bool>.broadcast()
@@ -260,18 +284,27 @@ class _$OWMSettings implements OWMSettings {
     _adapter.getString("autoDarkThemeTimeTo").then((value) {
       return value ?? '08:00';
     }).then(autoDarkThemeTimeToSink.add);
+    _adapter.getBool("simpleLinkView").then((value) {
+      return value ?? false;
+    }).then(simpleLinkViewSink.add);
     _adapter.getInt("accentColor").then((value) {
       return value ?? 4280391411;
     }).then(accentColorSink.add);
-    _adapter.getBool("lowResAvatar").then((value) {
-      return value ?? false;
-    }).then(lowResAvatarSink.add);
     _adapter.getBool("useYoutubePlayer").then((value) {
       return value ?? true;
     }).then(useYoutubePlayerSink.add);
     _adapter.getBool("useOtherPlayer").then((value) {
       return value ?? true;
     }).then(useOtherPlayerSink.add);
+    _adapter.getInt("useAutoplay").then((value) {
+      return value ?? 0;
+    }).then(useAutoplaySink.add);
+    _adapter.getBool("highResAvatar").then((value) {
+      return value ?? true;
+    }).then(highResAvatarSink.add);
+    _adapter.getBool("highResImage").then((value) {
+      return value ?? false;
+    }).then(highResImageSink.add);
     _adapter.getBool("hiddingLinkThumb").then((value) {
       return value ?? false;
     }).then(hiddingLinkThumbSink.add);
@@ -338,15 +371,18 @@ class _$OWMSettings implements OWMSettings {
     _adapter.getBool("linkOpenBrowser").then((value) {
       return value ?? false;
     }).then(linkOpenBrowserSink.add);
+    _adapter.getBool("imageOpenBrowser").then((value) {
+      return value ?? false;
+    }).then(imageOpenBrowserSink.add);
     _adapter.getBool("hideCommentLink").then((value) {
       return value ?? false;
     }).then(hideCommentLinkSink.add);
+    _adapter.getBool("splitVotesLink").then((value) {
+      return value ?? false;
+    }).then(splitVotesLinkSink.add);
     _adapter.getBool("hideAdultImage").then((value) {
       return value ?? true;
     }).then(hideAdultImageSink.add);
-    _adapter.getBool("hideNsfwImage").then((value) {
-      return value ?? true;
-    }).then(hideNsfwImageSink.add);
     _adapter.getBool("expandNewbieContent").then((value) {
       return value ?? false;
     }).then(expandNewbieContentSink.add);
@@ -384,17 +420,26 @@ class _$OWMSettings implements OWMSettings {
   final BehaviorSubject<String> _autoDarkThemeTimeToSubject =
       BehaviorSubject<String>(seedValue: '08:00');
 
+  final BehaviorSubject<bool> _simpleLinkViewSubject =
+      BehaviorSubject<bool>(seedValue: false);
+
   final BehaviorSubject<int> _accentColorSubject =
       BehaviorSubject<int>(seedValue: 4280391411);
-
-  final BehaviorSubject<bool> _lowResAvatarSubject =
-      BehaviorSubject<bool>(seedValue: false);
 
   final BehaviorSubject<bool> _useYoutubePlayerSubject =
       BehaviorSubject<bool>(seedValue: true);
 
   final BehaviorSubject<bool> _useOtherPlayerSubject =
       BehaviorSubject<bool>(seedValue: true);
+
+  final BehaviorSubject<int> _useAutoplaySubject =
+      BehaviorSubject<int>(seedValue: 0);
+
+  final BehaviorSubject<bool> _highResAvatarSubject =
+      BehaviorSubject<bool>(seedValue: true);
+
+  final BehaviorSubject<bool> _highResImageSubject =
+      BehaviorSubject<bool>(seedValue: false);
 
   final BehaviorSubject<bool> _hiddingLinkThumbSubject =
       BehaviorSubject<bool>(seedValue: false);
@@ -462,13 +507,16 @@ class _$OWMSettings implements OWMSettings {
   final BehaviorSubject<bool> _linkOpenBrowserSubject =
       BehaviorSubject<bool>(seedValue: false);
 
+  final BehaviorSubject<bool> _imageOpenBrowserSubject =
+      BehaviorSubject<bool>(seedValue: false);
+
   final BehaviorSubject<bool> _hideCommentLinkSubject =
       BehaviorSubject<bool>(seedValue: false);
 
-  final BehaviorSubject<bool> _hideAdultImageSubject =
-      BehaviorSubject<bool>(seedValue: true);
+  final BehaviorSubject<bool> _splitVotesLinkSubject =
+      BehaviorSubject<bool>(seedValue: false);
 
-  final BehaviorSubject<bool> _hideNsfwImageSubject =
+  final BehaviorSubject<bool> _hideAdultImageSubject =
       BehaviorSubject<bool>(seedValue: true);
 
   final BehaviorSubject<bool> _expandNewbieContentSubject =
@@ -500,13 +548,19 @@ class _$OWMSettings implements OWMSettings {
 
   Sink<String> autoDarkThemeTimeToSink;
 
-  Sink<int> accentColorSink;
+  Sink<bool> simpleLinkViewSink;
 
-  Sink<bool> lowResAvatarSink;
+  Sink<int> accentColorSink;
 
   Sink<bool> useYoutubePlayerSink;
 
   Sink<bool> useOtherPlayerSink;
+
+  Sink<int> useAutoplaySink;
+
+  Sink<bool> highResAvatarSink;
+
+  Sink<bool> highResImageSink;
 
   Sink<bool> hiddingLinkThumbSink;
 
@@ -552,11 +606,13 @@ class _$OWMSettings implements OWMSettings {
 
   Sink<bool> linkOpenBrowserSink;
 
+  Sink<bool> imageOpenBrowserSink;
+
   Sink<bool> hideCommentLinkSink;
 
-  Sink<bool> hideAdultImageSink;
+  Sink<bool> splitVotesLinkSink;
 
-  Sink<bool> hideNsfwImageSink;
+  Sink<bool> hideAdultImageSink;
 
   Sink<bool> expandNewbieContentSink;
 
@@ -580,13 +636,18 @@ class _$OWMSettings implements OWMSettings {
       _autoDarkThemeTimeFromSubject.asBroadcastStream();
   Stream<String> get autoDarkThemeTimeToStream =>
       _autoDarkThemeTimeToSubject.asBroadcastStream();
+  Stream<bool> get simpleLinkViewStream =>
+      _simpleLinkViewSubject.asBroadcastStream();
   Stream<int> get accentColorStream => _accentColorSubject.asBroadcastStream();
-  Stream<bool> get lowResAvatarStream =>
-      _lowResAvatarSubject.asBroadcastStream();
   Stream<bool> get useYoutubePlayerStream =>
       _useYoutubePlayerSubject.asBroadcastStream();
   Stream<bool> get useOtherPlayerStream =>
       _useOtherPlayerSubject.asBroadcastStream();
+  Stream<int> get useAutoplayStream => _useAutoplaySubject.asBroadcastStream();
+  Stream<bool> get highResAvatarStream =>
+      _highResAvatarSubject.asBroadcastStream();
+  Stream<bool> get highResImageStream =>
+      _highResImageSubject.asBroadcastStream();
   Stream<bool> get hiddingLinkThumbStream =>
       _hiddingLinkThumbSubject.asBroadcastStream();
   Stream<bool> get hiddingEntryImageStream =>
@@ -629,12 +690,14 @@ class _$OWMSettings implements OWMSettings {
       _defaultNotificationScreenSubject.asBroadcastStream();
   Stream<bool> get linkOpenBrowserStream =>
       _linkOpenBrowserSubject.asBroadcastStream();
+  Stream<bool> get imageOpenBrowserStream =>
+      _imageOpenBrowserSubject.asBroadcastStream();
   Stream<bool> get hideCommentLinkStream =>
       _hideCommentLinkSubject.asBroadcastStream();
+  Stream<bool> get splitVotesLinkStream =>
+      _splitVotesLinkSubject.asBroadcastStream();
   Stream<bool> get hideAdultImageStream =>
       _hideAdultImageSubject.asBroadcastStream();
-  Stream<bool> get hideNsfwImageStream =>
-      _hideNsfwImageSubject.asBroadcastStream();
   Stream<bool> get expandNewbieContentStream =>
       _expandNewbieContentSubject.asBroadcastStream();
   Stream<bool> get expandNoTagContentStream =>
@@ -652,10 +715,13 @@ class _$OWMSettings implements OWMSettings {
   int get autoDarkTheme => _autoDarkThemeSubject.value;
   String get autoDarkThemeTimeFrom => _autoDarkThemeTimeFromSubject.value;
   String get autoDarkThemeTimeTo => _autoDarkThemeTimeToSubject.value;
+  bool get simpleLinkView => _simpleLinkViewSubject.value;
   int get accentColor => _accentColorSubject.value;
-  bool get lowResAvatar => _lowResAvatarSubject.value;
   bool get useYoutubePlayer => _useYoutubePlayerSubject.value;
   bool get useOtherPlayer => _useOtherPlayerSubject.value;
+  int get useAutoplay => _useAutoplaySubject.value;
+  bool get highResAvatar => _highResAvatarSubject.value;
+  bool get highResImage => _highResImageSubject.value;
   bool get hiddingLinkThumb => _hiddingLinkThumbSubject.value;
   bool get hiddingEntryImage => _hiddingEntryImageSubject.value;
   bool get hiddingCommentImage => _hiddingCommentImageSubject.value;
@@ -678,9 +744,10 @@ class _$OWMSettings implements OWMSettings {
   int get defaultMyWykopScreen => _defaultMyWykopScreenSubject.value;
   int get defaultNotificationScreen => _defaultNotificationScreenSubject.value;
   bool get linkOpenBrowser => _linkOpenBrowserSubject.value;
+  bool get imageOpenBrowser => _imageOpenBrowserSubject.value;
   bool get hideCommentLink => _hideCommentLinkSubject.value;
+  bool get splitVotesLink => _splitVotesLinkSubject.value;
   bool get hideAdultImage => _hideAdultImageSubject.value;
-  bool get hideNsfwImage => _hideNsfwImageSubject.value;
   bool get expandNewbieContent => _expandNewbieContentSubject.value;
   bool get expandNoTagContent => _expandNoTagContentSubject.value;
   bool get hideExpandContent => _hideExpandContentSubject.value;
@@ -693,10 +760,13 @@ class _$OWMSettings implements OWMSettings {
   set autoDarkThemeTimeFrom(String value) =>
       autoDarkThemeTimeFromSink.add(value);
   set autoDarkThemeTimeTo(String value) => autoDarkThemeTimeToSink.add(value);
+  set simpleLinkView(bool value) => simpleLinkViewSink.add(value);
   set accentColor(int value) => accentColorSink.add(value);
-  set lowResAvatar(bool value) => lowResAvatarSink.add(value);
   set useYoutubePlayer(bool value) => useYoutubePlayerSink.add(value);
   set useOtherPlayer(bool value) => useOtherPlayerSink.add(value);
+  set useAutoplay(int value) => useAutoplaySink.add(value);
+  set highResAvatar(bool value) => highResAvatarSink.add(value);
+  set highResImage(bool value) => highResImageSink.add(value);
   set hiddingLinkThumb(bool value) => hiddingLinkThumbSink.add(value);
   set hiddingEntryImage(bool value) => hiddingEntryImageSink.add(value);
   set hiddingCommentImage(bool value) => hiddingCommentImageSink.add(value);
@@ -721,9 +791,10 @@ class _$OWMSettings implements OWMSettings {
   set defaultNotificationScreen(int value) =>
       defaultNotificationScreenSink.add(value);
   set linkOpenBrowser(bool value) => linkOpenBrowserSink.add(value);
+  set imageOpenBrowser(bool value) => imageOpenBrowserSink.add(value);
   set hideCommentLink(bool value) => hideCommentLinkSink.add(value);
+  set splitVotesLink(bool value) => splitVotesLinkSink.add(value);
   set hideAdultImage(bool value) => hideAdultImageSink.add(value);
-  set hideNsfwImage(bool value) => hideNsfwImageSink.add(value);
   set expandNewbieContent(bool value) => expandNewbieContentSink.add(value);
   set expandNoTagContent(bool value) => expandNoTagContentSink.add(value);
   set hideExpandContent(bool value) => hideExpandContentSink.add(value);
@@ -736,10 +807,13 @@ class _$OWMSettings implements OWMSettings {
     autoDarkThemeSink.close();
     autoDarkThemeTimeFromSink.close();
     autoDarkThemeTimeToSink.close();
+    simpleLinkViewSink.close();
     accentColorSink.close();
-    lowResAvatarSink.close();
     useYoutubePlayerSink.close();
     useOtherPlayerSink.close();
+    useAutoplaySink.close();
+    highResAvatarSink.close();
+    highResImageSink.close();
     hiddingLinkThumbSink.close();
     hiddingEntryImageSink.close();
     hiddingCommentImageSink.close();
@@ -762,9 +836,10 @@ class _$OWMSettings implements OWMSettings {
     defaultMyWykopScreenSink.close();
     defaultNotificationScreenSink.close();
     linkOpenBrowserSink.close();
+    imageOpenBrowserSink.close();
     hideCommentLinkSink.close();
+    splitVotesLinkSink.close();
     hideAdultImageSink.close();
-    hideNsfwImageSink.close();
     expandNewbieContentSink.close();
     expandNoTagContentSink.close();
     hideExpandContentSink.close();
@@ -784,13 +859,19 @@ abstract class OWMSettingsPreferences {
 
   Sink<String> autoDarkThemeTimeToSink;
 
-  Sink<int> accentColorSink;
+  Sink<bool> simpleLinkViewSink;
 
-  Sink<bool> lowResAvatarSink;
+  Sink<int> accentColorSink;
 
   Sink<bool> useYoutubePlayerSink;
 
   Sink<bool> useOtherPlayerSink;
+
+  Sink<int> useAutoplaySink;
+
+  Sink<bool> highResAvatarSink;
+
+  Sink<bool> highResImageSink;
 
   Sink<bool> hiddingLinkThumbSink;
 
@@ -836,11 +917,13 @@ abstract class OWMSettingsPreferences {
 
   Sink<bool> linkOpenBrowserSink;
 
+  Sink<bool> imageOpenBrowserSink;
+
   Sink<bool> hideCommentLinkSink;
 
-  Sink<bool> hideAdultImageSink;
+  Sink<bool> splitVotesLinkSink;
 
-  Sink<bool> hideNsfwImageSink;
+  Sink<bool> hideAdultImageSink;
 
   Sink<bool> expandNewbieContentSink;
 
@@ -860,10 +943,13 @@ abstract class OWMSettingsPreferences {
   Stream<int> get autoDarkThemeStream;
   Stream<String> get autoDarkThemeTimeFromStream;
   Stream<String> get autoDarkThemeTimeToStream;
+  Stream<bool> get simpleLinkViewStream;
   Stream<int> get accentColorStream;
-  Stream<bool> get lowResAvatarStream;
   Stream<bool> get useYoutubePlayerStream;
   Stream<bool> get useOtherPlayerStream;
+  Stream<int> get useAutoplayStream;
+  Stream<bool> get highResAvatarStream;
+  Stream<bool> get highResImageStream;
   Stream<bool> get hiddingLinkThumbStream;
   Stream<bool> get hiddingEntryImageStream;
   Stream<bool> get hiddingCommentImageStream;
@@ -886,9 +972,10 @@ abstract class OWMSettingsPreferences {
   Stream<int> get defaultMyWykopScreenStream;
   Stream<int> get defaultNotificationScreenStream;
   Stream<bool> get linkOpenBrowserStream;
+  Stream<bool> get imageOpenBrowserStream;
   Stream<bool> get hideCommentLinkStream;
+  Stream<bool> get splitVotesLinkStream;
   Stream<bool> get hideAdultImageStream;
-  Stream<bool> get hideNsfwImageStream;
   Stream<bool> get expandNewbieContentStream;
   Stream<bool> get expandNoTagContentStream;
   Stream<bool> get hideExpandContentStream;
@@ -901,10 +988,13 @@ abstract class OWMSettingsPreferences {
     autoDarkThemeSink.close();
     autoDarkThemeTimeFromSink.close();
     autoDarkThemeTimeToSink.close();
+    simpleLinkViewSink.close();
     accentColorSink.close();
-    lowResAvatarSink.close();
     useYoutubePlayerSink.close();
     useOtherPlayerSink.close();
+    useAutoplaySink.close();
+    highResAvatarSink.close();
+    highResImageSink.close();
     hiddingLinkThumbSink.close();
     hiddingEntryImageSink.close();
     hiddingCommentImageSink.close();
@@ -927,9 +1017,10 @@ abstract class OWMSettingsPreferences {
     defaultMyWykopScreenSink.close();
     defaultNotificationScreenSink.close();
     linkOpenBrowserSink.close();
+    imageOpenBrowserSink.close();
     hideCommentLinkSink.close();
+    splitVotesLinkSink.close();
     hideAdultImageSink.close();
-    hideNsfwImageSink.close();
     expandNewbieContentSink.close();
     expandNoTagContentSink.close();
     hideExpandContentSink.close();

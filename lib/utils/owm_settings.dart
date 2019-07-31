@@ -15,15 +15,21 @@ abstract class OWMSettings implements OWMSettingsPreferences {
   String autoDarkThemeTimeFrom;
   @DefaultValue("08:00")
   String autoDarkThemeTimeTo;
+  @DefaultValue(false)
+  bool simpleLinkView;
   @DefaultValue(4280391411)
   int accentColor;
 
-  @DefaultValue(false)
-  bool lowResAvatar;
   @DefaultValue(true)
   bool useYoutubePlayer;
   @DefaultValue(true)
   bool useOtherPlayer;
+  @DefaultValue(0)
+  int useAutoplay;
+  @DefaultValue(true)
+  bool highResAvatar;
+  @DefaultValue(false)
+  bool highResImage;
   @DefaultValue(false)
   bool hiddingLinkThumb;
   @DefaultValue(false)
@@ -72,11 +78,13 @@ abstract class OWMSettings implements OWMSettingsPreferences {
   @DefaultValue(false)
   bool linkOpenBrowser;
   @DefaultValue(false)
+  bool imageOpenBrowser;
+  @DefaultValue(false)
   bool hideCommentLink;
+  @DefaultValue(false)
+  bool splitVotesLink;
   @DefaultValue(true)
   bool hideAdultImage;
-  @DefaultValue(true)
-  bool hideNsfwImage;
   @DefaultValue(false)
   bool expandNewbieContent;
   @DefaultValue(false)

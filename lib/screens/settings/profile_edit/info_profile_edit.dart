@@ -28,7 +28,7 @@ class _InfoProfileEditState extends State<InfoProfileEdit> {
         InputTitleWidget("Instagram"),
         InputTextFieldWidget(),
         InputTitleWidget("O mnie"),
-        InputTextFieldWidget(),
+        InputTextFieldWidget(maxLines: null,),
         InputButtonWidget(text: "Zapisz"),
       ],
     );

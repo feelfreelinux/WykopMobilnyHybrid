@@ -58,60 +58,62 @@ class AppearanceSettingScreen extends StatelessWidget {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) => Dialog(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.all(20.0),
-                              child: Text(
-                                "Automatyczny tryb nocny",
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w700,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.all(20.0),
+                                child: Text(
+                                  "Automatyczny tryb nocny",
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
                               ),
-                            ),
-                            OWMSettingListener(
-                              rebuildOnChange: (settings) =>
-                                  settings.autoDarkThemeStream,
-                              builder: (context, settings) {
-                                return Column(
-                                  children: <Widget>[
-                                    RadioListTile(
-                                      groupValue: settings.autoDarkTheme,
-                                      onChanged: (value) {
-                                        settings.autoDarkTheme = value;
-                                        Navigator.of(context).pop();
-                                      },
-                                      value: 0,
-                                      title: Text("Wyłączony"),
-                                    ),
-                                    RadioListTile(
-                                      groupValue: settings.autoDarkTheme,
-                                      onChanged: (value) {
-                                        settings.autoDarkTheme = value;
-                                        Navigator.of(context).pop();
-                                      },
-                                      value: 1,
-                                      title:
-                                          Text("Od zachodu do wschodu słońca"),
-                                    ),
-                                    RadioListTile(
-                                      groupValue: settings.autoDarkTheme,
-                                      onChanged: (value) {
-                                        settings.autoDarkTheme = value;
-                                        Navigator.of(context).pop();
-                                      },
-                                      value: 2,
-                                      title: Text("W określonych godzinach"),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ),
-                            SizedBox(height: 18.0),
-                          ],
+                              OWMSettingListener(
+                                rebuildOnChange: (settings) =>
+                                    settings.autoDarkThemeStream,
+                                builder: (context, settings) {
+                                  return Column(
+                                    children: <Widget>[
+                                      RadioListTile(
+                                        groupValue: settings.autoDarkTheme,
+                                        onChanged: (value) {
+                                          settings.autoDarkTheme = value;
+                                          Navigator.of(context).pop();
+                                        },
+                                        value: 0,
+                                        title: Text("Wyłączony"),
+                                      ),
+                                      RadioListTile(
+                                        groupValue: settings.autoDarkTheme,
+                                        onChanged: (value) {
+                                          settings.autoDarkTheme = value;
+                                          Navigator.of(context).pop();
+                                        },
+                                        value: 1,
+                                        title: Text(
+                                            "Od zachodu do wschodu słońca"),
+                                      ),
+                                      RadioListTile(
+                                        groupValue: settings.autoDarkTheme,
+                                        onChanged: (value) {
+                                          settings.autoDarkTheme = value;
+                                          Navigator.of(context).pop();
+                                        },
+                                        value: 2,
+                                        title: Text("W określonych godzinach"),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                              SizedBox(height: 18.0),
+                            ],
+                          ),
                         ),
                       ),
                     );
@@ -175,6 +177,18 @@ class AppearanceSettingScreen extends StatelessWidget {
                   ),
                 ),
               ],
+            );
+          },
+        ),
+        DividerWidget(),
+        OWMSettingListener(
+          rebuildOnChange: (settings) => settings.simpleLinkViewStream,
+          builder: (context, settings) {
+            return SwitchListTile(
+              value: settings.simpleLinkView,
+              title: Text("Prosta lista znalezisk"),
+              onChanged: (value) =>
+                  settings.simpleLinkView = !settings.simpleLinkView,
             );
           },
         ),

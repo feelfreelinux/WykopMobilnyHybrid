@@ -32,73 +32,75 @@ class BehaviorSettingScreen extends StatelessWidget {
         OWMSettingListener(
           rebuildOnChange: (settings) => settings.defaultAppScreenStream,
           builder: (context, settings) => ListTile(
-            title: Text("Domyślny ekran Aplikacji"),
+            title: Text("Domyślny ekran aplikacji"),
             subtitle:
                 Text(_defaultAppScreenSubtitle(settings.defaultAppScreen)),
             onTap: () {
               showDialog(
                 context: context,
                 builder: (BuildContext context) => Dialog(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Text(
-                          "Domyślny ekran Aplikacji",
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w700,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: Text(
+                            "Domyślny ekran aplikacji",
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
-                      ),
-                      OWMSettingListener(
-                        rebuildOnChange: (settings) =>
-                            settings.defaultAppScreenStream,
-                        builder: (context, settings) => Column(
-                          children: <Widget>[
-                            RadioListTile(
-                              groupValue: settings.defaultAppScreen,
-                              onChanged: (value) {
-                                settings.defaultAppScreen = value;
-                                Navigator.of(context).pop();
-                              },
-                              value: 0,
-                              title: Text("Znaleziska"),
-                            ),
-                            RadioListTile(
-                              groupValue: settings.defaultAppScreen,
-                              onChanged: (value) {
-                                settings.defaultAppScreen = value;
-                                Navigator.of(context).pop();
-                              },
-                              value: 1,
-                              title: Text("Mikroblog"),
-                            ),
-                            RadioListTile(
-                              groupValue: settings.defaultAppScreen,
-                              onChanged: (value) {
-                                settings.defaultAppScreen = value;
-                                Navigator.of(context).pop();
-                              },
-                              value: 2,
-                              title: Text("Mój Wykop"),
-                            ),
-                            RadioListTile(
-                              groupValue: settings.defaultAppScreen,
-                              onChanged: (value) {
-                                settings.defaultAppScreen = value;
-                                Navigator.of(context).pop();
-                              },
-                              value: 3,
-                              title: Text("Powiadomienia"),
-                            ),
-                          ],
+                        OWMSettingListener(
+                          rebuildOnChange: (settings) =>
+                              settings.defaultAppScreenStream,
+                          builder: (context, settings) => Column(
+                            children: <Widget>[
+                              RadioListTile(
+                                groupValue: settings.defaultAppScreen,
+                                onChanged: (value) {
+                                  settings.defaultAppScreen = value;
+                                  Navigator.of(context).pop();
+                                },
+                                value: 0,
+                                title: Text("Znaleziska"),
+                              ),
+                              RadioListTile(
+                                groupValue: settings.defaultAppScreen,
+                                onChanged: (value) {
+                                  settings.defaultAppScreen = value;
+                                  Navigator.of(context).pop();
+                                },
+                                value: 1,
+                                title: Text("Mikroblog"),
+                              ),
+                              RadioListTile(
+                                groupValue: settings.defaultAppScreen,
+                                onChanged: (value) {
+                                  settings.defaultAppScreen = value;
+                                  Navigator.of(context).pop();
+                                },
+                                value: 2,
+                                title: Text("Mój Wykop"),
+                              ),
+                              RadioListTile(
+                                groupValue: settings.defaultAppScreen,
+                                onChanged: (value) {
+                                  settings.defaultAppScreen = value;
+                                  Navigator.of(context).pop();
+                                },
+                                value: 3,
+                                title: Text("Powiadomienia"),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 18.0),
-                    ],
+                        SizedBox(height: 18.0),
+                      ],
+                    ),
                   ),
                 ),
               );
@@ -108,73 +110,75 @@ class BehaviorSettingScreen extends StatelessWidget {
         OWMSettingListener(
           rebuildOnChange: (settings) => settings.defaultLinkScreenStream,
           builder: (context, settings) => ListTile(
-            title: Text("Domyślny ekran Znalezisk"),
+            title: Text("Domyślny ekran znalezisk"),
             subtitle:
                 Text(_defaultLinkScreenSubtitle(settings.defaultLinkScreen)),
             onTap: () {
               showDialog(
                 context: context,
                 builder: (BuildContext context) => Dialog(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Text(
-                          "Domyślny ekran Znalezisk",
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w700,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: Text(
+                            "Domyślny ekran znalezisk",
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
-                      ),
-                      OWMSettingListener(
-                        rebuildOnChange: (settings) =>
-                            settings.defaultLinkScreenStream,
-                        builder: (context, settings) => Column(
-                          children: <Widget>[
-                            RadioListTile(
-                              groupValue: settings.defaultLinkScreen,
-                              onChanged: (value) {
-                                settings.defaultLinkScreen = value;
-                                Navigator.of(context).pop();
-                              },
-                              value: 0,
-                              title: Text("Strona główna"),
-                            ),
-                            RadioListTile(
-                              groupValue: settings.defaultLinkScreen,
-                              onChanged: (value) {
-                                settings.defaultLinkScreen = value;
-                                Navigator.of(context).pop();
-                              },
-                              value: 1,
-                              title: Text("Wykopalisko"),
-                            ),
-                            RadioListTile(
-                              groupValue: settings.defaultLinkScreen,
-                              onChanged: (value) {
-                                settings.defaultLinkScreen = value;
-                                Navigator.of(context).pop();
-                              },
-                              value: 2,
-                              title: Text("Hity"),
-                            ),
-                            RadioListTile(
-                              groupValue: settings.defaultLinkScreen,
-                              onChanged: (value) {
-                                settings.defaultLinkScreen = value;
-                                Navigator.of(context).pop();
-                              },
-                              value: 3,
-                              title: Text("Ulubione"),
-                            ),
-                          ],
+                        OWMSettingListener(
+                          rebuildOnChange: (settings) =>
+                              settings.defaultLinkScreenStream,
+                          builder: (context, settings) => Column(
+                            children: <Widget>[
+                              RadioListTile(
+                                groupValue: settings.defaultLinkScreen,
+                                onChanged: (value) {
+                                  settings.defaultLinkScreen = value;
+                                  Navigator.of(context).pop();
+                                },
+                                value: 0,
+                                title: Text("Strona główna"),
+                              ),
+                              RadioListTile(
+                                groupValue: settings.defaultLinkScreen,
+                                onChanged: (value) {
+                                  settings.defaultLinkScreen = value;
+                                  Navigator.of(context).pop();
+                                },
+                                value: 1,
+                                title: Text("Wykopalisko"),
+                              ),
+                              RadioListTile(
+                                groupValue: settings.defaultLinkScreen,
+                                onChanged: (value) {
+                                  settings.defaultLinkScreen = value;
+                                  Navigator.of(context).pop();
+                                },
+                                value: 2,
+                                title: Text("Hity"),
+                              ),
+                              RadioListTile(
+                                groupValue: settings.defaultLinkScreen,
+                                onChanged: (value) {
+                                  settings.defaultLinkScreen = value;
+                                  Navigator.of(context).pop();
+                                },
+                                value: 3,
+                                title: Text("Ulubione"),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 18.0),
-                    ],
+                        SizedBox(height: 18.0),
+                      ],
+                    ),
                   ),
                 ),
               );
@@ -184,91 +188,93 @@ class BehaviorSettingScreen extends StatelessWidget {
         OWMSettingListener(
           rebuildOnChange: (settings) => settings.defaultEntryScreenStream,
           builder: (context, settings) => ListTile(
-            title: Text("Domyślny ekran Mikrobloga"),
+            title: Text("Domyślny ekran mikrobloga"),
             subtitle:
                 Text(_defaultEntryScreenSubtitle(settings.defaultEntryScreen)),
             onTap: () {
               showDialog(
                 context: context,
                 builder: (BuildContext context) => Dialog(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Text(
-                          "Domyślny ekran Mikrobloga",
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w700,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: Text(
+                            "Domyślny ekran mikrobloga",
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
-                      ),
-                      OWMSettingListener(
-                        rebuildOnChange: (settings) =>
-                            settings.defaultEntryScreenStream,
-                        builder: (context, settings) => Column(
-                          children: <Widget>[
-                            RadioListTile(
-                              groupValue: settings.defaultEntryScreen,
-                              onChanged: (value) {
-                                settings.defaultEntryScreen = value;
-                                Navigator.of(context).pop();
-                              },
-                              value: 0,
-                              title: Text("Nowe"),
-                            ),
-                            RadioListTile(
-                              groupValue: settings.defaultEntryScreen,
-                              onChanged: (value) {
-                                settings.defaultEntryScreen = value;
-                                Navigator.of(context).pop();
-                              },
-                              value: 1,
-                              title: Text("Aktywne"),
-                            ),
-                            RadioListTile(
-                              groupValue: settings.defaultEntryScreen,
-                              onChanged: (value) {
-                                settings.defaultEntryScreen = value;
-                                Navigator.of(context).pop();
-                              },
-                              value: 2,
-                              title: Text("Gorące 6h"),
-                            ),
-                            RadioListTile(
-                              groupValue: settings.defaultEntryScreen,
-                              onChanged: (value) {
-                                settings.defaultEntryScreen = value;
-                                Navigator.of(context).pop();
-                              },
-                              value: 3,
-                              title: Text("Gorące 12h"),
-                            ),
-                            RadioListTile(
-                              groupValue: settings.defaultEntryScreen,
-                              onChanged: (value) {
-                                settings.defaultEntryScreen = value;
-                                Navigator.of(context).pop();
-                              },
-                              value: 4,
-                              title: Text("Gorące 24h"),
-                            ),
-                            RadioListTile(
-                              groupValue: settings.defaultEntryScreen,
-                              onChanged: (value) {
-                                settings.defaultEntryScreen = value;
-                                Navigator.of(context).pop();
-                              },
-                              value: 5,
-                              title: Text("Ulubione"),
-                            ),
-                          ],
+                        OWMSettingListener(
+                          rebuildOnChange: (settings) =>
+                              settings.defaultEntryScreenStream,
+                          builder: (context, settings) => Column(
+                            children: <Widget>[
+                              RadioListTile(
+                                groupValue: settings.defaultEntryScreen,
+                                onChanged: (value) {
+                                  settings.defaultEntryScreen = value;
+                                  Navigator.of(context).pop();
+                                },
+                                value: 0,
+                                title: Text("Nowe"),
+                              ),
+                              RadioListTile(
+                                groupValue: settings.defaultEntryScreen,
+                                onChanged: (value) {
+                                  settings.defaultEntryScreen = value;
+                                  Navigator.of(context).pop();
+                                },
+                                value: 1,
+                                title: Text("Aktywne"),
+                              ),
+                              RadioListTile(
+                                groupValue: settings.defaultEntryScreen,
+                                onChanged: (value) {
+                                  settings.defaultEntryScreen = value;
+                                  Navigator.of(context).pop();
+                                },
+                                value: 2,
+                                title: Text("Gorące 6h"),
+                              ),
+                              RadioListTile(
+                                groupValue: settings.defaultEntryScreen,
+                                onChanged: (value) {
+                                  settings.defaultEntryScreen = value;
+                                  Navigator.of(context).pop();
+                                },
+                                value: 3,
+                                title: Text("Gorące 12h"),
+                              ),
+                              RadioListTile(
+                                groupValue: settings.defaultEntryScreen,
+                                onChanged: (value) {
+                                  settings.defaultEntryScreen = value;
+                                  Navigator.of(context).pop();
+                                },
+                                value: 4,
+                                title: Text("Gorące 24h"),
+                              ),
+                              RadioListTile(
+                                groupValue: settings.defaultEntryScreen,
+                                onChanged: (value) {
+                                  settings.defaultEntryScreen = value;
+                                  Navigator.of(context).pop();
+                                },
+                                value: 5,
+                                title: Text("Ulubione"),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 18.0),
-                    ],
+                        SizedBox(height: 18.0),
+                      ],
+                    ),
                   ),
                 ),
               );
@@ -278,73 +284,75 @@ class BehaviorSettingScreen extends StatelessWidget {
         OWMSettingListener(
           rebuildOnChange: (settings) => settings.defaultMyWykopScreenStream,
           builder: (context, settings) => ListTile(
-            title: Text("Domyślny ekran Mojego wykopu"),
+            title: Text("Domyślny ekran mojego wykopu"),
             subtitle: Text(
                 _defaultMyWykopScreenSubtitle(settings.defaultMyWykopScreen)),
             onTap: () {
               showDialog(
                 context: context,
                 builder: (BuildContext context) => Dialog(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Text(
-                          "Domyślny ekran Mojego wykopu",
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w700,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: Text(
+                            "Domyślny ekran mojego wykopu",
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
-                      ),
-                      OWMSettingListener(
-                        rebuildOnChange: (settings) =>
-                            settings.defaultMyWykopScreenStream,
-                        builder: (context, settings) => Column(
-                          children: <Widget>[
-                            RadioListTile(
-                              groupValue: settings.defaultMyWykopScreen,
-                              onChanged: (value) {
-                                settings.defaultMyWykopScreen = value;
-                                Navigator.of(context).pop();
-                              },
-                              value: 0,
-                              title: Text("Mój Wykop"),
-                            ),
-                            RadioListTile(
-                              groupValue: settings.defaultMyWykopScreen,
-                              onChanged: (value) {
-                                settings.defaultMyWykopScreen = value;
-                                Navigator.of(context).pop();
-                              },
-                              value: 1,
-                              title: Text("Tagi"),
-                            ),
-                            RadioListTile(
-                              groupValue: settings.defaultMyWykopScreen,
-                              onChanged: (value) {
-                                settings.defaultMyWykopScreen = value;
-                                Navigator.of(context).pop();
-                              },
-                              value: 2,
-                              title: Text("Użytkownicy"),
-                            ),
-                            RadioListTile(
-                              groupValue: settings.defaultMyWykopScreen,
-                              onChanged: (value) {
-                                settings.defaultMyWykopScreen = value;
-                                Navigator.of(context).pop();
-                              },
-                              value: 3,
-                              title: Text("Lista tagów"),
-                            ),
-                          ],
+                        OWMSettingListener(
+                          rebuildOnChange: (settings) =>
+                              settings.defaultMyWykopScreenStream,
+                          builder: (context, settings) => Column(
+                            children: <Widget>[
+                              RadioListTile(
+                                groupValue: settings.defaultMyWykopScreen,
+                                onChanged: (value) {
+                                  settings.defaultMyWykopScreen = value;
+                                  Navigator.of(context).pop();
+                                },
+                                value: 0,
+                                title: Text("Mój Wykop"),
+                              ),
+                              RadioListTile(
+                                groupValue: settings.defaultMyWykopScreen,
+                                onChanged: (value) {
+                                  settings.defaultMyWykopScreen = value;
+                                  Navigator.of(context).pop();
+                                },
+                                value: 1,
+                                title: Text("Tagi"),
+                              ),
+                              RadioListTile(
+                                groupValue: settings.defaultMyWykopScreen,
+                                onChanged: (value) {
+                                  settings.defaultMyWykopScreen = value;
+                                  Navigator.of(context).pop();
+                                },
+                                value: 2,
+                                title: Text("Użytkownicy"),
+                              ),
+                              RadioListTile(
+                                groupValue: settings.defaultMyWykopScreen,
+                                onChanged: (value) {
+                                  settings.defaultMyWykopScreen = value;
+                                  Navigator.of(context).pop();
+                                },
+                                value: 3,
+                                title: Text("Lista tagów"),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 18.0),
-                    ],
+                        SizedBox(height: 18.0),
+                      ],
+                    ),
                   ),
                 ),
               );
@@ -355,64 +363,66 @@ class BehaviorSettingScreen extends StatelessWidget {
           rebuildOnChange: (settings) =>
               settings.defaultNotificationScreenStream,
           builder: (context, settings) => ListTile(
-            title: Text("Domyślny ekran Powiadomień"),
+            title: Text("Domyślny ekran powiadomień"),
             subtitle: Text(_defaultNotificationScreenSubtitle(
                 settings.defaultNotificationScreen)),
             onTap: () {
               showDialog(
                 context: context,
                 builder: (BuildContext context) => Dialog(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: Text(
-                          "Domyślny ekran Powiadomień",
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w700,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: Text(
+                            "Domyślny ekran powiadomień",
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
-                      ),
-                      OWMSettingListener(
-                        rebuildOnChange: (settings) =>
-                            settings.defaultNotificationScreenStream,
-                        builder: (context, settings) => Column(
-                          children: <Widget>[
-                            RadioListTile(
-                              groupValue: settings.defaultNotificationScreen,
-                              onChanged: (value) {
-                                settings.defaultNotificationScreen = value;
-                                Navigator.of(context).pop();
-                              },
-                              value: 0,
-                              title: Text("Wiadomości"),
-                            ),
-                            RadioListTile(
-                              groupValue: settings.defaultNotificationScreen,
-                              onChanged: (value) {
-                                settings.defaultNotificationScreen = value;
-                                Navigator.of(context).pop();
-                              },
-                              value: 1,
-                              title: Text("Powiadomienia"),
-                            ),
-                            RadioListTile(
-                              groupValue: settings.defaultNotificationScreen,
-                              onChanged: (value) {
-                                settings.defaultNotificationScreen = value;
-                                Navigator.of(context).pop();
-                              },
-                              value: 2,
-                              title: Text("Tagi"),
-                            ),
-                          ],
+                        OWMSettingListener(
+                          rebuildOnChange: (settings) =>
+                              settings.defaultNotificationScreenStream,
+                          builder: (context, settings) => Column(
+                            children: <Widget>[
+                              RadioListTile(
+                                groupValue: settings.defaultNotificationScreen,
+                                onChanged: (value) {
+                                  settings.defaultNotificationScreen = value;
+                                  Navigator.of(context).pop();
+                                },
+                                value: 0,
+                                title: Text("Wiadomości"),
+                              ),
+                              RadioListTile(
+                                groupValue: settings.defaultNotificationScreen,
+                                onChanged: (value) {
+                                  settings.defaultNotificationScreen = value;
+                                  Navigator.of(context).pop();
+                                },
+                                value: 1,
+                                title: Text("Powiadomienia"),
+                              ),
+                              RadioListTile(
+                                groupValue: settings.defaultNotificationScreen,
+                                onChanged: (value) {
+                                  settings.defaultNotificationScreen = value;
+                                  Navigator.of(context).pop();
+                                },
+                                value: 2,
+                                title: Text("Tagi"),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 18.0),
-                    ],
+                        SizedBox(height: 18.0),
+                      ],
+                    ),
                   ),
                 ),
               );
@@ -425,46 +435,60 @@ class BehaviorSettingScreen extends StatelessWidget {
           builder: (context, settings) {
             return SwitchListTile(
               value: settings.linkOpenBrowser,
-              title: Text("Otwórz link w domyślnej przeglądarce"),
+              title: Text("Otwórz link w przeglądarce"),
+              subtitle: Text("Użyje domyślnej przeglądarki"),
               onChanged: (value) =>
                   settings.linkOpenBrowser = !settings.linkOpenBrowser,
             );
           },
         ),
-        DividerWidget(padding: EdgeInsets.only(bottom: 8.0)),
+        OWMSettingListener(
+          rebuildOnChange: (settings) => settings.imageOpenBrowserStream,
+          builder: (context, settings) {
+            return SwitchListTile(
+              value: settings.imageOpenBrowser,
+              title: Text("Otwórz obrazek w przeglądarce"),
+              subtitle: Text("Użyje domyślnej przeglądarki"),
+              onChanged: (value) =>
+                  settings.imageOpenBrowser = !settings.imageOpenBrowser,
+            );
+          },
+        ),
+        DividerWidget(),
         OWMSettingListener(
           rebuildOnChange: (settings) => settings.hideCommentLinkStream,
           builder: (context, settings) {
             return SwitchListTile(
               value: settings.hideCommentLink,
               title: Text("Zwiń komentarze w znaleziskach"),
-              subtitle: Text(
-                  "Odpowiedzi zostaną wyświetlone po kliknięciu w przycisk rozwijania"),
+              subtitle: Text("Odpowiedzi pokażą się po kliknięciu"),
               onChanged: (value) =>
                   settings.hideCommentLink = !settings.hideCommentLink,
             );
           },
         ),
-        DividerWidget(padding: EdgeInsets.only(top: 8.0)),
+        OWMSettingListener(
+          rebuildOnChange: (settings) => settings.splitVotesLinkStream,
+          builder: (context, settings) {
+            return SwitchListTile(
+              value: settings.splitVotesLink,
+              title: Text("Rozdziel głosy w znaleziskach"),
+              subtitle: Text("Pokaż osobno plusy i minusy"),
+              onChanged: (value) =>
+                  settings.splitVotesLink = !settings.splitVotesLink,
+            );
+          },
+        ),
+        DividerWidget(),
         OWMSettingListener(
           rebuildOnChange: (settings) => settings.hideAdultImageStream,
           builder: (context, settings) {
             return SwitchListTile(
               value: settings.hideAdultImage,
-              title: Text("Ukryj treści z oznaczeniem 18+"),
+              title: Text("Ukryj obrazki 18+ i #nsfw"),
+              subtitle: Text("Na liście wpisów i w komentarzach"),
               onChanged: (value) =>
                   settings.hideAdultImage = !settings.hideAdultImage,
-            );
-          },
-        ),
-        OWMSettingListener(
-          rebuildOnChange: (settings) => settings.hideNsfwImageStream,
-          builder: (context, settings) {
-            return SwitchListTile(
-              value: settings.hideNsfwImage,
-              title: Text("Ukryj treści z tagiem #nsfw"),
-              onChanged: (value) =>
-                  settings.hideNsfwImage = !settings.hideNsfwImage,
             );
           },
         ),
