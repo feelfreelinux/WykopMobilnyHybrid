@@ -17,9 +17,9 @@ class NotificationsSettingScreen extends StatelessWidget {
           backgroundColor: Theme.of(context).backgroundColor,
           appBar: AppbarNormalWidget(
             title: "Powiadomienia",
-            shadow: true,
           ),
-          body: SingleChildScrollView(child: _drawList()),
+          body: ShadowNotificationListener(
+              child: SingleChildScrollView(child: _drawList())),
         ),
       ),
     );

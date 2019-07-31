@@ -17,9 +17,9 @@ class PicturesSettingScreen extends StatelessWidget {
           backgroundColor: Theme.of(context).backgroundColor,
           appBar: AppbarNormalWidget(
             title: "Obrazki i multimedia",
-            shadow: true,
           ),
-          body: SingleChildScrollView(child: _drawList()),
+          body: ShadowNotificationListener(
+              child: SingleChildScrollView(child: _drawList())),
         ),
       ),
     );

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/screens/settings/appearance.dart';
+import 'package:owmflutter/screens/settings/profile_edit/profile_edit.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/models/models.dart';
@@ -139,6 +140,12 @@ class MainSettingsScreen extends StatelessWidget {
             ),
             authStateModel.loggedIn
                 ? GestureDetector(
+                  onTap: () {
+                Navigator.push(
+                  context,
+                  Utils.getPageTransition(ProfileEditScreen()),
+                );
+              },
                     child: Container(
                       margin: EdgeInsets.only(
                         bottom: 14.0,

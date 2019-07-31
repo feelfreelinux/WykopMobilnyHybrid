@@ -17,9 +17,9 @@ class BehaviorSettingScreen extends StatelessWidget {
           backgroundColor: Theme.of(context).backgroundColor,
           appBar: AppbarNormalWidget(
             title: "Zachowanie aplikacji",
-            shadow: true,
           ),
-          body: SingleChildScrollView(child: _drawList(context)),
+          body: ShadowNotificationListener(
+              child: SingleChildScrollView(child: _drawList(context))),
         ),
       ),
     );

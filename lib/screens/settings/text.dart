@@ -17,9 +17,9 @@ class TextSettingScreen extends StatelessWidget {
           backgroundColor: Theme.of(context).backgroundColor,
           appBar: AppbarNormalWidget(
             title: "Tekst",
-            shadow: true,
           ),
-          body: SingleChildScrollView(child: _drawList()),
+          body: ShadowNotificationListener(
+              child: SingleChildScrollView(child: _drawList())),
         ),
       ),
     );
