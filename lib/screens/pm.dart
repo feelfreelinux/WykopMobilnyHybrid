@@ -23,7 +23,8 @@ class _PmScreenState extends State<PmScreen>
     final mqData = MediaQuery.of(context);
     final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
     return ChangeNotifierProvider<ShadowControlModel>(
-      builder: (context) => ShadowControlModel(),
+      builder: (context) =>
+          ShadowControlModel(reverse: true, scrollDelayPixels: 0),
       child: _SystemPadding(
         child: MediaQuery(
           data: mqDataNew,
@@ -31,7 +32,6 @@ class _PmScreenState extends State<PmScreen>
             bottomNavigationBar: InputBarWidget(
               (inputData) {},
               key: OwmKeys.inputBarKey,
-              iconsColor: Theme.of(context).accentColor,
               hintText: "Napisz wiadomość",
             ),
             resizeToAvoidBottomPadding: false,
