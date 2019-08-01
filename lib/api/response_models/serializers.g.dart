@@ -20,6 +20,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(PmMessageResponse.serializer)
       ..add(RelatedResponse.serializer)
       ..add(TagSuggestionResponse.serializer)
+      ..add(VoterResponse.serializer)
       ..addBuilderFactory(
           const FullType(
               BuiltList, const [const FullType(EntryCommentResponse)]),

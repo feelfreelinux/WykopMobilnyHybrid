@@ -24,9 +24,9 @@ class _$VoterResponseSerializer implements StructuredSerializer<VoterResponse> {
           specifiedType: const FullType(AuthorResponse)),
       'date',
       serializers.serialize(object.date, specifiedType: const FullType(String)),
-      'voteType',
+      'vote_type',
       serializers.serialize(object.voteType,
-          specifiedType: const FullType(int)),
+          specifiedType: const FullType(String)),
     ];
 
     return result;
@@ -52,9 +52,9 @@ class _$VoterResponseSerializer implements StructuredSerializer<VoterResponse> {
           result.date = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
-        case 'voteType':
+        case 'vote_type':
           result.voteType = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
+              specifiedType: const FullType(String)) as String;
           break;
       }
     }
@@ -69,7 +69,7 @@ class _$VoterResponse extends VoterResponse {
   @override
   final String date;
   @override
-  final int voteType;
+  final String voteType;
 
   factory _$VoterResponse([void Function(VoterResponseBuilder) updates]) =>
       (new VoterResponseBuilder()..update(updates)).build();
@@ -131,9 +131,9 @@ class VoterResponseBuilder
   String get date => _$this._date;
   set date(String date) => _$this._date = date;
 
-  int _voteType;
-  int get voteType => _$this._voteType;
-  set voteType(int voteType) => _$this._voteType = voteType;
+  String _voteType;
+  String get voteType => _$this._voteType;
+  set voteType(String voteType) => _$this._voteType = voteType;
 
   VoterResponseBuilder();
 

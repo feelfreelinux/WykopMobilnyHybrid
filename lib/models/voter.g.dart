@@ -12,7 +12,7 @@ class _$Voter extends Voter {
   @override
   final String date;
   @override
-  final int voteType;
+  final String voteType;
 
   factory _$Voter([void Function(VoterBuilder) updates]) =>
       (new VoterBuilder()..update(updates)).build();
@@ -72,9 +72,9 @@ class VoterBuilder implements Builder<Voter, VoterBuilder> {
   String get date => _$this._date;
   set date(String date) => _$this._date = date;
 
-  int _voteType;
-  int get voteType => _$this._voteType;
-  set voteType(int voteType) => _$this._voteType = voteType;
+  String _voteType;
+  String get voteType => _$this._voteType;
+  set voteType(String voteType) => _$this._voteType = voteType;
 
   VoterBuilder();
 

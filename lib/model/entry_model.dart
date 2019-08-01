@@ -69,6 +69,7 @@ class EntryModel extends InputModel {
 
   Future<void> loadUpVoters() async {
     _upvoters = await api.entries.getEntryUpVoters(_id);
+    print(_upvoters);
     notifyListeners();
   }
 

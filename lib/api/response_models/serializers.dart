@@ -3,6 +3,7 @@ import 'package:built_value/standard_json_plugin.dart';
 import 'package:built_value/serializer.dart';
 import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/api/response_models/entry_link_response.dart';
+import 'package:owmflutter/api/response_models/voter_response.dart';
 
 part 'serializers.g.dart';
 
@@ -20,6 +21,7 @@ part 'serializers.g.dart';
   ConversationResponse,
   PmMessageResponse,
   TagSuggestionResponse,
+  VoterResponse,
 ])
 final Serializers serializers =
     (_$serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();

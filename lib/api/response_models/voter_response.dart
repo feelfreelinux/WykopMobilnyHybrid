@@ -10,7 +10,9 @@ abstract class VoterResponse
       _$VoterResponse;
   AuthorResponse get author;
   String get date;
-  int get voteType;
+
+  @BuiltValueField(wireName: "vote_type")
+  String get voteType;
 
   VoterResponse._();
   static Serializer<VoterResponse> get serializer =>

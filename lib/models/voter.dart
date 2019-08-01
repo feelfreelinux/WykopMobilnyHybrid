@@ -8,7 +8,7 @@ part 'voter.g.dart';
 abstract class Voter implements Built<Voter, VoterBuilder> {
   Author get author;
   String get date;
-  int get voteType;
+  String get voteType;
   factory Voter.fromResponse({VoterResponse response}) {
     return _$Voter._(
       author: Author.fromResponse(response: response.author),

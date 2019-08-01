@@ -167,6 +167,7 @@ class ApiClient extends http.BaseClient {
         return OWMAPI.serializers.deserializeWith(serializer, el);
       }).toList();
     } catch (e) {
+      print(e.toString());
       OWMAPI.api.errorSink.add(e);
     }
   }

@@ -1,4 +1,5 @@
 import 'package:owmflutter/api/api.dart';
+import 'package:owmflutter/api/response_models/voter_response.dart';
 import 'package:owmflutter/models/models.dart';
 
 abstract class ApiResource {
@@ -40,6 +41,13 @@ abstract class ApiResource {
     return _client
         .deserializeList(EntryLinkResponse.serializer, items)
         .map((e) => EntryLink.mapFromResponse(e))
+        .toList();
+  }
+
+    List<Voter> deserializeUpvoters(dynamic items) {
+    return _client
+        .deserializeList(VoterResponse.serializer, items)
+        .map((e) => Voter.fromResponse(response: e))
         .toList();
   }
 

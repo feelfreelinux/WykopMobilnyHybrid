@@ -25,7 +25,7 @@ class _EntryScreenState extends State<EntryScreen>
 
     return ChangeNotifierProvider<EntryModel>.value(
       value: (widget.model ?? (EntryModel()..setId(widget.entryId))
-        ..updateEntry()),
+        ..updateEntry()..loadUpVoters()),
       child: ChangeNotifierProvider<ShadowControlModel>(
         builder: (context) => ShadowControlModel(),
         child: Consumer<EntryModel>(
