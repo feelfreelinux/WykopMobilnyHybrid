@@ -12,6 +12,7 @@ class EntryModel extends InputModel {
   Embed _embed;
   bool _isVoted;
   List<EntryComment> _comments = [];
+  List<Voter> _upvoters = [];
   int _commentsCount;
   bool _loading = false;
 
@@ -25,6 +26,7 @@ class EntryModel extends InputModel {
   int get commentsCount => _commentsCount;
   bool get isLoading => _loading;
   List<EntryComment> get comments => _comments;
+  List<Voter> get upvoters => _upvoters;
 
   void setData(Entry entry) {
     _id = entry.id;
@@ -62,6 +64,11 @@ class EntryModel extends InputModel {
       _voteCount = await api.entries.voteDown(_id);
       _isVoted = false;
     }
+    notifyListeners();
+  }
+
+  Future<void> loadUpVoters() async {
+    _upvoters = await api.entries.getEntryUpVoters(_id);
     notifyListeners();
   }
 

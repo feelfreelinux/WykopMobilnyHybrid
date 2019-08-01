@@ -1,7 +1,9 @@
 import 'package:owmflutter/api/api.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:owmflutter/api/api.dart' as prefix0;
+import 'package:owmflutter/api/response_models/voter_response.dart';
 import 'package:owmflutter/models/models.dart';
+import 'package:owmflutter/models/voter.dart';
 
 class EntriesApi extends ApiResource {
   EntriesApi(ApiClient client) : super(client);
@@ -47,6 +49,7 @@ class EntriesApi extends ApiResource {
       client.deserializeElement(EntryResponse.serializer, items),
     );
   }
+
 /*
   Future<Result> deleteEntry(int id) async {
     var items = await client.request('entries', 'delete', api: [id.toString()]);
@@ -63,11 +66,16 @@ class EntriesApi extends ApiResource {
 */
   Future<EntryComment> addEntryComment(int entryId, InputData data) async {
     var comment = await client.request('entries', 'commentadd',
-        api: [entryId.toString()],
-        post: {'body': data.body},
-        image: data.file);
+        api: [entryId.toString()], post: {'body': data.body}, image: data.file);
     print(comment);
     return deserializeEntryComment(comment);
+  }
+
+  Future<List<Voter>> getEntryUpVoters(int entryId) async {
+    var items =
+        await client.request('entries', 'upvoters', api: [entryId.toString()]);
+    var voters = client.deserializeList(VoterResponse.serializer, items);
+    return voters.map((e) => Voter.fromResponse(response: e)).toList();
   }
 /*
   Future<Result> addEntry(InputData data) async {

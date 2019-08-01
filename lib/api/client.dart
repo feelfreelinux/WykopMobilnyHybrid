@@ -97,8 +97,8 @@ class ApiClient extends http.BaseClient {
       {List<String> api: const [],
       Map<String, String> named: const {},
       Map<String, String> post: const {'owm-get': 'yes'},
+      bool returnFullResponse = false,
       File image}) async {
-        try {
     if (this._secrets == null) {
       this._secrets = await loadSecrets();
     }
@@ -145,10 +145,19 @@ class ApiClient extends http.BaseClient {
       response = await http.Response.fromStream(await send(multipartRequest));
     }
 
-    return json.decode(response.body)["data"];
-        } catch (e) {
-                OWMAPI.api.errorSink.add(e);
-        }
+    if (!returnFullResponse) {
+      try {
+        return json.decode(response.body)["data"];
+      } catch (e) {
+        OWMAPI.api.errorSink.add(e);
+      }
+    } else {
+      try {
+        return json.decode(response.body);
+      } catch (e) {
+        OWMAPI.api.errorSink.add(e);
+      }
+    }
   }
 
   List<T> deserializeList<T>(Serializer<T> serializer, map) {

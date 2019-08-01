@@ -13,3 +13,5 @@ export 'related.dart';
 export 'conversation.dart';
 export 'pm_message.dart';
 export 'entry_link.dart';
+export 'conversation_data.dart';
+export 'voter.dart';

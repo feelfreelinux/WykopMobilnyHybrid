@@ -14,6 +14,20 @@ class PmApi extends ApiResource {
         .toList();
   }
 
+  Future<ConversationData> getConversation(String receiver) async {
+    var items = await client.request('pm', 'conversation', api: [receiver]);
+    var msgs = client
+        .deserializeList(PmMessageResponse.serializer, items["data"])
+        .map((e) => PmMessage.mapFromResponse(e))
+        .toList();
+    var author = deserializeAuthor(items["receiver"]);
+
+    return ConversationData(
+      messages: msgs,
+      receiver: author,
+    );
+  }
+
   Future<List<PmMessage>> getMessages(String receiver) async {
     var items = await client.request('pm', 'conversation', api: [receiver]);
 
