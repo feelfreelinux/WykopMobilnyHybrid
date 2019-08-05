@@ -16,7 +16,7 @@ class BodyWidget extends StatefulWidget {
     this.padding,
     this.textColor,
     this.textSize,
-    this.linkColor = Colors.blueAccent,
+    this.linkColor,
   });
 
   _BodyWidgetState createState() => _BodyWidgetState();
@@ -39,7 +39,7 @@ class _BodyWidgetState extends State<BodyWidget> {
             HtmlWidget(
               textColor:
                   widget.textColor ?? Theme.of(context).textTheme.body1.color,
-              linkColor: widget.linkColor,
+              linkColor: widget.linkColor ?? Theme.of(context).accentColor,
               textSize: widget.textSize,
               html: widget.body != null
                   ? !expand && bodyString.length > 300 && widget.ellipsize

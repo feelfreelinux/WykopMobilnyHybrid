@@ -10,18 +10,17 @@ import 'dart:async';
 import 'package:provider/provider.dart';
 
 class LinkCommentWidget extends StatelessWidget {
-
   LinkCommentWidget();
 
   @override
   Widget build(BuildContext context) {
     return Consumer<LinkCommentModel>(
       builder: (context, model, _) => Material(
-          key: Key(model.id.toString()),
-          color: Theme.of(context).backgroundColor,
-          child: _buildLinkCommentBody(model, context),
-        ),
-        );
+        key: Key(model.id.toString()),
+        color: Theme.of(context).backgroundColor,
+        child: _buildLinkCommentBody(model, context),
+      ),
+    );
   }
 
   void _showActionsDialog(BuildContext context, LinkCommentModel comment) {
@@ -103,18 +102,15 @@ class LinkCommentWidget extends StatelessWidget {
                   Positioned(
                     top: 2.0,
                     right: 0.0,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 8.0),
-                      child: VoteButton(
-                          isSelected: model.voteState == LinkCommentVoteState.UP_VOTED,
-                          isComment: true,
-                          count: model.voteCount,
-                          onClicked: () {
-                            model.toggleVote();
-                          },
-                        ),
-                      ),
+                    child: VoteButton(
+                      margin: EdgeInsets.only(left: 8.0),
+                      isSelected:
+                          model.voteState == LinkCommentVoteState.UP_VOTED,
+                      isComment: true,
+                      count: model.voteCount,
+                      onClicked: () => model.toggleVote(),
                     ),
+                  ),
                 ],
               ),
               Row(
@@ -138,7 +134,7 @@ class LinkCommentWidget extends StatelessWidget {
                     isButton: true,
                     onTap: () {
                       OwmKeys.inputBarKey.currentState
-                          .quoteText(model.author, model.body);
+                          .quoteText(model.body, author: model.author);
                     },
                   ),
                   _footerText(
@@ -178,7 +174,7 @@ class LinkCommentWidget extends StatelessWidget {
         style: TextStyle(
           fontWeight: FontWeight.w500,
           fontSize: 13.5,
-          color: Utils.getAuthorColor(author, context),
+          color: Utils.getAuthorColor(author.color, context),
         ),
       ),
     );
@@ -186,19 +182,18 @@ class LinkCommentWidget extends StatelessWidget {
 
   Widget _drawBody(BuildContext context, LinkCommentModel model) {
     return SupaGestureDetector(
-          onLongPress: () {
-            _showActionsDialog(context, model);
-          },
-          child: BodyWidget(
-            body: model.body,
-            ellipsize: false,
-            padding: EdgeInsets.only(
-              bottom: 8.0,
-              left: 12.0,
-              right: 12.0,
-            ),
-          ),
-        
+      onLongPress: () {
+        _showActionsDialog(context, model);
+      },
+      child: BodyWidget(
+        body: model.body,
+        ellipsize: false,
+        padding: EdgeInsets.only(
+          bottom: 8.0,
+          left: 12.0,
+          right: 12.0,
+        ),
+      ),
     );
   }
 

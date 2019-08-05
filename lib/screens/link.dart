@@ -36,15 +36,21 @@ class _LinkScreenState extends State<LinkScreen>
                 ),
                 resizeToAvoidBottomPadding: false,
                 appBar: AppbarNormalWidget(
-                  padding: EdgeInsets.only(right: 8.0),
+                  leading: IconButtonWidget(
+                    icon: Icons.arrow_back,
+                    onTap: () => Navigator.of(context).pop(),
+                    iconColor: Theme.of(context).accentColor,
+                  ),
+                  padding: EdgeInsets.only(left: 2.0, right: 6.0),
                   actions: <Widget>[
-                    AppBarButton(
+                    IconButtonWidget(
                       icon: Icons.refresh,
-                      round: true,
+                      padding: EdgeInsets.all(0.0),
+                      iconColor: Theme.of(context).accentColor,
                     ),
-                    AppBarButton(
-                      icon: Icons.more_vert,
-                      round: true,
+                    IconButtonWidget(
+                      icon: Icons.more_horiz,
+                      iconColor: Theme.of(context).accentColor,
                     )
                   ],
                 ),

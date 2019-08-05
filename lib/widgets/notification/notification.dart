@@ -51,15 +51,15 @@ class NotificationWidget extends StatelessWidget {
                             text: TextSpan(
                               children: [
                                 TextSpan(
-                                  text: model.body.substring(
-                                      0, model.body.indexOf(' ')),
+                                  text: model.body
+                                      .substring(0, model.body.indexOf(' ')),
                                   style: TextStyle(
                                     fontSize: 15.0,
                                     height: 1.1,
                                     fontWeight: FontWeight.w500,
                                     color: model.author != null
                                         ? Utils.getAuthorColor(
-                                            model.author, context)
+                                            model.author.color, context)
                                         : Theme.of(context)
                                             .textTheme
                                             .headline

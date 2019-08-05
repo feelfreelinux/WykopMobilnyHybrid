@@ -25,9 +25,18 @@ abstract class Author implements Built<Author, AuthorBuilder> {
             : (response.sex == "male" ? AuthorSex.MALE : AuthorSex.FEMALE));
   }
 
-  factory Author.fromAuthState({String username, String avatarUrl, int color}) {
+  factory Author.fromAuthState({
+    String username,
+    String avatarUrl,
+    int color,
+    AuthorSex sex: AuthorSex.OTHER,
+  }) {
     return _$Author._(
-        color: color, avatar: avatarUrl, login: username, sex: AuthorSex.OTHER);
+      color: color,
+      avatar: avatarUrl,
+      login: username,
+      sex: sex,
+    );
   }
   Author._();
 }

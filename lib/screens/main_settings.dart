@@ -30,10 +30,9 @@ class MainSettingsScreen extends StatelessWidget {
           appBar: AppbarNormalWidget(
             shadow: true,
             padding: EdgeInsets.symmetric(horizontal: 8.0),
-            leading: AppBarButton(
+            leading: RoundIconButtonWidget(
               icon: Icons.close,
               onTap: () => Navigator.of(context).pop(),
-              round: true,
               iconSize: 26.0,
               iconPadding: EdgeInsets.all(5.0),
             ),
@@ -140,12 +139,12 @@ class MainSettingsScreen extends StatelessWidget {
             ),
             authStateModel.loggedIn
                 ? GestureDetector(
-                  onTap: () {
-                Navigator.push(
-                  context,
-                  Utils.getPageTransition(ProfileEditScreen()),
-                );
-              },
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        Utils.getPageTransition(ProfileEditScreen()),
+                      );
+                    },
                     child: Container(
                       margin: EdgeInsets.only(
                         bottom: 14.0,
@@ -184,12 +183,7 @@ class MainSettingsScreen extends StatelessWidget {
                 ? _drawButton(
                     context,
                     icon: Icons.account_circle,
-                    color: Utils.getAuthorColor(
-                        Author.fromAuthState(
-                            avatarUrl: authStateModel.avatarUrl,
-                            username: authStateModel.login,
-                            color: authStateModel.color),
-                        context),
+                    color: Utils.getAuthorColor(authStateModel.color, context),
                     title: "Twój profil",
                     onTap: () {},
                   )
@@ -397,10 +391,9 @@ class MainSettingsScreen extends StatelessWidget {
   Widget _drawThemeButton() {
     return OWMSettingListener(
       rebuildOnChange: (settings) => settings.useDarkThemeStream,
-      builder: (context, settings) => AppBarButton(
+      builder: (context, settings) => RoundIconButtonWidget(
         icon: settings.useDarkTheme ? Icons.wb_sunny : Icons.brightness_2,
         onTap: () => settings.useDarkTheme = !settings.useDarkTheme,
-        round: true,
         iconSize: 22.0,
         iconPadding: EdgeInsets.all(7.0),
       ),

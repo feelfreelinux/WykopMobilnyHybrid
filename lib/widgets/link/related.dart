@@ -57,7 +57,7 @@ class RelatedWidget extends StatelessWidget {
               related.author.login,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                color: Utils.getAuthorColor(related.author, context),
+                color: Utils.getAuthorColor(related.author.color, context),
                 fontSize: 14.0,
                 fontWeight: FontWeight.w500,
               ),

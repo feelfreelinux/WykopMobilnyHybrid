@@ -5,7 +5,6 @@ import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/keys.dart';
-import 'package:owmflutter/widgets/pm/uset_appbar.dart';
 import 'package:provider/provider.dart';
 
 class PmScreen extends StatefulWidget {
@@ -36,17 +35,21 @@ class _PmScreenState extends State<PmScreen>
             ),
             resizeToAvoidBottomPadding: false,
             appBar: AppbarNormalWidget(
-              leading: AppBarButton(
+              leading: IconButtonWidget(
                 icon: Icons.arrow_back,
                 onTap: () => Navigator.of(context).pop(),
-                iconSize: 28.0,
                 iconColor: Theme.of(context).accentColor,
               ),
-              center: UserAppBar(
-                conversation: widget.conversation,
-                onTap: () {
-                  //TODO: Dodać przekierowanie do profilu
-                },
+              center: AuthorWidget(
+                author: Author.fromAuthState(
+                  username: widget.conversation.author.login,
+                  avatarUrl: widget.conversation.author.avatar,
+                  color: 5,
+                  sex: widget.conversation.author.sex,
+                ),
+                date: widget.conversation.lastUpdate,
+                fontSize: 16,
+                padding: EdgeInsets.all(0),
               ),
             ),
             body: FutureBuilder<List<PmMessage>>(

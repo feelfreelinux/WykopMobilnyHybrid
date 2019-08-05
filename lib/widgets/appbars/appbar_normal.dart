@@ -13,6 +13,8 @@ class AppbarNormalWidget extends StatefulWidget implements PreferredSizeWidget {
   final EdgeInsets padding;
   final EdgeInsets titlePadding;
   final bool shadow;
+  final Widget bottom;
+  final double bottomHeight;
 
   AppbarNormalWidget({
     this.title,
@@ -23,11 +25,14 @@ class AppbarNormalWidget extends StatefulWidget implements PreferredSizeWidget {
     this.padding,
     this.titlePadding = const EdgeInsets.symmetric(horizontal: 8.0),
     this.shadow,
+    this.bottom,
+    this.bottomHeight = 48.0,
   });
 
   @override
   Size get preferredSize {
-    return Size.fromHeight(kToolbarHeight);
+    return Size.fromHeight(
+        bottom != null ? kToolbarHeight + bottomHeight : kToolbarHeight);
   }
 
   _AppbarNormalWidgetState createState() => _AppbarNormalWidgetState();
@@ -42,16 +47,21 @@ class _AppbarNormalWidgetState extends State<AppbarNormalWidget> {
         decoration: Utils.appBarShadow(
             widget.shadow ?? shadowControlModel.showTopShadow),
         child: AppBar(
+          bottom: widget.bottom != null
+              ? PreferredSize(
+                  preferredSize: Size.fromHeight(widget.bottomHeight),
+                  child: widget.bottom,
+                )
+              : null,
           automaticallyImplyLeading: false,
           title: Container(
             padding: widget.padding,
             child: Row(
               children: <Widget>[
                 widget.leading ??
-                    AppBarButton(
+                    IconButtonWidget(
                       icon: Icons.arrow_back,
                       onTap: () => Navigator.of(context).pop(),
-                      iconSize: 28.0,
                     ),
                 Expanded(
                   child: widget.center ??

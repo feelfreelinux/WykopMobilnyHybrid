@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/utils/utils.dart';
+import 'package:owmflutter/widgets/widgets.dart';
 
 class AvatarWidget extends StatelessWidget {
   final Author author;
@@ -57,7 +58,7 @@ class AvatarWidget extends StatelessWidget {
               height: size,
               padding: EdgeInsets.all(size / 4.5),
               decoration: BoxDecoration(
-                color: Utils.backgroundGreyOpacity(context),
+                color: Utils.backgroundGrey(context),
                 shape: BoxShape.circle,
               ),
               child: CircularProgressIndicator(
@@ -66,21 +67,25 @@ class AvatarWidget extends StatelessWidget {
                 strokeWidth: size / 18.0,
               ),
             ),
-            Container(
-              width: size,
-              height: size,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  fit: BoxFit.fill,
-                  image: author.avatar.length != 0
-                      ? AdvancedNetworkImage(
-                          author.avatar,
-                          useDiskCache: true,
-                        )
-                      : AssetImage(
-                          'assets/avatar.png',
-                        ),
+            OWMSettingListener(
+              rebuildOnChange: (settings) => settings.resolutionAvatarStream,
+              builder: (context, settings) => Container(
+                width: size,
+                height: size,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: author.avatar.length != 0
+                        ? AdvancedNetworkImage(
+                            author.avatar.replaceAll(
+                                ",q150.", ",q${settings.resolutionAvatar}."),
+                            useDiskCache: true,
+                          )
+                        : AssetImage(
+                            'assets/avatar.png',
+                          ),
+                  ),
                 ),
               ),
             ),
@@ -91,8 +96,9 @@ class AvatarWidget extends StatelessWidget {
   }
 
   Widget _drawGender(BuildContext context) {
-    if (genderVisibility && author.sex != AuthorSex.OTHER) {
-      return Positioned(
+    return Visibility(
+      visible: genderVisibility && author.sex != AuthorSex.OTHER,
+      child: Positioned(
         bottom: 0,
         right: 0,
         child: Container(
@@ -109,23 +115,11 @@ class AvatarWidget extends StatelessWidget {
             height: size / 4.5,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: genderColor,
+              color: Utils.getGenderColor(author.sex),
             ),
           ),
         ),
-      );
-    } else {
-      return Container();
-    }
-  }
-
-  Color get genderColor {
-    if (author.sex == AuthorSex.MALE) {
-      return Colors.blue;
-    } else if (author.sex == AuthorSex.FEMALE) {
-      return Colors.pink;
-    } else {
-      return Colors.transparent;
-    }
+      ),
+    );
   }
 }

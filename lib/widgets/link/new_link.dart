@@ -10,7 +10,6 @@ import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/screens/screens.dart';
 
 class NewLinkWidget extends StatefulWidget {
-
   NewLinkWidget();
 
   _NewLinkWidgetState createState() => _NewLinkWidgetState();
@@ -26,48 +25,54 @@ class _NewLinkWidgetState extends State<NewLinkWidget> {
         key: Key(model.id.toString()),
         color: Theme.of(context).cardColor,
         child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 18.0,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Stack(
+          padding: EdgeInsets.symmetric(
+            horizontal: 18.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
+                children: <Widget>[
+                  Row(
                     children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          AuthorWidget(
-                            author: model.author,
-                            date: model.date,
-                            fontSize: 14.0,
-                            padding: EdgeInsets.symmetric(
-                              vertical: 10.0,
-                            ),
+                      Expanded(
+                        child: AuthorWidget(
+                          author: model.author,
+                          date: model.date,
+                          fontSize: 15.0,
+                          padding: EdgeInsets.symmetric(
+                            vertical: 10.0,
                           ),
-                          VoteCounterWidget(
-                            voteState: "",
-                            onTap: () {
-                              setState(() {
-                                showButtonsState = !showButtonsState;
-                              });
-                            },
-                            count: model.voteCount,
-                            size: 48.0,
-                            isHot: model.isHot,
-                            padding: EdgeInsets.symmetric(
-                              vertical: 12.0,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                      VotesButtonsWidget(
-                        showButtonsState: showButtonsState,
-                        onTapUpVote: () {},
-                        onTapDownVote: () {},
-                      )
+                      VoteCounterWidget(
+                        voteState: "",
+                        onTap: () {
+                          setState(() {
+                            showButtonsState = !showButtonsState;
+                          });
+                        },
+                        count: model.voteCount,
+                        size: 48.0,
+                        isHot: model.isHot,
+                        padding: EdgeInsets.symmetric(
+                          vertical: 12.0,
+                        ),
+                      ),
                     ],
                   ),
-                  GestureDetector(
+                  VotesButtonsWidget(
+                    showButtonsState: showButtonsState,
+                    onTapUpVote: () {},
+                    onTapDownVote: () {},
+                  )
+                ],
+              ),
+              OWMSettingListener(
+                rebuildOnChange: (settings) => settings.hiddingLinkThumbStream,
+                builder: (context, settings) => Visibility(
+                  visible: !settings.hiddingLinkThumb,
+                  child: GestureDetector(
                     onTap: () => Utils.launchURL(model.sourceUrl),
                     child: Stack(
                       children: [
@@ -76,48 +81,62 @@ class _NewLinkWidgetState extends State<NewLinkWidget> {
                       ],
                     ),
                   ),
-                  GestureDetector(
-                    key: Key(model.id.toString()),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        Utils.getPageTransition(
-                          LinkScreen(
-                            model: model,
-                          ),
-                        ),
-                      );
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        _drawTitle(context, model.title),
-                        _drawDescription(model.description),
-                      ],
-                    ),
-                  ),
-                  LinkFooterWidget(linkId: model.id, linkTitle: model.title, isClickable: false),
-                  DividerWidget(),
-                ],
+                ),
               ),
-            ),),);
+              GestureDetector(
+                key: Key(model.id.toString()),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    Utils.getPageTransition(
+                      LinkScreen(
+                        model: model,
+                      ),
+                    ),
+                  );
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    _drawTitle(context, model.title),
+                    _drawDescription(model.description),
+                  ],
+                ),
+              ),
+              LinkFooterWidget(
+                  linkId: model.id, linkTitle: model.title, isClickable: false),
+              DividerWidget(),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _drawImage(BuildContext context, String preview) {
-    return Container(
-      width: MediaQuery.of(context).size.width - 36.0,
-      height: 180,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(14.0),
-        boxShadow: [BoxShadow(color: Color(0x33000000))],
-        image: DecorationImage(
-          image: AdvancedNetworkImage(
-            preview != null
-                ? preview
-                : 'https://www.wykop.pl/cdn/c2526412/no-picture-night.jpg',
-            useDiskCache: true,
+    return OWMSettingListener(
+      rebuildOnChange: (settings) => settings.highResImageLinkStream,
+      builder: (context, settings) => Container(
+        width: MediaQuery.of(context).size.width - 36.0,
+        height: 180,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(14.0),
+          boxShadow: [BoxShadow(color: Color(0x33000000))],
+          image: DecorationImage(
+            image: preview != null
+                ? AdvancedNetworkImage(
+                    settings.highResImageLink
+                        ? preview
+                        : preview.replaceAll(".jpg", ",q150.jpg"),
+                    useDiskCache: true,
+                  )
+                : AssetImage(
+                    Theme.of(context).brightness == Brightness.light
+                        ? 'assets/no_picture.jpg'
+                        : 'assets/no_picture_night.jpg',
+                  ),
+            fit: BoxFit.cover,
           ),
-          fit: BoxFit.cover,
         ),
       ),
     );
@@ -176,21 +195,24 @@ class _NewLinkWidgetState extends State<NewLinkWidget> {
   }
 
   Widget _drawTitle(BuildContext context, String title) {
-    return Container(
-      padding: EdgeInsets.only(
-        left: 2.0,
-        top: 12.0,
-        right: 2.0,
-        bottom: 6.0,
-      ),
-      child: Text(
-        title,
-        overflow: TextOverflow.ellipsis,
-        maxLines: 3,
-        style: TextStyle(
-          height: 1.1,
-          fontSize: 15,
-          fontWeight: FontWeight.w500,
+    return OWMSettingListener(
+      rebuildOnChange: (settings) => settings.hiddingLinkThumbStream,
+      builder: (context, settings) => Container(
+        padding: EdgeInsets.only(
+          left: 2.0,
+          top: settings.hiddingLinkThumb ? 0.0 : 12.0,
+          right: 2.0,
+          bottom: 6.0,
+        ),
+        child: Text(
+          title,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 3,
+          style: TextStyle(
+            height: 1.1,
+            fontSize: 16.0,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ),
     );
@@ -207,7 +229,7 @@ class _NewLinkWidgetState extends State<NewLinkWidget> {
         maxLines: 4,
         style: TextStyle(
           height: 1.1,
-          fontSize: 13.5,
+          fontSize: 14.0,
         ),
       ),
     );

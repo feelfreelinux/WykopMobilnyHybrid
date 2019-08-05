@@ -10,21 +10,21 @@ import 'dart:async';
 import 'package:provider/provider.dart';
 
 class EntryCommentWidget extends StatelessWidget {
-
   EntryCommentWidget();
 
   @override
   Widget build(BuildContext context) {
     return Consumer<EntryCommentModel>(
       builder: (context, model, _) => Material(
-          key: Key(model.id.toString()),
-          color: Theme.of(context).backgroundColor,
-          child: _buildEntryCommentBody(model, context),
-        ),
-        );
+        key: Key(model.id.toString()),
+        color: Theme.of(context).backgroundColor,
+        child: _buildEntryCommentBody(model, context),
+      ),
+    );
   }
 
   void _showActionsDialog(BuildContext context, EntryCommentModel comment) {
+    //TODO: this shit
     /*
     var actions = [
       ActionsDialogItem(
@@ -71,10 +71,7 @@ class EntryCommentWidget extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: 6.0, bottom: 12.0),
             child: AvatarWidget(
-              author: model.author,
-              size: 36.0,
-              //TODO: Add badge
-            ),
+                author: model.author, size: 36.0), //TODO: Add badge
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,152 +91,79 @@ class EntryCommentWidget extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        _drawHeader(context, model.author),
-                        _drawBody(context, model),
-                        _drawEmbed(model.embed, model.body),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: 12.0, right: 66.0, top: 8.0, bottom: 4.0),
+                          child: Text(
+                            model.author.login,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14.0,
+                              color: Utils.getAuthorColor(
+                                  model.author.color, context),
+                            ),
+                          ),
+                        ),
+                        SupaGestureDetector(
+                          onLongPress: () => _showActionsDialog(context, model),
+                          child: BodyWidget(
+                            textSize: 15.0,
+                            body: model.body,
+                            ellipsize: false,
+                            padding: EdgeInsets.only(
+                                bottom: 8.0, left: 12.0, right: 12.0),
+                          ),
+                        ),
+                        Visibility(
+                          visible: model.embed != null,
+                          child: EmbedWidget(
+                            padding: EdgeInsets.only(
+                                top: model.body != null ? 0.0 : 4.0),
+                            embed: model.embed,
+                            borderRadius: 20.0,
+                            reducedWidth: 82.0,
+                          ),
+                        ),
                       ],
                     ),
                   ),
                   Positioned(
                     top: 2.0,
                     right: 0.0,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 8.0),
-                      child: VoteButton(
-                          isSelected: model.isVoted,
-                          isComment: true,
-                          count: model.voteCount,
-                          onClicked: () {
-                            model.toggleVote();
-                          },
-                        ),
-                      ),
+                    child: VoteButton(
+                      isSelected: model.isVoted,
+                      isComment: true,
+                      count: model.voteCount,
+                      onClicked: () => model.toggleVote(),
                     ),
+                  ),
                 ],
               ),
               Row(
                 children: <Widget>[
-                  _footerText(
-                    context,
-                    padding: EdgeInsets.only(
-                      top: 2.0,
-                      bottom: 4.0,
-                      left: 14.0,
-                    ),
+                  TextButton(
+                    isButton: false,
+                    padding: EdgeInsets.only(top: 2.0, bottom: 4.0, left: 14.0),
                     text: Utils.getSimpleDate(model.date),
                   ),
-                  _footerText(
-                    context,
-                    padding: EdgeInsets.only(
-                      top: 2.0,
-                      bottom: 4.0,
-                    ),
+                  TextButton(
+                    padding: EdgeInsets.only(top: 2.0, bottom: 4.0),
                     text: "Cytuj",
-                    isButton: true,
-                    onTap: () {
-                      OwmKeys.inputBarKey.currentState
-                          .quoteText(model.author, model.body);
-                    },
+                    onTap: () => OwmKeys.inputBarKey.currentState
+                        .quoteText(model.body, author: model.author),
                   ),
-                  _footerText(
-                    context,
-                    padding: EdgeInsets.only(
-                      top: 2.0,
-                      bottom: 4.0,
-                      right: 8.0,
-                    ),
+                  TextButton(
+                    padding: EdgeInsets.only(top: 2.0, bottom: 4.0, right: 8.0),
                     text: "Odpowiedz",
-                    isButton: true,
-                    onTap: () {
-                      OwmKeys.inputBarKey.currentState
-                          .replyToUser(model.author);
-                    },
+                    onTap: () => OwmKeys.inputBarKey.currentState
+                        .replyToUser(model.author),
                   ),
                 ],
               )
             ],
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _drawHeader(BuildContext context, Author author) {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: 12.0,
-        right: 66.0,
-        top: 8.0,
-        bottom: 4.0,
-      ),
-      child: Text(
-        author.login,
-        overflow: TextOverflow.ellipsis,
-        style: TextStyle(
-          fontWeight: FontWeight.w500,
-          fontSize: 13.5,
-          color: Utils.getAuthorColor(author, context),
-        ),
-      ),
-    );
-  }
-
-  Widget _drawBody(BuildContext context, EntryCommentModel model) {
-    return SupaGestureDetector(
-          onLongPress: () {
-            _showActionsDialog(context, model);
-          },
-          child: BodyWidget(
-            body: model.body,
-            ellipsize: false,
-            padding: EdgeInsets.only(
-              bottom: 8.0,
-              left: 12.0,
-              right: 12.0,
-            ),
-          ),
-        
-    );
-  }
-
-  Widget _drawEmbed(Embed embed, String body) {
-    return Visibility(
-      visible: embed != null,
-      child: Padding(
-        padding: EdgeInsets.only(top: body != null ? 0.0 : 4.0),
-        child: EmbedWidget(
-          embed: embed,
-          borderRadius: 20.0,
-          reducedWidth: 82.0,
-        ),
-      ),
-    );
-  }
-
-  Widget _footerText(
-    BuildContext context, {
-    String text,
-    EdgeInsets padding,
-    bool isButton: false,
-    VoidCallback onTap,
-  }) {
-    return Padding(
-      padding: padding,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(20),
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-          child: Text(
-            text,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: 12.0,
-              color: Theme.of(context).textTheme.caption.color,
-              fontWeight: isButton ? FontWeight.w600 : FontWeight.normal,
-            ),
-          ),
-        ),
       ),
     );
   }

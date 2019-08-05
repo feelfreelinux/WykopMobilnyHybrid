@@ -54,84 +54,148 @@ class PicturesSettingScreen extends StatelessWidget {
           },
         ),
         OWMSettingListener(
-          rebuildOnChange: (settings) =>
-              settings.useAutoplayStream,
+          rebuildOnChange: (settings) => settings.useAutoplayStream,
           builder: (context, settings) => ListTile(
             title: Text("Autoodtwarzanie"),
-            subtitle: Text(_useAutoplaySubtitle(
-                settings.useAutoplay)),
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) => Dialog(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(20.0),
-                          child: Text(
-                            "Autoodtwarzanie",
-                            style: TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.w700,
+            subtitle: Text(_useAutoplaySubtitle(settings.useAutoplay)),
+            onTap: () => showDialog(
+              context: context,
+              builder: (BuildContext context) => Dialog(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.all(20.0),
+                        child: Text(
+                          "Autoodtwarzanie",
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                      OWMSettingListener(
+                        rebuildOnChange: (settings) =>
+                            settings.useAutoplayStream,
+                        builder: (context, settings) => Column(
+                          children: <Widget>[
+                            RadioListTile(
+                              groupValue: settings.useAutoplay,
+                              onChanged: (value) {
+                                settings.useAutoplay = value;
+                                Navigator.of(context).pop();
+                              },
+                              value: 0,
+                              title: Text("Wyłączone"),
                             ),
-                          ),
+                            RadioListTile(
+                              groupValue: settings.useAutoplay,
+                              onChanged: (value) {
+                                settings.useAutoplay = value;
+                                Navigator.of(context).pop();
+                              },
+                              value: 1,
+                              title: Text("Tylko z Wi-Fi"),
+                            ),
+                            RadioListTile(
+                              groupValue: settings.useAutoplay,
+                              onChanged: (value) {
+                                settings.useAutoplay = value;
+                                Navigator.of(context).pop();
+                              },
+                              value: 2,
+                              title: Text("Włączone"),
+                            ),
+                          ],
                         ),
-                        OWMSettingListener(
-                          rebuildOnChange: (settings) =>
-                              settings.useAutoplayStream,
-                          builder: (context, settings) => Column(
-                            children: <Widget>[
-                              RadioListTile(
-                                groupValue: settings.useAutoplay,
-                                onChanged: (value) {
-                                  settings.useAutoplay = value;
-                                  Navigator.of(context).pop();
-                                },
-                                value: 0,
-                                title: Text("Wyłączone"),
-                              ),
-                              RadioListTile(
-                                groupValue: settings.useAutoplay,
-                                onChanged: (value) {
-                                  settings.useAutoplay = value;
-                                  Navigator.of(context).pop();
-                                },
-                                value: 1,
-                                title: Text("Tylko z Wi-Fi"),
-                              ),
-                              RadioListTile(
-                                groupValue: settings.useAutoplay,
-                                onChanged: (value) {
-                                  settings.useAutoplay = value;
-                                  Navigator.of(context).pop();
-                                },
-                                value: 2,
-                                title: Text("Włączone"),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 18.0),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: 18.0),
+                    ],
                   ),
                 ),
-              );
-            },
+              ),
+            ),
           ),
         ),
         DividerWidget(),
         OWMSettingListener(
-          rebuildOnChange: (settings) => settings.highResAvatarStream,
+          rebuildOnChange: (settings) => settings.resolutionAvatarStream,
+          builder: (context, settings) => ListTile(
+            title: Text("Rozdzielczość avatarów"),
+            subtitle:
+                Text(_resolutionAvatarSubtitle(settings.resolutionAvatar)),
+            onTap: () => showDialog(
+              context: context,
+              builder: (BuildContext context) => Dialog(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.all(20.0),
+                        child: Text(
+                          "Rozdzielczość avatarów",
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                      OWMSettingListener(
+                        rebuildOnChange: (settings) =>
+                            settings.resolutionAvatarStream,
+                        builder: (context, settings) => Column(
+                          children: <Widget>[
+                            RadioListTile(
+                              groupValue: settings.resolutionAvatar,
+                              onChanged: (value) {
+                                settings.resolutionAvatar = value;
+                                Navigator.of(context).pop();
+                              },
+                              value: 30,
+                              title: Text("Niska"),
+                            ),
+                            RadioListTile(
+                              groupValue: settings.resolutionAvatar,
+                              onChanged: (value) {
+                                settings.resolutionAvatar = value;
+                                Navigator.of(context).pop();
+                              },
+                              value: 150,
+                              title: Text("Średnia"),
+                            ),
+                            RadioListTile(
+                              groupValue: settings.resolutionAvatar,
+                              onChanged: (value) {
+                                settings.resolutionAvatar = value;
+                                Navigator.of(context).pop();
+                              },
+                              value: 300,
+                              title: Text("Wysoka"),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 18.0),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        OWMSettingListener(
+          rebuildOnChange: (settings) => settings.highResImageLinkStream,
           builder: (context, settings) {
             return SwitchListTile(
-              value: settings.highResAvatar,
-              title: Text("Wysoka rozdzielczość avatarów"),
+              value: settings.highResImageLink,
+              title: Text("Wysoka rozdzielczość miniaturek"),
+              subtitle: Text("Dotyczy tylko znalezisk"),
               onChanged: (value) =>
-                  settings.highResAvatar = !settings.highResAvatar,
+                  settings.highResImageLink = !settings.highResImageLink,
             );
           },
         ),
@@ -233,7 +297,7 @@ class PicturesSettingScreen extends StatelessWidget {
       ],
     );
   }
-  
+
   String _useAutoplaySubtitle(int i) {
     if (i == 1) {
       return "Tylko z Wi-Fi";
@@ -241,6 +305,16 @@ class PicturesSettingScreen extends StatelessWidget {
       return "Włączone";
     } else {
       return "Wyłączone";
+    }
+  }
+
+  String _resolutionAvatarSubtitle(int i) {
+    if (i == 150) {
+      return "Średnia";
+    } else if (i == 2) {
+      return "Wysoka";
+    } else {
+      return "Niska";
     }
   }
 }

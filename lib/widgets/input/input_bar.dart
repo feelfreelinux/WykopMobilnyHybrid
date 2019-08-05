@@ -81,10 +81,12 @@ class InputBarWidgetState extends State<InputBarWidget> {
     }
   }
 
-  void quoteText(Author author, String body) {
+  void quoteText(String body, {Author author}) {
+    //TODO: formatowanie tresci
     _ensureFocus();
     setState(() {
-      textController.text += "@" + author.login + ": \n" + "> " + body + "\n";
+      textController.text += author != null ? "@" + author.login + ": \n" : "";
+      textController.text += "> " + body + "\n";
       textController.selection = TextSelection.fromPosition(
           TextPosition(offset: textController.text.length));
     });
@@ -576,7 +578,8 @@ class UserSuggestionWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 8.0),
             child: Text(this.suggestion.login,
-                style: TextStyle(color: Utils.getAuthorColor(author, context))),
+                style: TextStyle(
+                    color: Utils.getAuthorColor(author.color, context))),
           ),
         ]),
       ),

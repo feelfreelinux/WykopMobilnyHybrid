@@ -29,7 +29,7 @@ class VoteCounterWidget extends StatelessWidget {
           children: <Widget>[
             Container(
               margin: EdgeInsets.all(1.0),
-              width: size,
+              width: size * 1.12,
               height: size / 1.28,
               decoration: BoxDecoration(
                 border: Border.all(color: _frameColor, width: 3.5),
@@ -41,7 +41,7 @@ class VoteCounterWidget extends StatelessWidget {
               count.toString(),
               style: TextStyle(
                 letterSpacing: -(size / 100.00),
-                fontSize: (size / 3.45),
+                fontSize: (size / 3.2),
                 fontWeight: FontWeight.w700,
                 color: Color(0xffff5917),
               ),

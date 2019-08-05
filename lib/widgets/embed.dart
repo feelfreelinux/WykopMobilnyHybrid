@@ -14,10 +14,13 @@ class EmbedWidget extends StatefulWidget {
   final Embed embed;
   final double reducedWidth;
   final double borderRadius;
+  final EdgeInsets padding;
+
   EmbedWidget({
     this.embed,
     this.reducedWidth: 0.0,
     this.borderRadius: 0.0,
+    this.padding,
   });
 
   _EmbedState createState() => _EmbedState();
@@ -34,7 +37,10 @@ class _EmbedState extends State<EmbedWidget> {
   @override
   void initState() {
     super.initState();
-    imageSizeListener = new ImageStreamListener((ImageInfo image, bool synchronousCall) { updateImageSize(image); });
+    imageSizeListener =
+        new ImageStreamListener((ImageInfo image, bool synchronousCall) {
+      updateImageSize(image);
+    });
 
     // First, fetch image size for sizedbox calculations
     imageResolver =
@@ -61,53 +67,57 @@ class _EmbedState extends State<EmbedWidget> {
   @override
   Widget build(BuildContext context) {
     String heroTag = 'embedImage${widget.embed.hashCode}';
-    return GestureDetector(
-      onTap: () {
-        if (!resized && !loading) {
-          this.setState(() {
-            resized = true;
-            nsfw = false;
-          });
-        } else if (nsfw && widget.reducedWidth == 0.0) {
-          this.setState(() {
-            nsfw = false;
-          });
-        } else {
-          this.openFullscreen();
-        }
-      },
-      child: Hero(
-        tag: heroTag,
-        child: Container(
-          decoration: this.getDecoration(),
-          constraints: this.currentConstraints(),
-          child: nsfw && widget.reducedWidth == 0.0
-              ? BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0),
+    return Padding(
+      padding: widget.padding ?? EdgeInsets.all(0.0),
+      child: GestureDetector(
+        onTap: () {
+          if (!resized && !loading) {
+            this.setState(() {
+              resized = true;
+              nsfw = false;
+            });
+          } else if (nsfw && widget.reducedWidth == 0.0) {
+            this.setState(() {
+              nsfw = false;
+            });
+          } else {
+            this.openFullscreen();
+          }
+        },
+        child: Hero(
+          tag: heroTag,
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: 100),
+            decoration: this.getDecoration(),
+            constraints: this.currentConstraints(),
+            child: nsfw && widget.reducedWidth == 0.0
+                ? BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0),
+                      ),
+                      child: _drawFooter(),
                     ),
-                    child: _drawFooter(),
-                  ),
-                )
-              : _drawFooter(),
+                  )
+                : _drawFooter(),
+          ),
         ),
       ),
     );
   }
 
   Widget _drawFooter() {
-    if (!this.loading && !this.resized) {
-      return Column(
+    return AnimatedOpacity(
+      opacity: !this.loading && !this.resized ? 1.0 : 0.0,
+      duration: Duration(milliseconds: 100),
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(
-            child: Container(),
-          ),
+          Expanded(child: Container()),
           Container(
             decoration: BoxDecoration(
-              color: Color(0xcc7f7f7f),
+              color: Theme.of(context).backgroundColor.withOpacity(0.6),
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(widget.borderRadius),
                 bottomRight: Radius.circular(widget.borderRadius),
@@ -118,17 +128,17 @@ class _EmbedState extends State<EmbedWidget> {
               '••• pokaż cały obrazek •••',
               style: TextStyle(
                 fontSize: 11.0,
-                color: Colors.white,
-                shadows: [Shadow(blurRadius: 1.5)],
+                shadows: [
+                  Shadow(
+                      blurRadius: 1.5, color: Theme.of(context).backgroundColor)
+                ],
               ),
               textAlign: TextAlign.center,
             ),
           ),
         ],
-      );
-    } else {
-      return Container();
-    }
+      ),
+    );
   }
 
   // If image size is already fetched, load whole image from cache
@@ -140,9 +150,7 @@ class _EmbedState extends State<EmbedWidget> {
       borderRadius: BorderRadius.circular(widget.borderRadius),
       boxShadow: [BoxShadow(color: Color(0x33000000))],
       image: DecorationImage(
-        image: NetworkImage(
-          widget.embed.preview,
-        ),
+        image: NetworkImage(widget.embed.preview),
         alignment: FractionalOffset.topCenter,
         fit: BoxFit.fitWidth,
       ),
@@ -151,22 +159,22 @@ class _EmbedState extends State<EmbedWidget> {
 
   // Returns size - default height for loading and unresized image, full for resized image
   BoxConstraints currentConstraints() {
+    double maxHeight = MediaQuery.of(context).size.height / 2.0;
     if (!loading) {
       var height = (MediaQuery.of(context).size.width - widget.reducedWidth) *
           this._imageFactor;
-
-      if (!resized && height <= 300) {
+      if (!resized && height <= maxHeight) {
         this.setState(() {
           resized = true;
         });
       } else if (resized) {
         return BoxConstraints.tight(Size.fromHeight(height));
       } else {
-        return BoxConstraints.tight(Size.fromHeight(300));
+        return BoxConstraints.tight(Size.fromHeight(maxHeight));
       }
     }
     if (loading || !resized) {
-      return BoxConstraints.tight(Size.fromHeight(300));
+      return BoxConstraints.tight(Size.fromHeight(maxHeight));
     } else {
       return BoxConstraints.tight(Size.fromHeight(
           (MediaQuery.of(context).size.width - widget.reducedWidth) *
@@ -194,9 +202,9 @@ class _EmbedState extends State<EmbedWidget> {
       context,
       MaterialPageRoute(
         builder: (context) => EmbedFullScreen(
-              heroTag: heroTag,
-              imageProvider: NetworkImage(widget.embed.url),
-            ),
+          heroTag: heroTag,
+          imageProvider: NetworkImage(widget.embed.url),
+        ),
       ),
     );
   }

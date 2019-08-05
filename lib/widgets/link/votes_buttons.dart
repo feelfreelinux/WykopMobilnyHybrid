@@ -17,7 +17,7 @@ class VotesButtonsWidget extends StatelessWidget {
     return Positioned(
       top: 0.0,
       bottom: 0.0,
-      right: 44.0,
+      right: 54.0,
       child: IgnorePointer(
         ignoring: !showButtonsState,
         child: AnimatedOpacity(

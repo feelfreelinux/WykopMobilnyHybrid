@@ -27,9 +27,10 @@ void launchUrl(String url, { BuildContext context }) async {
     "closeButtonCaption": "Close"
   });
 }
+
 class Utils {
-  static Color getAuthorColor(Author author, BuildContext context) {
-    switch (author.color) {
+  static Color getAuthorColor(int color, BuildContext context) {
+    switch (color) {
       case 0:
         return Color(0xff339933);
       case 1:
@@ -48,6 +49,16 @@ class Utils {
         return Color(0xff3F6FA0);
       default:
         return Colors.blue;
+    }
+  }
+
+  static Color getGenderColor(AuthorSex sex) {
+    if (sex == AuthorSex.MALE) {
+      return Colors.blue;
+    } else if (sex == AuthorSex.FEMALE) {
+      return Colors.pink;
+    } else {
+      return Colors.transparent;
     }
   }
 

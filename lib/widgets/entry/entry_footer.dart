@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:share/share.dart';
+import 'package:owmflutter/model/model.dart';
 
 class EntryFooterWidget extends StatelessWidget {
-  final Entry entry;
+  final EntryModel entry;
   final bool isClickable;
+
   EntryFooterWidget(this.entry, this.isClickable);
 
   @override
@@ -28,14 +29,16 @@ class EntryFooterWidget extends StatelessWidget {
               if (isClickable) {
                 Navigator.push(
                   context,
-                  Utils.getPageTransition(EntryScreen(entryId: entry.id)),
+                  Utils.getPageTransition(EntryScreen(model: entry)),
                 );
               }
             },
           ),
-          ShareButton(onTap: () {
-            Share.share("https://www.wykop.pl/wpis/" + entry.id.toString());
-          }),
+          ShareButton(
+            onTap: () {
+              Share.share("https://www.wykop.pl/wpis/" + entry.id.toString());
+            },
+          ),
         ],
       ),
     );

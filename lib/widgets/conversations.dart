@@ -24,66 +24,22 @@ class ConversationsList extends StatelessWidget {
                       ),
                     );
                   },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(
-                          top: 6.0,
-                          bottom: 6.0,
-                          left: 14.0,
-                          right: 18.0,
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Visibility(
-                              visible: conversation.author != null,
-                              child: AvatarWidget(
-                                author: conversation.author,
-                                size: 52.0,
-                              ),
-                            ),
-                            Flexible(
-                              fit: FlexFit.tight,
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                  left: 12.0,
-                                  right: 8.0,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      conversation.author.login,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                        fontSize: 16.0,
-                                        height: 1.1,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                    Text(
-                                      Utils.getSimpleDate(
-                                          conversation.lastUpdate),
-                                      style: TextStyle(
-                                        fontSize: 14.0,
-                                        height: 1.3,
-                                        color: Theme.of(context)
-                                            .textTheme
-                                            .caption
-                                            .color,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                  child: AuthorWidget(
+                    author: Author.fromAuthState(
+                      username: conversation.author.login,
+                      avatarUrl: conversation.author.avatar,
+                      color: 5,
+                      sex: conversation.author.sex,
+                    ),
+                    date: conversation.lastUpdate,
+                    fontSize: 16.0,
+                    avatarSize: 52.0,
+                    padding: EdgeInsets.only(
+                      top: 6.0,
+                      bottom: 6.0,
+                      left: 14.0,
+                      right: 18.0,
+                    ),
                   ),
                 );
               },

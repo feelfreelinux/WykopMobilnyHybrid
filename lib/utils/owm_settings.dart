@@ -26,8 +26,10 @@ abstract class OWMSettings implements OWMSettingsPreferences {
   bool useOtherPlayer;
   @DefaultValue(0)
   int useAutoplay;
+  @DefaultValue(150)
+  int resolutionAvatar;
   @DefaultValue(true)
-  bool highResAvatar;
+  bool highResImageLink;
   @DefaultValue(false)
   bool highResImage;
   @DefaultValue(false)

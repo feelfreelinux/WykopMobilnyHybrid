@@ -62,10 +62,16 @@ class _$OWMSettings implements OWMSettings {
             _useAutoplaySubject.add(value);
           }))
         .sink;
-    highResAvatarSink = (StreamController<bool>.broadcast()
+    resolutionAvatarSink = (StreamController<int>.broadcast()
           ..stream.listen((value) async {
-            await adapter.setBool("highResAvatar", value);
-            _highResAvatarSubject.add(value);
+            await adapter.setInt("resolutionAvatar", value);
+            _resolutionAvatarSubject.add(value);
+          }))
+        .sink;
+    highResImageLinkSink = (StreamController<bool>.broadcast()
+          ..stream.listen((value) async {
+            await adapter.setBool("highResImageLink", value);
+            _highResImageLinkSubject.add(value);
           }))
         .sink;
     highResImageSink = (StreamController<bool>.broadcast()
@@ -299,9 +305,12 @@ class _$OWMSettings implements OWMSettings {
     _adapter.getInt("useAutoplay").then((value) {
       return value ?? 0;
     }).then(useAutoplaySink.add);
-    _adapter.getBool("highResAvatar").then((value) {
+    _adapter.getInt("resolutionAvatar").then((value) {
+      return value ?? 150;
+    }).then(resolutionAvatarSink.add);
+    _adapter.getBool("highResImageLink").then((value) {
       return value ?? true;
-    }).then(highResAvatarSink.add);
+    }).then(highResImageLinkSink.add);
     _adapter.getBool("highResImage").then((value) {
       return value ?? false;
     }).then(highResImageSink.add);
@@ -435,7 +444,10 @@ class _$OWMSettings implements OWMSettings {
   final BehaviorSubject<int> _useAutoplaySubject =
       BehaviorSubject<int>(seedValue: 0);
 
-  final BehaviorSubject<bool> _highResAvatarSubject =
+  final BehaviorSubject<int> _resolutionAvatarSubject =
+      BehaviorSubject<int>(seedValue: 150);
+
+  final BehaviorSubject<bool> _highResImageLinkSubject =
       BehaviorSubject<bool>(seedValue: true);
 
   final BehaviorSubject<bool> _highResImageSubject =
@@ -558,7 +570,9 @@ class _$OWMSettings implements OWMSettings {
 
   Sink<int> useAutoplaySink;
 
-  Sink<bool> highResAvatarSink;
+  Sink<int> resolutionAvatarSink;
+
+  Sink<bool> highResImageLinkSink;
 
   Sink<bool> highResImageSink;
 
@@ -644,8 +658,10 @@ class _$OWMSettings implements OWMSettings {
   Stream<bool> get useOtherPlayerStream =>
       _useOtherPlayerSubject.asBroadcastStream();
   Stream<int> get useAutoplayStream => _useAutoplaySubject.asBroadcastStream();
-  Stream<bool> get highResAvatarStream =>
-      _highResAvatarSubject.asBroadcastStream();
+  Stream<int> get resolutionAvatarStream =>
+      _resolutionAvatarSubject.asBroadcastStream();
+  Stream<bool> get highResImageLinkStream =>
+      _highResImageLinkSubject.asBroadcastStream();
   Stream<bool> get highResImageStream =>
       _highResImageSubject.asBroadcastStream();
   Stream<bool> get hiddingLinkThumbStream =>
@@ -720,7 +736,8 @@ class _$OWMSettings implements OWMSettings {
   bool get useYoutubePlayer => _useYoutubePlayerSubject.value;
   bool get useOtherPlayer => _useOtherPlayerSubject.value;
   int get useAutoplay => _useAutoplaySubject.value;
-  bool get highResAvatar => _highResAvatarSubject.value;
+  int get resolutionAvatar => _resolutionAvatarSubject.value;
+  bool get highResImageLink => _highResImageLinkSubject.value;
   bool get highResImage => _highResImageSubject.value;
   bool get hiddingLinkThumb => _hiddingLinkThumbSubject.value;
   bool get hiddingEntryImage => _hiddingEntryImageSubject.value;
@@ -765,7 +782,8 @@ class _$OWMSettings implements OWMSettings {
   set useYoutubePlayer(bool value) => useYoutubePlayerSink.add(value);
   set useOtherPlayer(bool value) => useOtherPlayerSink.add(value);
   set useAutoplay(int value) => useAutoplaySink.add(value);
-  set highResAvatar(bool value) => highResAvatarSink.add(value);
+  set resolutionAvatar(int value) => resolutionAvatarSink.add(value);
+  set highResImageLink(bool value) => highResImageLinkSink.add(value);
   set highResImage(bool value) => highResImageSink.add(value);
   set hiddingLinkThumb(bool value) => hiddingLinkThumbSink.add(value);
   set hiddingEntryImage(bool value) => hiddingEntryImageSink.add(value);
@@ -812,7 +830,8 @@ class _$OWMSettings implements OWMSettings {
     useYoutubePlayerSink.close();
     useOtherPlayerSink.close();
     useAutoplaySink.close();
-    highResAvatarSink.close();
+    resolutionAvatarSink.close();
+    highResImageLinkSink.close();
     highResImageSink.close();
     hiddingLinkThumbSink.close();
     hiddingEntryImageSink.close();
@@ -869,7 +888,9 @@ abstract class OWMSettingsPreferences {
 
   Sink<int> useAutoplaySink;
 
-  Sink<bool> highResAvatarSink;
+  Sink<int> resolutionAvatarSink;
+
+  Sink<bool> highResImageLinkSink;
 
   Sink<bool> highResImageSink;
 
@@ -948,7 +969,8 @@ abstract class OWMSettingsPreferences {
   Stream<bool> get useYoutubePlayerStream;
   Stream<bool> get useOtherPlayerStream;
   Stream<int> get useAutoplayStream;
-  Stream<bool> get highResAvatarStream;
+  Stream<int> get resolutionAvatarStream;
+  Stream<bool> get highResImageLinkStream;
   Stream<bool> get highResImageStream;
   Stream<bool> get hiddingLinkThumbStream;
   Stream<bool> get hiddingEntryImageStream;
@@ -993,7 +1015,8 @@ abstract class OWMSettingsPreferences {
     useYoutubePlayerSink.close();
     useOtherPlayerSink.close();
     useAutoplaySink.close();
-    highResAvatarSink.close();
+    resolutionAvatarSink.close();
+    highResImageLinkSink.close();
     highResImageSink.close();
     hiddingLinkThumbSink.close();
     hiddingEntryImageSink.close();

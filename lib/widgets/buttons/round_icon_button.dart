@@ -1,42 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/utils/utils.dart';
 
-class AppBarButton extends StatelessWidget {
+class RoundIconButtonWidget extends StatelessWidget {
   final IconData icon;
   final double iconSize;
   final Color iconColor;
   final EdgeInsets iconPadding;
-  final EdgeInsets buttonMargin;
-  final bool round;
+  final EdgeInsets padding;
   final Color roundColor;
   final VoidCallback onTap;
 
-  AppBarButton({
+  RoundIconButtonWidget({
     @required this.icon,
     this.iconSize: 24.0,
     this.iconColor,
     this.iconPadding,
-    this.buttonMargin: const EdgeInsets.symmetric(horizontal: 8.0),
-    this.round: false,
+    this.padding,
     this.roundColor,
     this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).primaryColor,
-      child: GestureDetector(
+    return Padding(
+      padding: padding ?? EdgeInsets.all(8.0),
+      child: InkWell(
         onTap: onTap,
+        borderRadius: BorderRadius.circular(100),
         child: Container(
-          margin: buttonMargin,
-          padding: round
-              ? iconPadding ?? EdgeInsets.all(6.0)
-              : iconPadding ?? EdgeInsets.all(4.0),
+          padding: iconPadding ?? EdgeInsets.all(6.0),
           decoration: BoxDecoration(
-            color: round
-                ? roundColor ?? Utils.backgroundGreyOpacity(context)
-                : Theme.of(context).primaryColor,
+            color: roundColor ?? Utils.backgroundGreyOpacity(context),
             shape: BoxShape.circle,
           ),
           child: Icon(

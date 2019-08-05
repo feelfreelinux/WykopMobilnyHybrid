@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:owmflutter/keys.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/widgets/widgets.dart';
@@ -143,19 +144,18 @@ class _MessageWidgetState extends State<MessageWidget>
                             Icons.format_quote,
                             visible: widget.message.body != null &&
                                 widget.message.body != "​​​​​",
-                            //TODO: Dodać cytat
+                            onTap: () => OwmKeys.inputBarKey.currentState
+                                .quoteText(widget.message.body),
                           ),
                           _drawButtons(
                             Icons.content_copy,
                             visible: widget.message.body != null &&
                                 widget.message.body != "​​​​​",
-                            onTap: () {
-                              Utils.CopyToClipboard(
-                                  context,
-                                  parse(widget.message.body ?? "")
-                                      .documentElement
-                                      .text);
-                            },
+                            onTap: () => Utils.CopyToClipboard(
+                                context,
+                                parse(widget.message.body ?? "")
+                                    .documentElement
+                                    .text),
                           ),
                           _drawButtons(
                             Icons.file_download,

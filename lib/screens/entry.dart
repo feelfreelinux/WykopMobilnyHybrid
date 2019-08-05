@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/model/model.dart';
+import 'package:owmflutter/models/author.dart';
 import 'package:owmflutter/widgets/widgets.dart';
-import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/keys.dart';
-import 'dart:async';
-
 import 'package:provider/provider.dart';
 
 class EntryScreen extends StatefulWidget {
@@ -25,11 +23,13 @@ class _EntryScreenState extends State<EntryScreen>
 
     return ChangeNotifierProvider<EntryModel>.value(
       value: (widget.model ?? (EntryModel()..setId(widget.entryId))
-        ..updateEntry()..loadUpVoters()),
+        ..updateEntry()
+        ..loadUpVoters()),
       child: ChangeNotifierProvider<ShadowControlModel>(
         builder: (context) => ShadowControlModel(),
         child: Consumer<EntryModel>(
-          builder: (context, model, _) => ChangeNotifierProvider<InputModel>.value(
+          builder: (context, model, _) =>
+              ChangeNotifierProvider<InputModel>.value(
             value: model,
             child: model.isLoading && model.body == null
                 ? Center(child: CircularProgressIndicator())
@@ -44,26 +44,57 @@ class _EntryScreenState extends State<EntryScreen>
                         ),
                         resizeToAvoidBottomPadding: false,
                         appBar: AppbarNormalWidget(
-                          padding: EdgeInsets.only(right: 8.0),
-                          actions: <Widget>[
-                            AppBarButton(
-                              icon: Icons.refresh,
-                              round: true,
+                          leading: IconButtonWidget(
+                            icon: Icons.arrow_back,
+                            onTap: () => Navigator.of(context).pop(),
+                            iconColor: Theme.of(context).accentColor,
+                          ),
+                          center: Consumer<ShadowControlModel>(
+                            builder: (context, shadowControlModel, _) =>
+                                AnimatedOpacity(
+                              opacity:
+                                  shadowControlModel.showTopShadow ? 0.0 : 1.0,
+                              duration: Duration(milliseconds: 300),
+                              child: AuthorWidget(
+                                author: Author.fromAuthState(
+                                  username: model.author.login,
+                                  avatarUrl: model.author.avatar,
+                                  color: model.author.color,
+                                  sex: model.author.sex,
+                                ),
+                                date: model.date,
+                                fontSize: 16.0,
+                                padding: EdgeInsets.all(0),
+                              ),
                             ),
-                            AppBarButton(
-                              icon: Icons.more_vert,
-                              round: true,
+                          ),
+                          padding: EdgeInsets.only(left: 2.0, right: 6.0),
+                          actions: <Widget>[
+                            IconButtonWidget(
+                              icon: Icons.refresh,
+                              iconColor: Theme.of(context).accentColor,
+                              padding: EdgeInsets.all(0.0),
+                              onTap: () {
+                                model.updateEntry();
+                                model.loadUpVoters();
+                              },
+                            ),
+                            IconButtonWidget(
+                              icon: Icons.more_horiz,
+                              iconColor: Theme.of(context).accentColor,
+                              onTap: () {},
                             )
                           ],
                         ),
                         body: RefreshIndicator(
-                          onRefresh: () {
-                            return model.updateEntry();
+                          onRefresh: () async {
+                            model.updateEntry();
+                            model.loadUpVoters();
                           },
                           child: ScrollConfiguration(
                             behavior: NotSuddenJumpScrollBehavior(),
                             child: InfiniteList(
-                              header: NewEntryWidget(ellipsize: false),
+                              header: EntryOpenWidget(),
                               itemCount: model.comments.length,
                               itemBuilder: (context, index) =>
                                   ChangeNotifierProvider<EntryCommentModel>(

@@ -5,7 +5,6 @@ import 'package:owmflutter/screens/settings/profile_edit/background_profile_edit
 import 'package:owmflutter/screens/settings/profile_edit/info_profile_edit.dart';
 import 'package:owmflutter/screens/settings/profile_edit/password_profile_edit.dart';
 import 'package:owmflutter/widgets/widgets.dart';
-import 'package:owmflutter/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class ProfileEditScreen extends StatefulWidget {
@@ -27,7 +26,7 @@ class _ProfileEditScreen extends State<ProfileEditScreen> {
     final mqData = MediaQuery.of(context);
     final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
 
-    //TODO: Zrobić tak żeby działało
+    //TODO: Zrobić tak żeby działało z API
     return ChangeNotifierProvider<ShadowControlModel>(
       builder: (context) => ShadowControlModel(),
       child: MediaQuery(
@@ -35,67 +34,61 @@ class _ProfileEditScreen extends State<ProfileEditScreen> {
         child: Scaffold(
           appBar: AppbarNormalWidget(
             padding: EdgeInsets.symmetric(horizontal: 8.0),
-            leading: AppBarButton(
+            leading: RoundIconButtonWidget(
               icon: Icons.arrow_back,
               onTap: () => Navigator.of(context).pop(),
-              round: true,
               iconSize: 26.0,
               iconPadding: EdgeInsets.all(5.0),
             ),
             title: "Edytuj profil",
+            bottomHeight: 38,
+            bottom: Padding(
+              padding: EdgeInsets.only(bottom: 10.0, left: 18.0, right: 18.0),
+              child: Row(
+                children: <Widget>[
+                  TabButtonWidget(
+                    text: "Profil",
+                    index: 0,
+                    currentIndex: _currentIndex,
+                    onTap: () => setState(() {
+                      _currentIndex = 0;
+                    }),
+                  ),
+                  TabButtonWidget(
+                    text: "Avatar",
+                    index: 1,
+                    currentIndex: _currentIndex,
+                    onTap: () => setState(() {
+                      _currentIndex = 1;
+                    }),
+                  ),
+                  TabButtonWidget(
+                    text: "Tło",
+                    index: 2,
+                    currentIndex: _currentIndex,
+                    onTap: () => setState(() {
+                      _currentIndex = 2;
+                    }),
+                  ),
+                  TabButtonWidget(
+                    text: "Hasło",
+                    index: 3,
+                    currentIndex: _currentIndex,
+                    onTap: () => setState(() {
+                      _currentIndex = 3;
+                    }),
+                  ),
+                ],
+              ),
+            ),
           ),
           body: ShadowNotificationListener(
             child: SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 18.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10.0),
-                      child: Row(
-                        children: <Widget>[
-                          _tabButton(text: "Profil", index: 0),
-                          _tabButton(text: "Avatar", index: 1),
-                          _tabButton(text: "Tło", index: 2),
-                          _tabButton(text: "Hasło", index: 3),
-                        ],
-                      ),
-                    ),
-                    _children[_currentIndex],
-                  ],
-                ),
+                child: _children[_currentIndex],
               ),
             ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _tabButton({String text, int index}) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: () {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 6.0),
-          decoration: BoxDecoration(
-              color: _currentIndex == index
-                  ? Utils.backgroundGreyOpacity(context)
-                  : Colors.transparent,
-              borderRadius: BorderRadius.circular(20)),
-          child: Text(
-            text,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontWeight: FontWeight.w600,
-                color: _currentIndex == index
-                    ? Theme.of(context).textTheme.body1.color
-                    : Theme.of(context).textTheme.caption.color),
           ),
         ),
       ),

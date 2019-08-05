@@ -67,15 +67,13 @@ class _BackgroundProfileEditState extends State<BackgroundProfileEdit> {
                   padding: EdgeInsets.symmetric(horizontal: 8.0),
                   child: Text("Wybierz nowe tło:"),
                 )),
-                AppBarButton(
+                RoundIconButtonWidget(
                   icon: Icons.photo,
-                  round: true,
                   iconSize: 26.0,
                   iconPadding: EdgeInsets.all(8.0),
                 ),
-                AppBarButton(
+                RoundIconButtonWidget(
                   icon: Icons.camera_alt,
-                  round: true,
                   iconSize: 26.0,
                   iconPadding: EdgeInsets.all(8.0),
                 )

@@ -24,54 +24,45 @@ class AuthorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: padding,
-        child: Row(
-          children: <Widget>[
-            AvatarWidget(
-              author: author,
-              size: avatarSize,
-            ),
-            Flexible(
+    return Padding(
+      padding: padding,
+      child: Row(
+        children: <Widget>[
+          AvatarWidget(
+            author: author,
+            size: avatarSize,
+          ),
+          Flexible(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 1.0,
-                      horizontal: 10.0,
-                    ),
-                    child: Text(
-                      author.login,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: Utils.getAuthorColor(author, context),
-                        fontSize: fontSize,
-                        fontWeight: FontWeight.w500,
-                      ),
+                  Text(
+                    author.login,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: Utils.getAuthorColor(author.color, context),
+                      fontSize: fontSize,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 1.0,
-                      horizontal: 10.0,
-                    ),
-                    child: Text(
-                      Utils.getSimpleDate(date),
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: Theme.of(context).textTheme.caption.color,
-                        fontSize: fontSize - 2.0,
-                        fontWeight: FontWeight.w400,
-                      ),
+                  Text(
+                    Utils.getSimpleDate(date),
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      height: 1.2,
+                      color: Theme.of(context).textTheme.caption.color,
+                      fontSize: fontSize - 3.0,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

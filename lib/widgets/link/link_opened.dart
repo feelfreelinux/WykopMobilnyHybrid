@@ -27,12 +27,14 @@ class LinkOpenedWidget extends StatelessWidget {
               ),
               child: Row(
                 children: <Widget>[
-                  AuthorWidget(
-                    author: model.author,
-                    date: model.date,
-                    fontSize: 14.0,
-                    padding: EdgeInsets.symmetric(
-                      vertical: 12.0,
+                  Expanded(
+                    child: AuthorWidget(
+                      author: model.author,
+                      date: model.date,
+                      fontSize: 14.0,
+                      padding: EdgeInsets.symmetric(
+                        vertical: 12.0,
+                      ),
                     ),
                   ),
                   VoteCounterWidget(
