@@ -126,7 +126,7 @@ class _EmbedState extends State<EmbedWidget> {
             padding: EdgeInsets.all(4.0),
             child: Text(
               '••• pokaż cały obrazek •••',
-              style: TextStyle(
+              style: Theme.of(context).textTheme.title.copyWith(
                 fontSize: 11.0,
                 shadows: [
                   Shadow(

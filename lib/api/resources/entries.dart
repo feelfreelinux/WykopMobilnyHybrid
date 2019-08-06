@@ -92,15 +92,11 @@ class EntriesApi extends ApiResource {
 
     return int.parse(voteCount["vote_count"]);
   }
-/*
-  Future<Result> markFavorite(Entry entry) async {
-    var voteCount =
-        await client.request('entries', 'voteup', api: [entry.id.toString()]);
-    var updatedEntry = entry.rebuild((b) => b..isVoted = true);
-    print(voteCount);
 
-    return normalizeEntry(updatedEntry);
-  }*/
+  Future<bool> markFavorite(int id) async {
+    var res = await client.request('entries', 'favorite', api: [id.toString()]);
+    return res["user_favorite"] as bool;
+  }
 
   Future<int> voteDown(int id) async {
     var voteCount =

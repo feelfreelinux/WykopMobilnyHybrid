@@ -139,16 +139,10 @@ class MainSettingsScreen extends StatelessWidget {
             ),
             authStateModel.loggedIn
                 ? GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        Utils.getPageTransition(ProfileEditScreen()),
-                      );
-                    },
+                    onTap: () => Navigator.push(
+                        context, Utils.getPageSlideRight(ProfileEditScreen())),
                     child: Container(
-                      margin: EdgeInsets.only(
-                        bottom: 14.0,
-                      ),
+                      margin: EdgeInsets.only(bottom: 14.0),
                       padding: EdgeInsets.symmetric(
                         vertical: 6.0,
                         horizontal: 12.0,

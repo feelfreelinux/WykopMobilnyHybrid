@@ -12,7 +12,7 @@ InAppBrowser inAppBrowserFallback = new InAppBrowser();
 ChromeSafariBrowser chromeSafariBrowser =
     new ChromeSafariBrowser(inAppBrowserFallback);
 
-void launchUrl(String url, { BuildContext context }) async {
+void launchUrl(String url, {BuildContext context}) async {
   var hex = "#000000";
   if (context != null) {
     hex = Theme.of(context).primaryColor.value.toRadixString(16);
@@ -71,18 +71,35 @@ class Utils {
             Animation<double> secondaryAnimation) {
           return screen;
         },
-        transitionsBuilder: (BuildContext context, Animation<double> animation,
-            Animation<double> secondaryAnimation, Widget child) {
-          return new SlideTransition(
-            position: Tween<Offset>(
-              begin: Offset(0.0, 1.0),
-              end: Offset(0.0, 0.0),
-            ).animate(
-              CurvedAnimation(
-                parent: animation,
-                curve: Interval(0.00, 1.00, curve: Curves.easeInOutQuart),
-              ),
-            ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return SlideTransition(
+            position: Tween<Offset>(begin: Offset(0.0, 1.0), end: Offset.zero)
+                .animate(CurvedAnimation(
+                    parent: animation, curve: Curves.easeInOutQuart)),
+            child: child,
+          );
+        },
+        transitionDuration: Duration(milliseconds: 300),
+      );
+    } else {
+      return CupertinoPageRoute(builder: (context) => screen);
+    }
+  }
+
+  static Route getPageSlideRight(Widget screen) {
+    if (Platform.isAndroid) {
+      return PageRouteBuilder(
+        barrierColor: Colors.black26,
+        opaque: true,
+        pageBuilder: (BuildContext context, Animation<double> animation,
+            Animation<double> secondaryAnimation) {
+          return screen;
+        },
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return SlideTransition(
+            position: Tween<Offset>(begin: Offset(1.0, 0.0), end: Offset.zero)
+                .animate(CurvedAnimation(
+                    parent: animation, curve: Curves.easeInOutQuart)),
             child: child,
           );
         },
@@ -101,12 +118,13 @@ class Utils {
             Animation<double> secondaryAnimation) {
           return screen;
         },
-        transitionsBuilder: (context, animation1, animation2, child) {
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(
-              opacity: Tween<double>(begin: 0.0, end: 1.0).animate(animation1),
-              child: child);
+            opacity: Tween<double>(begin: 0.0, end: 1.0).animate(animation),
+            child: child,
+          );
         },
-        transitionDuration: Duration(milliseconds: 400),
+        transitionDuration: Duration(milliseconds: 300),
       );
     } else {
       return CupertinoPageRoute(builder: (context) => screen);
@@ -185,14 +203,13 @@ class Utils {
     }
   }
 
-  static void CopyToClipboard(BuildContext context, String text) {
+  static void copyToClipboard(BuildContext context, String text) {
     Clipboard.setData(ClipboardData(text: text));
-    Scaffold.of(context).showSnackBar(SnackBar(
-      content: Text("Skopiowano do schowka"),
-    ));
+    Scaffold.of(context)
+        .showSnackBar(SnackBar(content: Text("Skopiowano do schowka")));
   }
 
   static void launchURL(String url) async {
-      launchUrl(url);
+    launchUrl(url);
   }
 }

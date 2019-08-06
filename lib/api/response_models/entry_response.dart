@@ -21,6 +21,9 @@ abstract class EntryResponse
   @nullable
   String get body;
 
+  @nullable
+  bool get favorite;
+
   @BuiltValueField(wireName: "vote_count")
   int get voteCount;
 

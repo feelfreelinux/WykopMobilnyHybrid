@@ -20,6 +20,8 @@ class _$Entry extends Entry {
   @override
   final bool isVoted;
   @override
+  final bool isFavorite;
+  @override
   final BuiltList<EntryComment> comments;
   @override
   final Author author;
@@ -36,6 +38,7 @@ class _$Entry extends Entry {
       this.voteCount,
       this.commentsCount,
       this.isVoted,
+      this.isFavorite,
       this.comments,
       this.author,
       this.embed})
@@ -54,6 +57,9 @@ class _$Entry extends Entry {
     }
     if (isVoted == null) {
       throw new BuiltValueNullFieldError('Entry', 'isVoted');
+    }
+    if (isFavorite == null) {
+      throw new BuiltValueNullFieldError('Entry', 'isFavorite');
     }
     if (comments == null) {
       throw new BuiltValueNullFieldError('Entry', 'comments');
@@ -80,6 +86,7 @@ class _$Entry extends Entry {
         voteCount == other.voteCount &&
         commentsCount == other.commentsCount &&
         isVoted == other.isVoted &&
+        isFavorite == other.isFavorite &&
         comments == other.comments &&
         author == other.author &&
         embed == other.embed;
@@ -93,11 +100,13 @@ class _$Entry extends Entry {
                 $jc(
                     $jc(
                         $jc(
-                            $jc($jc($jc(0, id.hashCode), date.hashCode),
-                                body.hashCode),
-                            voteCount.hashCode),
-                        commentsCount.hashCode),
-                    isVoted.hashCode),
+                            $jc(
+                                $jc($jc($jc(0, id.hashCode), date.hashCode),
+                                    body.hashCode),
+                                voteCount.hashCode),
+                            commentsCount.hashCode),
+                        isVoted.hashCode),
+                    isFavorite.hashCode),
                 comments.hashCode),
             author.hashCode),
         embed.hashCode));
@@ -112,6 +121,7 @@ class _$Entry extends Entry {
           ..add('voteCount', voteCount)
           ..add('commentsCount', commentsCount)
           ..add('isVoted', isVoted)
+          ..add('isFavorite', isFavorite)
           ..add('comments', comments)
           ..add('author', author)
           ..add('embed', embed))
@@ -146,6 +156,10 @@ class EntryBuilder implements Builder<Entry, EntryBuilder> {
   bool get isVoted => _$this._isVoted;
   set isVoted(bool isVoted) => _$this._isVoted = isVoted;
 
+  bool _isFavorite;
+  bool get isFavorite => _$this._isFavorite;
+  set isFavorite(bool isFavorite) => _$this._isFavorite = isFavorite;
+
   ListBuilder<EntryComment> _comments;
   ListBuilder<EntryComment> get comments =>
       _$this._comments ??= new ListBuilder<EntryComment>();
@@ -170,6 +184,7 @@ class EntryBuilder implements Builder<Entry, EntryBuilder> {
       _voteCount = _$v.voteCount;
       _commentsCount = _$v.commentsCount;
       _isVoted = _$v.isVoted;
+      _isFavorite = _$v.isFavorite;
       _comments = _$v.comments?.toBuilder();
       _author = _$v.author?.toBuilder();
       _embed = _$v.embed?.toBuilder();
@@ -203,6 +218,7 @@ class EntryBuilder implements Builder<Entry, EntryBuilder> {
               voteCount: voteCount,
               commentsCount: commentsCount,
               isVoted: isVoted,
+              isFavorite: isFavorite,
               comments: comments.build(),
               author: author.build(),
               embed: _embed?.build());

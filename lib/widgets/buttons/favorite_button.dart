@@ -16,12 +16,21 @@ class FavoriteButton extends StatelessWidget {
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(right: 6.0),
-              child: Icon(
-                isFavorite ? Icons.favorite : Icons.favorite_border,
-                size: 20.0,
-                color: isFavorite
-                    ? Colors.red
-                    : Theme.of(context).textTheme.caption.color,
+              child: AnimatedCrossFade(
+                duration: Duration(milliseconds: 300),
+                firstChild: Icon(
+                  Icons.favorite,
+                  size: 20.0,
+                  color: Colors.red,
+                ),
+                secondChild: Icon(
+                  Icons.favorite_border,
+                  size: 20.0,
+                  color: Theme.of(context).textTheme.caption.color,
+                ),
+                crossFadeState: isFavorite
+                    ? CrossFadeState.showFirst
+                    : CrossFadeState.showSecond,
               ),
             ),
             Text(

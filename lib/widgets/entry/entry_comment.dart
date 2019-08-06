@@ -93,7 +93,10 @@ class EntryCommentWidget extends StatelessWidget {
                       children: <Widget>[
                         Padding(
                           padding: EdgeInsets.only(
-                              left: 12.0, right: 66.0, top: 8.0, bottom: 4.0),
+                              left: 12.0,
+                              right: 40.0 + _votePadding(model.voteCount),
+                              top: 8.0,
+                              bottom: 4.0),
                           child: Text(
                             model.author.login,
                             overflow: TextOverflow.ellipsis,
@@ -160,11 +163,18 @@ class EntryCommentWidget extends StatelessWidget {
                         .replyToUser(model.author),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ],
       ),
     );
+  }
+
+  double _votePadding(int i) {
+    if (i < 100 && i > 9) return 10.0;
+    if (i < 1000 && i > 99) return 20.0;
+    if (i > 999) return 30.0;
+    return 0.0;
   }
 }

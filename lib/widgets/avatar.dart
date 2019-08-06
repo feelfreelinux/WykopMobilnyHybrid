@@ -10,12 +10,15 @@ class AvatarWidget extends StatelessWidget {
   final bool genderVisibility;
   final Color badge;
   final List<BoxShadow> boxShadow;
+  final int resolution;
+
   AvatarWidget({
     @required this.author,
     @required this.size,
     this.genderVisibility: true,
     this.badge,
     this.boxShadow,
+    this.resolution,
   });
 
   @override
@@ -78,13 +81,11 @@ class AvatarWidget extends StatelessWidget {
                     fit: BoxFit.fill,
                     image: author.avatar.length != 0
                         ? AdvancedNetworkImage(
-                            author.avatar.replaceAll(
-                                ",q150.", ",q${settings.resolutionAvatar}."),
+                            author.avatar.replaceAll(",q150.",
+                                ",q${resolution ?? settings.resolutionAvatar}."),
                             useDiskCache: true,
                           )
-                        : AssetImage(
-                            'assets/avatar.png',
-                          ),
+                        : AssetImage('assets/avatar.png'),
                   ),
                 ),
               ),

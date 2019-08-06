@@ -17,6 +17,8 @@ abstract class Entry implements Built<Entry, EntryBuilder> {
   int get commentsCount;
 
   bool get isVoted;
+  
+  bool get isFavorite;
 
   BuiltList<EntryComment> get comments;
 
@@ -38,6 +40,7 @@ abstract class Entry implements Built<Entry, EntryBuilder> {
                 return EntryComment.mapFromResponse(el);
               })),
         isVoted: response.userVote != null && response.userVote > 0,
+        isFavorite: response.favorite,
         author: Author.fromResponse(response: response.author),
         embed: (response.embed != null
             ? Embed.fromResponse(response: response.embed)

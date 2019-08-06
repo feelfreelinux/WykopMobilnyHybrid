@@ -20,8 +20,8 @@ class EntryFooterWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           FavoriteButton(
-            isFavorite: false,
-            onTap: () {},
+            isFavorite: entry.isFavorite,
+            onTap: () => entry.favoriteToggle(),
           ),
           CommentsButton(
             count: entry.commentsCount,
@@ -35,9 +35,8 @@ class EntryFooterWidget extends StatelessWidget {
             },
           ),
           ShareButton(
-            onTap: () {
-              Share.share("https://www.wykop.pl/wpis/" + entry.id.toString());
-            },
+            onTap: () =>
+                Share.share("https://www.wykop.pl/wpis/" + entry.id.toString()),
           ),
         ],
       ),

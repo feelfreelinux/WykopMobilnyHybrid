@@ -11,6 +11,7 @@ class EntryModel extends InputModel {
   Author _author;
   Embed _embed;
   bool _isVoted;
+  bool _isFavorite;
   List<EntryComment> _comments = [];
   List<Voter> _upvoters = [];
   int _commentsCount;
@@ -22,6 +23,7 @@ class EntryModel extends InputModel {
   int get voteCount => _voteCount;
   Author get author => _author;
   Embed get embed => _embed;
+  bool get isFavorite => _isFavorite;
   bool get isVoted => _isVoted;
   int get commentsCount => _commentsCount;
   bool get isLoading => _loading;
@@ -37,6 +39,7 @@ class EntryModel extends InputModel {
     _embed = entry.embed;
     _comments = entry.comments.toList();
     _isVoted = entry.isVoted;
+    _isFavorite = entry.isFavorite;
     _commentsCount = entry.commentsCount;
     notifyListeners();
   }
@@ -64,6 +67,11 @@ class EntryModel extends InputModel {
       _voteCount = await api.entries.voteDown(_id);
       _isVoted = false;
     }
+    notifyListeners();
+  }
+
+  void favoriteToggle() async {
+    _isFavorite = await api.entries.markFavorite(_id);
     notifyListeners();
   }
 

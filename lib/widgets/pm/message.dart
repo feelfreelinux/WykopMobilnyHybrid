@@ -151,7 +151,7 @@ class _MessageWidgetState extends State<MessageWidget>
                             Icons.content_copy,
                             visible: widget.message.body != null &&
                                 widget.message.body != "​​​​​",
-                            onTap: () => Utils.CopyToClipboard(
+                            onTap: () => Utils.copyToClipboard(
                                 context,
                                 parse(widget.message.body ?? "")
                                     .documentElement

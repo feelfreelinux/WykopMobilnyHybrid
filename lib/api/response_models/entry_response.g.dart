@@ -52,6 +52,12 @@ class _$EntryResponseSerializer implements StructuredSerializer<EntryResponse> {
         ..add(serializers.serialize(object.body,
             specifiedType: const FullType(String)));
     }
+    if (object.favorite != null) {
+      result
+        ..add('favorite')
+        ..add(serializers.serialize(object.favorite,
+            specifiedType: const FullType(bool)));
+    }
     if (object.embed != null) {
       result
         ..add('embed')
@@ -95,6 +101,10 @@ class _$EntryResponseSerializer implements StructuredSerializer<EntryResponse> {
           result.body = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'favorite':
+          result.favorite = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
         case 'vote_count':
           result.voteCount = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
@@ -130,6 +140,8 @@ class _$EntryResponse extends EntryResponse {
   @override
   final String body;
   @override
+  final bool favorite;
+  @override
   final int voteCount;
   @override
   final int commentsCount;
@@ -147,6 +159,7 @@ class _$EntryResponse extends EntryResponse {
       this.userVote,
       this.comments,
       this.body,
+      this.favorite,
       this.voteCount,
       this.commentsCount,
       this.author,
@@ -185,6 +198,7 @@ class _$EntryResponse extends EntryResponse {
         userVote == other.userVote &&
         comments == other.comments &&
         body == other.body &&
+        favorite == other.favorite &&
         voteCount == other.voteCount &&
         commentsCount == other.commentsCount &&
         author == other.author &&
@@ -199,10 +213,12 @@ class _$EntryResponse extends EntryResponse {
                 $jc(
                     $jc(
                         $jc(
-                            $jc($jc($jc(0, id.hashCode), date.hashCode),
-                                userVote.hashCode),
-                            comments.hashCode),
-                        body.hashCode),
+                            $jc(
+                                $jc($jc($jc(0, id.hashCode), date.hashCode),
+                                    userVote.hashCode),
+                                comments.hashCode),
+                            body.hashCode),
+                        favorite.hashCode),
                     voteCount.hashCode),
                 commentsCount.hashCode),
             author.hashCode),
@@ -217,6 +233,7 @@ class _$EntryResponse extends EntryResponse {
           ..add('userVote', userVote)
           ..add('comments', comments)
           ..add('body', body)
+          ..add('favorite', favorite)
           ..add('voteCount', voteCount)
           ..add('commentsCount', commentsCount)
           ..add('author', author)
@@ -251,6 +268,10 @@ class EntryResponseBuilder
   String get body => _$this._body;
   set body(String body) => _$this._body = body;
 
+  bool _favorite;
+  bool get favorite => _$this._favorite;
+  set favorite(bool favorite) => _$this._favorite = favorite;
+
   int _voteCount;
   int get voteCount => _$this._voteCount;
   set voteCount(int voteCount) => _$this._voteCount = voteCount;
@@ -278,6 +299,7 @@ class EntryResponseBuilder
       _userVote = _$v.userVote;
       _comments = _$v.comments?.toBuilder();
       _body = _$v.body;
+      _favorite = _$v.favorite;
       _voteCount = _$v.voteCount;
       _commentsCount = _$v.commentsCount;
       _author = _$v.author?.toBuilder();
@@ -311,6 +333,7 @@ class EntryResponseBuilder
               userVote: userVote,
               comments: _comments?.build(),
               body: body,
+              favorite: favorite,
               voteCount: voteCount,
               commentsCount: commentsCount,
               author: author.build(),

@@ -17,9 +17,12 @@ class TabButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: GestureDetector(
+      child: InkWell(
         onTap: onTap,
-        child: Container(
+        borderRadius: BorderRadius.circular(20),
+        highlightColor: Colors.transparent,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 100),
           padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 6.0),
           decoration: BoxDecoration(
               color: currentIndex == index
