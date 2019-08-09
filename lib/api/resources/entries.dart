@@ -104,24 +104,18 @@ class EntriesApi extends ApiResource {
     print(voteCount);
     return int.parse(voteCount["vote_count"]);
   }
-/*
-  Future<Result> commentVoteUp(EntryComment entry) async {
-    var voteCount = await client
-        .request('entries', 'commentvoteup', api: [entry.id.toString()]);
-    var updatedEntry = entry.rebuild((b) => b
-      ..voteCount = int.parse(voteCount["vote_count"])
-      ..isVoted = true);
 
-    return normalizeEntryComment(updatedEntry);
+    Future<int> voteComemntUp(int id) async {
+    var voteCount =
+        await client.request('entries', 'commentvoteup', api: [id.toString()]);
+
+    return int.parse(voteCount["vote_count"]);
   }
 
-  Future<Result> commentVoteDown(EntryComment entry) async {
-    var voteCount = await client
-        .request('entries', 'commentvoteremove', api: [entry.id.toString()]);
-    var updatedEntry = entry.rebuild((b) => b
-      ..voteCount = int.parse(voteCount["vote_count"])
-      ..isVoted = false);
-
-    return normalizeEntryComment(updatedEntry);
-  }*/
+  Future<int> voteCommentDown(int id) async {
+    var voteCount =
+        await client.request('entries', 'commentvoteremove', api: [id.toString()]);
+    print(voteCount);
+    return int.parse(voteCount["vote_count"]);
+  }
 }

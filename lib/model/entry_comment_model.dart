@@ -31,6 +31,13 @@ class EntryCommentModel extends ChangeNotifier {
   }
 
   Future<void> toggleVote() async {
-
+    if (!_isVoted) {
+      _voteCount = await api.entries.voteComemntUp(_id);
+      _isVoted = true;
+    } else {
+      _voteCount = await api.entries.voteCommentDown(_id);
+      _isVoted = false;
+    }
+    notifyListeners();
   }
 }

@@ -42,6 +42,7 @@ class _ErrorHandlerWidgetState extends State<ErrorHandlerWidget> {
 
   @override
   void dispose() {
+    api.errorStreamController.close();
     this._sub.cancel();
     super.dispose();
   }

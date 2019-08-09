@@ -82,7 +82,7 @@ class MainSettingsScreen extends StatelessWidget {
                       Visibility(
                         visible: authStateModel.loggedIn &&
                             authStateModel.backgroundUrl != null,
-                        child: Image(
+                        child: authStateModel.backgroundUrl != null ? Image(
                           height: 140.0,
                           width: MediaQuery.of(context).size.width,
                           fit: BoxFit.cover,
@@ -90,7 +90,7 @@ class MainSettingsScreen extends StatelessWidget {
                             authStateModel.backgroundUrl,
                             useDiskCache: true,
                           ),
-                        ),
+                        ) : Container(),
                       ),
                     ],
                   ),
