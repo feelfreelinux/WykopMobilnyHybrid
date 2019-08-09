@@ -1,4 +1,9 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:image_downloader/image_downloader.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:photo_view/photo_view.dart';
@@ -6,7 +11,10 @@ import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/utils/utils.dart';
+import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'dart:async';
+import 'package:path/path.dart' as Path;
+import 'package:mime/mime.dart';
 
 class MediaScreen extends StatefulWidget {
   final Embed embed;
@@ -41,9 +49,26 @@ class _MediaScreenState extends State<MediaScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  _drawToolbarIcon(Icons.share, 'udostępnij', () {}),
+                  _drawToolbarIcon(Icons.share, 'udostępnij', () async {
+                    // @TODO: Move it somewhere
+    
+                    var request =
+                        await HttpClient().getUrl(Uri.parse(widget.embed.url));
+                    var response = await request.close();
+                    Uint8List bytes =
+                        await consolidateHttpClientResponseBytes(response);
+                    await Share.file(
+                        'Udostępnij obrazek',
+                        Path.basename(widget.embed.url),
+                        bytes,
+                        lookupMimeType(Path.basename(widget.embed.url)));
+                  }),
                   _drawToolbarIcon(Icons.report, 'zgłoś', () {}),
-                  _drawToolbarIcon(Icons.save, 'zapisz', () {}),
+                  _drawToolbarIcon(Icons.save, 'zapisz', () async {
+   
+                    await ImageDownloader.downloadImage(widget.embed.url);
+     
+                  }),
                 ],
               ),
             ),

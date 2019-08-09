@@ -26,14 +26,6 @@ class OwmApp extends StatelessWidget {
           builder: (context, model, _) => OWMSettingListener(
             rebuildOnChange: (settings) => settings.useDarkThemeStream,
             builder: (context, settings) {
-              SystemChrome.setSystemUIOverlayStyle(
-                SystemUiOverlayStyle(
-                  systemNavigationBarColor:
-                      settings.useDarkTheme ? Colors.black : Colors.white,
-                  statusBarColor: Colors.transparent,
-                ),
-              );
-
               return OWMSettingListener(
                 rebuildOnChange: (settings) => settings.accentColorStream,
                 builder: (context, settings) => MaterialApp(

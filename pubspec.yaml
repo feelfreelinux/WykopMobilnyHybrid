@@ -34,6 +34,9 @@ dependencies:
   provider: ^3.0.0
   intl: ^0.15.8
   flutter_material_color_picker: ^1.0.3
+  esys_flutter_share: ^1.0.2
+  mime: ^0.9.6+3
+  image_downloader: ^0.16.2
 
 dev_dependencies:
   flutter_test:
@@ -44,7 +47,7 @@ dev_dependencies:
   built_value_generator: ^6.7.0
 
 flutter_icons:
-  android: "launcher_icon" 
+  android: "launcher_icon"
   adaptive_icon_background: "#ff5f98f4"
   ios: true
   image_path: "assets/app_icon.png"
@@ -54,7 +57,7 @@ flutter:
   fonts:
     - family: OWMGlyphs
       fonts:
-       - asset: assets/fonts/OWMGlyphs.ttf
+        - asset: assets/fonts/OWMGlyphs.ttf
   assets:
     - secrets.json
     - rogal.png
