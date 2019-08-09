@@ -8,7 +8,7 @@ import Flutter
         didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?
         ) -> Bool {
         let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
-        let methodChannel = FlutterMethodChannel(name: "feelfreelinux.github.io/owmhybrid", binaryMessenger: controller)
+        let methodChannel = FlutterMethodChannel(name: "feelfreelinux.github.io/owmhybrid", binaryMessenger: controller.binaryMessenger)
         methodChannel.setMethodCallHandler({
             (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
             if (call.method == "openLoginScreen") {
