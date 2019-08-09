@@ -67,6 +67,7 @@ class EntryModel extends InputModel {
       _voteCount = await api.entries.voteDown(_id);
       _isVoted = false;
     }
+    loadUpVoters();
     notifyListeners();
   }
 
