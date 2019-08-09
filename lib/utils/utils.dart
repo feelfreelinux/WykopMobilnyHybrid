@@ -111,7 +111,7 @@ class Utils {
   }
 
   static Route getPageTransition(Widget screen) {
-    if (Platform.isAndroid) {
+    if (true) { // okay i know its crappy but i need to fix one thing with iOS first
       return PageRouteBuilder(
         opaque: true,
         pageBuilder: (BuildContext context, Animation<double> animation,
@@ -127,7 +127,7 @@ class Utils {
         transitionDuration: Duration(milliseconds: 300),
       );
     } else {
-      return CupertinoPageRoute(builder: (context) => screen);
+      return CupertinoPageRoute(builder: (_) => Container(child: screen));
     }
   }
 

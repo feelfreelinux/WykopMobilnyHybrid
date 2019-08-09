@@ -40,7 +40,7 @@ class _EntryScreenState extends State<EntryScreen>
                         backgroundColor: Theme.of(context).backgroundColor,
                         bottomNavigationBar: InputBarWidget(
                           (inputData) {},
-                          key: OwmKeys.inputBarKey,
+                          key: model.inputBarKey,
                         ),
                         resizeToAvoidBottomPadding: false,
                         appBar: AppbarNormalWidget(
@@ -97,9 +97,9 @@ class _EntryScreenState extends State<EntryScreen>
                               header: EntryOpenWidget(),
                               itemCount: model.comments.length,
                               itemBuilder: (context, index) =>
-                                  ChangeNotifierProvider<EntryCommentModel>(
-                                builder: (context) => EntryCommentModel()
-                                  ..setData(model.comments[index]),
+                                  ChangeNotifierProvider<
+                                      EntryCommentModel>.value(
+                                value: model.comments[index],
                                 child: EntryCommentWidget(),
                               ),
                               loadData: (page) => {},

@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:owmflutter/model/entry_comment_model.dart';
 import 'package:owmflutter/model/input_model.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/api/api.dart';
@@ -12,7 +13,7 @@ class EntryModel extends InputModel {
   Embed _embed;
   bool _isVoted;
   bool _isFavorite;
-  List<EntryComment> _comments = [];
+  List<EntryCommentModel> _comments = [];
   List<Voter> _upvoters = [];
   int _commentsCount;
   bool _loading = false;
@@ -27,7 +28,7 @@ class EntryModel extends InputModel {
   bool get isVoted => _isVoted;
   int get commentsCount => _commentsCount;
   bool get isLoading => _loading;
-  List<EntryComment> get comments => _comments;
+  List<EntryCommentModel> get comments => _comments;
   List<Voter> get upvoters => _upvoters;
 
   void setData(Entry entry) {
@@ -37,7 +38,7 @@ class EntryModel extends InputModel {
     _voteCount = entry.voteCount;
     _author = entry.author;
     _embed = entry.embed;
-    _comments = entry.comments.toList();
+    _comments = entry.comments.map((e) => EntryCommentModel()..setData(e)).toList();
     _isVoted = entry.isVoted;
     _isFavorite = entry.isFavorite;
     _commentsCount = entry.commentsCount;
@@ -84,7 +85,7 @@ class EntryModel extends InputModel {
 
   @override
   Future<void> onInputSubmitted(InputData data) async {
-    _comments.add(await api.entries.addEntryComment(_id, data));
+    _comments.add(EntryCommentModel()..setData(await api.entries.addEntryComment(_id, data)));
     notifyListeners();
     updateEntry();
   }

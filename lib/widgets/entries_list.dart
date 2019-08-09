@@ -19,8 +19,6 @@ class EntriesList extends StatefulWidget {
 class EntriesListState extends State<EntriesList> with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-
-
  
   @override
   Widget build(BuildContext context) {
@@ -42,9 +40,8 @@ class EntriesListState extends State<EntriesList> with AutomaticKeepAliveClientM
                     },
                     itemCount: model.entries.length,
                     itemBuilder: (context, index) {
-                      return ChangeNotifierProvider<EntryModel>(
-                        builder: (context) =>
-                            EntryModel()..setData(model.entries[index]),
+                      return ChangeNotifierProvider<EntryModel>.value(
+                        value: model.entries[index],
                         child: NewEntryWidget(ellipsize: true),
                       );
                     },

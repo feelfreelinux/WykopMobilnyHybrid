@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/keys.dart';
+import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:html/parser.dart';
 
@@ -129,40 +131,42 @@ class _MessageWidgetState extends State<MessageWidget>
                         vertical: 2.0,
                       ),
                       margin: EdgeInsets.symmetric(horizontal: 12.0),
-                      child: Row(
-                        children: <Widget>[
-                          _drawButtons(
-                            Icons.share,
-                            onTap: () {
-                              Share.share(parse(widget.message.body ?? "")
-                                  .documentElement
-                                  .text);
-                              //TODO: Dodać udostępnianie obrazka z wiadomości
-                            },
-                          ),
-                          _drawButtons(
-                            Icons.format_quote,
-                            visible: widget.message.body != null &&
-                                widget.message.body != "​​​​​",
-                            onTap: () => OwmKeys.inputBarKey.currentState
-                                .quoteText(widget.message.body),
-                          ),
-                          _drawButtons(
-                            Icons.content_copy,
-                            visible: widget.message.body != null &&
-                                widget.message.body != "​​​​​",
-                            onTap: () => Utils.copyToClipboard(
-                                context,
-                                parse(widget.message.body ?? "")
+                      child: Consumer<InputModel>(
+                        builder: (context, inputModel, _) => Row(
+                          children: <Widget>[
+                            _drawButtons(
+                              Icons.share,
+                              onTap: () {
+                                Share.share(parse(widget.message.body ?? "")
                                     .documentElement
-                                    .text),
-                          ),
-                          _drawButtons(
-                            Icons.file_download,
-                            visible: widget.message.embed != null,
-                            //TODO: Zapisywanie obrazka
-                          ),
-                        ],
+                                    .text);
+                                //TODO: Dodać udostępnianie obrazka z wiadomości
+                              },
+                            ),
+                            _drawButtons(
+                              Icons.format_quote,
+                              visible: widget.message.body != null &&
+                                  widget.message.body != "​​​​​",
+                              onTap: () => inputModel.inputBarKey.currentState
+                                  .quoteText(widget.message.body),
+                            ),
+                            _drawButtons(
+                              Icons.content_copy,
+                              visible: widget.message.body != null &&
+                                  widget.message.body != "​​​​​",
+                              onTap: () => Utils.copyToClipboard(
+                                  context,
+                                  parse(widget.message.body ?? "")
+                                      .documentElement
+                                      .text),
+                            ),
+                            _drawButtons(
+                              Icons.file_download,
+                              visible: widget.message.embed != null,
+                              //TODO: Zapisywanie obrazka
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     _drawButtonClose()

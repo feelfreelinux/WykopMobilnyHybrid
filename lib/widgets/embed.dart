@@ -66,7 +66,6 @@ class _EmbedState extends State<EmbedWidget> {
 
   @override
   Widget build(BuildContext context) {
-    String heroTag = 'embedImage${widget.embed.hashCode}';
     return Padding(
       padding: widget.padding ?? EdgeInsets.all(0.0),
       child: GestureDetector(
@@ -84,24 +83,21 @@ class _EmbedState extends State<EmbedWidget> {
             this.openFullscreen();
           }
         },
-        child: Hero(
-          tag: heroTag,
-          child: AnimatedContainer(
-            duration: Duration(milliseconds: 100),
-            decoration: this.getDecoration(),
-            constraints: this.currentConstraints(),
-            child: nsfw && widget.reducedWidth == 0.0
-                ? BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0),
-                      ),
-                      child: _drawFooter(),
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 100),
+          decoration: this.getDecoration(),
+          constraints: this.currentConstraints(),
+          child: nsfw && widget.reducedWidth == 0.0
+              ? BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0),
                     ),
-                  )
-                : _drawFooter(),
-          ),
+                    child: _drawFooter(),
+                  ),
+                )
+              : _drawFooter(),
         ),
       ),
     );

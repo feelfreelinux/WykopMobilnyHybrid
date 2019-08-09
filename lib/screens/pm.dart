@@ -30,7 +30,7 @@ class _PmScreenState extends State<PmScreen>
           child: Scaffold(
             bottomNavigationBar: InputBarWidget(
               (inputData) {},
-              key: OwmKeys.inputBarKey,
+              // key: OwmKeys.inputBarKey,
               hintText: "Napisz wiadomość",
             ),
             resizeToAvoidBottomPadding: false,

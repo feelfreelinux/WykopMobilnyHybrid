@@ -1,8 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:owmflutter/models/models.dart';
+import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/api/api.dart';
 
-class LinkModel extends ChangeNotifier {
+class LinkModel extends InputModel {
+  @override
+  Future<void> onInputSubmitted(InputData data) async {
+  }
   int _id;
   String _title;
   String _description;

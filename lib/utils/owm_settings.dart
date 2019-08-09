@@ -19,7 +19,8 @@ abstract class OWMSettings implements OWMSettingsPreferences {
   bool simpleLinkView;
   @DefaultValue(4280391411)
   int accentColor;
-
+  @DefaultValue([])
+  List<String> searchHistory;
   @DefaultValue(true)
   bool useYoutubePlayer;
   @DefaultValue(true)

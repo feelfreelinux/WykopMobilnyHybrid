@@ -102,6 +102,10 @@ class CupertinoFullscreenOverlay extends CupertinoPageRoute {
   Widget _buildOverlayContent(BuildContext context) {
     return child;
   }
+
+@override
+  // TODO: implement builder
+  get builder => (context) => buildPage(context, null, null);
 /*
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation,

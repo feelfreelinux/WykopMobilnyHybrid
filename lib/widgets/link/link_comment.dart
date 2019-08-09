@@ -113,45 +113,47 @@ class LinkCommentWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              Row(
-                children: <Widget>[
-                  _footerText(
-                    context,
-                    padding: EdgeInsets.only(
-                      top: 2.0,
-                      bottom: 4.0,
-                      left: 14.0,
+              Consumer<InputModel>(
+                builder: (context, inputModel, _) => Row(
+                  children: <Widget>[
+                    _footerText(
+                      context,
+                      padding: EdgeInsets.only(
+                        top: 2.0,
+                        bottom: 4.0,
+                        left: 14.0,
+                      ),
+                      text: Utils.getSimpleDate(model.date),
                     ),
-                    text: Utils.getSimpleDate(model.date),
-                  ),
-                  _footerText(
-                    context,
-                    padding: EdgeInsets.only(
-                      top: 2.0,
-                      bottom: 4.0,
+                    _footerText(
+                      context,
+                      padding: EdgeInsets.only(
+                        top: 2.0,
+                        bottom: 4.0,
+                      ),
+                      text: "Cytuj",
+                      isButton: true,
+                      onTap: () {
+                        inputModel.inputBarKey.currentState
+                            .quoteText(model.body, author: model.author);
+                      },
                     ),
-                    text: "Cytuj",
-                    isButton: true,
-                    onTap: () {
-                      OwmKeys.inputBarKey.currentState
-                          .quoteText(model.body, author: model.author);
-                    },
-                  ),
-                  _footerText(
-                    context,
-                    padding: EdgeInsets.only(
-                      top: 2.0,
-                      bottom: 4.0,
-                      right: 8.0,
+                    _footerText(
+                      context,
+                      padding: EdgeInsets.only(
+                        top: 2.0,
+                        bottom: 4.0,
+                        right: 8.0,
+                      ),
+                      text: "Odpowiedz",
+                      isButton: true,
+                      onTap: () {
+                        inputModel.inputBarKey.currentState
+                            .replyToUser(model.author);
+                      },
                     ),
-                    text: "Odpowiedz",
-                    isButton: true,
-                    onTap: () {
-                      OwmKeys.inputBarKey.currentState
-                          .replyToUser(model.author);
-                    },
-                  ),
-                ],
+                  ],
+                ),
               )
             ],
           ),

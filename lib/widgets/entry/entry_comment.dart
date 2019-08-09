@@ -143,26 +143,28 @@ class EntryCommentWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              Row(
-                children: <Widget>[
-                  TextButton(
-                    isButton: false,
-                    padding: EdgeInsets.only(top: 2.0, bottom: 4.0, left: 14.0),
-                    text: Utils.getSimpleDate(model.date),
-                  ),
-                  TextButton(
-                    padding: EdgeInsets.only(top: 2.0, bottom: 4.0),
-                    text: "Cytuj",
-                    onTap: () => OwmKeys.inputBarKey.currentState
-                        .quoteText(model.body, author: model.author),
-                  ),
-                  TextButton(
-                    padding: EdgeInsets.only(top: 2.0, bottom: 4.0, right: 8.0),
-                    text: "Odpowiedz",
-                    onTap: () => OwmKeys.inputBarKey.currentState
-                        .replyToUser(model.author),
-                  ),
-                ],
+              Consumer<InputModel>(
+                builder: (context, inputModel, _) => Row(
+                  children: <Widget>[
+                    TextButton(
+                      isButton: false,
+                      padding: EdgeInsets.only(top: 2.0, bottom: 4.0, left: 14.0),
+                      text: Utils.getSimpleDate(model.date),
+                    ),
+                    TextButton(
+                      padding: EdgeInsets.only(top: 2.0, bottom: 4.0),
+                      text: "Cytuj",
+                      onTap: () => inputModel.inputBarKey.currentState
+                          .quoteText(model.body, author: model.author),
+                    ),
+                    TextButton(
+                      padding: EdgeInsets.only(top: 2.0, bottom: 4.0, right: 8.0),
+                      text: "Odpowiedz",
+                      onTap: () => inputModel.inputBarKey.currentState
+                          .replyToUser(model.author),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

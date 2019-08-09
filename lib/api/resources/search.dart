@@ -16,4 +16,10 @@ class SearchApi extends ApiResource {
         named: {'page': page.toString()}, post: {'q': q});
     return deserializeLinks(items);
   }
+
+    Future<List<EntryLink>> searchIndex(int page, String q) async {
+    var items = await client.request('search', 'index',
+        named: {'page': page.toString()}, post: {'q': q});
+    return deserializeEntryLinks(items);
+  }
 }

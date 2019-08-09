@@ -44,6 +44,12 @@ class _$OWMSettings implements OWMSettings {
             _accentColorSubject.add(value);
           }))
         .sink;
+    searchHistorySink = (StreamController<List<String>>.broadcast()
+          ..stream.listen((value) async {
+            await adapter.setStringList("searchHistory", value);
+            _searchHistorySubject.add(value);
+          }))
+        .sink;
     useYoutubePlayerSink = (StreamController<bool>.broadcast()
           ..stream.listen((value) async {
             await adapter.setBool("useYoutubePlayer", value);
@@ -296,6 +302,9 @@ class _$OWMSettings implements OWMSettings {
     _adapter.getInt("accentColor").then((value) {
       return value ?? 4280391411;
     }).then(accentColorSink.add);
+    _adapter.getStringList("searchHistory").then((value) {
+      return value ?? <String>[];
+    }).then(searchHistorySink.add);
     _adapter.getBool("useYoutubePlayer").then((value) {
       return value ?? true;
     }).then(useYoutubePlayerSink.add);
@@ -435,6 +444,9 @@ class _$OWMSettings implements OWMSettings {
   final BehaviorSubject<int> _accentColorSubject =
       BehaviorSubject<int>(seedValue: 4280391411);
 
+  final BehaviorSubject<List<String>> _searchHistorySubject =
+      BehaviorSubject<List<String>>(seedValue: <String>[]);
+
   final BehaviorSubject<bool> _useYoutubePlayerSubject =
       BehaviorSubject<bool>(seedValue: true);
 
@@ -564,6 +576,8 @@ class _$OWMSettings implements OWMSettings {
 
   Sink<int> accentColorSink;
 
+  Sink<List<String>> searchHistorySink;
+
   Sink<bool> useYoutubePlayerSink;
 
   Sink<bool> useOtherPlayerSink;
@@ -653,6 +667,8 @@ class _$OWMSettings implements OWMSettings {
   Stream<bool> get simpleLinkViewStream =>
       _simpleLinkViewSubject.asBroadcastStream();
   Stream<int> get accentColorStream => _accentColorSubject.asBroadcastStream();
+  Stream<List<String>> get searchHistoryStream =>
+      _searchHistorySubject.asBroadcastStream();
   Stream<bool> get useYoutubePlayerStream =>
       _useYoutubePlayerSubject.asBroadcastStream();
   Stream<bool> get useOtherPlayerStream =>
@@ -733,6 +749,7 @@ class _$OWMSettings implements OWMSettings {
   String get autoDarkThemeTimeTo => _autoDarkThemeTimeToSubject.value;
   bool get simpleLinkView => _simpleLinkViewSubject.value;
   int get accentColor => _accentColorSubject.value;
+  List<String> get searchHistory => _searchHistorySubject.value;
   bool get useYoutubePlayer => _useYoutubePlayerSubject.value;
   bool get useOtherPlayer => _useOtherPlayerSubject.value;
   int get useAutoplay => _useAutoplaySubject.value;
@@ -779,6 +796,7 @@ class _$OWMSettings implements OWMSettings {
   set autoDarkThemeTimeTo(String value) => autoDarkThemeTimeToSink.add(value);
   set simpleLinkView(bool value) => simpleLinkViewSink.add(value);
   set accentColor(int value) => accentColorSink.add(value);
+  set searchHistory(List<String> value) => searchHistorySink.add(value);
   set useYoutubePlayer(bool value) => useYoutubePlayerSink.add(value);
   set useOtherPlayer(bool value) => useOtherPlayerSink.add(value);
   set useAutoplay(int value) => useAutoplaySink.add(value);
@@ -827,6 +845,7 @@ class _$OWMSettings implements OWMSettings {
     autoDarkThemeTimeToSink.close();
     simpleLinkViewSink.close();
     accentColorSink.close();
+    searchHistorySink.close();
     useYoutubePlayerSink.close();
     useOtherPlayerSink.close();
     useAutoplaySink.close();
@@ -881,6 +900,8 @@ abstract class OWMSettingsPreferences {
   Sink<bool> simpleLinkViewSink;
 
   Sink<int> accentColorSink;
+
+  Sink<List<String>> searchHistorySink;
 
   Sink<bool> useYoutubePlayerSink;
 
@@ -966,6 +987,7 @@ abstract class OWMSettingsPreferences {
   Stream<String> get autoDarkThemeTimeToStream;
   Stream<bool> get simpleLinkViewStream;
   Stream<int> get accentColorStream;
+  Stream<List<String>> get searchHistoryStream;
   Stream<bool> get useYoutubePlayerStream;
   Stream<bool> get useOtherPlayerStream;
   Stream<int> get useAutoplayStream;
@@ -1012,6 +1034,7 @@ abstract class OWMSettingsPreferences {
     autoDarkThemeTimeToSink.close();
     simpleLinkViewSink.close();
     accentColorSink.close();
+    searchHistorySink.close();
     useYoutubePlayerSink.close();
     useOtherPlayerSink.close();
     useAutoplaySink.close();

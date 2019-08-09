@@ -6,7 +6,9 @@ import 'package:timeago/timeago.dart' as timeago;
 void main() {
   timeago.setLocaleMessages('pl', timeago.PlMessages());
   
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.black,
     statusBarColor: Colors.transparent,
   ));
 
