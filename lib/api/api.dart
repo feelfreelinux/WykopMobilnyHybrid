@@ -20,6 +20,7 @@ export 'resources/entries.dart';
 export 'resources/users.dart';
 export 'resources/links.dart';
 export 'resources/mywykop.dart';
+export 'response_models/profile_response.dart';
 export 'resources/embed.dart';
 export 'resources/tags.dart';
 export 'resources/notifications.dart';

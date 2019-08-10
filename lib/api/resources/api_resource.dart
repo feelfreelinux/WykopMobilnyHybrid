@@ -25,17 +25,23 @@ abstract class ApiResource {
   }
 
   LinkComment deserializeLinkComment(dynamic item) {
-    return LinkComment.mapFromResponse(_client.deserializeElement(LinkCommentResponse.serializer, item));
+    return LinkComment.mapFromResponse(
+        _client.deserializeElement(LinkCommentResponse.serializer, item));
   }
 
   EntryComment deserializeEntryComment(dynamic item) {
-    return EntryComment.mapFromResponse(_client.deserializeElement(EntryCommentResponse.serializer, item));
+    return EntryComment.mapFromResponse(
+        _client.deserializeElement(EntryCommentResponse.serializer, item));
   }
 
   Author deserializeAuthor(dynamic item) {
-    return Author.fromResponse(response: _client.deserializeElement(AuthorResponse.serializer, item));
+    return Author.fromResponse(
+        response: _client.deserializeElement(AuthorResponse.serializer, item));
   }
 
+  ProfileResponse deserializeProfile(dynamic item) {
+    return _client.deserializeElement(ProfileResponse.serializer, item);
+  }
 
   List<EntryLink> deserializeEntryLinks(dynamic items) {
     return _client
@@ -44,7 +50,7 @@ abstract class ApiResource {
         .toList();
   }
 
-    List<Voter> deserializeUpvoters(dynamic items) {
+  List<Voter> deserializeUpvoters(dynamic items) {
     return _client
         .deserializeList(VoterResponse.serializer, items)
         .map((e) => Voter.fromResponse(response: e))

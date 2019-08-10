@@ -11,7 +11,6 @@ void main() {
   
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.primaries[Random().nextInt(Colors.primaries.length)],
     statusBarColor: Colors.transparent,
   ));
 
@@ -37,26 +36,7 @@ class RestartWidget extends StatefulWidget {
 
 class _RestartWidgetState extends State<RestartWidget> {
   Key key = new UniqueKey();
-  Timer timer;
-
-  @override
-  void initState() {
-    super.initState();
-    timer = Timer.periodic(Duration(seconds: 5), (Timer t) =>   SystemChrome.setSystemUIOverlayStyle(
-    SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.primaries[Random().nextInt(Colors.primaries.length)],
-    statusBarColor: Colors.primaries[Random().nextInt(Colors.primaries.length)],
-  )));
-
-
-  }
-
-  @override
-  void dispose() {
-    timer?.cancel();
-    super.dispose();
-  }
-
+  
   void restartApp() {
     this.setState(() {
       key = new UniqueKey();
