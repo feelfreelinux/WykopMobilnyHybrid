@@ -11,6 +11,7 @@ class Themes {
       cardColor: Colors.white,
       bottomAppBarColor: Colors.white,
       toggleableActiveColor: Color(accentColor),
+      dialogBackgroundColor: Colors.white,
     );
   }
 
@@ -24,6 +25,7 @@ class Themes {
       cardColor: Colors.black,
       bottomAppBarColor: Colors.black,
       toggleableActiveColor: Color(accentColor),
+      dialogBackgroundColor: Colors.grey[850],
     );
   }
 }

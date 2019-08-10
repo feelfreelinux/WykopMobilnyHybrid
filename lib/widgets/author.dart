@@ -3,39 +3,46 @@ import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 
-class AuthorWidget extends StatelessWidget {
+class AuthorWidget extends StatefulWidget {
   final Author author;
   final String date;
   final double avatarSize;
   final double fontSize;
   final EdgeInsets padding;
+  final bool showUserDialog;
+
   AuthorWidget({
     @required this.author,
     @required this.date,
     this.avatarSize: 38.0,
     this.fontSize: 13.0,
-    this.padding: const EdgeInsets.only(
-      left: 12.0,
-      top: 10.0,
-      right: 12.0,
-      bottom: 6.0,
-    ),
+    this.padding:
+        const EdgeInsets.only(left: 12.0, top: 10.0, right: 12.0, bottom: 6.0),
+    this.showUserDialog: true,
   });
+
+  _AuthorWidgetState createState() => _AuthorWidgetState();
+}
+
+class _AuthorWidgetState extends State<AuthorWidget> {
+  bool showFullDate = false;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: padding,
+      padding: widget.padding,
       child: Row(
         children: <Widget>[
           GestureDetector(
-            onTap: () => showDialog(
-              context: context,
-              builder: (_) => UserDialogWidget(author: author),
-            ),
+            onTap: widget.showUserDialog
+                ? () => showDialog(
+                      context: context,
+                      builder: (_) => UserDialogWidget(author: widget.author),
+                    )
+                : null,
             child: AvatarWidget(
-              author: author,
-              size: avatarSize,
+              author: widget.author,
+              size: widget.avatarSize,
             ),
           ),
           Flexible(
@@ -46,28 +53,40 @@ class AuthorWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   GestureDetector(
-                    onTap: () => showDialog(
-                      context: context,
-                      builder: (_) => UserDialogWidget(author: author),
-                    ),
+                    onTap: widget.showUserDialog
+                        ? () => showDialog(
+                              context: context,
+                              builder: (_) =>
+                                  UserDialogWidget(author: widget.author),
+                            )
+                        : null,
                     child: Text(
-                      author.login,
+                      widget.author.login,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        color: Utils.getAuthorColor(author.color, context),
-                        fontSize: fontSize,
+                        color:
+                            Utils.getAuthorColor(widget.author.color, context),
+                        fontSize: widget.fontSize,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
-                  Text(
-                    Utils.getSimpleDate(date),
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      height: 1.2,
-                      color: Theme.of(context).textTheme.caption.color,
-                      fontSize: fontSize - 3.0,
-                      fontWeight: FontWeight.w400,
+                  GestureDetector(
+                    onTap: () => setState(() {
+                      showFullDate = !showFullDate;
+                    }),
+                    child: Text(
+                      showFullDate
+                          ? Utils.getDateFormat(
+                              widget.date, 'dd.MM.yyyy \'o\' HH:mm:ss')
+                          : Utils.getSimpleDate(widget.date),
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        height: 1.2,
+                        color: Theme.of(context).textTheme.caption.color,
+                        fontSize: widget.fontSize - 3.0,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ),
                 ],

@@ -40,6 +40,7 @@ class ConversationsList extends StatelessWidget {
                       left: 14.0,
                       right: 18.0,
                     ),
+                    showUserDialog: false,
                   ),
                 );
               },

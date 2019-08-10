@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/widgets/widgets.dart';
@@ -11,6 +10,7 @@ class AvatarWidget extends StatelessWidget {
   final Color badge;
   final List<BoxShadow> boxShadow;
   final int resolution;
+  final Color borderColor;
 
   AvatarWidget({
     @required this.author,
@@ -19,6 +19,7 @@ class AvatarWidget extends StatelessWidget {
     this.badge,
     this.boxShadow,
     this.resolution,
+    this.borderColor,
   });
 
   @override
@@ -41,7 +42,7 @@ class AvatarWidget extends StatelessWidget {
         boxShadow: boxShadow,
         shape: BoxShape.circle,
         border: Border.all(
-          color: badge ?? Theme.of(context).cardColor,
+          color: badge ?? (borderColor ?? Theme.of(context).cardColor),
           width: size / 30,
         ),
       ),
@@ -50,7 +51,7 @@ class AvatarWidget extends StatelessWidget {
           boxShadow: boxShadow,
           shape: BoxShape.circle,
           border: Border.all(
-            color: Theme.of(context).cardColor,
+            color: borderColor ?? Theme.of(context).cardColor,
             width: size / 30,
           ),
         ),
@@ -106,7 +107,7 @@ class AvatarWidget extends StatelessWidget {
             boxShadow: boxShadow,
             shape: BoxShape.circle,
             border: Border.all(
-              color: Theme.of(context).cardColor,
+              color: borderColor ?? Theme.of(context).cardColor,
               width: size / 15,
             ),
           ),

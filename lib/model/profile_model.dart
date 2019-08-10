@@ -28,7 +28,12 @@ class ProfileModel extends ChangeNotifier {
       prefix += "#${_fullProfile.rank.toString()} • ";
     }
 
-    prefix += "${_fullProfile.followers.toString()} obserwowanych";
+    prefix += "${_fullProfile.followers.toString()} ${Utils.polishPlural(
+      count: _fullProfile.followers,
+      first: "obserwujący",
+      many: "obserwujących",
+      other: "obserwujących",
+    )}";
     return prefix;
   }
 
