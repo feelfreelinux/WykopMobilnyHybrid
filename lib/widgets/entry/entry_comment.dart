@@ -70,8 +70,11 @@ class EntryCommentWidget extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.only(top: 6.0, bottom: 12.0),
-            child: AvatarWidget(
-                author: model.author, size: 36.0), //TODO: Add badge
+            child: GestureDetector(
+              onTap: () => _openUserDialog(context, model.author),
+              child: AvatarWidget(
+                  author: model.author, size: 36.0),
+            ), //TODO: Add badge
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,14 +100,17 @@ class EntryCommentWidget extends StatelessWidget {
                               right: 40.0 + _votePadding(model.voteCount),
                               top: 8.0,
                               bottom: 4.0),
-                          child: Text(
-                            model.author.login,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14.0,
-                              color: Utils.getAuthorColor(
-                                  model.author.color, context),
+                          child: GestureDetector(
+                            onTap: () => _openUserDialog(context, model.author),
+                            child: Text(
+                              model.author.login,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14.0,
+                                color: Utils.getAuthorColor(
+                                    model.author.color, context),
+                              ),
                             ),
                           ),
                         ),
@@ -148,7 +154,8 @@ class EntryCommentWidget extends StatelessWidget {
                   children: <Widget>[
                     TextButton(
                       isButton: false,
-                      padding: EdgeInsets.only(top: 2.0, bottom: 4.0, left: 14.0),
+                      padding:
+                          EdgeInsets.only(top: 2.0, bottom: 4.0, left: 14.0),
                       text: Utils.getSimpleDate(model.date),
                     ),
                     TextButton(
@@ -158,7 +165,8 @@ class EntryCommentWidget extends StatelessWidget {
                           .quoteText(model.body, author: model.author),
                     ),
                     TextButton(
-                      padding: EdgeInsets.only(top: 2.0, bottom: 4.0, right: 8.0),
+                      padding:
+                          EdgeInsets.only(top: 2.0, bottom: 4.0, right: 8.0),
                       text: "Odpowiedz",
                       onTap: () => inputModel.inputBarKey.currentState
                           .replyToUser(model.author),
@@ -170,6 +178,13 @@ class EntryCommentWidget extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void _openUserDialog(BuildContext context, Author author) {
+    showDialog(
+      context: context,
+      builder: (_) => UserDialogWidget(author: author),
     );
   }
 

@@ -25,21 +25,12 @@ class _$ProfileResponseSerializer
           specifiedType: const FullType(String)),
       'color',
       serializers.serialize(object.color, specifiedType: const FullType(int)),
-      'sex',
-      serializers.serialize(object.voteCount,
-          specifiedType: const FullType(String)),
       'signup_at',
       serializers.serialize(object.signupAt,
           specifiedType: const FullType(String)),
-      'is_blocked',
-      serializers.serialize(object.isBlocked,
-          specifiedType: const FullType(bool)),
-      'is_observed',
-      serializers.serialize(object.isObserved,
-          specifiedType: const FullType(bool)),
-      'background',
-      serializers.serialize(object.background,
-          specifiedType: const FullType(String)),
+      'followers',
+      serializers.serialize(object.followers,
+          specifiedType: const FullType(int)),
       'links_added_count',
       serializers.serialize(object.linksAddedCount,
           specifiedType: const FullType(int)),
@@ -48,14 +39,43 @@ class _$ProfileResponseSerializer
           specifiedType: const FullType(int)),
       'rank',
       serializers.serialize(object.rank, specifiedType: const FullType(int)),
-      'about',
-      serializers.serialize(object.about,
-          specifiedType: const FullType(String)),
-      'violation_url',
-      serializers.serialize(object.violationUrl,
-          specifiedType: const FullType(String)),
     ];
-
+    if (object.sex != null) {
+      result
+        ..add('sex')
+        ..add(serializers.serialize(object.sex,
+            specifiedType: const FullType(String)));
+    }
+    if (object.isBlocked != null) {
+      result
+        ..add('is_blocked')
+        ..add(serializers.serialize(object.isBlocked,
+            specifiedType: const FullType(bool)));
+    }
+    if (object.isObserved != null) {
+      result
+        ..add('is_observed')
+        ..add(serializers.serialize(object.isObserved,
+            specifiedType: const FullType(bool)));
+    }
+    if (object.background != null) {
+      result
+        ..add('background')
+        ..add(serializers.serialize(object.background,
+            specifiedType: const FullType(String)));
+    }
+    if (object.about != null) {
+      result
+        ..add('about')
+        ..add(serializers.serialize(object.about,
+            specifiedType: const FullType(String)));
+    }
+    if (object.violationUrl != null) {
+      result
+        ..add('violation_url')
+        ..add(serializers.serialize(object.violationUrl,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -80,7 +100,7 @@ class _$ProfileResponseSerializer
               specifiedType: const FullType(int)) as int;
           break;
         case 'sex':
-          result.voteCount = serializers.deserialize(value,
+          result.sex = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'signup_at':
@@ -90,6 +110,10 @@ class _$ProfileResponseSerializer
         case 'is_blocked':
           result.isBlocked = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool;
+          break;
+        case 'followers':
+          result.followers = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
           break;
         case 'is_observed':
           result.isObserved = serializers.deserialize(value,
@@ -132,11 +156,13 @@ class _$ProfileResponse extends ProfileResponse {
   @override
   final int color;
   @override
-  final String voteCount;
+  final String sex;
   @override
   final String signupAt;
   @override
   final bool isBlocked;
+  @override
+  final int followers;
   @override
   final bool isObserved;
   @override
@@ -158,9 +184,10 @@ class _$ProfileResponse extends ProfileResponse {
   _$ProfileResponse._(
       {this.login,
       this.color,
-      this.voteCount,
+      this.sex,
       this.signupAt,
       this.isBlocked,
+      this.followers,
       this.isObserved,
       this.background,
       this.linksAddedCount,
@@ -175,20 +202,11 @@ class _$ProfileResponse extends ProfileResponse {
     if (color == null) {
       throw new BuiltValueNullFieldError('ProfileResponse', 'color');
     }
-    if (voteCount == null) {
-      throw new BuiltValueNullFieldError('ProfileResponse', 'voteCount');
-    }
     if (signupAt == null) {
       throw new BuiltValueNullFieldError('ProfileResponse', 'signupAt');
     }
-    if (isBlocked == null) {
-      throw new BuiltValueNullFieldError('ProfileResponse', 'isBlocked');
-    }
-    if (isObserved == null) {
-      throw new BuiltValueNullFieldError('ProfileResponse', 'isObserved');
-    }
-    if (background == null) {
-      throw new BuiltValueNullFieldError('ProfileResponse', 'background');
+    if (followers == null) {
+      throw new BuiltValueNullFieldError('ProfileResponse', 'followers');
     }
     if (linksAddedCount == null) {
       throw new BuiltValueNullFieldError('ProfileResponse', 'linksAddedCount');
@@ -199,12 +217,6 @@ class _$ProfileResponse extends ProfileResponse {
     }
     if (rank == null) {
       throw new BuiltValueNullFieldError('ProfileResponse', 'rank');
-    }
-    if (about == null) {
-      throw new BuiltValueNullFieldError('ProfileResponse', 'about');
-    }
-    if (violationUrl == null) {
-      throw new BuiltValueNullFieldError('ProfileResponse', 'violationUrl');
     }
   }
 
@@ -222,9 +234,10 @@ class _$ProfileResponse extends ProfileResponse {
     return other is ProfileResponse &&
         login == other.login &&
         color == other.color &&
-        voteCount == other.voteCount &&
+        sex == other.sex &&
         signupAt == other.signupAt &&
         isBlocked == other.isBlocked &&
+        followers == other.followers &&
         isObserved == other.isObserved &&
         background == other.background &&
         linksAddedCount == other.linksAddedCount &&
@@ -246,11 +259,13 @@ class _$ProfileResponse extends ProfileResponse {
                                 $jc(
                                     $jc(
                                         $jc(
-                                            $jc($jc(0, login.hashCode),
-                                                color.hashCode),
-                                            voteCount.hashCode),
-                                        signupAt.hashCode),
-                                    isBlocked.hashCode),
+                                            $jc(
+                                                $jc($jc(0, login.hashCode),
+                                                    color.hashCode),
+                                                sex.hashCode),
+                                            signupAt.hashCode),
+                                        isBlocked.hashCode),
+                                    followers.hashCode),
                                 isObserved.hashCode),
                             background.hashCode),
                         linksAddedCount.hashCode),
@@ -265,9 +280,10 @@ class _$ProfileResponse extends ProfileResponse {
     return (newBuiltValueToStringHelper('ProfileResponse')
           ..add('login', login)
           ..add('color', color)
-          ..add('voteCount', voteCount)
+          ..add('sex', sex)
           ..add('signupAt', signupAt)
           ..add('isBlocked', isBlocked)
+          ..add('followers', followers)
           ..add('isObserved', isObserved)
           ..add('background', background)
           ..add('linksAddedCount', linksAddedCount)
@@ -291,9 +307,9 @@ class ProfileResponseBuilder
   int get color => _$this._color;
   set color(int color) => _$this._color = color;
 
-  String _voteCount;
-  String get voteCount => _$this._voteCount;
-  set voteCount(String voteCount) => _$this._voteCount = voteCount;
+  String _sex;
+  String get sex => _$this._sex;
+  set sex(String sex) => _$this._sex = sex;
 
   String _signupAt;
   String get signupAt => _$this._signupAt;
@@ -302,6 +318,10 @@ class ProfileResponseBuilder
   bool _isBlocked;
   bool get isBlocked => _$this._isBlocked;
   set isBlocked(bool isBlocked) => _$this._isBlocked = isBlocked;
+
+  int _followers;
+  int get followers => _$this._followers;
+  set followers(int followers) => _$this._followers = followers;
 
   bool _isObserved;
   bool get isObserved => _$this._isObserved;
@@ -339,9 +359,10 @@ class ProfileResponseBuilder
     if (_$v != null) {
       _login = _$v.login;
       _color = _$v.color;
-      _voteCount = _$v.voteCount;
+      _sex = _$v.sex;
       _signupAt = _$v.signupAt;
       _isBlocked = _$v.isBlocked;
+      _followers = _$v.followers;
       _isObserved = _$v.isObserved;
       _background = _$v.background;
       _linksAddedCount = _$v.linksAddedCount;
@@ -373,9 +394,10 @@ class ProfileResponseBuilder
         new _$ProfileResponse._(
             login: login,
             color: color,
-            voteCount: voteCount,
+            sex: sex,
             signupAt: signupAt,
             isBlocked: isBlocked,
+            followers: followers,
             isObserved: isObserved,
             background: background,
             linksAddedCount: linksAddedCount,

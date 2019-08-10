@@ -10,5 +10,6 @@ export 'link_comment_model.dart';
 export 'auth_model.dart';
 export 'suggestions_model.dart';
 export 'shadow_control_model.dart';
+export 'profile_model.dart';
 export 'input_model.dart';
 export 'search_screen_model.dart';

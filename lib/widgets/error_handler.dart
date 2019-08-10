@@ -13,7 +13,7 @@ class ErrorHandlerWidget extends StatefulWidget {
 }
 
 class _ErrorHandlerWidgetState extends State<ErrorHandlerWidget> {
-  StreamSubscription<Exception> _sub;
+  StreamSubscription<Error> _sub;
 
   @override
   void initState() {

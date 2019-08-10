@@ -13,8 +13,28 @@ class ProfilesApi extends ApiResource {
   }
 
   Future<ProfileResponse> getProfile(String username) async {
-    var items = await client
-        .request('profiles', 'index', api: [username]);
+    var items = await client.request('profiles', 'index', api: [username]);
+    print(items);
     return deserializeProfile(items);
+  }
+
+  Future<bool> observe(String username) async {
+    var items = await client.request('profiles', 'observe', api: [username]);
+    return items["is_observed"];
+  }
+
+  Future<bool> unobserve(String username) async {
+    var items = await client.request('profiles', 'unobserve', api: [username]);
+    return items["is_observed"];
+  }
+
+  Future<bool> block(String username) async {
+    var items = await client.request('profiles', 'block', api: [username]);
+    return items["is_blocked"];
+  }
+
+  Future<bool> unblock(String username) async {
+    var items = await client.request('profiles', 'unblock', api: [username]);
+    return items["is_blocked"];
   }
 }

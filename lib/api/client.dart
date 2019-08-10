@@ -178,6 +178,7 @@ class ApiClient extends http.BaseClient {
       item = OWMAPI.serializers.deserializeWith(serializer, (map));
       return item;
     } catch (e) {
+      print(e);
       OWMAPI.api.errorSink.add(e);
     }
   }

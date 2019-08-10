@@ -80,10 +80,9 @@ class AvatarWidget extends StatelessWidget {
                   image: DecorationImage(
                     fit: BoxFit.fill,
                     image: author.avatar.length != 0
-                        ? AdvancedNetworkImage(
+                        ? NetworkImage(
                             author.avatar.replaceAll(",q150.",
                                 ",q${resolution ?? settings.resolutionAvatar}."),
-                            useDiskCache: true,
                           )
                         : AssetImage('assets/avatar.png'),
                   ),

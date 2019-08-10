@@ -12,18 +12,23 @@ abstract class ProfileResponse
   @BuiltValueField(wireName: "color")
   int get color;
 
-  @BuiltValueField(wireName: "sex")
-  String get voteCount;
+  @nullable
+  String get sex;
 
   @BuiltValueField(wireName: "signup_at")
   String get signupAt;
 
+  @nullable
   @BuiltValueField(wireName: "is_blocked")
   bool get isBlocked;
+
+  int get followers;
   
+  @nullable
   @BuiltValueField(wireName: "is_observed")
   bool get isObserved;
   
+  @nullable
   @BuiltValueField(wireName: "background")
   String get background;
   
@@ -35,8 +40,10 @@ abstract class ProfileResponse
   
   int get rank;
   
+  @nullable
   String get about;
-  
+    
+  @nullable
   @BuiltValueField(wireName: "violation_url")
   String get violationUrl;
 
