@@ -28,9 +28,15 @@ class AuthorWidget extends StatelessWidget {
       padding: padding,
       child: Row(
         children: <Widget>[
-          AvatarWidget(
-            author: author,
-            size: avatarSize,
+          GestureDetector(
+            onTap: () => showDialog(
+              context: context,
+              builder: (_) => UserDialogWidget(author: author),
+            ),
+            child: AvatarWidget(
+              author: author,
+              size: avatarSize,
+            ),
           ),
           Flexible(
             child: Padding(
@@ -39,13 +45,19 @@ class AuthorWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    author.login,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: Utils.getAuthorColor(author.color, context),
-                      fontSize: fontSize,
-                      fontWeight: FontWeight.w500,
+                  GestureDetector(
+                    onTap: () => showDialog(
+                      context: context,
+                      builder: (_) => UserDialogWidget(author: author),
+                    ),
+                    child: Text(
+                      author.login,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: Utils.getAuthorColor(author.color, context),
+                        fontSize: fontSize,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                   Text(
