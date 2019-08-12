@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/widgets/pm/message.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 
 class PmWidget extends StatefulWidget {
-  final AsyncSnapshot snapshot;
+  final List<PmMessage> messages;
 
   const PmWidget({
-    @required this.snapshot,
+    @required this.messages,
   });
 
   _PmWidgetState createState() => _PmWidgetState();
@@ -18,9 +19,9 @@ class _PmWidgetState extends State<PmWidget> {
     return ShadowNotificationListener(
           child: ListView.builder(
         reverse: true,
-        itemCount: widget.snapshot.data.length,
+        itemCount: widget.messages.length,
         itemBuilder: (context, index) {
-          var message = widget.snapshot.data.reversed.toList()[index];
+          var message = widget.messages.reversed.toList()[index];
           return MessageWidget(message: message);
         },
       ),

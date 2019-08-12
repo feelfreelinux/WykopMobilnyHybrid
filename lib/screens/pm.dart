@@ -8,10 +8,8 @@ import 'package:owmflutter/keys.dart';
 import 'package:provider/provider.dart';
 
 class PmScreen extends StatefulWidget {
-  final Conversation conversation;
-
-  PmScreen({this.conversation});
-
+  final String receiver;
+  PmScreen({@required this.receiver});
   _PmScreenState createState() => _PmScreenState();
 }
 
@@ -21,48 +19,49 @@ class _PmScreenState extends State<PmScreen>
   Widget build(BuildContext context) {
     final mqData = MediaQuery.of(context);
     final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
-    return ChangeNotifierProvider<ShadowControlModel>(
-      builder: (context) =>
-          ShadowControlModel(reverse: true, scrollDelayPixels: 0),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ShadowControlModel>(
+          builder: (context) =>
+              ShadowControlModel(reverse: true, scrollDelayPixels: 0),
+        ),
+        ChangeNotifierProvider<PrivateMessagesModel>(
+          builder: (context) => PrivateMessagesModel(receiverNickname: widget.receiver)..loadMessages(),
+        ),
+      ],
       child: _SystemPadding(
         child: MediaQuery(
           data: mqDataNew,
-          child: Scaffold(
-            bottomNavigationBar: InputBarWidget(
-              (inputData) {},
-              // key: OwmKeys.inputBarKey,
-              hintText: "Napisz wiadomość",
-            ),
-            resizeToAvoidBottomPadding: false,
-            appBar: AppbarNormalWidget(
-              leading: IconButtonWidget(
-                icon: Icons.arrow_back,
-                onTap: () => Navigator.of(context).pop(),
-                iconColor: Theme.of(context).accentColor,
-              ),
-              center: AuthorWidget(
-                author: Author.fromAuthState(
-                  username: widget.conversation.author.login,
-                  avatarUrl: widget.conversation.author.avatar,
-                  color: 5,
-                  sex: widget.conversation.author.sex,
+          child: Consumer<PrivateMessagesModel>(
+            builder: (context, pmModel, _) =>
+                ChangeNotifierProvider<InputModel>.value(
+              value: pmModel,
+              child: Scaffold(
+                bottomNavigationBar: InputBarWidget(
+                  (_) {},
+                  key: pmModel.inputBarKey,
+                  hintText: "Napisz wiadomość",
                 ),
-                date: widget.conversation.lastUpdate,
-                fontSize: 16,
-                padding: EdgeInsets.all(0),
+                resizeToAvoidBottomPadding: false,
+                appBar: AppbarNormalWidget(
+                  leading: IconButtonWidget(
+                    icon: Icons.arrow_back,
+                    onTap: () => Navigator.of(context).pop(),
+                    iconColor: Theme.of(context).accentColor,
+                  ),
+                  center: pmModel.isLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : AuthorWidget(
+                          author: pmModel.receiver,
+                          date: pmModel.lastUpdate,
+                          fontSize: 16,
+                          padding: EdgeInsets.all(0),
+                        ),
+                ),
+                body: pmModel.isLoading
+                    ? Center(child: CircularProgressIndicator())
+                    : PmWidget(messages: pmModel.messages),
               ),
-            ),
-            body: FutureBuilder<List<PmMessage>>(
-              future: api.pm.getMessages(widget.conversation.author.login),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  debugPrint(snapshot.error.toString());
-                }
-                if (snapshot.hasData) {
-                  return PmWidget(snapshot: snapshot);
-                }
-                return Center(child: CircularProgressIndicator());
-              },
             ),
           ),
         ),

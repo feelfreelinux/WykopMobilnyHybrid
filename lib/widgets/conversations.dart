@@ -20,7 +20,7 @@ class ConversationsList extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).push(
                       Utils.getPageTransition(
-                        PmScreen(conversation: conversation),
+                        PmScreen(receiver: conversation.author.login),
                       ),
                     );
                   },

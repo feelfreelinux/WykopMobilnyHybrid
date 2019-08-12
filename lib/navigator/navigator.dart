@@ -18,6 +18,7 @@ class WykopNavigator {
     switch (domain) {
       case "wykop.pl":
         var resource = url.split("wykop.pl/")[1];
+        print(resource.split(DELIMITER)[0]);
         switch (resource.split(DELIMITER)[0]) {
           case ENTRY_MATCHER:
             var id = getEntryId(url);
@@ -30,6 +31,10 @@ class WykopNavigator {
           case TAG_MATCHER:
             var tag = getTag(url);
             return TagScreen(tag: tag);
+            break;
+          case PM_MATCHER:
+            var profile = getConversation(url);
+            return PmScreen(receiver: profile);
             break;
           default:
             return null;
@@ -47,8 +52,7 @@ class WykopNavigator {
 
       Navigator.of(context).push(Utils.getPageTransition(widget));
     } catch (e) {
-        launchUrl(url);
-      
+      launchUrl(url);
     }
   }
 }

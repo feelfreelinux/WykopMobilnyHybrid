@@ -42,14 +42,14 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.0"
+    version: "2.3.0"
   boolean_selector:
     dependency: transitive
     description:
       name: boolean_selector
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.4"
+    version: "1.0.5"
   bubble_tab_indicator:
     dependency: "direct main"
     description:
@@ -339,7 +339,7 @@ packages:
       name: image_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.1+1"
+    version: "0.6.1+2"
   intl:
     dependency: "direct main"
     description:
@@ -395,7 +395,7 @@ packages:
       name: meta
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.6"
+    version: "1.1.7"
   mime:
     dependency: "direct main"
     description:
@@ -430,7 +430,7 @@ packages:
       name: path
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.6.2"
+    version: "1.6.4"
   path_drawing:
     dependency: transitive
     description:
@@ -458,7 +458,7 @@ packages:
       name: pedantic
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.7.0"
+    version: "1.8.0+1"
   petitparser:
     dependency: transitive
     description:
@@ -535,7 +535,7 @@ packages:
       name: quiver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "2.0.5"
   redux:
     dependency: transitive
     description:
@@ -631,7 +631,7 @@ packages:
       name: string_scanner
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.4"
+    version: "1.0.5"
   term_glyph:
     dependency: transitive
     description:
