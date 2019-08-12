@@ -12,7 +12,6 @@ import android.webkit.CookieSyncManager
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import androidx.annotation.RequiresApi
 
 typealias TokenUrlCallback = (url: String) -> Unit
 
@@ -23,10 +22,11 @@ class LoginActivityWebClient(private val tokenUrlCallback: TokenUrlCallback) : W
         return super.shouldOverrideUrlLoading(view, url)
     }
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
         request?.let {
-            tokenUrlCallback.invoke(it.url.toString())
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                tokenUrlCallback.invoke(it.url.toString())
+            }
         }
         return super.shouldOverrideUrlLoading(view, request)
     }
