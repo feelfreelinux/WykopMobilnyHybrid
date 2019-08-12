@@ -19,7 +19,7 @@ class _GreatDialogWidgetState extends State<GreatDialogWidget>
   void initState() {
     super.initState();
     controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 400));
+        AnimationController(vsync: this, duration: Duration(milliseconds: 450));
     animation = CurvedAnimation(parent: controller, curve: Curves.elasticInOut);
     controller.addListener(() => setState(() {}));
     controller.forward();
@@ -34,10 +34,9 @@ class _GreatDialogWidgetState extends State<GreatDialogWidget>
           scale: animation,
           child: Container(
             margin: widget.margin ?? EdgeInsets.all(18.0),
-            decoration: ShapeDecoration(
-              color: Theme.of(context).backgroundColor,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0)),
+            decoration: BoxDecoration(
+              color: Theme.of(context).dialogBackgroundColor,
+              borderRadius: BorderRadius.circular(20.0),
             ),
             child: Padding(
               padding: widget.padding ?? EdgeInsets.all(18.0),

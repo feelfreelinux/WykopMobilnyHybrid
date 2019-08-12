@@ -7,9 +7,7 @@ import 'package:owmflutter/utils/utils.dart';
 
 class MainScreen extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return _MainScreenState();
-  }
+  _MainScreenState createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
@@ -25,6 +23,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     final mqData = MediaQuery.of(context);
     final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
+
     return MediaQuery(
       data: mqDataNew,
       child: Scaffold(
@@ -33,13 +32,13 @@ class _MainScreenState extends State<MainScreen> {
         body: _children[_currentIndex],
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
+            color: Theme.of(context).primaryColor,
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.1),
                 blurRadius: 1.0,
               ),
             ],
-            color: Theme.of(context).primaryColor,
           ),
           child: Row(
             mainAxisSize: MainAxisSize.max,
@@ -47,9 +46,10 @@ class _MainScreenState extends State<MainScreen> {
             children: <Widget>[
               _iconButton(Icons.home, 0, "Strona główna"),
               _iconButton(Icons.add_box, 1, "Mikroblog"),
-              _addNewButton(),
+              _addMenuButton(Icons.create, "Dodaj"),
               _iconButton(Icons.loyalty, 2, "Mój Wykop"),
-              _iconButton(Icons.mail, 3, "Powiadomienia", badge: 0),
+              _iconButton(Icons.mail, 3, "Powiadomienia",
+                  badge: 0), //TODO: display number of notifications
             ],
           ),
         ),
@@ -57,23 +57,18 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget _addNewButton() {
+  Widget _addMenuButton(IconData icons, String tooltip) {
     return Container(
       margin: EdgeInsets.all(10.0),
       width: 36.0,
       height: 36.0,
       child: FloatingActionButton(
-        child: Icon(
-          Icons.create,
-          size: 22.0,
-        ),
-        tooltip: "Dodaj",
+        child: Icon(icons, size: 22.0),
+        tooltip: tooltip,
         foregroundColor: Theme.of(context).primaryColor,
         backgroundColor: Theme.of(context).iconTheme.color.withOpacity(0.40),
         elevation: 0.0,
-        onPressed: () {
-          _showWriteBottomSheet(context);
-        },
+        onPressed: () => _showWriteBottomSheet(context),
       ),
     );
   }
@@ -84,13 +79,14 @@ class _MainScreenState extends State<MainScreen> {
       builder: (BuildContext context) {
         final mqData = MediaQuery.of(context);
         final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
+
         return MediaQuery(
           data: mqDataNew,
           child: NotLoggedWidget(
             icon: Icons.account_circle,
             fullText: "Dodawanie treści będzie możliwe po zalogowaniu.",
             child: Container(
-              padding: EdgeInsets.all(8.0),
+              padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 18.0),
               decoration: BoxDecoration(
                 image: DecorationImage(
                   alignment: Alignment.center,
@@ -102,31 +98,16 @@ class _MainScreenState extends State<MainScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 14.0,
-                      horizontal: 4.0,
-                    ),
-                    child: Text(
-                      "NAPISZ COŚ OD SIEBIE",
-                      style: TextStyle(
-                        fontSize: 13.0,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
+                  SizedBox(height: 12.0),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      _iconAddNewButton(
+                      _addButton(
                         icon: OwmGlyphs.ic_buttontoolbar_wykop,
-                        color: Colors.blueAccent,
                         title: "ZNALEZISKO",
-                        onPressed: () {},
+                        onPressed: () {}, //TODO: new link screen
                       ),
-                      _iconAddNewButton(
+                      _addButton(
                         icon: Icons.add_box,
-                        color: Colors.green,
                         title: "WPIS",
                         onPressed: () {
                           Navigator.pop(context);
@@ -134,26 +115,22 @@ class _MainScreenState extends State<MainScreen> {
                               Utils.getPageTransition(EntryInputScreen()));
                         },
                       ),
-                      _iconAddNewButton(
+                      _addButton(
                         icon: Icons.mail,
-                        color: Colors.deepOrange,
                         title: "WIADOMOŚĆ",
-                        onPressed: () {},
+                        onPressed: () => _showPmDialog(context),
                       ),
                     ],
                   ),
                   Container(
-                    width: 34.0,
-                    height: 34.0,
+                    width: 36.0,
+                    height: 36.0,
                     child: FloatingActionButton(
                       child: Icon(Icons.close),
-                      foregroundColor: Theme.of(context).primaryColor,
                       backgroundColor:
                           Theme.of(context).iconTheme.color.withOpacity(0.40),
                       elevation: 0.0,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
+                      onPressed: () => Navigator.pop(context),
                     ),
                   ),
                 ],
@@ -165,95 +142,142 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget _iconAddNewButton({
-    IconData icon,
-    Color color,
-    String title,
-    VoidCallback onPressed,
-  }) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: 14.0,
-        horizontal: 4.0,
-      ),
-      child: Column(
-        children: <Widget>[
-          FloatingActionButton(
-            elevation: 0.0,
-            highlightElevation: 8.0,
-            onPressed: onPressed,
-            child: Icon(icon),
-            backgroundColor: color,
-          ),
-          GestureDetector(
-            onTap: onPressed,
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: 14.0,
-                horizontal: 4.0,
+  void _showPmDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => GreatDialogWidget(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(
+              "Znajdź osobę do rozmowy",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 18.0),
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 1.0),
+              decoration: BoxDecoration(
+                color: Utils.backgroundGreyOpacity(context),
+                borderRadius: BorderRadius.circular(20.0),
               ),
-              child: Text(
-                title,
-                style: TextStyle(
-                  shadows: [
-                    Shadow(
-                      color: Theme.of(context).backgroundColor,
-                      blurRadius: 2.0,
-                    )
-                  ],
-                  fontSize: 11.0,
-                  fontWeight: FontWeight.w500,
+              child: TextField(
+                cursorRadius: Radius.circular(20.0),
+                style: TextStyle(fontSize: 14.0),
+                keyboardType: TextInputType.multiline,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+                  border: InputBorder.none,
+                  hintText: "Wpisz nazwę użytkownika", //TODO: user suggestion
                 ),
               ),
             ),
-          )
-        ],
+            Padding(
+              padding: EdgeInsets.only(top: 18.0),
+              child: GestureDetector(
+                onTap: () {}, //TODO: get pm screen
+                child: Container(
+                  constraints: BoxConstraints(minWidth: double.infinity),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 18.0, vertical: 12.0),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).accentColor,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Text(
+                    "Napisz wiadomość",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _addButton({IconData icon, String title, VoidCallback onPressed}) {
+    return Expanded(
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 4.0),
+        child: Column(
+          children: <Widget>[
+            FloatingActionButton(
+              elevation: 0.0,
+              highlightElevation: 8.0,
+              onPressed: onPressed,
+              child: Icon(icon, size: 28.0),
+              backgroundColor: Theme.of(context).accentColor,
+            ),
+            GestureDetector(
+              onTap: onPressed,
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.0),
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 11.0,
+                    fontWeight: FontWeight.w700,
+                    shadows: [
+                      Shadow(
+                        color: Theme.of(context).backgroundColor,
+                        blurRadius: 2.0,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _iconButton(IconData icon, num index, String tooltip,
       {num badge = 0}) {
-    return IconButton(
-      icon: Stack(
+    return GestureDetector(
+      onTap: () => setState(() => _currentIndex = index),
+      child: Stack(
+        alignment: AlignmentDirectional.center,
         children: <Widget>[
-          Icon(
-            icon,
-            size: _currentIndex == index ? 30.0 : 26.0,
+          Container(
+            width: 52.0,
+            height: 52.0,
+            child: Icon(
+              icon,
+              size: 28.0,
+              color: _currentIndex == index
+                  ? Theme.of(context).iconTheme.color
+                  : Theme.of(context).iconTheme.color.withOpacity(0.40),
+            ),
           ),
           Positioned(
-            top: 0,
-            right: 0,
-            child: badge != 0
-                ? Container(
-                    decoration: BoxDecoration(
-                      color: Colors.redAccent,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: EdgeInsets.symmetric(
-                      vertical: 1.0,
-                      horizontal: 3.0,
-                    ),
-                    child: Text(
-                      badge <= 99 ? badge.toString() : "+99",
-                      style: TextStyle(
-                        fontSize: 8.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  )
-                : Container(),
+            top: 6.0,
+            right: badge <= 9 ? 6.0 : 4.0,
+            child: Visibility(
+              visible: badge != 0,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.redAccent,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                padding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
+                child: Text(
+                  badge <= 99 ? badge.toString() : "+99",
+                  style: TextStyle(
+                    height: 1.07,
+                    fontSize: 10.0,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ),
           ),
         ],
       ),
-      color: _currentIndex == index
-          ? Theme.of(context).iconTheme.color
-          : Theme.of(context).iconTheme.color.withOpacity(0.40),
-      onPressed: () => this.setState(() {
-            this._currentIndex = index;
-          }),
-      tooltip: tooltip,
     );
   }
 }
