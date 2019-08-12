@@ -15,3 +15,4 @@ export 'settings/pictures.dart';
 export 'settings/text.dart';
 export 'settings/behavior.dart';
 export 'settings/notifications.dart';
+export 'settings/about.dart';

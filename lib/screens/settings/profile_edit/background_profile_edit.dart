@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/screens/settings/profile_edit/input_button.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
 class BackgroundProfileEdit extends StatefulWidget {
+  @override
   _BackgroundProfileEditState createState() => _BackgroundProfileEditState();
 }
 
@@ -23,50 +23,39 @@ class _BackgroundProfileEditState extends State<BackgroundProfileEdit> {
             ),
             Container(
               margin: EdgeInsets.symmetric(vertical: 16.0),
-              child: Stack(
-                children: <Widget>[
-                  Container(
-                    height: 140.0,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      gradient: LinearGradient(
-                        begin: Alignment.topRight,
-                        end: Alignment.bottomLeft,
-                        colors: [
-                          Color(0xff2e6e99),
-                          Color(0xff4383af),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: authStateModel.loggedIn &&
-                        authStateModel.backgroundUrl != null,
-                    child: Container(
+              child: authStateModel.loggedIn &&
+                      authStateModel.backgroundUrl != null
+                  ? Container(
                       height: 140.0,
                       width: MediaQuery.of(context).size.width,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: AdvancedNetworkImage(
-                            authStateModel.backgroundUrl,
-                            useDiskCache: true,
-                          ),
+                          image: NetworkImage(authStateModel.backgroundUrl),
+                        ),
+                      ),
+                    )
+                  : Container(
+                      height: 140.0,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        gradient: LinearGradient(
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: [Color(0xff2e6e99), Color(0xff4383af)],
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
             ),
             Row(
               children: <Widget>[
                 Expanded(
-                    child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Text("Wybierz nowe tło:"),
-                )),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text("Wybierz nowe tło:"),
+                  ),
+                ),
                 RoundIconButtonWidget(
                   icon: Icons.photo,
                   iconSize: 26.0,
