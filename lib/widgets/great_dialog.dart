@@ -33,15 +33,13 @@ class _GreatDialogWidgetState extends State<GreatDialogWidget>
         child: ScaleTransition(
           scale: animation,
           child: Container(
-            margin: widget.margin ?? EdgeInsets.all(18.0),
+            margin: widget.margin ?? EdgeInsets.all(14.0),
+            padding: widget.padding ?? EdgeInsets.all(18.0),
             decoration: BoxDecoration(
               color: Theme.of(context).dialogBackgroundColor,
               borderRadius: BorderRadius.circular(20.0),
             ),
-            child: Padding(
-              padding: widget.padding ?? EdgeInsets.all(18.0),
-              child: widget.child,
-            ),
+            child: widget.child,
           ),
         ),
       ),

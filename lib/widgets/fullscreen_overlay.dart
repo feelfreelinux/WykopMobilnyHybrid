@@ -17,7 +17,7 @@ class FullscreenOverlay extends ModalRoute<void> {
   bool get barrierDismissible => true;
 
   @override
-  Color get barrierColor => Colors.black.withOpacity(0.6);
+  Color get barrierColor => Colors.black.withOpacity(0.1);
 
   @override
   String get barrierLabel => null;
@@ -33,13 +33,11 @@ class FullscreenOverlay extends ModalRoute<void> {
   ) {
     // This makes sure that text and other content follows the material style
     return Material(
-      type: MaterialType.transparency,
       // make sure that the overlay content is not cut off
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-        child: SafeArea(
-          child: _buildOverlayContent(context),
-        ),
+      color: Theme.of(context).backgroundColor,
+      child: SafeArea(
+        top: false,
+        child: _buildOverlayContent(context),
       ),
     );
   }
@@ -103,7 +101,7 @@ class CupertinoFullscreenOverlay extends CupertinoPageRoute {
     return child;
   }
 
-@override
+  @override
   // TODO: implement builder
   get builder => (context) => buildPage(context, null, null);
 /*

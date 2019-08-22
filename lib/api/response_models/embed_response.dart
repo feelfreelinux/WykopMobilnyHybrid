@@ -9,6 +9,12 @@ abstract class EmbedResponse
   String get url;
   String get preview;
   String get type;
+  @nullable
+  String get source;
+  @nullable
+  String get size;
+  @nullable
+  double get ratio;
   bool get animated;
   @nullable
   bool get plus18;

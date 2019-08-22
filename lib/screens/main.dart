@@ -237,46 +237,49 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget _iconButton(IconData icon, num index, String tooltip,
       {num badge = 0}) {
-    return GestureDetector(
-      onTap: () => setState(() => _currentIndex = index),
-      child: Stack(
-        alignment: AlignmentDirectional.center,
-        children: <Widget>[
-          Container(
-            width: 52.0,
-            height: 52.0,
-            child: Icon(
-              icon,
-              size: 28.0,
-              color: _currentIndex == index
-                  ? Theme.of(context).iconTheme.color
-                  : Theme.of(context).iconTheme.color.withOpacity(0.40),
+    return Tooltip(
+      message: tooltip,
+      child: GestureDetector(
+        onTap: () => setState(() => _currentIndex = index),
+        child: Stack(
+          alignment: AlignmentDirectional.center,
+          children: <Widget>[
+            Container(
+              width: 52.0,
+              height: 52.0,
+              child: Icon(
+                icon,
+                size: 28.0,
+                color: _currentIndex == index
+                    ? Theme.of(context).iconTheme.color
+                    : Theme.of(context).iconTheme.color.withOpacity(0.40),
+              ),
             ),
-          ),
-          Positioned(
-            top: 6.0,
-            right: badge <= 9 ? 6.0 : 4.0,
-            child: Visibility(
-              visible: badge != 0,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.redAccent,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                padding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
-                child: Text(
-                  badge <= 99 ? badge.toString() : "+99",
-                  style: TextStyle(
-                    height: 1.07,
-                    fontSize: 10.0,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
+            Positioned(
+              top: 6.0,
+              right: badge <= 9 ? 6.0 : 4.0,
+              child: Visibility(
+                visible: badge != 0,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.redAccent,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
+                  child: Text(
+                    badge <= 99 ? badge.toString() : "+99",
+                    style: TextStyle(
+                      height: 1.07,
+                      fontSize: 10.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

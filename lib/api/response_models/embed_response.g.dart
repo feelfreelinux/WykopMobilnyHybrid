@@ -30,6 +30,24 @@ class _$EmbedResponseSerializer implements StructuredSerializer<EmbedResponse> {
       serializers.serialize(object.animated,
           specifiedType: const FullType(bool)),
     ];
+    if (object.source != null) {
+      result
+        ..add('source')
+        ..add(serializers.serialize(object.source,
+            specifiedType: const FullType(String)));
+    }
+    if (object.size != null) {
+      result
+        ..add('size')
+        ..add(serializers.serialize(object.size,
+            specifiedType: const FullType(String)));
+    }
+    if (object.ratio != null) {
+      result
+        ..add('ratio')
+        ..add(serializers.serialize(object.ratio,
+            specifiedType: const FullType(double)));
+    }
     if (object.plus18 != null) {
       result
         ..add('plus18')
@@ -63,6 +81,18 @@ class _$EmbedResponseSerializer implements StructuredSerializer<EmbedResponse> {
           result.type = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'source':
+          result.source = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'size':
+          result.size = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'ratio':
+          result.ratio = serializers.deserialize(value,
+              specifiedType: const FullType(double)) as double;
+          break;
         case 'animated':
           result.animated = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool;
@@ -86,6 +116,12 @@ class _$EmbedResponse extends EmbedResponse {
   @override
   final String type;
   @override
+  final String source;
+  @override
+  final String size;
+  @override
+  final double ratio;
+  @override
   final bool animated;
   @override
   final bool plus18;
@@ -94,7 +130,14 @@ class _$EmbedResponse extends EmbedResponse {
       (new EmbedResponseBuilder()..update(updates)).build();
 
   _$EmbedResponse._(
-      {this.url, this.preview, this.type, this.animated, this.plus18})
+      {this.url,
+      this.preview,
+      this.type,
+      this.source,
+      this.size,
+      this.ratio,
+      this.animated,
+      this.plus18})
       : super._() {
     if (url == null) {
       throw new BuiltValueNullFieldError('EmbedResponse', 'url');
@@ -124,6 +167,9 @@ class _$EmbedResponse extends EmbedResponse {
         url == other.url &&
         preview == other.preview &&
         type == other.type &&
+        source == other.source &&
+        size == other.size &&
+        ratio == other.ratio &&
         animated == other.animated &&
         plus18 == other.plus18;
   }
@@ -131,7 +177,15 @@ class _$EmbedResponse extends EmbedResponse {
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc($jc(0, url.hashCode), preview.hashCode), type.hashCode),
+        $jc(
+            $jc(
+                $jc(
+                    $jc(
+                        $jc($jc($jc(0, url.hashCode), preview.hashCode),
+                            type.hashCode),
+                        source.hashCode),
+                    size.hashCode),
+                ratio.hashCode),
             animated.hashCode),
         plus18.hashCode));
   }
@@ -142,6 +196,9 @@ class _$EmbedResponse extends EmbedResponse {
           ..add('url', url)
           ..add('preview', preview)
           ..add('type', type)
+          ..add('source', source)
+          ..add('size', size)
+          ..add('ratio', ratio)
           ..add('animated', animated)
           ..add('plus18', plus18))
         .toString();
@@ -164,6 +221,18 @@ class EmbedResponseBuilder
   String get type => _$this._type;
   set type(String type) => _$this._type = type;
 
+  String _source;
+  String get source => _$this._source;
+  set source(String source) => _$this._source = source;
+
+  String _size;
+  String get size => _$this._size;
+  set size(String size) => _$this._size = size;
+
+  double _ratio;
+  double get ratio => _$this._ratio;
+  set ratio(double ratio) => _$this._ratio = ratio;
+
   bool _animated;
   bool get animated => _$this._animated;
   set animated(bool animated) => _$this._animated = animated;
@@ -179,6 +248,9 @@ class EmbedResponseBuilder
       _url = _$v.url;
       _preview = _$v.preview;
       _type = _$v.type;
+      _source = _$v.source;
+      _size = _$v.size;
+      _ratio = _$v.ratio;
       _animated = _$v.animated;
       _plus18 = _$v.plus18;
       _$v = null;
@@ -206,6 +278,9 @@ class EmbedResponseBuilder
             url: url,
             preview: preview,
             type: type,
+            source: source,
+            size: size,
+            ratio: ratio,
             animated: animated,
             plus18: plus18);
     replace(_$result);

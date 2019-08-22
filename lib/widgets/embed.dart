@@ -183,7 +183,10 @@ class _EmbedState extends State<EmbedWidget> {
     String heroTag = 'embedImage${widget.embed.hashCode}';
 
     // use different transitions for both platforms
-    Navigator.of(context).push(Platform.isAndroid
+    Navigator.push(
+        context, Utils.getPageSlideToUp(MediaScreen(embed: widget.embed)));
+
+    /*  Navigator.of(context).push(Platform.isAndroid
         ? (FullscreenOverlay(
             child: MediaScreen(
             embed: widget.embed,
@@ -192,7 +195,7 @@ class _EmbedState extends State<EmbedWidget> {
             child: MediaScreen(
             embed: widget.embed,
           )));
-
+*/
     return;
     Navigator.push(
       context,

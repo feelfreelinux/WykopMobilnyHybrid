@@ -14,6 +14,12 @@ class _$Embed extends Embed {
   @override
   final String type;
   @override
+  final String source;
+  @override
+  final String size;
+  @override
+  final double ratio;
+  @override
   final bool isAnimated;
   @override
   final bool plus18;
@@ -21,7 +27,15 @@ class _$Embed extends Embed {
   factory _$Embed([void Function(EmbedBuilder) updates]) =>
       (new EmbedBuilder()..update(updates)).build();
 
-  _$Embed._({this.preview, this.url, this.type, this.isAnimated, this.plus18})
+  _$Embed._(
+      {this.preview,
+      this.url,
+      this.type,
+      this.source,
+      this.size,
+      this.ratio,
+      this.isAnimated,
+      this.plus18})
       : super._() {
     if (preview == null) {
       throw new BuiltValueNullFieldError('Embed', 'preview');
@@ -51,6 +65,9 @@ class _$Embed extends Embed {
         preview == other.preview &&
         url == other.url &&
         type == other.type &&
+        source == other.source &&
+        size == other.size &&
+        ratio == other.ratio &&
         isAnimated == other.isAnimated &&
         plus18 == other.plus18;
   }
@@ -58,7 +75,15 @@ class _$Embed extends Embed {
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc($jc(0, preview.hashCode), url.hashCode), type.hashCode),
+        $jc(
+            $jc(
+                $jc(
+                    $jc(
+                        $jc($jc($jc(0, preview.hashCode), url.hashCode),
+                            type.hashCode),
+                        source.hashCode),
+                    size.hashCode),
+                ratio.hashCode),
             isAnimated.hashCode),
         plus18.hashCode));
   }
@@ -69,6 +94,9 @@ class _$Embed extends Embed {
           ..add('preview', preview)
           ..add('url', url)
           ..add('type', type)
+          ..add('source', source)
+          ..add('size', size)
+          ..add('ratio', ratio)
           ..add('isAnimated', isAnimated)
           ..add('plus18', plus18))
         .toString();
@@ -90,6 +118,18 @@ class EmbedBuilder implements Builder<Embed, EmbedBuilder> {
   String get type => _$this._type;
   set type(String type) => _$this._type = type;
 
+  String _source;
+  String get source => _$this._source;
+  set source(String source) => _$this._source = source;
+
+  String _size;
+  String get size => _$this._size;
+  set size(String size) => _$this._size = size;
+
+  double _ratio;
+  double get ratio => _$this._ratio;
+  set ratio(double ratio) => _$this._ratio = ratio;
+
   bool _isAnimated;
   bool get isAnimated => _$this._isAnimated;
   set isAnimated(bool isAnimated) => _$this._isAnimated = isAnimated;
@@ -105,6 +145,9 @@ class EmbedBuilder implements Builder<Embed, EmbedBuilder> {
       _preview = _$v.preview;
       _url = _$v.url;
       _type = _$v.type;
+      _source = _$v.source;
+      _size = _$v.size;
+      _ratio = _$v.ratio;
       _isAnimated = _$v.isAnimated;
       _plus18 = _$v.plus18;
       _$v = null;
@@ -132,6 +175,9 @@ class EmbedBuilder implements Builder<Embed, EmbedBuilder> {
             preview: preview,
             url: url,
             type: type,
+            source: source,
+            size: size,
+            ratio: ratio,
             isAnimated: isAnimated,
             plus18: plus18);
     replace(_$result);
