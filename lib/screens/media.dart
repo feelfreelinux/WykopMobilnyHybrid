@@ -2,12 +2,14 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter/widgets.dart';
 import 'package:image_downloader/image_downloader.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
+import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/utils/utils.dart';
@@ -16,11 +18,7 @@ import 'dart:async';
 import 'package:path/path.dart' as Path;
 import 'package:mime/mime.dart';
 
-class MediaScreen extends StatefulWidget {
-  final Embed embed;
-
-  MediaScreen({this.embed});
-
+class MediaModel extends ChangeNotifier {
   // Matchers for spliting domains
   static const String GFYCAT_MATCHER = "gfycat.com";
   static const String COUB_MATCHER = "coub.com";
@@ -28,30 +26,92 @@ class MediaScreen extends StatefulWidget {
   static const String YOUTUBE_MATCHER = "youtube.com";
   static const String SIMPLE_YOUTUBE_MATCHER = "youtu.be";
 
+  bool _isImage = true;
+  bool _isLoading = true;
+  bool _showIcons = false;
+  bool get showIcons => _showIcons;
+  bool get isImage => _isImage;
+  bool get isLoading => _isLoading;
+  String _videoUrl;
+
+  VideoPlayerController _vpController;
+  VideoPlayerController get videoPlayerController => _vpController;
+
+  String get url => isImage
+      ? embed.isAnimated ? embed.url.replaceAll(".jpg", ".gif") : embed.url
+      : _videoUrl;
+
+  final Embed embed;
+  MediaModel({this.embed});
+
+  void toogleIcons() {
+    _showIcons = !_showIcons;
+    notifyListeners();
+  }
+
+  void init() async {
+    _isImage = embed.type == "image";
+    notifyListeners();
+
+    if (!_isImage) {
+      if (embed.url.contains(GFYCAT_MATCHER)) {
+        _videoUrl = await api.embed.getGfycatUrl(embed.url);
+      } else if (embed.url.contains(STREAMABLE_MATCHER)) {
+        _videoUrl = await api.embed.getStreamableUrl(embed.url);
+      }
+      _vpController = VideoPlayerController.network(_videoUrl);
+      await _vpController.initialize();
+      _vpController.play();
+    }
+
+    _isLoading = false;
+    notifyListeners();
+  }
+}
+
+class MediaScreen extends StatefulWidget {
+  final Embed embed;
+
+  MediaScreen({this.embed});
+
   _MediaScreenState createState() => _MediaScreenState();
 }
 
 class _MediaScreenState extends State<MediaScreen> {
-  VideoPlayerController controller;
-  bool showIcons = true;
+  MediaModel model;
+
+  @override
+  void initState() {
+    model = MediaModel(embed: widget.embed)..init();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final mqData = MediaQuery.of(context);
     final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
 
-    return MediaQuery(
-      data: mqDataNew,
-      child: Scaffold(
-        body: GestureDetector(
-          onTap: () => setState(() => showIcons = !showIcons),
-          child: Stack(
-            children: <Widget>[
-              _drawBody(),
-              _drawStatusBar(),
-              _drawTopBar(),
-              _drawBottomBar(),
-            ],
+    return ChangeNotifierProvider<MediaModel>.value(
+      value: model,
+      child: MediaQuery(
+        data: mqDataNew,
+        child: Scaffold(
+          body: Consumer<MediaModel>(
+            builder: (context, mediaModel, _) => mediaModel.isLoading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : GestureDetector(
+                    onTap: () => model.toogleIcons(),
+                    child: Stack(
+                      children: <Widget>[
+                        _drawBody(),
+                        _drawStatusBar(),
+                        _drawTopBar(),
+                        _drawBottomBar(),
+                      ],
+                    ),
+                  ),
           ),
         ),
       ),
@@ -81,26 +141,29 @@ class _MediaScreenState extends State<MediaScreen> {
   }
 
   Widget _drawTopBar() {
-    return Positioned(
-      top: 0,
-      left: 0,
-      child: AnimatedOpacity(
-        duration: Duration(milliseconds: 300),
-        opacity: showIcons ? 1.0 : 0.0,
-        child: IgnorePointer(
-          ignoring: !showIcons,
-          child: Container(
-            height: kToolbarHeight,
-            margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-            alignment: AlignmentDirectional.centerStart,
-            padding: EdgeInsets.only(left: 8.0),
-            child: Material(
-              type: MaterialType.transparency,
-              child: RoundIconButtonWidget(
-                icon: Icons.arrow_back,
-                iconColor: Theme.of(context).iconTheme.color,
-                roundColor: Theme.of(context).backgroundColor.withOpacity(0.4),
-                onTap: () => Navigator.pop(context),
+    return Consumer<MediaModel>(
+      builder: (context, mediaModel, _) => Positioned(
+        top: 0,
+        left: 0,
+        child: AnimatedOpacity(
+          duration: Duration(milliseconds: 300),
+          opacity: mediaModel.showIcons ? 1.0 : 0.0,
+          child: IgnorePointer(
+            ignoring: !mediaModel.showIcons,
+            child: Container(
+              height: kToolbarHeight,
+              margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+              alignment: AlignmentDirectional.centerStart,
+              padding: EdgeInsets.only(left: 8.0),
+              child: Material(
+                type: MaterialType.transparency,
+                child: RoundIconButtonWidget(
+                  icon: Icons.arrow_back,
+                  iconColor: Theme.of(context).iconTheme.color,
+                  roundColor:
+                      Theme.of(context).backgroundColor.withOpacity(0.4),
+                  onTap: () => Navigator.pop(context),
+                ),
               ),
             ),
           ),
@@ -110,100 +173,103 @@ class _MediaScreenState extends State<MediaScreen> {
   }
 
   Widget _drawBottomBar() {
-    return Positioned(
-      bottom: 0,
-      left: 0,
-      right: 0,
-      child: AnimatedOpacity(
-        duration: Duration(milliseconds: 300),
-        opacity: showIcons ? 1.0 : 0.0,
-        child: IgnorePointer(
-          ignoring: !showIcons,
-          child: Container(
-            padding: EdgeInsets.only(bottom: 6.0, top: 12.0),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Theme.of(context).backgroundColor.withOpacity(0.0),
-                  Theme.of(context).backgroundColor.withOpacity(0.1)
-                ],
-              ),
-            ),
-            child: Column(
-              children: <Widget>[
-                widget.embed.type != "image"
-                    ? VideoControlsToolbar(controller: controller)
-                    : Container(),
-                Row(
-                  children: <Widget>[
-                    _drawToolbarIcon(Icons.share, 'Udostępnij', () async {
-                      // @TODO: Move it somewhere
-                      var request = await HttpClient()
-                          .getUrl(Uri.parse(widget.embed.url));
-                      var response = await request.close();
-                      Uint8List bytes =
-                          await consolidateHttpClientResponseBytes(response);
-                      await Share.file(
-                          'Udostępnij obrazek',
-                          Path.basename(widget.embed.url),
-                          bytes,
-                          lookupMimeType(Path.basename(widget.embed.url)));
-                    }),
-                    _drawToolbarIcon(Icons.save, 'Zapisz', () async {
-                      await ImageDownloader.downloadImage(widget.embed.url);
-                      Scaffold.of(context).showSnackBar(
-                          SnackBar(content: Text("Obrazek został zapisany")));
-                    }),
-                    Expanded(child: SizedBox()),
-                    _drawToolbarIcon(
-                      Icons.more_horiz,
-                      'Więcej',
-                      () => showModalBottomSheet<void>(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return SingleChildScrollView(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                ListTile(
-                                  leading: Icon(Icons.open_in_new),
-                                  title: Text('Otwórz w ...'),
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                    Utils.launchURL(widget.embed.url);
-                                  },
-                                ),
-                                ListTile(
-                                  leading: Icon(Icons.content_copy),
-                                  title: Text('Skopiuj adres'),
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                    Utils.copyToClipboard(
-                                        context, widget.embed.url);
-                                  },
-                                ),
-                                ListTile(
-                                  leading: Icon(Icons.report),
-                                  title: Text('Zgłoś'),
-                                ),
-                                ListTile(
-                                  leading: Icon(Icons.info_outline),
-                                  title: Text('Informacje'),
-                                  onTap: () {
-                                    _informationDialog();
-                                  },
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
+    return Consumer<MediaModel>(
+      builder: (context, mediaModel, _) => Positioned(
+        bottom: 0,
+        left: 0,
+        right: 0,
+        child: AnimatedOpacity(
+          duration: Duration(milliseconds: 300),
+          opacity: mediaModel.showIcons ? 1.0 : 0.0,
+          child: IgnorePointer(
+            ignoring: !mediaModel.showIcons,
+            child: Container(
+              padding: EdgeInsets.only(bottom: 6.0, top: 12.0),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Theme.of(context).backgroundColor.withOpacity(0.0),
+                    Theme.of(context).backgroundColor.withOpacity(0.1)
                   ],
                 ),
-              ],
+              ),
+              child: Column(
+                children: <Widget>[
+                  !mediaModel.isImage
+                      ? VideoControlsToolbar(
+                          controller: mediaModel.videoPlayerController)
+                      : Container(),
+                  Row(
+                    children: <Widget>[
+                      _drawToolbarIcon(Icons.share, 'Udostępnij', () async {
+                        // @TODO: Move it somewhere
+                        var request = await HttpClient()
+                            .getUrl(Uri.parse(widget.embed.url));
+                        var response = await request.close();
+                        Uint8List bytes =
+                            await consolidateHttpClientResponseBytes(response);
+                        await Share.file(
+                            'Udostępnij obrazek',
+                            Path.basename(widget.embed.url),
+                            bytes,
+                            lookupMimeType(Path.basename(widget.embed.url)));
+                      }),
+                      _drawToolbarIcon(Icons.save, 'Zapisz', () async {
+                        await ImageDownloader.downloadImage(widget.embed.url);
+                        Scaffold.of(context).showSnackBar(
+                            SnackBar(content: Text("Obrazek został zapisany")));
+                      }),
+                      Expanded(child: SizedBox()),
+                      _drawToolbarIcon(
+                        Icons.more_horiz,
+                        'Więcej',
+                        () => showModalBottomSheet<void>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return SingleChildScrollView(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  ListTile(
+                                    leading: Icon(Icons.open_in_new),
+                                    title: Text('Otwórz w ...'),
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      Utils.launchURL(widget.embed.url);
+                                    },
+                                  ),
+                                  ListTile(
+                                    leading: Icon(Icons.content_copy),
+                                    title: Text('Skopiuj adres'),
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      Utils.copyToClipboard(
+                                          context, widget.embed.url);
+                                    },
+                                  ),
+                                  ListTile(
+                                    leading: Icon(Icons.report),
+                                    title: Text('Zgłoś'),
+                                  ),
+                                  ListTile(
+                                    leading: Icon(Icons.info_outline),
+                                    title: Text('Informacje'),
+                                    onTap: () {
+                                      _informationDialog();
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -377,37 +443,26 @@ class _MediaScreenState extends State<MediaScreen> {
   }
 
   Widget _handleImage() {
-    // Wykop API is really really wierd, .gifs are sent with .jpg extension. <insert shrug>
-    var url = widget.embed.isAnimated
-        ? widget.embed.url.replaceAll(".jpg", ".gif")
-        : widget.embed.url;
-
-    return PhotoView(
-      backgroundDecoration: BoxDecoration(color: Colors.transparent),
-      loadingChild: Container(
-        height: MediaQuery.of(context).size.height,
-        child: Center(child: CircularProgressIndicator()),
+    return Consumer<MediaModel>(
+      builder: (context, mediaModel, _) => PhotoView(
+        backgroundDecoration: BoxDecoration(color: Colors.transparent),
+        loadingChild: Container(
+          height: MediaQuery.of(context).size.height,
+          child: Center(child: CircularProgressIndicator()),
+        ),
+        imageProvider: AdvancedNetworkImage(mediaModel.url),
+        minScale: PhotoViewComputedScale.contained,
+        maxScale: PhotoViewComputedScale.covered * 4.0,
       ),
-      imageProvider: AdvancedNetworkImage(url),
-      minScale: PhotoViewComputedScale.contained,
-      maxScale: PhotoViewComputedScale.covered * 4.0,
     );
   }
 
-  Widget _handleVideo() { //TODO: nie wiem co z tym szajsem, spada z rowerka xD
+  Widget _handleVideo() {
+    //TODO: nie wiem co z tym szajsem, spada z rowerka xD
     try {
-      return FutureBuilder<String>(
-        future: getMediaUrl(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            if (controller == null) {
-              controller = VideoPlayerController.network(snapshot.data);
-            }
-            return EmbedVideoPlayer(url: snapshot.data, controller: controller);
-          }
-
-          return Center(child: CircularProgressIndicator());
-        },
+      return Consumer<MediaModel>(
+        builder: (context, mediaModel, _) => EmbedVideoPlayer(
+            url: mediaModel.url, controller: mediaModel.videoPlayerController),
       );
     } catch (e) {
       Navigator.pop(context);
@@ -418,20 +473,10 @@ class _MediaScreenState extends State<MediaScreen> {
     return Center(child: CircularProgressIndicator());
   }
 
-  Future<String> getMediaUrl() {
-    if (widget.embed.url.contains(MediaScreen.GFYCAT_MATCHER)) {
-      return api.embed.getGfycatUrl(widget.embed.url);
-    } else if (widget.embed.url.contains(MediaScreen.STREAMABLE_MATCHER)) {
-      return api.embed.getStreamableUrl(widget.embed.url);
-    }
-
-    throw Exception('Media not supported');
-  }
-
   @override
   void dispose() {
     super.dispose();
-    this.controller?.dispose();
+    model.videoPlayerController?.dispose();
   }
 }
 
@@ -445,25 +490,6 @@ class EmbedVideoPlayer extends StatefulWidget {
 }
 
 class _EmbedVideoPlayerState extends State<EmbedVideoPlayer> {
-  bool _isPlaying = false;
-
-  @override
-  void initState() {
-    super.initState();
-    widget.controller
-      ..addListener(() {
-        final bool isPlaying = widget.controller.value.isPlaying;
-        if (isPlaying != _isPlaying) {
-          setState(() => _isPlaying = isPlaying);
-        }
-      })
-      ..initialize().then((_) {
-        setState(() {});
-        widget.controller.setLooping(true);
-        widget.controller.play();
-      });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Center(

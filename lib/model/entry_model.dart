@@ -68,8 +68,8 @@ class EntryModel extends InputModel {
       _voteCount = await api.entries.voteDown(_id);
       _isVoted = false;
     }
-    loadUpVoters();
     notifyListeners();
+    loadUpVoters();
   }
 
   void favoriteToggle() async {
@@ -79,7 +79,6 @@ class EntryModel extends InputModel {
 
   Future<void> loadUpVoters() async {
     _upvoters = await api.entries.getEntryUpVoters(_id);
-    print(_upvoters);
     notifyListeners();
   }
 
