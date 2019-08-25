@@ -43,17 +43,6 @@ class TextSettingScreen extends StatelessWidget {
         ),
         DividerWidget(),
         OWMSettingListener(
-          rebuildOnChange: (settings) => settings.hideSpoilerTextStream,
-          builder: (context, settings) {
-            return SwitchListTile(
-              value: settings.hideSpoilerText,
-              title: Text("Ukryj spoiler klikając w treść"),
-              onChanged: (value) =>
-                  settings.hideSpoilerText = !settings.hideSpoilerText,
-            );
-          },
-        ),
-        OWMSettingListener(
           rebuildOnChange: (settings) => settings.openSpoilerDialogStream,
           builder: (context, settings) {
             return SwitchListTile(
@@ -63,6 +52,23 @@ class TextSettingScreen extends StatelessWidget {
                   settings.openSpoilerDialog = !settings.openSpoilerDialog,
             );
           },
+        ),
+        OWMSettingListener(
+          rebuildOnChange: (settings) => settings.openSpoilerDialogStream,
+          builder: (context, settings) => Visibility(
+            visible: !settings.openSpoilerDialog,
+            child: OWMSettingListener(
+              rebuildOnChange: (settings) => settings.hideSpoilerTextStream,
+              builder: (context, settings) {
+                return SwitchListTile(
+                  value: settings.hideSpoilerText,
+                  title: Text("Ukryj spoiler klikając w treść"),
+                  onChanged: (value) =>
+                      settings.hideSpoilerText = !settings.hideSpoilerText,
+                );
+              },
+            ),
+          ),
         ),
         DividerWidget(),
         Padding(
