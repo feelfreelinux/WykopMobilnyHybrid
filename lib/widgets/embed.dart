@@ -105,7 +105,7 @@ class _EmbedState extends State<EmbedWidget> {
 
   Widget _drawFooter() {
     return AnimatedOpacity(
-      opacity: !this.loading && !this.resized ? 1.0 : 0.0,
+      opacity: !loading && !resized ? 1.0 : 0.0,
       duration: Duration(milliseconds: 100),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -122,14 +122,16 @@ class _EmbedState extends State<EmbedWidget> {
             padding: EdgeInsets.all(4.0),
             child: Text(
               '••• pokaż cały obrazek •••',
+              textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.title.copyWith(
                 fontSize: 11.0,
                 shadows: [
                   Shadow(
-                      blurRadius: 1.5, color: Theme.of(context).backgroundColor)
+                    blurRadius: 1.5,
+                    color: Theme.of(context).backgroundColor,
+                  )
                 ],
               ),
-              textAlign: TextAlign.center,
             ),
           ),
         ],
@@ -156,9 +158,11 @@ class _EmbedState extends State<EmbedWidget> {
   // Returns size - default height for loading and unresized image, full for resized image
   BoxConstraints currentConstraints() {
     double maxHeight = MediaQuery.of(context).size.height / 2.0;
+
     if (!loading) {
       var height = (MediaQuery.of(context).size.width - widget.reducedWidth) *
-          this._imageFactor;
+          widget.embed.ratio;
+
       if (!resized && height <= maxHeight) {
         this.setState(() {
           resized = true;
@@ -169,42 +173,19 @@ class _EmbedState extends State<EmbedWidget> {
         return BoxConstraints.tight(Size.fromHeight(maxHeight));
       }
     }
+
     if (loading || !resized) {
       return BoxConstraints.tight(Size.fromHeight(maxHeight));
     } else {
       return BoxConstraints.tight(Size.fromHeight(
           (MediaQuery.of(context).size.width - widget.reducedWidth) *
-              this._imageFactor));
+              widget.embed.ratio));
     }
   }
 
   // Open fullscreen image viewer
   void openFullscreen() {
-    String heroTag = 'embedImage${widget.embed.hashCode}';
-
-    // use different transitions for both platforms
     Navigator.push(
         context, Utils.getPageSlideToUp(MediaScreen(embed: widget.embed)));
-
-    /*  Navigator.of(context).push(Platform.isAndroid
-        ? (FullscreenOverlay(
-            child: MediaScreen(
-            embed: widget.embed,
-          )))
-        : CupertinoFullscreenOverlay(
-            child: MediaScreen(
-            embed: widget.embed,
-          )));
-*/
-    return;
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => EmbedFullScreen(
-          heroTag: heroTag,
-          imageProvider: NetworkImage(widget.embed.url),
-        ),
-      ),
-    );
   }
 }

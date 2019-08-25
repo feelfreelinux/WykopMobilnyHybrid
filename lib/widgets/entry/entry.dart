@@ -47,12 +47,17 @@ class NewEntryWidget extends StatelessWidget {
                     ? () => Navigator.of(context).push(
                         Utils.getPageTransition(EntryScreen(model: model)))
                     : null,
-                child: BodyWidget(
-                  body: model.body,
-                  ellipsize: ellipsize,
-                  textSize: 16.0,
-                  padding: EdgeInsets.only(
-                      top: 8.0, left: 2.0, right: 2.0, bottom: 2.0),
+                onLongPress: () => showDialog(
+                    context: context, builder: (_) => GreatDialogWidget()),
+                child: OWMSettingListener(
+                  rebuildOnChange: (settings) => settings.shortLongBodyStream,
+                  builder: (context, settings) => BodyWidget(
+                    body: model.body,
+                    ellipsize: settings.shortLongBody,
+                    textSize: 16.0,
+                    padding: EdgeInsets.only(
+                        top: 8.0, left: 2.0, right: 2.0, bottom: 2.0),
+                  ),
                 ),
               ),
               Visibility(

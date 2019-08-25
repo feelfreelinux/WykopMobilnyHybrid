@@ -42,22 +42,18 @@ class _BodyWidgetState extends State<BodyWidget> {
               linkColor: widget.linkColor ?? Theme.of(context).accentColor,
               textSize: widget.textSize,
               html: widget.body != null
-                  ? !expand && bodyString.length > 300 && widget.ellipsize
-                      ? widget.body.substring(0, 300) + '...'
+                  ? !expand && bodyString.length > 350 && widget.ellipsize
+                      ? widget.body.substring(0, 350) + '...'
                       : widget.body
                   : '',
               //TODO: Jakoś lepiej liczyć i ciąć tekst bo łapie html ^^^
             ),
             Visibility(
-              visible: bodyString.length > 300 && widget.ellipsize && !expand,
-              child: Padding(
-                padding: EdgeInsets.only(top: 8.0),
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      expand = true;
-                    });
-                  },
+              visible: bodyString.length > 350 && widget.ellipsize && !expand,
+              child: GestureDetector(
+                onTap: () => setState(() => expand = true),
+                child: Padding(
+                  padding: EdgeInsets.only(top: 8.0, right: 8.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
