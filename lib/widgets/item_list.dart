@@ -4,19 +4,22 @@ import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
-class EntriesLinksList extends StatefulWidget {
-  final dynamic builder;
-  final Widget header;
+typedef T ModelBuilder<T>(BuildContext context);
 
-  EntriesLinksList({this.builder, this.header});
+class ItemList<T, D extends ChangeNotifier> extends StatefulWidget {
+  final ModelBuilder<ListModel<T, D>> builder;
+  final Widget header;
+  final WidgetBuilder buildChildren;
+  ItemList({this.builder, this.header, this.buildChildren});
 
   @override
-  EntriesLinksListState createState() {
-    return new EntriesLinksListState();
+  ItemListState<T, D> createState() {
+    return new ItemListState();
   }
 }
 
-class EntriesLinksListState extends State<EntriesLinksList> with AutomaticKeepAliveClientMixin {
+class ItemListState<T, D extends ChangeNotifier> extends State<ItemList<T, D>>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -24,9 +27,9 @@ class EntriesLinksListState extends State<EntriesLinksList> with AutomaticKeepAl
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
-      child: ChangeNotifierProvider<EntryLinkListmodel>(
+      child: ChangeNotifierProvider<ListModel<T, D>>(
         builder: widget.builder,
-        child: Consumer<EntryLinkListmodel>(
+        child: Consumer<ListModel<T, D>>(
           builder: (context, model, _) => RefreshIndicator(
             onRefresh: () => model.refresh(),
             child: model.isLoading
@@ -40,17 +43,10 @@ class EntriesLinksListState extends State<EntriesLinksList> with AutomaticKeepAl
                     },
                     itemCount: model.items.length,
                     itemBuilder: (context, index) {
-                      if (model.items[index] is EntryModel) {
-                        return ListenableProvider<EntryModel>.value(
-                          value: model.items[index],
-                          child: NewEntryWidget(ellipsize: true),
-                        );
-                      } else {
-                        return ListenableProvider<LinkModel>.value(
-                          value: model.items[index],
-                          child: NewLinkWidget(),
-                        );
-                      }
+                      return ChangeNotifierProvider<D>.value(
+                        value: model.items[index],
+                        child: widget.buildChildren(context),
+                      );
                     },
                   ),
           ),

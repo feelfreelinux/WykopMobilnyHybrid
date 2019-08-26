@@ -14,3 +14,5 @@ export 'profile_model.dart';
 export 'input_model.dart';
 export 'search_screen_model.dart';
 export 'private_messages_model.dart';
+export 'base_model.dart';
+export 'list_model.dart';

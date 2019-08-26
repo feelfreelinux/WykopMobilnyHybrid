@@ -47,8 +47,8 @@ class _MainCollapsingToolbarState extends State<TagScreen> {
     if (list == "Wszystko") {
       return EntriesLinksList(
         header: _drawHeader(),
-        builder: (context) => EntryLinkListModel(
-          loadEntryLinks: (page) => api.tags.getIndex(widget.tag, page),
+        builder: (context) => EntryLinkListmodel(
+          loadNewEntryLinks:(page) => api.tags.getIndex(widget.tag, page),
         ),
       );
     } else if (list == "Wpisy") {

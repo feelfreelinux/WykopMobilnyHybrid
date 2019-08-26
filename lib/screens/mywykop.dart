@@ -27,8 +27,8 @@ class MyWykopScreen extends StatelessWidget {
                 icon: Icons.loyalty,
                 fullText: "Mój wykop będzie widoczny po zalogowaniu.",
                 child: EntriesLinksList(
-                  builder: (context) => EntryLinkListModel(
-                    loadEntryLinks: (page) => api.mywykop.getIndex(page),
+                  builder: (context) => EntryLinkListmodel(
+                    loadNewEntryLinks: (page) => api.mywykop.getIndex(page),
                   ),
                 ),
               ),
