@@ -28,41 +28,10 @@ class EmbedWidget extends StatefulWidget {
 
 class _EmbedState extends State<EmbedWidget> {
   double _imageFactor = 0.0;
-  bool loading = true;
+  bool loading = false;
   bool resized = false;
   bool nsfw = false;
-  var imageResolver;
-  ImageStreamListener imageSizeListener;
 
-  @override
-  void initState() {
-    super.initState();
-    imageSizeListener =
-        new ImageStreamListener((ImageInfo image, bool synchronousCall) {
-      updateImageSize(image);
-    });
-
-    // First, fetch image size for sizedbox calculations
-    imageResolver =
-        AdvancedNetworkImage(widget.embed.preview, useDiskCache: true)
-            .resolve(ImageConfiguration());
-    imageResolver.addListener(this.imageSizeListener);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    this.imageResolver.removeListener(this.imageSizeListener);
-  }
-
-  void updateImageSize(ImageInfo image) {
-    setState(() {
-      loading = false;
-      _imageFactor = image.image.height / image.image.width;
-      resized = false;
-      nsfw = widget.embed.plus18;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -141,14 +110,11 @@ class _EmbedState extends State<EmbedWidget> {
 
   // If image size is already fetched, load whole image from cache
   BoxDecoration getDecoration() {
-    if (loading) {
-      return BoxDecoration();
-    }
     return BoxDecoration(
       borderRadius: BorderRadius.circular(widget.borderRadius),
       boxShadow: [BoxShadow(color: Color(0x33000000))],
       image: DecorationImage(
-        image: NetworkImage(widget.embed.preview),
+        image: AdvancedNetworkImage(widget.embed.preview),
         alignment: FractionalOffset.topCenter,
         fit: BoxFit.fitWidth,
       ),

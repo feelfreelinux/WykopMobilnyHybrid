@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter/widgets.dart';
 import 'package:image_downloader/image_downloader.dart';
 import 'package:owmflutter/widgets/widgets.dart';
@@ -14,7 +13,6 @@ import 'package:video_player/video_player.dart';
 import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
-import 'dart:async';
 import 'package:path/path.dart' as Path;
 import 'package:mime/mime.dart';
 
