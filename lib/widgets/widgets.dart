@@ -27,6 +27,7 @@ export 'appbars/appbar_normal.dart';
 export 'appbars/appbar_tabs.dart';
 export 'owm_setting_listener.dart';
 export 'appbars/appbar_user.dart';
+export 'author_relation_builder.dart';
 export 'avatar.dart';
 export 'conversations.dart';
 export 'author.dart';

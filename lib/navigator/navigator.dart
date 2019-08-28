@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:owmflutter/widgets/author_relation_builder.dart';
 import 'wykop_url_parsers.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/utils/utils.dart';
@@ -22,11 +23,17 @@ class WykopNavigator {
         switch (resource.split(DELIMITER)[0]) {
           case ENTRY_MATCHER:
             var id = getEntryId(url);
-            return EntryScreen(entryId: id);
+            return HighlightWrapper(
+              id: getHighlightCommentId(url),
+              child: EntryScreen(entryId: id),
+            );
             break;
           case LINK_MATCHER:
             var id = getLinkUrl(url);
-            return LinkScreen(linkId: id);
+            return HighlightWrapper(
+              id: getHighlightCommentId(url),
+              child: LinkScreen(linkId: id),
+            );
             break;
           case TAG_MATCHER:
             var tag = getTag(url);

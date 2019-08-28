@@ -12,6 +12,6 @@ class NotificationsList extends ItemList<prefix0.Notification, NotificationModel
       : super(
           builder: builder,
           header: header,
-          buildChildren: (context) => NewLinkWidget(),
+          buildChildren: (context) => NotificationWidget(),
         );
 }
