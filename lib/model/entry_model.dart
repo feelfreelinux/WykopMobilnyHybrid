@@ -13,6 +13,7 @@ class EntryModel extends InputModel {
   Embed _embed;
   bool _isVoted;
   bool _isFavorite;
+  bool _isNsfw;
   List<EntryCommentModel> _comments = [];
   List<Voter> _upvoters = [];
   int _commentsCount;
@@ -26,6 +27,7 @@ class EntryModel extends InputModel {
   Embed get embed => _embed;
   bool get isFavorite => _isFavorite;
   bool get isVoted => _isVoted;
+  bool get isNsfw => _isNsfw;
   int get commentsCount => _commentsCount;
   bool get isLoading => _loading;
   List<EntryCommentModel> get comments => _comments;
@@ -38,8 +40,10 @@ class EntryModel extends InputModel {
     _voteCount = entry.voteCount;
     _author = entry.author;
     _embed = entry.embed;
-    _comments = entry.comments.map((e) => EntryCommentModel()..setData(e)).toList();
+    _comments =
+        entry.comments.map((e) => EntryCommentModel()..setData(e)).toList();
     _isVoted = entry.isVoted;
+    _isNsfw = (entry.body ?? "").contains("#nsfw") ?? false;
     _isFavorite = entry.isFavorite;
     _commentsCount = entry.commentsCount;
     notifyListeners();
@@ -84,7 +88,8 @@ class EntryModel extends InputModel {
 
   @override
   Future<void> onInputSubmitted(InputData data) async {
-    _comments.add(EntryCommentModel()..setData(await api.entries.addEntryComment(_id, data)));
+    _comments.add(EntryCommentModel()
+      ..setData(await api.entries.addEntryComment(_id, data)));
     notifyListeners();
     updateEntry();
   }
