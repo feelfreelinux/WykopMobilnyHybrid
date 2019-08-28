@@ -42,22 +42,17 @@ class NewEntryWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              SupaGestureDetector(
+              GestureDetector(
                 onTap: isClickable
-                    ? () => Navigator.of(context).push(
-                        Utils.getPageTransition(EntryScreen(model: model)))
+                    ? () => Navigator.of(context)
+                        .push(Utils.getPageSlideToUp(EntryScreen(model: model)))
                     : null,
-                onLongPress: () => showDialog(
-                    context: context, builder: (_) => GreatDialogWidget()),
-                child: OWMSettingListener(
-                  rebuildOnChange: (settings) => settings.shortLongBodyStream,
-                  builder: (context, settings) => BodyWidget(
-                    body: model.body,
-                    ellipsize: settings.shortLongBody,
-                    textSize: 16.0,
-                    padding: EdgeInsets.only(
-                        top: 8.0, left: 2.0, right: 2.0, bottom: 2.0),
-                  ),
+                child: BodyWidget(
+                  body: model.body,
+                  ellipsize: Provider.of<OWMSettings>(context).shortLongBody,
+                  textSize: 16.0,
+                  padding: EdgeInsets.only(
+                      top: 8.0, left: 2.0, right: 2.0, bottom: 2.0),
                 ),
               ),
               Visibility(
@@ -67,6 +62,7 @@ class NewEntryWidget extends StatelessWidget {
                   embed: model.embed,
                   borderRadius: 20.0,
                   reducedWidth: 36.0,
+                  isNsfwTag: model.isNsfw,
                 ),
               ),
               EntryFooterWidget(model, isClickable),
