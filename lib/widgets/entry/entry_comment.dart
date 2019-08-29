@@ -76,6 +76,7 @@ class _EntryCommentWidgetState extends State<EntryCommentWidget> {
       padding: EdgeInsets.only(left: 14.0, right: 12.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Padding(
             padding: EdgeInsets.only(top: 6.0, bottom: 12.0),
@@ -88,119 +89,130 @@ class _EntryCommentWidgetState extends State<EntryCommentWidget> {
               ),
             ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Stack(
-                children: <Widget>[
-                  GestureDetector(
-                    onLongPress: () => _showActionsDialog(context, model),
-                    child: Container(
-                      constraints: BoxConstraints.loose(
-                        Size(MediaQuery.of(context).size.width - 82.0,
-                            double.infinity),
-                      ),
-                      decoration: BoxDecoration(
-                        color: Utils.backgroundGrey(context),
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      margin: EdgeInsets.only(left: 8.0, top: 6.0, right: 6.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(
-                                left: 12.0,
-                                right: 40.0 + _votePadding(model.voteCount),
-                                top: 8.0,
-                                bottom: 4.0),
-                            child: GestureDetector(
-                              onTap: () =>
-                                  _openUserDialog(context, model.author),
-                              child: Text(
-                                model.author.login,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14.0,
-                                  color: Utils.getAuthorColor(
-                                      model.author.color, context),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Stack(
+                  children: <Widget>[
+                    GestureDetector(
+                      onLongPress: () => _showActionsDialog(context, model),
+                      child: Container(
+                        constraints: BoxConstraints.loose(
+                          Size(MediaQuery.of(context).size.width - 82.0,
+                              double.infinity),
+                        ),
+                        decoration: BoxDecoration(
+                          color: Utils.backgroundGrey(context),
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        margin:
+                            EdgeInsets.only(left: 8.0, top: 6.0, right: 6.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left: 12.0,
+                                  right: 40.0 + _votePadding(model.voteCount),
+                                  top: 8.0,
+                                  bottom: 4.0),
+                              child: GestureDetector(
+                                onTap: () =>
+                                    _openUserDialog(context, model.author),
+                                child: Text(
+                                  model.author.login,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14.0,
+                                    color: Utils.getAuthorColor(
+                                        model.author.color, context),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          BodyWidget(
-                            textSize: 15.0,
-                            body: model.body,
-                            ellipsize: false,
-                            padding: EdgeInsets.only(
-                                bottom: 8.0, left: 12.0, right: 12.0),
-                          ),
-                          Visibility(
-                            visible: model.embed != null,
-                            child: EmbedWidget(
+                            BodyWidget(
+                              textSize: 15.0,
+                              body: model.body,
+                              ellipsize: false,
                               padding: EdgeInsets.only(
-                                  top: model.body != null ? 0.0 : 4.0),
-                              embed: model.embed,
-                              borderRadius: 20.0,
-                              reducedWidth: 82.0,
+                                  bottom: 8.0, left: 12.0, right: 12.0),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 2.0,
-                    right: 0.0,
-                    child: VoteButton(
-                      isSelected: model.isVoted,
-                      isComment: true,
-                      count: model.voteCount,
-                      onClicked: () => model.toggleVote(),
-                      onLongClicked: () => showDialog(
-                        context: context,
-                        builder: (_) => GreatDialogWidget(
-                          child: Text(
-                              "Niezaimplementowane"), //TODO: implement voters list
+                            Visibility(
+                              visible: model.embed != null,
+                              child: EmbedWidget(
+                                padding: EdgeInsets.only(
+                                    top: model.body != null ? 0.0 : 4.0),
+                                embed: model.embed,
+                                borderRadius: 20.0,
+                                reducedWidth: 82.0,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              Consumer<InputModel>(
-                builder: (context, inputModel, _) => Row(
-                  children: <Widget>[
-                    TextButton(
-                      onTap: () => setState(() => showFullDate = !showFullDate),
-                      isButton: false,
-                      padding:
-                          EdgeInsets.only(top: 2.0, bottom: 4.0, left: 14.0),
-                      text: showFullDate
-                          ? Utils.getDateFormat(
-                              model.date, 'dd.MM.yyyy \'o\' HH:mm:ss')
-                          : Utils.getSimpleDate(model.date),
-                    ),
-                    TextButton(
-                      padding: EdgeInsets.only(top: 2.0, bottom: 4.0),
-                      text: "Cytuj",
-                      onTap: () => inputModel.inputBarKey.currentState
-                          .quoteText(
-                              parse(model.body ?? "").documentElement.text,
-                              author: model.author),
-                    ),
-                    TextButton(
-                      padding:
-                          EdgeInsets.only(top: 2.0, bottom: 4.0, right: 8.0),
-                      text: "Odpowiedz",
-                      onTap: () => inputModel.inputBarKey.currentState
-                          .replyToUser(model.author),
+                    Positioned(
+                      top: 2.0,
+                      right: 0.0,
+                      child: VoteButton(
+                        isSelected: model.isVoted,
+                        isComment: true,
+                        count: model.voteCount,
+                        onClicked: () => model.toggleVote(),
+                        onLongClicked: () => showDialog(
+                          context: context,
+                          builder: (_) => GreatDialogWidget(
+                            child: Text(
+                                "Niezaimplementowane"), //TODO: implement voters list
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ],
+                Container(
+                  child: Consumer<InputModel>(
+                    builder: (context, inputModel, _) => Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        TextButton(
+                          onTap: () =>
+                              setState(() => showFullDate = !showFullDate),
+                          isButton: false,
+                          padding: EdgeInsets.only(
+                              top: 2.0, bottom: 4.0, left: 14.0),
+                          text: showFullDate
+                              ? Utils.getDateFormat(
+                                  model.date, 'dd.MM.yyyy \'o\' HH:mm:ss')
+                              : Utils.getSimpleDate(model.date),
+                        ),
+                        TextButton(
+                          padding: EdgeInsets.only(top: 2.0, bottom: 4.0),
+                          text: "Cytuj",
+                          onTap: () => inputModel.inputBarKey.currentState
+                              .quoteText(
+                                  parse(model.body ?? "").documentElement.text,
+                                  author: model.author),
+                        ),
+                        Flexible(
+                          child: TextButton(
+                            padding: EdgeInsets.only(
+                                top: 2.0, bottom: 4.0, right: 8.0),
+                            text: "Odpowiedz",
+                            onTap: () => inputModel.inputBarKey.currentState
+                                .replyToUser(model.author),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
