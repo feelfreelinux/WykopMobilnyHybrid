@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:owmflutter/models/models.dart';
+import 'package:owmflutter/widgets/author_relation_builder.dart';
 export 'owm_settings.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'dart:io' show Platform;
@@ -49,6 +50,18 @@ class Utils {
         return Color(0xff3F6FA0);
       default:
         return Colors.blue;
+    }
+  }
+
+  static Color getRelationColor(AuthorRelation relation) {
+    if (relation == AuthorRelation.User) {
+      return Colors.blue;
+    } else if (relation == AuthorRelation.Author) {
+      return Colors.deepOrange;
+    } else if (relation == AuthorRelation.Highlight) {
+      return Colors.green;
+    } else {
+      return Colors.transparent;
     }
   }
 

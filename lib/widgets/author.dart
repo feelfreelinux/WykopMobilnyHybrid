@@ -10,6 +10,7 @@ class AuthorWidget extends StatefulWidget {
   final double fontSize;
   final EdgeInsets padding;
   final bool showUserDialog;
+  final bool isAuthor;
 
   AuthorWidget({
     @required this.author,
@@ -19,6 +20,7 @@ class AuthorWidget extends StatefulWidget {
     this.padding:
         const EdgeInsets.only(left: 12.0, top: 10.0, right: 12.0, bottom: 6.0),
     this.showUserDialog: true,
+    this.isAuthor: false,
   });
 
   _AuthorWidgetState createState() => _AuthorWidgetState();
@@ -37,7 +39,10 @@ class _AuthorWidgetState extends State<AuthorWidget> {
             onTap: widget.showUserDialog
                 ? () => showDialog(
                       context: context,
-                      builder: (_) => UserDialogWidget(author: widget.author),
+                      builder: (_) => UserDialogWidget(
+                        author: widget.author,
+                        isAuthor: widget.isAuthor,
+                      ),
                     )
                 : null,
             child: AvatarWidget(
@@ -56,8 +61,10 @@ class _AuthorWidgetState extends State<AuthorWidget> {
                     onTap: widget.showUserDialog
                         ? () => showDialog(
                               context: context,
-                              builder: (_) =>
-                                  UserDialogWidget(author: widget.author),
+                              builder: (_) => UserDialogWidget(
+                                author: widget.author,
+                                isAuthor: widget.isAuthor,
+                              ),
                             )
                         : null,
                     child: Text(

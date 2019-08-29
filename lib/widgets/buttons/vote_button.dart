@@ -4,6 +4,7 @@ import 'package:owmflutter/utils/utils.dart';
 
 class VoteButton extends StatefulWidget {
   final VoidCallback onClicked;
+  final VoidCallback onLongClicked;
   final num count;
   final isSelected;
   final bool negativeIcon;
@@ -15,6 +16,7 @@ class VoteButton extends StatefulWidget {
   VoteButton({
     @required this.onClicked,
     @required this.isSelected,
+    this.onLongClicked,
     this.count,
     this.negativeIcon: false,
     this.onlyIcon: false,
@@ -30,6 +32,8 @@ class _VoteButtonState extends State<VoteButton> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: () => widget.onClicked(),
+      onLongPress: () => widget.onLongClicked(),
       behavior: HitTestBehavior.opaque,
       child: AnimatedContainer(
         duration: Duration(milliseconds: 400),
@@ -86,9 +90,6 @@ class _VoteButtonState extends State<VoteButton> {
           ],
         ),
       ),
-      onTap: () {
-        widget.onClicked();
-      },
     );
   }
 }

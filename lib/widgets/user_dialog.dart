@@ -8,8 +8,9 @@ import 'package:provider/provider.dart';
 
 class UserDialogWidget extends StatefulWidget {
   final Author author;
+  final bool isAuthor;
 
-  UserDialogWidget({this.author});
+  UserDialogWidget({@required this.author, this.isAuthor = false});
 
   _UserDialogWidgetState createState() => _UserDialogWidgetState();
 }
@@ -172,6 +173,7 @@ class _UserDialogWidgetState extends State<UserDialogWidget>
                             ),
                             _button(
                               text: "Napisz",
+                              disable: widget.isAuthor,
                               onTap: () {}, //TODO: get pm screen
                               padding: EdgeInsets.only(left: 6.0),
                             ),

@@ -100,7 +100,14 @@ class _EntryScreenState extends State<EntryScreen>
                                   ChangeNotifierProvider<
                                       EntryCommentModel>.value(
                                 value: model.comments[index],
-                                child: EntryCommentWidget(),
+                                child: AuthorRelationBuilder(
+                                  relationType: RelationType.ENTRY_COMMENTS,
+                                  builder: (context, relation) =>
+                                      EntryCommentWidget(
+                                    entryId: model.id,
+                                    relation: relation,
+                                  ),
+                                ),
                               ),
                               loadData: (page) => {},
                             ),

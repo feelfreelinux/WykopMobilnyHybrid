@@ -3,14 +3,21 @@ import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/utils/utils.dart';
-import 'package:owmflutter/keys.dart';
-import 'package:owmflutter/owm_glyphs.dart';
-import 'dart:async';
-
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
+import 'package:html/parser.dart';
 
-class EntryCommentWidget extends StatelessWidget {
-  EntryCommentWidget();
+class EntryCommentWidget extends StatefulWidget {
+  final int entryId;
+  final AuthorRelation relation;
+
+  EntryCommentWidget({@required this.entryId, @required this.relation});
+
+  _EntryCommentWidgetState createState() => _EntryCommentWidgetState();
+}
+
+class _EntryCommentWidgetState extends State<EntryCommentWidget> {
+  bool showFullDate = false;
 
   @override
   Widget build(BuildContext context) {
@@ -23,43 +30,45 @@ class EntryCommentWidget extends StatelessWidget {
     );
   }
 
-  void _showActionsDialog(BuildContext context, EntryCommentModel comment) {
-    //TODO: this shit
-    /*
-    var actions = [
-      ActionsDialogItem(
-        icon: OwmGlyphs.ic_dig_list,
-        onTap: () {},
-        title: "Lista plusujących",
+  Widget _drawToolbarIcon(IconData icon, String title, VoidCallback onPressed) {
+    return Expanded(
+      child: Material(
+        type: MaterialType.transparency,
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 4.0),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(10),
+            onTap: onPressed,
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 4.0),
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(top: 12.0),
+                    child: Icon(
+                      icon,
+                      size: 28.0,
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 6.0),
+                    child: Text(
+                      title,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
-      ActionsDialogItem(
-        icon: OwmGlyphs.ic_copy_content_light,
-        onTap: () {},
-        title: "Kopiuj treść",
-      ),
-    ];
-
-    if (comment.author.login != authState.login) {
-      actions.add(ActionsDialogItem(
-        icon: OwmGlyphs.ic_report,
-        onTap: () {},
-        title: "Zgłoś",
-      ));
-    } else {
-      actions
-        ..add(ActionsDialogItem(
-          icon: OwmGlyphs.ic_pen,
-          onTap: () {},
-          title: "Edytuj komentarz",
-        ))
-        ..add(ActionsDialogItem(
-          icon: OwmGlyphs.ic_delete,
-          onTap: deleteCommentCallback,
-          title: "Usuń",
-        ));
-    }
-
-    ActionsDialog.showActionsDialog(context, actions);*/
+    );
   }
 
   Widget _buildEntryCommentBody(EntryCommentModel model, BuildContext context) {
@@ -73,68 +82,72 @@ class EntryCommentWidget extends StatelessWidget {
             child: GestureDetector(
               onTap: () => _openUserDialog(context, model.author),
               child: AvatarWidget(
-                  author: model.author, size: 36.0),
-            ), //TODO: Add badge
+                author: model.author,
+                size: 36.0,
+                badge: Utils.getRelationColor(widget.relation),
+              ),
+            ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Stack(
                 children: <Widget>[
-                  Container(
-                    constraints: BoxConstraints.loose(
-                      Size(MediaQuery.of(context).size.width - 82.0,
-                          double.infinity),
-                    ),
-                    decoration: BoxDecoration(
-                      color: Utils.backgroundGrey(context),
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    margin: EdgeInsets.only(left: 8.0, top: 6.0, right: 6.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: 12.0,
-                              right: 40.0 + _votePadding(model.voteCount),
-                              top: 8.0,
-                              bottom: 4.0),
-                          child: GestureDetector(
-                            onTap: () => _openUserDialog(context, model.author),
-                            child: Text(
-                              model.author.login,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14.0,
-                                color: Utils.getAuthorColor(
-                                    model.author.color, context),
+                  GestureDetector(
+                    onLongPress: () => _showActionsDialog(context, model),
+                    child: Container(
+                      constraints: BoxConstraints.loose(
+                        Size(MediaQuery.of(context).size.width - 82.0,
+                            double.infinity),
+                      ),
+                      decoration: BoxDecoration(
+                        color: Utils.backgroundGrey(context),
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      margin: EdgeInsets.only(left: 8.0, top: 6.0, right: 6.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left: 12.0,
+                                right: 40.0 + _votePadding(model.voteCount),
+                                top: 8.0,
+                                bottom: 4.0),
+                            child: GestureDetector(
+                              onTap: () =>
+                                  _openUserDialog(context, model.author),
+                              child: Text(
+                                model.author.login,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14.0,
+                                  color: Utils.getAuthorColor(
+                                      model.author.color, context),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        SupaGestureDetector(
-                          onLongPress: () => _showActionsDialog(context, model),
-                          child: BodyWidget(
+                          BodyWidget(
                             textSize: 15.0,
                             body: model.body,
                             ellipsize: false,
                             padding: EdgeInsets.only(
                                 bottom: 8.0, left: 12.0, right: 12.0),
                           ),
-                        ),
-                        Visibility(
-                          visible: model.embed != null,
-                          child: EmbedWidget(
-                            padding: EdgeInsets.only(
-                                top: model.body != null ? 0.0 : 4.0),
-                            embed: model.embed,
-                            borderRadius: 20.0,
-                            reducedWidth: 82.0,
+                          Visibility(
+                            visible: model.embed != null,
+                            child: EmbedWidget(
+                              padding: EdgeInsets.only(
+                                  top: model.body != null ? 0.0 : 4.0),
+                              embed: model.embed,
+                              borderRadius: 20.0,
+                              reducedWidth: 82.0,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   Positioned(
@@ -145,6 +158,13 @@ class EntryCommentWidget extends StatelessWidget {
                       isComment: true,
                       count: model.voteCount,
                       onClicked: () => model.toggleVote(),
+                      onLongClicked: () => showDialog(
+                        context: context,
+                        builder: (_) => GreatDialogWidget(
+                          child: Text(
+                              "Niezaimplementowane"), //TODO: implement voters list
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -153,16 +173,22 @@ class EntryCommentWidget extends StatelessWidget {
                 builder: (context, inputModel, _) => Row(
                   children: <Widget>[
                     TextButton(
+                      onTap: () => setState(() => showFullDate = !showFullDate),
                       isButton: false,
                       padding:
                           EdgeInsets.only(top: 2.0, bottom: 4.0, left: 14.0),
-                      text: Utils.getSimpleDate(model.date),
+                      text: showFullDate
+                          ? Utils.getDateFormat(
+                              model.date, 'dd.MM.yyyy \'o\' HH:mm:ss')
+                          : Utils.getSimpleDate(model.date),
                     ),
                     TextButton(
                       padding: EdgeInsets.only(top: 2.0, bottom: 4.0),
                       text: "Cytuj",
                       onTap: () => inputModel.inputBarKey.currentState
-                          .quoteText(model.body, author: model.author),
+                          .quoteText(
+                              parse(model.body ?? "").documentElement.text,
+                              author: model.author),
                     ),
                     TextButton(
                       padding:
@@ -177,6 +203,73 @@ class EntryCommentWidget extends StatelessWidget {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  void _showActionsDialog(BuildContext contextmain, EntryCommentModel comment) {
+    showModalBottomSheet<void>(
+      context: contextmain,
+      builder: (BuildContext context) => Consumer<AuthStateModel>(
+        builder: (context, authStateModel, _) => Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 4.0),
+              child: Row(
+                children: <Widget>[
+                  _drawToolbarIcon(
+                    Icons.share,
+                    "Udostępnij",
+                    () {
+                      Navigator.pop(context);
+                      Share.share("https://www.wykop.pl/wpis/" +
+                          widget.entryId.toString() +
+                          "/#comment-" +
+                          comment.id.toString());
+                    },
+                  ),
+                  Visibility(
+                    visible: comment.body != "​​​​​" && comment.body != null,
+                    child: _drawToolbarIcon(Icons.content_copy, "Kopiuj treść",
+                        () {
+                      Navigator.pop(context);
+                      Utils.copyToClipboard(contextmain,
+                          parse(comment.body ?? "").documentElement.text);
+                    }),
+                  ),
+                  Visibility(
+                    visible: authStateModel.loggedIn &&
+                        widget.relation != AuthorRelation.User,
+                    child: _drawToolbarIcon(Icons.report, "Zgłoś", () {
+                      Navigator.pop(context); //TODO: implement report comment
+                      Scaffold.of(contextmain).showSnackBar(
+                          SnackBar(content: Text("Niezaimplementowane")));
+                    }),
+                  ),
+                  Visibility(
+                    visible: authStateModel.loggedIn &&
+                        widget.relation == AuthorRelation.User,
+                    child: _drawToolbarIcon(Icons.edit, "Edytuj", () {
+                      Navigator.pop(context); //TODO: implement edit comment
+                      Scaffold.of(contextmain).showSnackBar(
+                          SnackBar(content: Text("Niezaimplementowane")));
+                    }),
+                  ),
+                  Visibility(
+                    visible: authStateModel.loggedIn &&
+                        widget.relation == AuthorRelation.User,
+                    child: _drawToolbarIcon(Icons.delete, "Usuń", () {
+                      Navigator.pop(context); //TODO: implement delete comment
+                      Scaffold.of(contextmain).showSnackBar(
+                          SnackBar(content: Text("Niezaimplementowane")));
+                    }),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -96,9 +96,7 @@ class _MediaScreenState extends State<MediaScreen> {
         child: Scaffold(
           body: Consumer<MediaModel>(
             builder: (context, mediaModel, _) => mediaModel.isLoading
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
+                ? Center(child: CircularProgressIndicator())
                 : GestureDetector(
                     onTap: () => model.toogleIcons(),
                     child: Stack(
@@ -225,7 +223,7 @@ class _MediaScreenState extends State<MediaScreen> {
                         'Więcej',
                         () => showModalBottomSheet<void>(
                           context: context,
-                          builder: (BuildContext context) {
+                          builder: (BuildContext contextsecond) {
                             return SingleChildScrollView(
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -234,7 +232,7 @@ class _MediaScreenState extends State<MediaScreen> {
                                     leading: Icon(Icons.open_in_new),
                                     title: Text('Otwórz w ...'),
                                     onTap: () {
-                                      Navigator.pop(context);
+                                      Navigator.pop(contextsecond);
                                       Utils.launchURL(widget.embed.url);
                                     },
                                   ),
@@ -242,7 +240,7 @@ class _MediaScreenState extends State<MediaScreen> {
                                     leading: Icon(Icons.content_copy),
                                     title: Text('Skopiuj adres'),
                                     onTap: () {
-                                      Navigator.pop(context);
+                                      Navigator.pop(contextsecond);
                                       Utils.copyToClipboard(
                                           context, widget.embed.url);
                                     },
@@ -250,13 +248,19 @@ class _MediaScreenState extends State<MediaScreen> {
                                   ListTile(
                                     leading: Icon(Icons.report),
                                     title: Text('Zgłoś'),
+                                    onTap: () {
+                                      Navigator.pop(
+                                          contextsecond); //TODO: implement report image
+                                      Scaffold.of(context).showSnackBar(
+                                          SnackBar(
+                                              content:
+                                                  Text("Niezaimplementowane")));
+                                    },
                                   ),
                                   ListTile(
                                     leading: Icon(Icons.info_outline),
                                     title: Text('Informacje'),
-                                    onTap: () {
-                                      _informationDialog();
-                                    },
+                                    onTap: () => _informationDialog(),
                                   ),
                                 ],
                               ),
@@ -456,7 +460,6 @@ class _MediaScreenState extends State<MediaScreen> {
   }
 
   Widget _handleVideo() {
-    //TODO: nie wiem co z tym szajsem, spada z rowerka xD
     try {
       return Consumer<MediaModel>(
         builder: (context, mediaModel, _) => EmbedVideoPlayer(

@@ -56,6 +56,7 @@ class _PmScreenState extends State<PmScreen>
                           date: pmModel.lastUpdate,
                           fontSize: 16,
                           padding: EdgeInsets.all(0),
+                          isAuthor: true,
                         ),
                 ),
                 body: pmModel.isLoading
