@@ -109,7 +109,9 @@ class _EntryScreenState extends State<EntryScreen>
                                   ),
                                 ),
                               ),
-                              loadData: (page) => {},
+                              loadData: () async {
+                                return;
+                              },
                             ),
                           ),
                         ),

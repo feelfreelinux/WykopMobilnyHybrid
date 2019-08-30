@@ -10,7 +10,7 @@ class NotSuddenJumpPhysics extends ClampingScrollPhysics {
   double get dragStartDistanceMotionThreshold => 3.5;
 }
 
-typedef void LoadMoreDataCallback(Completer completer);
+typedef Future<void> LoadMoreDataCallback();
 
 class NotSuddenJumpScrollBehavior extends ScrollBehavior {
   @override
@@ -50,27 +50,44 @@ class _InfiniteListState extends State<InfiniteList> {
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(() {
+    _scrollController.addListener(() async {
       if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        widget.loadData(null);
+          _scrollController.position.maxScrollExtent && !isLoading) {
+        print('startLoading');
+        setState(() {
+          isLoading = true;
+        });
+        try {
+          await widget.loadData();
+        } catch (e) {}
+        setState(() {
+          isLoading = false;
+        });
+        print('stopLoading');
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    var itemCount = widget.header != null
+        ? widget.itemCount + (isLoading ? 2 : 1)
+        : widget.itemCount + (isLoading ? 1 : 0);
     return ScrollConfiguration(
       behavior: NotSuddenJumpScrollBehavior(),
       child: ShadowNotificationListener(
         child: ListView.builder(
           physics: NotSuddenJumpPhysics(),
-          itemCount: widget.header != null
-              ? widget.itemCount + 1
-              : widget.itemCount + 0,
+          itemCount: itemCount,
           itemBuilder: (context, index) {
             if (widget.header != null && index == 0) {
               return widget.header;
+            }
+            if (index == (itemCount - 1) && isLoading) {
+              print('wooo');
+              return Center(
+                child: CircularProgressIndicator(),
+              );
             }
 
             if (widget.header == null) {

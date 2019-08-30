@@ -35,7 +35,7 @@ class EntriesLinksListState extends State<EntriesLinksList> with AutomaticKeepAl
                   )
                 : InfiniteList(
                     header: widget.header,
-                    loadData: (completer) async {
+                    loadData: () async {
                       await model.loadMoreItems();
                     },
                     itemCount: model.items.length,

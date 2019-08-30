@@ -17,6 +17,8 @@ class _ErrorHandlerWidgetState extends State<ErrorHandlerWidget> {
 
   @override
   void initState() {
+    api.errorStreamController.close();
+    api.errorStreamController = StreamController<Error>();
     this._sub = api.errorStream.listen((e)  {
       var rightContext = OwmKeys.navKey.currentState.overlay.context;
           showDialog(
@@ -42,6 +44,7 @@ class _ErrorHandlerWidgetState extends State<ErrorHandlerWidget> {
 
   @override
   void dispose() {
+    api.errorStreamController.sink.close();
     api.errorStreamController.close();
     this._sub.cancel();
     super.dispose();

@@ -46,7 +46,7 @@ String generateMd5(String data) {
 
 class WykopApiClient {
   final ApiClient _client = ApiClient();
-  final errorStreamController = StreamController<Error>();
+  StreamController<Error> errorStreamController = StreamController();
   Stream<Error> get errorStream => errorStreamController.stream;
   Sink<Error> get errorSink => errorStreamController.sink;
 

@@ -63,7 +63,7 @@ class LinkCommentWidget extends StatelessWidget {
 
   Widget _buildLinkCommentBody(LinkCommentModel model, BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 14.0, right: 12.0),
+      padding: EdgeInsets.only(left: model.isParentComment ? 14.0 : 44.0, right: 12.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -75,87 +75,89 @@ class LinkCommentWidget extends StatelessWidget {
               //TODO: Add badge
             ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Stack(
-                children: <Widget>[
-                  Container(
-                    constraints: BoxConstraints.loose(
-                      Size(MediaQuery.of(context).size.width - 82.0,
-                          double.infinity),
-                    ),
-                    decoration: BoxDecoration(
-                      color: Utils.backgroundGrey(context),
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    margin: EdgeInsets.only(left: 8.0, top: 6.0, right: 6.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        _drawHeader(context, model.author),
-                        _drawBody(context, model),
-                        _drawEmbed(model.embed, model.body),
-                      ],
-                    ),
-                  ),
-                  Positioned(
-                    top: 2.0,
-                    right: 0.0,
-                    child: VoteButton(
-                      margin: EdgeInsets.only(left: 8.0),
-                      isSelected:
-                          model.voteState == LinkCommentVoteState.UP_VOTED,
-                      isComment: true,
-                      count: model.voteCount,
-                      onClicked: () => model.toggleVote(),
-                    ),
-                  ),
-                ],
-              ),
-              Consumer<InputModel>(
-                builder: (context, inputModel, _) => Row(
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Stack(
                   children: <Widget>[
-                    _footerText(
-                      context,
-                      padding: EdgeInsets.only(
-                        top: 2.0,
-                        bottom: 4.0,
-                        left: 14.0,
+                    Container(
+                      constraints: BoxConstraints.loose(
+                        Size(MediaQuery.of(context).size.width - 82.0,
+                            double.infinity),
                       ),
-                      text: Utils.getSimpleDate(model.date),
+                      decoration: BoxDecoration(
+                        color: Utils.backgroundGrey(context),
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      margin: EdgeInsets.only(left: 8.0, top: 6.0, right: 6.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          _drawHeader(context, model.author),
+                          _drawBody(context, model),
+                          _drawEmbed(model.embed, model.body),
+                        ],
+                      ),
                     ),
-                    _footerText(
-                      context,
-                      padding: EdgeInsets.only(
-                        top: 2.0,
-                        bottom: 4.0,
+                    Positioned(
+                      top: 2.0,
+                      right: 0.0,
+                      child: VoteButton(
+                        margin: EdgeInsets.only(left: 8.0),
+                        isSelected:
+                            model.voteState == LinkCommentVoteState.UP_VOTED,
+                        isComment: true,
+                        count: model.voteCount,
+                        onClicked: () => model.toggleVote(),
                       ),
-                      text: "Cytuj",
-                      isButton: true,
-                      onTap: () {
-                        inputModel.inputBarKey.currentState
-                            .quoteText(model.body, author: model.author);
-                      },
-                    ),
-                    _footerText(
-                      context,
-                      padding: EdgeInsets.only(
-                        top: 2.0,
-                        bottom: 4.0,
-                        right: 8.0,
-                      ),
-                      text: "Odpowiedz",
-                      isButton: true,
-                      onTap: () {
-                        inputModel.inputBarKey.currentState
-                            .replyToUser(model.author);
-                      },
                     ),
                   ],
                 ),
-              )
-            ],
+                Consumer<InputModel>(
+                  builder: (context, inputModel, _) => Row(
+                    children: <Widget>[
+                      _footerText(
+                        context,
+                        padding: EdgeInsets.only(
+                          top: 2.0,
+                          bottom: 4.0,
+                          left: 14.0,
+                        ),
+                        text: Utils.getSimpleDate(model.date),
+                      ),
+                      _footerText(
+                        context,
+                        padding: EdgeInsets.only(
+                          top: 2.0,
+                          bottom: 4.0,
+                        ),
+                        text: "Cytuj",
+                        isButton: true,
+                        onTap: () {
+                          inputModel.inputBarKey.currentState
+                              .quoteText(model.body, author: model.author);
+                        },
+                      ),
+                      _footerText(
+                        context,
+                        padding: EdgeInsets.only(
+                          top: 2.0,
+                          bottom: 4.0,
+                          right: 8.0,
+                        ),
+                        text: "Odpowiedz",
+                        isButton: true,
+                        onTap: () {
+                          inputModel.inputBarKey.currentState
+                              .replyToUser(model.author);
+                        },
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ],
       ),

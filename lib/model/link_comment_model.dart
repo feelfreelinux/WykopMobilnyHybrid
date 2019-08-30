@@ -10,16 +10,19 @@ class LinkCommentModel extends ChangeNotifier {
   int _voteCountPlus;
   Author _author;
   Embed _embed;
+  int _parentId;
   LinkCommentVoteState _voteState;
 
   int get id => _id;
   String get body => _body;
   String get date => _date;
+  int get parentId => _parentId;
   int get voteCount => _voteCount;
   int get voteCountPlus => _voteCountPlus;
   Author get author => _author;
   Embed get embed => _embed;
   LinkCommentVoteState get voteState => _voteState;
+  bool get isParentComment => _id == _parentId;
 
   void setData(LinkComment comment) {
     _id = comment.id;
@@ -28,6 +31,7 @@ class LinkCommentModel extends ChangeNotifier {
     _voteCount = comment.voteCount;
     _author = comment.author;
     _embed = comment.embed;
+    _parentId = comment.parentId;
     _voteCountPlus = comment.voteCountPlus;
     _voteState = comment.voteState;
     notifyListeners();

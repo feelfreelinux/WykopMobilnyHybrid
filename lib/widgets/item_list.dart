@@ -38,7 +38,7 @@ class ItemListState<T, D extends ChangeNotifier> extends State<ItemList<T, D>>
                   )
                 : InfiniteList(
                     header: widget.header,
-                    loadData: (completer) async {
+                    loadData: () async {
                       await model.loadMoreItems();
                     },
                     itemCount: model.items.length,

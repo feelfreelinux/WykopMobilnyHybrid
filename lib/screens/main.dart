@@ -29,7 +29,7 @@ class _MainScreenState extends State<MainScreen> {
       child: Scaffold(
         resizeToAvoidBottomPadding: false,
         key: OwmKeys.mainScaffoldKey,
-        body: _children[_currentIndex],
+        body: SafeArea(child: _children[_currentIndex]),
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor,
