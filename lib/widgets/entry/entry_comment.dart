@@ -173,42 +173,41 @@ class _EntryCommentWidgetState extends State<EntryCommentWidget> {
                     ),
                   ],
                 ),
-                Container(
-                  child: Consumer<InputModel>(
-                    builder: (context, inputModel, _) => Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        TextButton(
-                          onTap: () =>
-                              setState(() => showFullDate = !showFullDate),
-                          isButton: false,
-                          padding: EdgeInsets.only(
-                              top: 2.0, bottom: 4.0, left: 14.0),
-                          text: showFullDate
-                              ? Utils.getDateFormat(
-                                  model.date, 'dd.MM.yyyy \'o\' HH:mm:ss')
-                              : Utils.getSimpleDate(model.date),
-                        ),
-                        TextButton(
+                Consumer<InputModel>(
+                  builder: (context, inputModel, _) => Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      TextButton(
+                        onTap: () =>
+                            setState(() => showFullDate = !showFullDate),
+                        isButton: false,
+                        padding:
+                            EdgeInsets.only(top: 2.0, bottom: 4.0, left: 14.0),
+                        text: showFullDate
+                            ? Utils.getDateFormat(
+                                model.date, 'dd.MM.yyyy \'o\' HH:mm:ss')
+                            : Utils.getSimpleDate(model.date),
+                      ),
+                      Flexible(
+                        child: TextButton(
                           padding: EdgeInsets.only(top: 2.0, bottom: 4.0),
-                          text: "Cytuj",
                           onTap: () => inputModel.inputBarKey.currentState
                               .quoteText(
                                   parse(model.body ?? "").documentElement.text,
                                   author: model.author),
+                          text: "Cytuj",
                         ),
-                        Flexible(
-                          child: TextButton(
-                            padding: EdgeInsets.only(
-                                top: 2.0, bottom: 4.0, right: 8.0),
-                            text: "Odpowiedz",
-                            onTap: () => inputModel.inputBarKey.currentState
-                                .replyToUser(model.author),
-                          ),
+                      ),
+                      Flexible(
+                        child: TextButton(
+                          padding: EdgeInsets.only(top: 2.0, bottom: 4.0),
+                          onTap: () => inputModel.inputBarKey.currentState
+                              .replyToUser(model.author),
+                          text: "Odpowiedz",
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ],
