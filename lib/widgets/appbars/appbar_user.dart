@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:owmflutter/model/auth_model.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'dart:async';
-
 import 'package:provider/provider.dart';
 
 typedef void LoginCallback(String login, String token, Completer completer);
@@ -25,11 +23,8 @@ class AppbarUserWidget extends StatelessWidget {
       child: Consumer<AuthStateModel>(
         builder: (context, authState, _) {
           return GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                Utils.getPageSlideToUp(MainSettingsScreen()),
-              );
-            },
+            onTap: () => Navigator.of(context)
+                .push(Utils.getPageSlideToUp(MainSettingsScreen())),
             child: Stack(
               children: <Widget>[
                 Container(
@@ -54,13 +49,8 @@ class AppbarUserWidget extends StatelessWidget {
                     image: DecorationImage(
                       fit: BoxFit.fill,
                       image: authState.loggedIn
-                          ? AdvancedNetworkImage(
-                              authState.avatarUrl,
-                              useDiskCache: true,
-                            )
-                          : AssetImage(
-                              'assets/avatar.png',
-                            ),
+                          ? NetworkImage(authState.avatarUrl)
+                          : AssetImage('assets/avatar.png'),
                     ),
                   ),
                 ),

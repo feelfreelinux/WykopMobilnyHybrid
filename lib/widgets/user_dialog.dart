@@ -24,7 +24,7 @@ class _UserDialogWidgetState extends State<UserDialogWidget>
   void initState() {
     super.initState();
     controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 450));
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     animation = CurvedAnimation(parent: controller, curve: Curves.elasticInOut);
     controller.addListener(() => setState(() {}));
     controller.forward();

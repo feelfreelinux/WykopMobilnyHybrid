@@ -29,7 +29,7 @@ class _MainScreenState extends State<MainScreen> {
       child: Scaffold(
         resizeToAvoidBottomPadding: false,
         key: OwmKeys.mainScaffoldKey,
-        body: SafeArea(child: _children[_currentIndex]),
+        body: _children[_currentIndex],
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor,
@@ -143,6 +143,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   void _showPmDialog(BuildContext context) {
+    Navigator.pop(context);
     showDialog(
       context: context,
       builder: (_) => GreatDialogWidget(
@@ -163,7 +164,6 @@ class _MainScreenState extends State<MainScreen> {
               child: TextField(
                 cursorRadius: Radius.circular(20.0),
                 style: TextStyle(fontSize: 14.0),
-                keyboardType: TextInputType.multiline,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.symmetric(vertical: 10.0),
                   border: InputBorder.none,
@@ -239,46 +239,50 @@ class _MainScreenState extends State<MainScreen> {
       {num badge = 0}) {
     return Tooltip(
       message: tooltip,
-      child: GestureDetector(
-        onTap: () => setState(() => _currentIndex = index),
-        child: Stack(
-          alignment: AlignmentDirectional.center,
-          children: <Widget>[
-            Container(
-              width: 52.0,
-              height: 52.0,
-              child: Icon(
-                icon,
-                size: 28.0,
-                color: _currentIndex == index
-                    ? Theme.of(context).iconTheme.color
-                    : Theme.of(context).iconTheme.color.withOpacity(0.40),
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          onTap: () => setState(() => _currentIndex = index),
+          borderRadius: BorderRadius.circular(100),
+          child: Stack(
+            alignment: AlignmentDirectional.center,
+            children: <Widget>[
+              Container(
+                width: 52.0,
+                height: 52.0,
+                child: Icon(
+                  icon,
+                  size: 28.0,
+                  color: _currentIndex == index
+                      ? Theme.of(context).iconTheme.color
+                      : Theme.of(context).iconTheme.color.withOpacity(0.40),
+                ),
               ),
-            ),
-            Positioned(
-              top: 6.0,
-              right: badge <= 9 ? 6.0 : 4.0,
-              child: Visibility(
-                visible: badge != 0,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.redAccent,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  padding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
-                  child: Text(
-                    badge <= 99 ? badge.toString() : "+99",
-                    style: TextStyle(
-                      height: 1.07,
-                      fontSize: 10.0,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
+              Positioned(
+                top: 6.0,
+                right: badge <= 9 ? 6.0 : 4.0,
+                child: Visibility(
+                  visible: badge != 0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 1.0, horizontal: 5.0),
+                    child: Text(
+                      badge <= 99 ? badge.toString() : "+99",
+                      style: TextStyle(
+                        fontSize: 10.0,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

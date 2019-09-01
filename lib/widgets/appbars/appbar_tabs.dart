@@ -30,6 +30,7 @@ class _AppbarTabsWidgetState extends State<AppbarTabsWidget> {
         child: AppBar(
           automaticallyImplyLeading: false,
           title: Container(
+            color: Theme.of(context).backgroundColor,
             padding: EdgeInsets.symmetric(horizontal: 8.0),
             child: Row(
               children: <Widget>[
@@ -45,12 +46,12 @@ class _AppbarTabsWidgetState extends State<AppbarTabsWidget> {
                           indicatorColor:
                               Theme.of(context).primaryColor.withOpacity(0.0),
                           labelStyle: TextStyle(
-                            height: 1.45,
+                            height: 1.85,
                             fontSize: 24.0,
                             fontWeight: FontWeight.w700,
                           ),
                           unselectedLabelStyle: TextStyle(
-                            height: 2.20,
+                            height: 2.95,
                             fontSize: 15.0,
                             fontWeight: FontWeight.w600,
                           ),

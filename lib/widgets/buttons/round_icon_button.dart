@@ -22,21 +22,24 @@ class RoundIconButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: padding ?? EdgeInsets.all(8.0),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(100),
-        child: Container(
-          padding: iconPadding ?? EdgeInsets.all(6.0),
-          decoration: BoxDecoration(
-            color: roundColor ?? Utils.backgroundGreyOpacity(context),
-            shape: BoxShape.circle,
-          ),
-          child: Icon(
-            icon,
-            size: iconSize,
-            color: iconColor ?? Theme.of(context).iconTheme.color,
+    return Material(
+      type: MaterialType.transparency,
+      child: Padding(
+        padding: padding ?? EdgeInsets.all(8.0),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(100),
+          child: Container(
+            padding: iconPadding ?? EdgeInsets.all(6.0),
+            decoration: BoxDecoration(
+              color: roundColor ?? Utils.backgroundGreyOpacity(context),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              icon,
+              size: iconSize,
+              color: iconColor ?? Theme.of(context).iconTheme.color,
+            ),
           ),
         ),
       ),

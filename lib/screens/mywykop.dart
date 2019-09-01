@@ -13,6 +13,7 @@ class MyWykopScreen extends StatelessWidget {
       child: DefaultTabController(
         length: 4,
         child: Scaffold(
+          resizeToAvoidBottomPadding: false,
           appBar: AppbarTabsWidget(
             tabs: <Widget>[
               Tab(text: 'Mój Wykop'),

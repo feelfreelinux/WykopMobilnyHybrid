@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/widgets/pm/pm.dart';
 import 'package:owmflutter/widgets/widgets.dart';
-import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/model/model.dart';
-import 'package:owmflutter/keys.dart';
 import 'package:provider/provider.dart';
 
 class PmScreen extends StatefulWidget {
   final String receiver;
+
   PmScreen({@required this.receiver});
+
   _PmScreenState createState() => _PmScreenState();
 }
 
@@ -19,6 +18,7 @@ class _PmScreenState extends State<PmScreen>
   Widget build(BuildContext context) {
     final mqData = MediaQuery.of(context);
     final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
+    
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<ShadowControlModel>(

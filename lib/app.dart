@@ -14,26 +14,24 @@ class OwmApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: HighlightWrapper(
-        id: -1,
-        child: ErrorHandlerWidget(
-          child: MultiProvider(
-            providers: [
-              ChangeNotifierProvider.value(value: AuthStateModel()),
-              Provider.value(value: OWMSettings(SharedPreferencesAdapter())),
-              ChangeNotifierProvider.value(value: SuggestionsModel()),
-            ],
-            child: Consumer<AuthStateModel>(
-              // Required to make app redraw on login
-              builder: (context, model, _) => OWMSettingListener(
-                rebuildOnChange: (settings) => settings.useDarkThemeStream,
-                builder: (context, settings) {
-                  return OWMSettingListener(
-                    rebuildOnChange: (settings) => settings.accentColorStream,
-                    builder: (context, settings) => MaterialApp(
-                      /*  Super genialny kod mówiącu czy włączyć nocny
+    return HighlightWrapper(
+      id: -1,
+      child: ErrorHandlerWidget(
+        child: MultiProvider(
+          providers: [
+            ChangeNotifierProvider.value(value: AuthStateModel()),
+            Provider.value(value: OWMSettings(SharedPreferencesAdapter())),
+            ChangeNotifierProvider.value(value: SuggestionsModel()),
+          ],
+          child: Consumer<AuthStateModel>(
+            // Required to make app redraw on login
+            builder: (context, model, _) => OWMSettingListener(
+              rebuildOnChange: (settings) => settings.useDarkThemeStream,
+              builder: (context, settings) {
+                return OWMSettingListener(
+                  rebuildOnChange: (settings) => settings.accentColorStream,
+                  builder: (context, settings) => MaterialApp(
+                    /*  Super genialny kod mówiącu czy włączyć nocny
                               W sumie wystarczy też mieć godziny wschodu i zachodu i też się nada
                               TODO: Jakoś sprawdzać czy to już i zmieniać w locie motyw apki
 
@@ -55,18 +53,17 @@ class OwmApp extends StatelessWidget {
                                   settings.autoDarkThemeTimeTo.split(":")[1]));
                           bool k = (a.difference(b).inMinutes >= 0) && (a.difference(c).inMinutes <= 0);
                           */
-                      title: 'Wykop Mobilny',
-                      navigatorKey: OwmKeys.navKey,
-                      theme: settings.useDarkTheme
-                          ? Themes.darkTheme(accentColor: settings.accentColor)
-                          : Themes.lightTheme(accentColor: settings.accentColor),
-                      routes: {
-                        '/': (context) => MainScreen(),
-                      },
-                    ),
-                  );
-                },
-              ),
+                    title: 'Wykop Mobilny',
+                    navigatorKey: OwmKeys.navKey,
+                    theme: settings.useDarkTheme
+                        ? Themes.darkTheme(accentColor: settings.accentColor)
+                        : Themes.lightTheme(accentColor: settings.accentColor),
+                    routes: {
+                      '/': (context) => MainScreen(),
+                    },
+                  ),
+                );
+              },
             ),
           ),
         ),

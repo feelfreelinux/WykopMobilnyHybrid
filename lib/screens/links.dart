@@ -18,6 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: DefaultTabController(
         length: 4,
         child: Scaffold(
+          resizeToAvoidBottomPadding: false,
           appBar: AppbarTabsWidget(
             tabs: <Widget>[
               Tab(text: 'Główna'),
