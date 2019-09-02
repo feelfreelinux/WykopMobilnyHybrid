@@ -160,7 +160,7 @@ class _EmbedState extends State<EmbedWidget> {
         BoxShadow(color: Theme.of(context).iconTheme.color.withOpacity(0.15))
       ],
       image: DecorationImage(
-        image: AdvancedNetworkImage(
+        image: NetworkImage(
             Provider.of<OWMSettings>(context).highResImage
                 ? widget.embed.preview.replaceAll(",w400.jpg", ",w600.jpg")
                 : widget.embed.preview),

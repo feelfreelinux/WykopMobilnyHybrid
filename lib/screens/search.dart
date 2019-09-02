@@ -11,46 +11,17 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  bool isSearching = false;
   int _currentIndex = 0;
-
-  final TextEditingController searchInputController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final mqData = MediaQuery.of(context);
     final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
 
-    final List<Widget> _children = [
-      searchInputController.text.isNotEmpty
-          ? Consumer<SearchScreenModel>(
-              builder: (context, searchModel, _) => Container(
-                key: ValueKey(searchModel.query),
-                child: LinksList(
-                  builder: (context) => LinkListModel(
-                    loadNewLinks: (page) =>
-                        api.search.searchLinks(page, searchModel.query),
-                  ),
-                ),
-              ),
-            )
-          : _getHistory(),
-      searchInputController.text.isNotEmpty
-          ? Consumer<SearchScreenModel>(
-              builder: (context, searchModel, _) => Container(
-                child: Container(
-                  key: ValueKey(searchModel.query),
-                  child: EntriesList(
-                    builder: (context) => EntryListModel(
-                      loadNewEntries: (page) =>
-                          api.search.searchEntries(page, searchModel.query),
-                    ),
-                  ),
-                ),
-              ),
-            )
-          : _getHistory(),
-      _getHistory(),
+    final List<dynamic> _children = [
+      (query) => SearchResultPage(searchResType: SearchResultType.LINK, query: query),
+      (query) => SearchResultPage(searchResType: SearchResultType.ENTRY, query: query),
+      (_) => _getHistory(),
     ];
 
     return Consumer<OWMSettings>(
@@ -63,44 +34,48 @@ class _SearchScreenState extends State<SearchScreen> {
             data: mqDataNew,
             child: Scaffold(
               appBar: AppbarNormalWidget(
-                center: WillPopScope(
-                  onWillPop: () {
-                    searchInputController.clear();
-                  },
-                  child: Consumer<SearchScreenModel>(
-                    builder: (context, searchModel, _) => TextField(
-                      autofocus: true,
-                      style: TextStyle(fontWeight: FontWeight.w600),
-                      maxLines: 1,
-                      controller: searchInputController,
-                      onSubmitted: (text) {
-                        searchModel.setQuery(text);
-                      },
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 12.0),
-                        border: InputBorder.none,
-                        hintText: 'Szukaj',
-                        hintStyle: TextStyle(
-                          color: Theme.of(context)
-                              .textTheme
-                              .body1
-                              .color
-                              .withOpacity(0.7),
+                center: Consumer<SearchScreenModel>(
+                  builder: (context, model, _) => WillPopScope(
+                    onWillPop: () {
+                      model.searchInputController.clear();
+                    },
+                    child: Consumer<SearchScreenModel>(
+                      builder: (context, searchModel, _) => TextField(
+                        autofocus: true,
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                        maxLines: 1,
+                        controller: model.searchInputController,
+                        onSubmitted: (text) {
+                          searchModel.setQuery();
+                        },
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 8.0, horizontal: 12.0),
+                          border: InputBorder.none,
+                          hintText: 'Szukaj',
+                          hintStyle: TextStyle(
+                            color: Theme.of(context)
+                                .textTheme
+                                .body1
+                                .color
+                                .withOpacity(0.7),
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-                actions: searchInputController.text.isNotEmpty
-                    ? <Widget>[
-                        IconButtonWidget(
-                          icon: Icons.close,
-                          onTap: () => searchInputController.clear(),
-                        )
-                      ]
-                    : null,
+                actions: <Widget>[
+                  Consumer<SearchScreenModel>(
+                      builder: (context, model, _) => model
+                              .searchInputController.text.isNotEmpty
+                          ? IconButtonWidget(
+                              icon: Icons.close,
+                              onTap: () => model.searchInputController.clear(),
+                            )
+                          : Container())
+                ],
                 bottomHeight: 38,
                 bottom: Padding(
                   padding:
@@ -129,7 +104,13 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                 ),
               ),
-              body: ShadowNotificationListener(child: _children[_currentIndex]),
+              body: Consumer<SearchScreenModel>(
+                builder: (context, model, _) => ShadowNotificationListener(
+                  child: model.isEditing
+                      ? _getHistory()
+                      : _children[_currentIndex](model.query),
+                ),
+              ),
             ),
           ),
         ),
@@ -157,20 +138,68 @@ class _SearchScreenState extends State<SearchScreen> {
                       ? 5
                       : Provider.of<OWMSettings>(context).searchHistory.length,
                   (i) => i)
-              .map((e) => ListTile(
-                    onTap: () {}, //TODO: implement searchModel.setQuery(text);
-                    leading: Icon(Icons.access_time),
-                    trailing: Icon(Icons.navigate_next),
-                    title: Text(
-                      Provider.of<OWMSettings>(context)
-                          .searchHistory
-                          .reversed
-                          .toList()[e],
-                    ),
+              .map((e) => Consumer<SearchScreenModel>(
+                    builder: (context, model, _) {
+                      var suggestion =
+                          Provider.of<OWMSettings>(context, listen: false)
+                              .searchHistory
+                              .reversed
+                              .toList()[e];
+                      return ListTile(
+                        onTap: () =>
+                            model.searchInputController.text = suggestion,
+                        leading: Icon(Icons.access_time),
+                        trailing: Icon(Icons.navigate_next),
+                        title: Text(suggestion),
+                      );
+                    },
                   ))
               .toList(),
         ],
       ),
     );
   }
+}
+
+enum SearchResultType {
+  LINK,
+  ENTRY,
+}
+
+class SearchResultPage extends StatefulWidget {
+  final SearchResultType searchResType;
+  final String query;
+  SearchResultPage({this.searchResType, this.query});
+
+  @override
+  _SearchResultPageState createState() => _SearchResultPageState();
+}
+
+class _SearchResultPageState extends State<SearchResultPage>
+    with AutomaticKeepAliveClientMixin<SearchResultPage> {
+  @override
+  Widget build(BuildContext context) {
+    if (widget.searchResType == SearchResultType.LINK) {
+      return Container(
+        child: LinksList(
+          builder: (context) => LinkListModel(
+            loadNewLinks: (page) => api.search.searchLinks(page, widget.query),
+          ),
+        ),
+      );
+    } else {
+      return Container(
+        child: EntriesList(
+          builder: (context) => EntryListModel(
+            loadNewEntries: (page) =>
+                api.search.searchEntries(page, widget.query),
+          ),
+        ),
+      );
+    }
+    return Container();
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 }

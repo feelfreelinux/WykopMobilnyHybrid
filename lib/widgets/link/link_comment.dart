@@ -185,20 +185,7 @@ class LinkCommentWidget extends StatelessWidget {
   }
 
   Widget _drawBody(BuildContext context, LinkCommentModel model) {
-    return SupaGestureDetector(
-      onLongPress: () {
-        _showActionsDialog(context, model);
-      },
-      child: BodyWidget(
-        body: model.body,
-        ellipsize: false,
-        padding: EdgeInsets.only(
-          bottom: 8.0,
-          left: 12.0,
-          right: 12.0,
-        ),
-      ),
-    );
+
   }
 
   Widget _drawEmbed(Embed embed, String body) {

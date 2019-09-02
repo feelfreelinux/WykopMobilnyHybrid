@@ -175,16 +175,14 @@ class _HtmlParser {
         } else if (element.attributes['href'].startsWith('#')) {
           _currentTextSpans.add(
             ClickableTextSpan(
-              onTapDown: () {
-                ActiveGestureDetectorWidget.of(context).changeState(false);
-              },
-              onTapUp: () {
-                ActiveGestureDetectorWidget.of(context).changeState(true);
-              },
               text: element.text,
               onTap: () {
-                Navigator.push(context,
-                    Utils.getPageTransition(TagScreen(tag: element.text)));
+                Navigator.push(
+                  context,
+                  Utils.getPageTransition(
+                    TagScreen(tag: element.text),
+                  ),
+                );
               },
               style: TextStyle(
                 fontSize: textSize,
@@ -214,12 +212,6 @@ class _HtmlParser {
           var url = element.attributes['href'];
           _currentTextSpans.add(
             ClickableTextSpan(
-              onTapDown: () {
-                ActiveGestureDetectorWidget.of(context).changeState(false);
-              },
-              onTapUp: () {
-                ActiveGestureDetectorWidget.of(context).changeState(true);
-              },
               text: element.text,
               onTap: () {
                 WykopNavigator.handleUrl(context, url);
