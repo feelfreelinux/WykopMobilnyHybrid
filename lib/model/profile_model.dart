@@ -16,6 +16,8 @@ class ProfileModel extends ChangeNotifier {
   bool get isObserved => _isObserved;
   bool get isBlocked => _isBlocked;
 
+  String get backgroundUrl => _fullProfile.background;
+
   String get formattedDate => _profileLoaded
       ? "Dołączył/a ${Utils.getSimpleDate(_fullProfile.signupAt)}"
       : '...';

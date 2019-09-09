@@ -3,114 +3,126 @@ import 'package:owmflutter/widgets/widgets.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 
+import 'package:flutter/material.dart';
+import 'package:owmflutter/api/api.dart';
+import 'package:owmflutter/model/model.dart';
+import 'package:owmflutter/widgets/widgets.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
+import 'package:provider/provider.dart';
+
 class ProfileScreen extends StatefulWidget {
-  final String profile;
-  ProfileScreen({this.profile});
+  final ProfileModel profileModel;
+  ProfileScreen({this.profileModel});
+
   @override
-  _MainCollapsingToolbarState createState() => _MainCollapsingToolbarState();
+  ProfileScreenState createState() => ProfileScreenState();
 }
 
-class _MainCollapsingToolbarState extends State<ProfileScreen> {
+class ProfileScreenState extends State<ProfileScreen> {
+  String list = "Akcje";
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppbarNormalWidget(
-          title: '@' + widget.profile,
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.visibility),
-              onPressed: () {},
-              tooltip: "Obserwuj",
+    final mqData = MediaQuery.of(context);
+    final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
+    return ChangeNotifierProvider<ProfileModel>.value(
+      value: widget.profileModel,
+      child: ChangeNotifierProvider<ShadowControlModel>(
+        builder: (context) => ShadowControlModel(),
+        child: MediaQuery(
+          data: mqDataNew,
+          child: Scaffold(
+            appBar: AppbarNormalWidget(
+              title: widget.profileModel.author.login,
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.refresh),
+                  onPressed: () {},
+                  tooltip: "Odśwież",
+                ),
+              ],
             ),
-            IconButton(
-              icon: Icon(Icons.lock),
+            floatingActionButton: FloatingActionButton(
+              child: Icon(Icons.edit),
               onPressed: () {},
-              tooltip: "Zablokuj",
             ),
-          ],
+            body: _drawBody(),
+          ),
         ),
-        body: TabBarView(children: [
-        ], physics: NeverScrollableScrollPhysics()),
       ),
     );
+  }
+
+  _drawBody() {
+    if (list == "Akcje") {
+      return EntriesLinksList(
+        header: _drawHeader(),
+        builder: (context) => EntryLinkListmodel(
+          loadNewEntryLinks: (page) =>
+              api.profiles.getActions(widget.profileModel.author.login),
+        ),
+      );
+    }
   }
 
   Widget _drawHeader() {
-    return Text('Header');
-  }
-
-  Widget _renderDropdown() {
-    return Container(
-      color: Theme.of(context).backgroundColor,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-        child: Row(
-          children: [
-            DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                items: <String>['AKCJE'].map((String value) {
-                  return new DropdownMenuItem<String>(
-                    value: value,
-                    child: new Text(value,
+    return Column(
+      children: <Widget>[
+        widget.profileModel.backgroundUrl != null
+            ? Stack(
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 100.0,
+                    child: Image(
+                      image: AdvancedNetworkImage(
+                          widget.profileModel.backgroundUrl),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ],
+              )
+            : Container(),
+        Container(
+          padding: EdgeInsets.only(left: 18.0, right: 4.0),
+          child: Row(
+            children: <Widget>[
+              DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  items: <String>['Akcje'].map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                        textScaleFactor: 1.0,
                         style: TextStyle(
-                            fontSize: 13.0, fontWeight: FontWeight.w600)),
-                  );
-                }).toList(),
-                value: "AKCJE",
-                onChanged: (_) {},
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                  value: list,
+                  onChanged: (value) {
+                    setState(() {
+                      list = value;
+                    });
+                  },
+                ),
               ),
-            ),
-            Expanded(child: Container()),
-            Icon(Icons.menu)
-          ],
+              Expanded(child: Container()),
+              IconButton(
+                icon: Icon(Icons.more_horiz),
+                onPressed: () {},
+              ),
+            ],
+          ),
         ),
-      ),
+        DividerWidget(
+          padding: EdgeInsets.symmetric(
+            horizontal: 18.0,
+          ),
+        ),
+      ],
     );
-  }
-}
-
-class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate(this._tabBar);
-
-  final PreferredSizeWidget _tabBar;
-
-  @override
-  double get minExtent => _tabBar.preferredSize.height;
-  @override
-  double get maxExtent => _tabBar.preferredSize.height;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return new Container(
-      child: _tabBar,
-    );
-  }
-
-  @override
-  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return false;
-  }
-}
-
-@immutable
-class AppbarPreferredSize extends PreferredSize {
-  final Widget child;
-  final double height;
-  AppbarPreferredSize({
-    @required this.child,
-    this.height = 48,
-  });
-
-  @override
-  Size get preferredSize {
-    return Size.fromHeight(height);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return child;
   }
 }

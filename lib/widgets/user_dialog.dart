@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/model/profile_model.dart';
 import 'package:owmflutter/models/author.dart';
+import 'package:owmflutter/screens/profile.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:provider/provider.dart';
@@ -208,7 +209,13 @@ class _UserDialogWidgetState extends State<UserDialogWidget>
                       Padding(
                         padding: EdgeInsets.only(top: 18.0),
                         child: GestureDetector(
-                          onTap: () {}, //TODO: get profile screen
+                          onTap: () {
+                            Navigator.of(context).push(
+                              Utils.getPageTransition(
+                                ProfileScreen(profileModel: profileModel),
+                              ),
+                            );
+                          },
                           child: Container(
                             constraints:
                                 BoxConstraints(minWidth: double.infinity),
