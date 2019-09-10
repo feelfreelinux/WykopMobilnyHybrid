@@ -34,7 +34,7 @@ class SearchScreenModel extends ChangeNotifier {
       _hideSuggestionsTimer = Timer(
         Duration(seconds: 3),
         () {
-          if (_isEditing) {
+          if (_isEditing && _searchInputController.text.length > 3) {
             _isEditing = false;
             notifyListeners();
           }
