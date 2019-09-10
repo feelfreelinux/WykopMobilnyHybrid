@@ -39,7 +39,6 @@ class _EntryScreenState extends State<EntryScreen>
                       child: Scaffold(
                         backgroundColor: Theme.of(context).backgroundColor,
                         bottomNavigationBar: InputBarWidget(
-                          (inputData) {},
                           key: model.inputBarKey,
                         ),
                         resizeToAvoidBottomPadding: false,

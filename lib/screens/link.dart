@@ -34,7 +34,6 @@ class _LinkScreenState extends State<LinkScreen>
                 data: mqDataNew,
                 child: Scaffold(
                   bottomNavigationBar: InputBarWidget(
-                    (inputData) {},
                     key: model.inputBarKey,
                   ),
                   resizeToAvoidBottomPadding: false,

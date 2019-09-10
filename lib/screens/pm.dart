@@ -38,7 +38,6 @@ class _PmScreenState extends State<PmScreen>
               value: pmModel,
               child: Scaffold(
                 bottomNavigationBar: InputBarWidget(
-                  (_) {},
                   key: pmModel.inputBarKey,
                   hintText: "Napisz wiadomość",
                 ),

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/model/model.dart';
+import 'package:owmflutter/model/new_entry_model.dart';
+import 'package:owmflutter/screens/entry.dart';
+import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/owm_glyphs.dart';
@@ -24,11 +27,22 @@ class EntryInputScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: InputScreen(
-        inputType: InputType.ENTRY,
-        sendCallback: (inputData) async {
-          return;
-        },
+      child: ChangeNotifierProvider<InputModel>(
+        builder: (context) => NewEntryModel(
+          entryCreated: (entry) {
+            Navigator.of(context).pop();
+            Navigator.of(context).push(
+              Utils.getPageTransition(
+                EntryScreen(
+                  model: EntryModel()..setData(entry),
+                ),
+              ),
+            );
+          },
+        ),
+        child: InputScreen(
+          inputType: InputType.ENTRY,
+        ),
       ),
     );
   }
@@ -72,7 +86,6 @@ class _InputScreenState extends State<InputScreen> {
       child: _SystemPadding(
         child: Scaffold(
           bottomNavigationBar: InputBarWidget(
-            widget.sendCallback,
             key: inputBarKey,
             externalController: textController,
             imageStateChanged: (image) {
@@ -123,7 +136,7 @@ class _InputScreenState extends State<InputScreen> {
                       Flexible(
                         child: ConstrainedBox(
                           constraints: BoxConstraints(
-                            maxHeight: 90.0,
+                            maxHeight: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.vertical - 100,
                           ),
                           child: Scrollbar(
                             child: SingleChildScrollView(

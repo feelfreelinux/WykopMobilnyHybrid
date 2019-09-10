@@ -19,14 +19,13 @@ typedef Future InputBarCallback(InputData inputData);
 typedef void OnImageStateChangedCallback(File image);
 
 class InputBarWidget extends StatefulWidget {
-  final InputBarCallback callback;
   final OnImageStateChangedCallback imageStateChanged;
   final TextEditingController externalController;
   final Color iconsColor;
   final String hintText;
 
   InputBarWidget(
-    this.callback, {
+    {
     @required Key key,
     this.externalController,
     this.imageStateChanged,
