@@ -29,6 +29,9 @@ class _AppbarTabsWidgetState extends State<AppbarTabsWidget> {
         decoration: Utils.appBarShadow(shadowControlModel.showTopShadow),
         child: AppBar(
           automaticallyImplyLeading: false,
+          elevation: 0.0,
+          centerTitle: true,
+          titleSpacing: 0.0,
           title: Container(
             color: Theme.of(context).backgroundColor,
             padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -46,17 +49,17 @@ class _AppbarTabsWidgetState extends State<AppbarTabsWidget> {
                           indicatorColor:
                               Theme.of(context).primaryColor.withOpacity(0.0),
                           labelStyle: TextStyle(
-                            height: 1.85,
+                            height: 1.25,
                             fontSize: 24.0,
                             fontWeight: FontWeight.w700,
                           ),
                           unselectedLabelStyle: TextStyle(
-                            height: 2.95,
+                            height: 1.90,
                             fontSize: 15.0,
                             fontWeight: FontWeight.w600,
                           ),
                           labelPadding: EdgeInsets.symmetric(
-                            vertical: 0.0,
+                            vertical: 10.0,
                             horizontal: 14.0,
                           ),
                           unselectedLabelColor: Colors.grey[600],
@@ -106,9 +109,6 @@ class _AppbarTabsWidgetState extends State<AppbarTabsWidget> {
               ],
             ),
           ),
-          elevation: 0.0,
-          centerTitle: true,
-          titleSpacing: 0.0,
         ),
       ),
     );
