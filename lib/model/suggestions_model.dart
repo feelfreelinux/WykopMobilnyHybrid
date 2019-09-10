@@ -11,13 +11,13 @@ class SuggestionsModel extends ChangeNotifier {
 
   Future<void> loadSuggestions(String q) async {
     if (q != null) {
-      if (q.startsWith("@") && verifyAuthorSuggestion(q)) {
+      if (q.length > 3 && q.startsWith("@") && verifyAuthorSuggestion(q)) {
         var suggestions = await api.suggest.suggestUsers(q.split("@")[1]);
         _authorSuggestions = suggestions;
         _tagSuggestions = [];
         notifyListeners();
         return;
-      } else if (q.startsWith("#") && verifyTagSuggestion(q)) {
+      } else if (q.length > 3 && q.startsWith("#") && verifyTagSuggestion(q)) {
         var suggestions = await api.suggest.suggestTags(q.split("#")[1]);
         _authorSuggestions = [];
         _tagSuggestions = suggestions;

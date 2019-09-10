@@ -31,14 +31,20 @@ class ProfileScreenState extends State<ProfileScreen> {
         child: MediaQuery(
           data: mqDataNew,
           child: Scaffold(
-            appBar: AppbarNormalWidget(
-              title: widget.profileModel.author.login,
+            appBar: AppBar(
+              elevation: 0,
+              
               actions: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.refresh),
-                  onPressed: () {},
-                  tooltip: "Odśwież",
+Material(
+                type: MaterialType.transparency,
+                child: RoundIconButtonWidget(
+                  icon: Icons.arrow_back,
+                  iconColor: Theme.of(context).iconTheme.color,
+                  roundColor:
+                      Theme.of(context).backgroundColor.withOpacity(0.4),
+                  onTap: () => Navigator.pop(context),
                 ),
+              )
               ],
             ),
             floatingActionButton: FloatingActionButton(
