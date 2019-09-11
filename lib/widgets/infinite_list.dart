@@ -52,7 +52,8 @@ class _InfiniteListState extends State<InfiniteList> {
     super.initState();
     _scrollController.addListener(() async {
       if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent && !isLoading) {
+              _scrollController.position.maxScrollExtent &&
+          !isLoading) {
         print('startLoading');
         setState(() {
           isLoading = true;
@@ -85,8 +86,9 @@ class _InfiniteListState extends State<InfiniteList> {
             }
             if (index == (itemCount - 1) && isLoading) {
               print('wooo');
-              return Center(
-                child: CircularProgressIndicator(),
+              return Padding(
+                padding: EdgeInsets.all(60.0),
+                child: Center(child: CircularProgressIndicator()),
               );
             }
 

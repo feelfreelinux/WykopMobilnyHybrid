@@ -10,21 +10,21 @@ class MikroblogScreen extends StatefulWidget {
 }
 
 class _MikroblogScreenState extends State<MikroblogScreen> {
+  num hotScreen = 6;
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ShadowControlModel>(
       builder: (context) => ShadowControlModel(),
       child: DefaultTabController(
-        length: 6,
+        length: 4,
         child: Scaffold(
           resizeToAvoidBottomPadding: false,
           appBar: AppbarTabsWidget(
             tabs: <Widget>[
               Tab(text: 'Nowe'),
               Tab(text: 'Aktywne'),
-              Tab(text: 'Gorące 6H'),
-              Tab(text: 'Gorące 12H'),
-              Tab(text: 'Gorące 24H'),
+              Tab(text: 'Gorące'),
               Tab(text: 'Ulubione'),
             ],
           ),
@@ -47,26 +47,40 @@ class _MikroblogScreenState extends State<MikroblogScreen> {
                 ),
               ),
               Container(
-                key: PageStorageKey("HOT6"),
+                key: PageStorageKey("HOT" + hotScreen.toString()),
                 child: EntriesList(
-                  builder: (context) => EntryListModel(
-                    loadNewEntries: (page) => api.entries.getHot(page, "6"),
+                  header: Material(
+                    type: MaterialType.transparency,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          bottom: 6.0, top: 10.0, right: 18.0, left: 18.0),
+                      child: Row(
+                        children: <Widget>[
+                          TabButtonWidget(
+                            text: "6h",
+                            index: 6,
+                            currentIndex: hotScreen,
+                            onTap: () => setState(() => hotScreen = 6),
+                          ),
+                          TabButtonWidget(
+                            text: "12h",
+                            index: 12,
+                            currentIndex: hotScreen,
+                            onTap: () => setState(() => hotScreen = 12),
+                          ),
+                          TabButtonWidget(
+                            text: "24h",
+                            index: 24,
+                            currentIndex: hotScreen,
+                            onTap: () => setState(() => hotScreen = 24),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Container(
-                key: PageStorageKey("HOT12"),
-                child: EntriesList(
                   builder: (context) => EntryListModel(
-                    loadNewEntries: (page) => api.entries.getHot(page, "12"),
-                  ),
-                ),
-              ),
-              Container(
-                key: PageStorageKey("HOT24"),
-                child: EntriesList(
-                  builder: (context) => EntryListModel(
-                    loadNewEntries: (page) => api.entries.getHot(page, "24"),
+                    loadNewEntries: (page) =>
+                        api.entries.getHot(page, hotScreen.toString()),
                   ),
                 ),
               ),

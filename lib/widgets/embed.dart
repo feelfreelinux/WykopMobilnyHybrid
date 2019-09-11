@@ -65,10 +65,10 @@ class _EmbedState extends State<EmbedWidget> {
         child: Stack(
           children: <Widget>[
             Positioned(
-              top: 0,
-              bottom: 0,
-              right: 0,
-              left: 0,
+              top: 2.0,
+              bottom: 2.0,
+              right: 0.0,
+              left: 0.0,
               child: Center(child: CircularProgressIndicator()),
             ),
             AnimatedContainer(
@@ -160,10 +160,9 @@ class _EmbedState extends State<EmbedWidget> {
         BoxShadow(color: Theme.of(context).iconTheme.color.withOpacity(0.15))
       ],
       image: DecorationImage(
-        image: NetworkImage(
-            Provider.of<OWMSettings>(context).highResImage
-                ? widget.embed.preview.replaceAll(",w400.jpg", ",w600.jpg")
-                : widget.embed.preview),
+        image: NetworkImage(Provider.of<OWMSettings>(context).highResImage
+            ? widget.embed.preview.replaceAll(",w400.jpg", ",w600.jpg")
+            : widget.embed.preview),
         alignment: FractionalOffset.topCenter,
         fit: BoxFit.fitWidth,
       ),
