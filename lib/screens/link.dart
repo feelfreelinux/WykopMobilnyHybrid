@@ -76,7 +76,12 @@ class _LinkScreenState extends State<LinkScreen>
                               return ChangeNotifierProvider<LinkCommentModel>(
                                 builder: (context) => LinkCommentModel()
                                   ..setData(model.comments[index - 1]),
-                                child: LinkCommentWidget(),
+                                child: AuthorRelationBuilder(
+                                  relationType: RelationType.LINK_COMMENT,
+                                  builder: (context, relation) =>
+                                      LinkCommentWidget(
+                                          linkId: model.id, relation: relation),
+                                ),
                               );
                             },
                           ),

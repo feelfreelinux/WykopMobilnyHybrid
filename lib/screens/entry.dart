@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/models/author.dart';
 import 'package:owmflutter/widgets/widgets.dart';
-import 'package:owmflutter/keys.dart';
 import 'package:provider/provider.dart';
 
 class EntryScreen extends StatefulWidget {

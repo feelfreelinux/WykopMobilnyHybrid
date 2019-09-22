@@ -234,10 +234,8 @@ class _EntryCommentWidgetState extends State<EntryCommentWidget> {
                     "Udostępnij",
                     () {
                       Navigator.pop(context);
-                      Share.share("https://www.wykop.pl/wpis/" +
-                          widget.entryId.toString() +
-                          "/#comment-" +
-                          comment.id.toString());
+                      Share.share(
+                          "https://www.wykop.pl/wpis/${widget.entryId}/#comment-${comment.id}");
                     },
                   ),
                   Visibility(
