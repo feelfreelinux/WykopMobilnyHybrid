@@ -168,7 +168,7 @@ packages:
       name: crypto
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.2"
+    version: "2.1.3"
   csslib:
     dependency: transitive
     description:
@@ -332,14 +332,14 @@ packages:
       name: image_downloader
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.16.2"
+    version: "0.19.0"
   image_picker:
     dependency: "direct main"
     description:
       name: image_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.6.1+2"
+    version: "0.6.1+4"
   intl:
     dependency: "direct main"
     description:
@@ -451,7 +451,7 @@ packages:
       name: path_provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "1.3.0"
   pedantic:
     dependency: transitive
     description:
@@ -473,13 +473,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.2"
-  pinch_zoom_image:
-    dependency: "direct main"
+  platform:
+    dependency: transitive
     description:
-      name: pinch_zoom_image
+      name: platform
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.5"
+    version: "2.2.1"
   pool:
     dependency: transitive
     description:
@@ -701,7 +701,7 @@ packages:
       name: video_player
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.10.1+6"
+    version: "0.10.2+1"
   watcher:
     dependency: transitive
     description:
