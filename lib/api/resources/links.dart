@@ -4,6 +4,14 @@ import 'package:owmflutter/api/api.dart' as prefix0;
 import 'package:owmflutter/models/models.dart';
 import 'package:flutter/material.dart';
 
+// Used for vote up, vote down and vote cancel responses
+class VoteStateResponse {
+  final int votesPlus;
+  final int votes;
+  final LinkCommentVoteState state;
+  VoteStateResponse({this.votes, this.votesPlus, this.state});
+}
+
 class LinksApi extends ApiResource {
   LinksApi(ApiClient client) : super(client);
 
@@ -14,54 +22,37 @@ class LinksApi extends ApiResource {
     return client.deserializeList(LinkResponse.serializer, items).map((f) => Link.mapFromResponse(f)).toList();
   }
 
-
   Future<List<Link>> getPromotedNew(int page) => _getLinks('links', 'promoted', page);
 
-
-
   Future<List<Link>> getFavoriteNew(int page) => _getLinks('links', 'observed', page);
-
 
   Future<List<LinkComment>> getLinkComments(int linkId) async {
     var items =
         await client.request('links', 'comments', api: [linkId.toString()]);
     return deserializeLinkComments(items);
   }
-/*
-  Future<Result> commentVoteUp(LinkComment link) async {
+
+  Future<VoteStateResponse> commentVoteUp(int linkCommentId, String linkId) async {
     var voteCount = await client.request('links', 'commentvoteup',
-        api: [link.linkId, link.id.toString()]);
-    var updatedLink = link.rebuild((b) => b
-      ..voteCount = voteCount["vote_count"]
-      ..voteCountPlus = voteCount["vote_count_plus"]
-      ..voteState = LinkCommentVoteState.UP_VOTED);
+        api: [linkId, linkCommentId.toString()]);
 
-    return normalizeLinkComment(updatedLink);
+    return VoteStateResponse(votes: voteCount["vote_count"], votesPlus: voteCount["vote_count_plus"], state: LinkCommentVoteState.UP_VOTED);
   }
 
-  Future<Result> commentVoteRemove(LinkComment link) async {
+  Future<VoteStateResponse> commentVoteRemove(int linkCommentId, String linkId) async {
     var voteCount = await client.request('links', 'commentvotecancel',
-        api: [link.linkId, link.id.toString()]);
-    var updatedLink = link.rebuild((b) => b
-      ..voteCount = voteCount["vote_count"]
-      ..voteCountPlus = voteCount["vote_count_plus"]
-      ..voteState = LinkCommentVoteState.NOT_VOTED);
+        api: [linkId, linkCommentId.toString()]);
 
-    return normalizeLinkComment(updatedLink);
+    return VoteStateResponse(votes: voteCount["vote_count"], votesPlus: voteCount["vote_count_plus"], state: LinkCommentVoteState.NOT_VOTED);
   }
 
-  Future<Result> commentVoteDown(LinkComment link) async {
+  Future<VoteStateResponse> commentVoteDown(int linkCommentId, String linkId) async {
     var voteCount = await client.request('links', 'CommentVoteDown',
-        api: [link.linkId, link.id.toString()]);
-    debugPrint(voteCount);
-    var updatedLink = link.rebuild((b) => b
-      ..voteCount = voteCount["vote_count"]
-      ..voteCountPlus = voteCount["vote_count_plus"]
-      ..voteState = LinkCommentVoteState.DOWN_VOTED);
+        api: [linkId, linkCommentId.toString()]);
 
-    return normalizeLinkComment(updatedLink);
+    return VoteStateResponse(votes: voteCount["vote_count"], votesPlus: voteCount["vote_count_plus"], state: LinkCommentVoteState.DOWN_VOTED);
   }
-*/
+
   Future<List<Related>> getRelatedLinks(int linkId) async {
     var items =
         await client.request('links', 'related', api: [linkId.toString()]);

@@ -286,7 +286,7 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
                   count: model.voteCountPlus,
                   isSelected: model.voteState == LinkCommentVoteState.UP_VOTED,
                   isComment: true,
-                  onClicked: () => model.toggleVote(),
+                  onClicked: () => model.voteUp(),
                 ),
               ),
               VoteButton(
@@ -294,7 +294,7 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
                 negativeIcon: true,
                 isSelected: model.voteState == LinkCommentVoteState.DOWN_VOTED,
                 isComment: true,
-                onClicked: () => model.toggleVote(),
+                onClicked: () => model.voteDown(),
               ),
             ],
           )
@@ -318,7 +318,7 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
                   isSelected: model.voteState == LinkCommentVoteState.UP_VOTED,
                   isComment: true,
                   onlyIcon: true,
-                  onClicked: () => model.toggleVote(),
+                  onClicked: () => model.voteUp(),
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -342,7 +342,7 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
                       model.voteState == LinkCommentVoteState.DOWN_VOTED,
                   isComment: true,
                   onlyIcon: true,
-                  onClicked: () => model.toggleVote(),
+                  onClicked: () => model.voteDown(),
                 ),
               ],
             ),

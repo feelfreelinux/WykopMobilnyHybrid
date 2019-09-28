@@ -11,6 +11,7 @@ class LinkCommentModel extends ChangeNotifier {
   Author _author;
   Embed _embed;
   int _parentId;
+  String _linkId;
   LinkCommentVoteState _voteState;
 
   int get id => _id;
@@ -32,12 +33,42 @@ class LinkCommentModel extends ChangeNotifier {
     _author = comment.author;
     _embed = comment.embed;
     _parentId = comment.parentId;
+    _linkId = comment.linkId;
     _voteCountPlus = comment.voteCountPlus;
     _voteState = comment.voteState;
     notifyListeners();
   }
 
-  Future<void> toggleVote() async {
+  Future<void> voteUp() async {
+    if (_voteState != LinkCommentVoteState.NOT_VOTED) {
+      return voteRemove();
+    }
 
+    var res = await api.links.commentVoteUp(_id, _linkId);
+    _voteCountPlus = res.votesPlus;
+    _voteCount = res.votes;
+    _voteState = res.state;
+    notifyListeners();
+  }
+
+  Future<void> voteDown() async {
+    if (_voteState != LinkCommentVoteState.NOT_VOTED) {
+      return voteRemove();
+    }
+    var res = await api.links.commentVoteDown(_id, _linkId);
+
+    _voteCountPlus = res.votesPlus;
+    _voteCount = res.votes;
+    _voteState = res.state;
+    notifyListeners();
+  }
+
+  Future<void> voteRemove() async {
+    var res = await api.links.commentVoteRemove(_id, _linkId);
+
+    _voteCountPlus = res.votesPlus;
+    _voteCount = res.votes;
+    _voteState = res.state;
+    notifyListeners();
   }
 }
