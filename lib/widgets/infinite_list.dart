@@ -32,11 +32,13 @@ class InfiniteList extends StatefulWidget {
   final int itemCount;
   final ItemBuilder itemBuilder;
   final Widget header;
+  final WidgetBuilder headerBuilder;
   final LoadMoreDataCallback loadData;
   InfiniteList(
       {@required this.itemBuilder,
       @required this.itemCount,
       @required this.loadData,
+      this.headerBuilder,
       this.header});
 
   @override
@@ -71,7 +73,7 @@ class _InfiniteListState extends State<InfiniteList> {
 
   @override
   Widget build(BuildContext context) {
-    var itemCount = widget.header != null
+    var itemCount = (widget.header != null || widget.headerBuilder != null)
         ? widget.itemCount + (isLoading ? 2 : 1)
         : widget.itemCount + (isLoading ? 1 : 0);
     return ScrollConfiguration(
@@ -81,8 +83,8 @@ class _InfiniteListState extends State<InfiniteList> {
           physics: NotSuddenJumpPhysics(),
           itemCount: itemCount,
           itemBuilder: (context, index) {
-            if (widget.header != null && index == 0) {
-              return widget.header;
+            if ((widget.header != null || widget.headerBuilder != null) && index == 0) {
+              return widget.header ?? widget.headerBuilder(context);
             }
             if (index == (itemCount - 1) && isLoading) {
               print('wooo');
@@ -92,7 +94,7 @@ class _InfiniteListState extends State<InfiniteList> {
               );
             }
 
-            if (widget.header == null) {
+            if (widget.header == null && widget.headerBuilder == null) {
               return widget.itemBuilder(context, index);
             } else {
               return widget.itemBuilder(context, index - 1);

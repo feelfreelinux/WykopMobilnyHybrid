@@ -4,6 +4,7 @@ import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/owm_glyphs.dart';
 import 'package:provider/provider.dart';
+import 'package:owmflutter/models/models.dart' as prefix0;
 
 class NotificationsScreen extends StatelessWidget {
   @override
@@ -32,14 +33,8 @@ class NotificationsScreen extends StatelessWidget {
                 icon: Icons.notifications,
                 text: "Powiadomienia",
                 child: NotificationsList(
-                  header: _header(
-                    context: context,
-                    count: 0, //TODO: implement num notifications
-                    markRead: () {
-                      //TODO: implement mark read notifications
-                      Scaffold.of(context).showSnackBar(
-                          SnackBar(content: Text("Niezaimplementowane")));
-                    },
+                  headerBuilder: (newContext) => _header(
+                    context: newContext,
                   ),
                   builder: (context) => NotificationListModel(
                     loadNewNotifications: (page) =>
@@ -51,14 +46,8 @@ class NotificationsScreen extends StatelessWidget {
                 icon: OwmGlyphs.ic_navi_my_wykop,
                 text: "Obserwowane tagi",
                 child: NotificationsList(
-                  header: _header(
-                    context: context,
-                    count: 0, //TODO: implement num hashtag notifications
-                    markRead: () {
-                      //TODO: implement mark read hashtag notifications
-                      Scaffold.of(context).showSnackBar(
-                          SnackBar(content: Text("Niezaimplementowane")));
-                    },
+                  headerBuilder: (newContext) => _header(
+                    context: newContext,
                     group: () {
                       //TODO: implement group hashtag notifications
                       Scaffold.of(context).showSnackBar(
@@ -82,58 +71,72 @@ class NotificationsScreen extends StatelessWidget {
 
   Widget _header({
     BuildContext context,
-    num count,
-    VoidCallback markRead,
     VoidCallback group,
     bool isGroup: false,
   }) {
-    return Container(
-      padding: EdgeInsets.only(
-        top: 6.0,
-        bottom: 10.0,
-        left: 18.0,
-        right: 16.0,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Text(
-            "Nieodczytane: $count",
-            style: TextStyle(
-              fontSize: 17.0,
-              fontWeight: FontWeight.w500,
-              color: Theme.of(context).textTheme.body1.color,
-            ),
+    return Builder(
+      builder: (context) {
+        var notifModel =
+            (Provider.of<ListModel<prefix0.Notification, NotificationModel>>(
+                context,
+                listen: false) as NotificationListModel);
+
+        var notifsCount = notifModel.unreadNotifsCount;
+        return Container(
+          padding: EdgeInsets.only(
+            top: 6.0,
+            bottom: 10.0,
+            left: 18.0,
+            right: 16.0,
           ),
-          Row(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Visibility(
-                visible: group != null,
-                child: Tooltip(
-                  message: isGroup
-                      ? "Nie grupuj powiadomień"
-                      : "Grupuj powiadomienia",
-                  child: RoundIconButtonWidget(
-                    icon: isGroup
-                        ? Icons.format_list_numbered
-                        : Icons.format_list_bulleted,
-                    padding: EdgeInsets.symmetric(horizontal: 12.0),
-                    onTap: markRead,
-                  ),
+              Text(
+                "Nieodczytane: $notifsCount",
+                style: TextStyle(
+                  fontSize: 17.0,
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).textTheme.body1.color,
                 ),
               ),
-              Tooltip(
-                message: "Oznacz jako odczytane",
-                child: RoundIconButtonWidget(
-                  icon: OwmGlyphs.ic_mark_read,
-                  padding: EdgeInsets.all(0.0),
-                  onTap: group,
-                ),
+              Row(
+                children: <Widget>[
+                  Visibility(
+                    visible: group != null,
+                    child: Tooltip(
+                      message: isGroup
+                          ? "Nie grupuj powiadomień"
+                          : "Grupuj powiadomienia",
+                      child: RoundIconButtonWidget(
+                        icon: isGroup
+                            ? Icons.format_list_numbered
+                            : Icons.format_list_bulleted,
+                        padding: EdgeInsets.symmetric(horizontal: 12.0),
+                        onTap: group,
+                      ),
+                    ),
+                  ),
+                  Tooltip(
+                    message: "Oznacz jako odczytane",
+                    child: RoundIconButtonWidget(
+                      icon: OwmGlyphs.ic_mark_read,
+                      padding: EdgeInsets.all(0.0),
+                      onTap: () {
+                        if (group == null) {
+                          notifModel.readDirectedNotifs();
+                        } else {
+                          notifModel.readHashNotifs();
+                        }
+                      },
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
