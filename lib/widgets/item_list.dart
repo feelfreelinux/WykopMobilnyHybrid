@@ -33,24 +33,21 @@ class ItemListState<T, D extends ChangeNotifier> extends State<ItemList<T, D>>
         child: Consumer<ListModel<T, D>>(
           builder: (context, model, _) => RefreshIndicator(
             onRefresh: () => model.refresh(),
-            child: model.isLoading
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : InfiniteList(
-                    header: widget.header,
-                    headerBuilder: widget.headerBuilder,
-                    loadData: () async {
-                      await model.loadMoreItems();
-                    },
-                    itemCount: model.items.length,
-                    itemBuilder: (context, index) {
-                      return ChangeNotifierProvider<D>.value(
-                        value: model.items[index],
-                        child: widget.buildChildren(context),
-                      );
-                    },
-                  ),
+            child: InfiniteList(
+              isLoading: model.isLoading,
+              header: widget.header,
+              headerBuilder: widget.headerBuilder,
+              loadData: () async {
+                await model.loadMoreItems();
+              },
+              itemCount: model.items.length,
+              itemBuilder: (context, index) {
+                return ChangeNotifierProvider<D>.value(
+                  value: model.items[index],
+                  child: widget.buildChildren(context),
+                );
+              },
+            ),
           ),
         ),
       ),

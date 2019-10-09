@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'dart:async';
 import 'package:owmflutter/widgets/widgets.dart';
 
@@ -33,11 +34,13 @@ class InfiniteList extends StatefulWidget {
   final ItemBuilder itemBuilder;
   final Widget header;
   final WidgetBuilder headerBuilder;
+  final bool isLoading;
   final LoadMoreDataCallback loadData;
   InfiniteList(
       {@required this.itemBuilder,
       @required this.itemCount,
       @required this.loadData,
+      this.isLoading = false,
       this.headerBuilder,
       this.header});
 
@@ -55,7 +58,7 @@ class _InfiniteListState extends State<InfiniteList> {
     _scrollController.addListener(() async {
       if (_scrollController.position.pixels ==
               _scrollController.position.maxScrollExtent &&
-          !isLoading) {
+          !(isLoading || widget.isLoading)) {
         print('startLoading');
         setState(() {
           isLoading = true;
@@ -73,9 +76,37 @@ class _InfiniteListState extends State<InfiniteList> {
 
   @override
   Widget build(BuildContext context) {
-    var itemCount = (widget.header != null || widget.headerBuilder != null)
-        ? widget.itemCount + (isLoading ? 2 : 1)
-        : widget.itemCount + (isLoading ? 1 : 0);
+    var itemCount = widget.itemCount + ((widget.isLoading || isLoading) ? 1 : 0);
+    var headerWidget = widget.header ?? (widget.headerBuilder != null ? widget.headerBuilder(context) : Container());
+
+    return ScrollConfiguration(
+      behavior: NotSuddenJumpScrollBehavior(),
+      child: ShadowNotificationListener(
+        scrollController: _scrollController,
+        hideOnAllTop: (headerWidget is SliverPersistentHeader),
+        child: CustomScrollView(
+          controller: _scrollController,
+          slivers: <Widget>[
+            (headerWidget is SliverPersistentHeader) ? headerWidget : SliverToBoxAdapter(child: headerWidget),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  if (index == (itemCount - 1) && (isLoading || widget.isLoading)) {
+                    return Padding(
+                      padding: EdgeInsets.all(60.0),
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  }
+
+                  return widget.itemBuilder(context, index);
+                },
+                childCount: itemCount,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
     return ScrollConfiguration(
       behavior: NotSuddenJumpScrollBehavior(),
       child: ShadowNotificationListener(
@@ -83,7 +114,8 @@ class _InfiniteListState extends State<InfiniteList> {
           physics: NotSuddenJumpPhysics(),
           itemCount: itemCount,
           itemBuilder: (context, index) {
-            if ((widget.header != null || widget.headerBuilder != null) && index == 0) {
+            if ((widget.header != null || widget.headerBuilder != null) &&
+                index == 0) {
               return widget.header ?? widget.headerBuilder(context);
             }
             if (index == (itemCount - 1) && isLoading) {
