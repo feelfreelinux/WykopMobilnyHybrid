@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/model/model.dart';
+import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/owm_glyphs.dart';
 import 'package:provider/provider.dart';
@@ -33,9 +34,7 @@ class NotificationsScreen extends StatelessWidget {
                 icon: Icons.notifications,
                 text: "Powiadomienia",
                 child: NotificationsList(
-                  headerBuilder: (newContext) => _header(
-                    context: newContext,
-                  ),
+                  headerBuilder: (newContext) => _header(),
                   builder: (context) => NotificationListModel(
                     loadNewNotifications: (page) =>
                         api.notifications.getNotifications(page),
@@ -47,7 +46,6 @@ class NotificationsScreen extends StatelessWidget {
                 text: "Obserwowane tagi",
                 child: NotificationsList(
                   headerBuilder: (newContext) => _header(
-                    context: newContext,
                     group: () {
                       //TODO: implement group hashtag notifications
                       Scaffold.of(context).showSnackBar(
@@ -69,19 +67,15 @@ class NotificationsScreen extends StatelessWidget {
     );
   }
 
-  Widget _header({
-    BuildContext context,
-    VoidCallback group,
-    bool isGroup: false,
-  }) {
+  Widget _header({VoidCallback group, bool isGroup: false}) {
     return Builder(
       builder: (context) {
         var notifModel =
             (Provider.of<ListModel<prefix0.Notification, NotificationModel>>(
                 context,
                 listen: false) as NotificationListModel);
-
         var notifsCount = notifModel.unreadNotifsCount;
+
         return Container(
           padding: EdgeInsets.only(
             top: 6.0,
@@ -93,9 +87,17 @@ class NotificationsScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                "Nieodczytane: $notifsCount",
+                notifsCount > 0
+                    ? "$notifsCount " +
+                        Utils.polishPlural(
+                          count: notifsCount,
+                          first: "nieprzeczytane",
+                          many: "nieprzeczytanych",
+                          other: "nieprzeczytane",
+                        )
+                    : "Wszystkie przeczytane",
                 style: TextStyle(
-                  fontSize: 17.0,
+                  fontSize: 18.0,
                   fontWeight: FontWeight.w500,
                   color: Theme.of(context).textTheme.body1.color,
                 ),
