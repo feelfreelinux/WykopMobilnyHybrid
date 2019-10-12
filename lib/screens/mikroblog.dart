@@ -84,7 +84,7 @@ class _MikroblogScreenState extends State<MikroblogScreen> {
                             decoration: Utils.appBarShadow(
                                 shadowControlModel.showSubbarShadow),
                             child: Material(
-                              color: Colors.white,
+                              color: Theme.of(context).backgroundColor,
                               child: Padding(
                                 padding: EdgeInsets.only(
                                     bottom: 6.0,

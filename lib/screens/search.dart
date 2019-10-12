@@ -38,6 +38,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   builder: (context, model, _) => WillPopScope(
                     onWillPop: () {
                       model.searchInputController.clear();
+                      Navigator.of(context).pop();
                     },
                     child: Consumer<SearchScreenModel>(
                       builder: (context, searchModel, _) => TextField(
