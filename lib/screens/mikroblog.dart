@@ -36,11 +36,37 @@ class _MikroblogScreenState extends State<MikroblogScreen> {
   num hotScreen = 6;
 
   @override
+  void initState() {
+    int screenIndex =
+        Provider.of<OWMSettings>(context, listen: false).defaultEntryScreen;
+
+    if (screenIndex == 3) {
+      hotScreen = 12;
+    } else if (screenIndex == 4) {
+      hotScreen = 24;
+    }
+    super.initState();
+  }
+
+  int _getDefaultScreenIndex(BuildContext context) {
+    int screenIndex =
+        Provider.of<OWMSettings>(context, listen: false).defaultEntryScreen;
+    if (screenIndex > 1) {
+      if (screenIndex < 5) {
+        return 2;
+      }
+      return screenIndex - 3;
+    }
+    return Provider.of<OWMSettings>(context, listen: false).defaultEntryScreen;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ShadowControlModel>(
       builder: (context) => ShadowControlModel(),
       child: DefaultTabController(
         length: 4,
+        initialIndex: _getDefaultScreenIndex(context),
         child: Scaffold(
           resizeToAvoidBottomPadding: false,
           appBar: AppbarTabsWidget(
@@ -76,48 +102,53 @@ class _MikroblogScreenState extends State<MikroblogScreen> {
                     floating: true,
                     delegate: _SliverAppBarDelegate(
                       builder: (context) {
-                        var shadowControlModel =
-                            Provider.of<ShadowControlModel>(context,
-                                listen: false);
-                        return AnimatedContainer(
-                            duration: Duration(milliseconds: 200),
-                            decoration: Utils.appBarShadow(
-                                shadowControlModel.showSubbarShadow),
-                            child: Material(
-                              color: Theme.of(context).backgroundColor,
-                              child: Padding(
-                                padding: EdgeInsets.only(
-                                    bottom: 6.0,
-                                    top: 10.0,
-                                    right: 18.0,
-                                    left: 18.0),
-                                child: Row(
-                                  children: <Widget>[
-                                    TabButtonWidget(
-                                      text: "6h",
-                                      index: 6,
-                                      currentIndex: hotScreen,
-                                      onTap: () =>
-                                          setState(() => hotScreen = 6),
+                        return OWMSettingListener(
+                            rebuildOnChange: (owmSettings) =>
+                                owmSettings.useDarkThemeStream,
+                            builder: (context, settings) {
+                              var shadowControlModel =
+                                  Provider.of<ShadowControlModel>(context,
+                                      listen: false);
+                              return AnimatedContainer(
+                                  duration: Duration(milliseconds: 200),
+                                  decoration: Utils.appBarShadow(
+                                      shadowControlModel.showSubbarShadow),
+                                  child: Material(
+                                    color: Theme.of(context).backgroundColor,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          bottom: 6.0,
+                                          top: 10.0,
+                                          right: 18.0,
+                                          left: 18.0),
+                                      child: Row(
+                                        children: <Widget>[
+                                          TabButtonWidget(
+                                            text: "6h",
+                                            index: 6,
+                                            currentIndex: hotScreen,
+                                            onTap: () =>
+                                                setState(() => hotScreen = 6),
+                                          ),
+                                          TabButtonWidget(
+                                            text: "12h",
+                                            index: 12,
+                                            currentIndex: hotScreen,
+                                            onTap: () =>
+                                                setState(() => hotScreen = 12),
+                                          ),
+                                          TabButtonWidget(
+                                            text: "24h",
+                                            index: 24,
+                                            currentIndex: hotScreen,
+                                            onTap: () =>
+                                                setState(() => hotScreen = 24),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    TabButtonWidget(
-                                      text: "12h",
-                                      index: 12,
-                                      currentIndex: hotScreen,
-                                      onTap: () =>
-                                          setState(() => hotScreen = 12),
-                                    ),
-                                    TabButtonWidget(
-                                      text: "24h",
-                                      index: 24,
-                                      currentIndex: hotScreen,
-                                      onTap: () =>
-                                          setState(() => hotScreen = 24),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ));
+                                  ));
+                            });
                       },
                     ),
                   ),

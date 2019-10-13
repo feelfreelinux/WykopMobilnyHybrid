@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/keys.dart';
 import 'package:owmflutter/owm_glyphs.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/utils/utils.dart';
+import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
   @override
@@ -18,6 +21,25 @@ class _MainScreenState extends State<MainScreen> {
     MyWykopScreen(),
     NotificationsScreen(),
   ];
+
+  StreamSubscription<int> _screenSub;
+
+  @override
+  void initState() { 
+    _screenSub = Provider.of<OWMSettings>(context, listen: false).defaultAppScreenStream.listen((e) => {
+      setState(() {
+        _currentIndex = e;
+      })
+    });
+    _currentIndex = Provider.of<OWMSettings>(context, listen: false).defaultAppScreen;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _screenSub?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
