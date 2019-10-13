@@ -5,9 +5,12 @@ import 'package:path/path.dart' show basename;
 class SelectedImageWidget extends StatelessWidget {
   final File image;
   final VoidCallback onTap;
+  final Color backgroundColor;
+
   SelectedImageWidget({
     @required this.image,
     @required this.onTap,
+    this.backgroundColor,
   });
 
   @override
@@ -21,7 +24,7 @@ class SelectedImageWidget extends StatelessWidget {
           bottom: 2.0,
         ),
         decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
+          color: backgroundColor ?? Theme.of(context).primaryColor,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
@@ -30,7 +33,7 @@ class SelectedImageWidget extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.symmetric(
                   vertical: 4.0,
-                  horizontal: 8.0,
+                  horizontal: 12.0,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,7 +48,7 @@ class SelectedImageWidget extends StatelessWidget {
                     Text(
                       basename(image.path),
                       overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
+                      maxLines: 2,
                       style: TextStyle(
                         fontSize: 11.0,
                       ),
@@ -59,8 +62,8 @@ class SelectedImageWidget extends StatelessWidget {
               child: Stack(
                 children: <Widget>[
                   Container(
-                    width: 46,
-                    height: 46,
+                    width: 54,
+                    height: 54,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       image: DecorationImage(

@@ -12,7 +12,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   final WidgetBuilder builder;
 
   @override
-  double get minExtent => 60;
+  double get minExtent => 44;
   @override
   double get maxExtent => minExtent;
 
