@@ -32,8 +32,9 @@ typedef ItemBuilder = Widget Function(BuildContext, int);
 class InfiniteList extends StatefulWidget {
   final int itemCount;
   final ItemBuilder itemBuilder;
-  final Widget header;
-  final WidgetBuilder headerBuilder;
+  final Widget sliverHeader;
+  final WidgetBuilder persistentHeaderBuilder;
+  final WidgetBuilder sliverHeaderBuilder;
   final bool isLoading;
   final LoadMoreDataCallback loadData;
   InfiniteList(
@@ -41,8 +42,9 @@ class InfiniteList extends StatefulWidget {
       @required this.itemCount,
       @required this.loadData,
       this.isLoading = false,
-      this.headerBuilder,
-      this.header});
+      this.persistentHeaderBuilder,
+      this.sliverHeaderBuilder,
+      this.sliverHeader});
 
   @override
   _InfiniteListState createState() => _InfiniteListState();
@@ -77,8 +79,8 @@ class _InfiniteListState extends State<InfiniteList> {
   @override
   Widget build(BuildContext context) {
     var itemCount = widget.itemCount + ((widget.isLoading || isLoading) ? 1 : 0);
-    var headerWidget = widget.header ?? (widget.headerBuilder != null ? widget.headerBuilder(context) : Container());
-
+    var headerWidget = widget.sliverHeader ?? (widget.sliverHeaderBuilder != null ? widget.sliverHeaderBuilder(context) : Container());
+    var persistentHeader = widget.persistentHeaderBuilder != null ? widget.persistentHeaderBuilder(context) : Container();
     return ScrollConfiguration(
       behavior: NotSuddenJumpScrollBehavior(),
       child: ShadowNotificationListener(
@@ -87,7 +89,8 @@ class _InfiniteListState extends State<InfiniteList> {
         child: CustomScrollView(
           controller: _scrollController,
           slivers: <Widget>[
-            (headerWidget is SliverPersistentHeader) ? headerWidget : SliverToBoxAdapter(child: headerWidget),
+            SliverToBoxAdapter(child: persistentHeader),
+            (headerWidget is Container) ? SliverToBoxAdapter(child: headerWidget) : headerWidget,
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
@@ -114,9 +117,9 @@ class _InfiniteListState extends State<InfiniteList> {
           physics: NotSuddenJumpPhysics(),
           itemCount: itemCount,
           itemBuilder: (context, index) {
-            if ((widget.header != null || widget.headerBuilder != null) &&
+            if ((widget.sliverHeader != null || widget.sliverHeaderBuilder != null) &&
                 index == 0) {
-              return widget.header ?? widget.headerBuilder(context);
+              return widget.sliverHeader ?? widget.sliverHeaderBuilder(context);
             }
             if (index == (itemCount - 1) && isLoading) {
               print('wooo');
@@ -126,7 +129,7 @@ class _InfiniteListState extends State<InfiniteList> {
               );
             }
 
-            if (widget.header == null && widget.headerBuilder == null) {
+            if (widget.sliverHeader == null && widget.sliverHeaderBuilder == null) {
               return widget.itemBuilder(context, index);
             } else {
               return widget.itemBuilder(context, index - 1);

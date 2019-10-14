@@ -9,9 +9,10 @@ typedef T ModelBuilder<T>(BuildContext context);
 class ItemList<T, D extends ChangeNotifier> extends StatefulWidget {
   final ModelBuilder<ListModel<T, D>> builder;
   final Widget header;
+  final WidgetBuilder persistentHeaderBuilder;
   final WidgetBuilder headerBuilder;
   final WidgetBuilder buildChildren;
-  ItemList({this.builder, this.header, this.buildChildren, this.headerBuilder});
+  ItemList({this.builder, this.header, this.buildChildren, this.headerBuilder, this.persistentHeaderBuilder});
 
   @override
   ItemListState<T, D> createState() {
@@ -35,8 +36,9 @@ class ItemListState<T, D extends ChangeNotifier> extends State<ItemList<T, D>>
             onRefresh: () => model.refresh(),
             child: InfiniteList(
               isLoading: model.isLoading,
-              header: widget.header,
-              headerBuilder: widget.headerBuilder,
+              sliverHeader: widget.header,
+              persistentHeaderBuilder: widget.persistentHeaderBuilder,
+              sliverHeaderBuilder: widget.headerBuilder,
               loadData: () async {
                 await model.loadMoreItems();
               },

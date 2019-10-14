@@ -7,8 +7,9 @@ import 'package:provider/provider.dart';
 class EntriesLinksList extends StatefulWidget {
   final dynamic builder;
   final Widget header;
+  final WidgetBuilder persistentHeaderBuilder;
 
-  EntriesLinksList({this.builder, this.header});
+  EntriesLinksList({this.builder, this.header, this.persistentHeaderBuilder});
 
   @override
   EntriesLinksListState createState() {
@@ -16,7 +17,8 @@ class EntriesLinksList extends StatefulWidget {
   }
 }
 
-class EntriesLinksListState extends State<EntriesLinksList> with AutomaticKeepAliveClientMixin {
+class EntriesLinksListState extends State<EntriesLinksList>
+    with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
@@ -29,30 +31,28 @@ class EntriesLinksListState extends State<EntriesLinksList> with AutomaticKeepAl
         child: Consumer<EntryLinkListmodel>(
           builder: (context, model, _) => RefreshIndicator(
             onRefresh: () => model.refresh(),
-            child: model.isLoading
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : InfiniteList(
-                    header: widget.header,
-                    loadData: () async {
-                      await model.loadMoreItems();
-                    },
-                    itemCount: model.items.length,
-                    itemBuilder: (context, index) {
-                      if (model.items[index] is EntryModel) {
-                        return ListenableProvider<EntryModel>.value(
-                          value: model.items[index],
-                          child: NewEntryWidget(ellipsize: true),
-                        );
-                      } else {
-                        return ListenableProvider<LinkModel>.value(
-                          value: model.items[index],
-                          child: NewLinkWidget(),
-                        );
-                      }
-                    },
-                  ),
+            child: InfiniteList(
+              isLoading: model.isLoading,
+              sliverHeader: widget.header,
+              persistentHeaderBuilder: widget.persistentHeaderBuilder,
+              loadData: () async {
+                await model.loadMoreItems();
+              },
+              itemCount: model.items.length,
+              itemBuilder: (context, index) {
+                if (model.items[index] is EntryModel) {
+                  return ListenableProvider<EntryModel>.value(
+                    value: model.items[index],
+                    child: NewEntryWidget(ellipsize: true),
+                  );
+                } else {
+                  return ListenableProvider<LinkModel>.value(
+                    value: model.items[index],
+                    child: NewLinkWidget(),
+                  );
+                }
+              },
+            ),
           ),
         ),
       ),

@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
           body: TabBarView(
             children: [
               LinksList(
-                header: Column(
+                persistentHeaderBuilder: (context) => Column(
                   children: <Widget>[
                     Stack(
                       children: <Widget>[

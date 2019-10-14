@@ -92,7 +92,7 @@ class _EntryScreenState extends State<EntryScreen>
                           child: ScrollConfiguration(
                             behavior: NotSuddenJumpScrollBehavior(),
                             child: InfiniteList(
-                              header: EntryOpenWidget(),
+                              persistentHeaderBuilder: (context) => EntryOpenWidget(),
                               itemCount: model.comments.length,
                               itemBuilder: (context, index) =>
                                   ChangeNotifierProvider<

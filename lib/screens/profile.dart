@@ -61,7 +61,7 @@ Material(
   _drawBody() {
     if (list == "Akcje") {
       return EntriesLinksList(
-        header: _drawHeader(),
+        persistentHeaderBuilder: (context) => _drawHeader(),
         builder: (context) => EntryLinkListmodel(
           loadNewEntryLinks: (page) =>
               api.profiles.getActions(widget.profileModel.author.login),
