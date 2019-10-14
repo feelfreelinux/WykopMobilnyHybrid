@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class SizedSliverHeaderDelegate extends SliverPersistentHeaderDelegate {
   final double size;
-  SizedSliverHeaderDelegate({this.builder, this.size = 60});
+  SizedSliverHeaderDelegate({this.builder, this.size = 44});
 
   final WidgetBuilder builder;
 

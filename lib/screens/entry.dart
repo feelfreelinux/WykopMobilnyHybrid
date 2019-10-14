@@ -15,15 +15,22 @@ class EntryScreen extends StatefulWidget {
 
 class _EntryScreenState extends State<EntryScreen>
     with SingleTickerProviderStateMixin {
+  EntryModel _entryModel;
+
+  @override
+  void initState() {
+    _entryModel = (widget.model ?? (EntryModel()..setId(widget.entryId))
+        ..updateEntry()
+        ..loadUpVoters());
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final mqData = MediaQuery.of(context);
     final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
 
     return ChangeNotifierProvider<EntryModel>.value(
-      value: (widget.model ?? (EntryModel()..setId(widget.entryId))
-        ..updateEntry()
-        ..loadUpVoters()),
+      value: _entryModel,
       child: ChangeNotifierProvider<ShadowControlModel>(
         builder: (context) => ShadowControlModel(),
         child: Consumer<EntryModel>(

@@ -15,6 +15,14 @@ class LinkScreen extends StatefulWidget {
 
 class _LinkScreenState extends State<LinkScreen>
     with SingleTickerProviderStateMixin {
+  LinkModel _linkModel;
+  @override
+  void initState() {
+    _linkModel = (widget.model ?? (LinkModel()..setId(widget.linkId))
+      ..loadComments());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final mqData = MediaQuery.of(context);
@@ -23,8 +31,7 @@ class _LinkScreenState extends State<LinkScreen>
     return ChangeNotifierProvider<ShadowControlModel>(
       builder: (context) => ShadowControlModel(),
       child: ChangeNotifierProvider.value(
-        value: (widget.model ?? (LinkModel()..setId(widget.linkId))
-          ..loadComments()),
+        value: _linkModel,
         child: Consumer<LinkModel>(
           builder: (context, model, _) =>
               ChangeNotifierProvider<InputModel>.value(

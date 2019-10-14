@@ -5,21 +5,12 @@ import 'package:owmflutter/screens/entry.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/models/models.dart';
-import 'package:owmflutter/owm_glyphs.dart';
-import 'package:owmflutter/keys.dart';
-import 'package:owmflutter/widgets/input/emoticon_button.dart';
 import 'package:owmflutter/widgets/input/selected_image.dart';
 import 'dart:async';
 import 'dart:io';
-
 import 'package:provider/provider.dart';
 
-enum InputType {
-  ENTRY,
-  ENTRY_COMMENT,
-  LINK_COMMENT,
-  PRIVATE_MESSAGE,
-}
+enum InputType { ENTRY, ENTRY_COMMENT, LINK_COMMENT, PRIVATE_MESSAGE }
 
 typedef Future InputBarCallback(InputData inputData);
 
@@ -40,9 +31,7 @@ class EntryInputScreen extends StatelessWidget {
             );
           },
         ),
-        child: InputScreen(
-          inputType: InputType.ENTRY,
-        ),
+        child: InputScreen(inputType: InputType.ENTRY),
       ),
     );
   }
@@ -66,13 +55,13 @@ class _InputScreenState extends State<InputScreen> {
   String get inputHint {
     switch (widget.inputType) {
       case InputType.ENTRY:
-        return "wpis";
+        return "Dodaj wpis";
       case InputType.ENTRY_COMMENT:
-        return "komentarz";
+        return "Dodaj komentarz";
       case InputType.LINK_COMMENT:
-        return "komentarz";
+        return "Dodaj komentarz";
       case InputType.PRIVATE_MESSAGE:
-        return "wiadomość prywatną";
+        return "Napisz wiadomość prywatną";
         break;
       default:
         return "";
@@ -87,95 +76,72 @@ class _InputScreenState extends State<InputScreen> {
         child: Scaffold(
           bottomNavigationBar: InputBarWidget(
             key: inputBarKey,
-            externalController: textController,
-            imageStateChanged: (image) {
-              setState(() {
-                this.image = image;
-              });
-            },
+            externalController:
+                textController, //TODO: nie zaznacza tekstu z przycisku, ukrywa klawiature
+            imageStateChanged: (image) => setState(() => this.image = image),
           ),
           resizeToAvoidBottomPadding: false,
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(48.0),
-            child: AppBar(
-              title: Text('Napisz $inputHint'),
-              iconTheme: IconThemeData(
-                color: Colors.blueAccent,
-              ),
-              elevation: 0.0,
+          appBar: AppbarNormalWidget(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            leading: RoundIconButtonWidget(
+              icon: Icons.close,
+              onTap: () => Navigator.of(context).pop(),
+              iconSize: 26.0,
+              iconPadding: EdgeInsets.all(5.0),
             ),
+            title: inputHint,
+            actions: <Widget>[
+              RoundIconButtonWidget(
+                icon: Icons.check,
+                onTap: () {}, //TODO: zrobic akcje wysylania
+                iconSize: 26.0,
+                iconPadding: EdgeInsets.all(5.0),
+              ),
+            ],
           ),
-          body: Container(
-            margin: EdgeInsets.symmetric(
-              vertical: 8.0,
-              horizontal: 6.0,
-            ),
-            padding: EdgeInsets.only(
-              top: 1.0,
-              right: 1.0,
-              bottom: 1.0,
-            ),
-            decoration: BoxDecoration(
-              color: Color(0x267f7f7f),
-              borderRadius: BorderRadius.all(
-                Radius.circular(16.0),
-              ),
-            ),
-            child: Column(
-              children: <Widget>[
-                SelectedImageWidget(
+          body: Column(
+            children: <Widget>[
+              Visibility(
+                visible: this.image != null,
+                child: Container(
+                  margin: EdgeInsets.only(left: 13.0, right: 14.0, bottom: 6.0),
+                  child: SelectedImageWidget(
+                    backgroundColor: Utils.backgroundGreyOpacity(context),
                     image: this.image,
-                    onTap: () {
-                      inputBarKey.currentState.removeImage();
-                    }),
-                Padding(
-                  padding: EdgeInsets.only(left: 12.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Flexible(
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                            maxHeight: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.vertical - 100,
-                          ),
-                          child: Scrollbar(
-                            child: SingleChildScrollView(
-                              reverse: true,
-                              child: Consumer<SuggestionsModel>(
-                                builder: (context, model, _) => TextField(
-                                  cursorWidth: 1.5,
-                                  cursorRadius: Radius.circular(20.0),
-                                  onChanged: (text) {
-                                    model.loadSuggestions(inputBarKey
-                                        .currentState
-                                        .extractSuggestions());
-                                  },
-                                  style:
-                                      DefaultTextStyle.of(context).style.merge(
-                                            TextStyle(fontSize: 14.0),
-                                          ),
-                                  maxLines: null,
-                                  controller: this.textController,
-                                  keyboardType: TextInputType.multiline,
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
-                                      vertical: 8.0,
-                                    ),
-                                    border: InputBorder.none,
-                                    hintText: 'Treść',
-                                  ),
-                                ),
+                    onTap: () => inputBarKey.currentState.removeImage(),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Scrollbar(
+                  child: SingleChildScrollView(
+                    child: Container(
+                      margin:
+                          EdgeInsets.only(left: 18.0, right: 18.0, bottom: 6.0),
+                      child: Consumer<SuggestionsModel>(
+                        builder: (context, model, _) => TextField(
+                          autofocus: true,
+                          onChanged: (text) {
+                            model.loadSuggestions(
+                                inputBarKey.currentState.extractSuggestions());
+                          },
+                          style: DefaultTextStyle.of(context).style.merge(
+                                TextStyle(fontSize: 18.0),
                               ),
-                            ),
+                          maxLines: null,
+                          controller: textController,
+                          keyboardType: TextInputType.multiline,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Napisz coś ciekawego',
                           ),
                         ),
                       ),
-                      EmoticonButtonWidget(onTap: () {}),
-                    ],
+                    ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

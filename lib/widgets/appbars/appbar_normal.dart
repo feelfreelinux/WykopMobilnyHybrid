@@ -70,7 +70,7 @@ class _AppbarNormalWidgetState extends State<AppbarNormalWidget> {
                         child: Text(
                           widget.title ?? '',
                           style: TextStyle(
-                            height: 0.9,
+                            height: 1.0,
                             fontSize: 20.0,
                             fontWeight: FontWeight.w700,
                           ),

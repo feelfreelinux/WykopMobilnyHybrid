@@ -24,8 +24,7 @@ class InputBarWidget extends StatefulWidget {
   final Color iconsColor;
   final String hintText;
 
-  InputBarWidget(
-    {
+  InputBarWidget({
     @required Key key,
     this.externalController,
     this.imageStateChanged,
@@ -39,7 +38,6 @@ class InputBarWidget extends StatefulWidget {
 class InputBarWidgetState extends State<InputBarWidget> {
   bool showMarkdownBar = false;
   bool showMediaButton = true;
-  bool showTextFormatBar = false;
   bool clickTextField = false;
   bool isEmpty = true;
   bool sending = false;
@@ -353,107 +351,97 @@ class InputBarWidgetState extends State<InputBarWidget> {
 
   Widget _drawButtons() {
     if (showMarkdownBar || hasExternalInput) {
-      return Container(
-        padding: EdgeInsets.only(
-          bottom: 8.0,
-          left: 6.0,
-          right: 6.0,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: !showTextFormatBar
-              ? <Widget>[
-                  _drawIconRound(
-                    icon: Icons.text_format,
-                    color: Colors.deepOrange,
-                    onTap: () {
-                      setState(() {
-                        showTextFormatBar = true;
-                      });
-                    },
-                  ),
-                  _drawIconRound(
-                    icon: Icons.link,
-                    color: Colors.indigo,
-                    onTap: () =>
-                        insertSelectedText("[", suffix: "](https://wykop.pl)"),
-                  ),
-                  _drawIconRound(
-                    icon: Icons.visibility_off,
-                    color: Colors.grey[600],
-                    onTap: () => insertSelectedText("\n! ", suffix: "\n"),
-                  ),
-                  _drawIconRound(
-                    icon: Icons.list,
-                    color: Colors.deepPurple,
-                    onTap: () => {},
-                  ),
-                  _drawIconRound(
-                    icon: Icons.image,
-                    color: Colors.green[600],
-                    onTap: () => this.pickImage(ImageSource.gallery),
-                  ),
-                  _drawIconRound(
-                    icon: Icons.camera_alt,
-                    color: Colors.blueAccent,
-                    onTap: () => this.pickImage(ImageSource.camera),
-                  ),
-                  _drawIconRound(
-                    icon: Icons.fullscreen,
-                    color: Colors.brown,
-                    onTap: () {},
-                  ),
-                  Expanded(child: Container()),
-                  hasExternalInput
-                      ? SendButtonWidget(
-                          onTap: () {
-                            this._sendButtonClicked(context);
-                          },
-                          isEmpty: isEmpty,
-                          sending: sending,
-                        )
-                      : Container(),
-                ]
-              : <Widget>[
-                  _drawIconRound(
-                    icon: Icons.arrow_back,
-                    onTap: () {
-                      setState(() {
-                        showTextFormatBar = false;
-                      });
-                    },
-                  ),
-                  _drawIconRound(
-                    icon: Icons.format_bold,
-                    color: Colors.red,
-                    onTap: () => insertSelectedText("**", suffix: "**"),
-                  ),
-                  _drawIconRound(
-                    icon: Icons.format_italic,
-                    color: Colors.indigo,
-                    onTap: () => insertSelectedText("_", suffix: "_"),
-                  ),
-                  _drawIconRound(
-                    icon: Icons.format_quote,
-                    color: Colors.amber[600],
-                    onTap: () => insertSelectedText("\n> ", suffix: "\n"),
-                  ),
-                  _drawIconRound(
-                    icon: Icons.code,
-                    color: Colors.purple,
-                    onTap: () => insertSelectedText("`", suffix: "`"),
-                  ),
-                  Expanded(child: Container()),
-                  hasExternalInput
-                      ? SendButtonWidget(
-                          onTap: () {
-                            this._sendButtonClicked(context);
-                          },
-                          isEmpty: isEmpty,
-                          sending: sending,
-                        )
-                      : Container(),
-                ],
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Container(
+          padding: EdgeInsets.only(
+            bottom: hasExternalInput ? 10.0 : 8.0,
+            left: 6.0,
+            right: 6.0,
+            top: hasExternalInput ? 10.0 : 0.0,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Visibility(
+                visible: hasExternalInput,
+                child: _drawIconRound(
+                  icon: Icons.mood,
+                  tooltip: "Emotikony",
+                  onTap: () => {}, // TODO: dodac ekran z lennymi
+                ),
+              ),
+              _drawIconRound(
+                icon: Icons.image,
+                tooltip: "Dodaj obrazek",
+                color: Colors.green[600],
+                onTap: () => this.pickImage(ImageSource.gallery),
+              ),
+              _drawIconRound(
+                icon: Icons.camera_alt,
+                tooltip: "Zdjęcie z aparatu",
+                color: Colors.blueAccent,
+                onTap: () => this.pickImage(ImageSource.camera),
+              ),
+              _drawIconRound(
+                icon: Icons.format_bold,
+                tooltip: "Tekst pogrubiony",
+                color: Colors.red,
+                onTap: () => insertSelectedText("**", suffix: "**"),
+              ),
+              _drawIconRound(
+                icon: Icons.format_italic,
+                tooltip: "Tekst pochylony",
+                color: Colors.indigoAccent,
+                onTap: () => insertSelectedText("_", suffix: "_"),
+              ),
+              _drawIconRound(
+                icon: Icons.format_quote,
+                tooltip: "Cytat",
+                color: Colors.amber[600],
+                onTap: () => insertSelectedText("\n> ", suffix: "\n"),
+              ),
+              _drawIconRound(
+                icon: Icons.code,
+                tooltip: "Kod",
+                color: Colors.purple,
+                onTap: () => insertSelectedText("`", suffix: "`"),
+              ),
+              _drawIconRound(
+                icon: Icons.link,
+                tooltip: "Link",
+                color: Colors.indigo,
+                onTap: () =>
+                    insertSelectedText("[", suffix: "](https://wykop.pl)"),
+              ),
+              _drawIconRound(
+                icon: Icons.visibility_off,
+                tooltip: "Spoiler",
+                color: Colors.grey[600],
+                onTap: () => insertSelectedText("\n! ", suffix: "\n"),
+              ),
+              _drawIconRound(
+                icon: Icons.list,
+                tooltip: "Ankieta",
+                color: Colors.deepPurple,
+                onTap: () => {}, //TODO: dodać dodawanie ankiety
+              ),
+              Visibility(
+                visible:
+                    true, //TODO: sprawdzić czy można zamknąć/otworzyć pelny ekran; ukryć w pw i nowym wpisie?
+                child: _drawIconRound(
+                  icon: hasExternalInput
+                      ? Icons.fullscreen_exit
+                      : Icons.fullscreen,
+                  tooltip: hasExternalInput
+                      ? "Przywróć do paska"
+                      : "Pisz w pełnym ekranie",
+                  color: Colors.brown,
+                  onTap: () {}, //TODO: dodać akcję ekranu/paska edycji
+                ),
+              ),
+            ],
+          ),
         ),
       );
     } else {
@@ -476,24 +464,30 @@ class InputBarWidgetState extends State<InputBarWidget> {
     removeImage();
   }
 
-  Widget _drawIconRound({IconData icon, Color color, VoidCallback onTap}) {
-    return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: 6.0,
-      ),
-      decoration: BoxDecoration(
-        color: color ?? Theme.of(context).accentColor,
-        borderRadius: BorderRadius.circular(30.0),
-      ),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(100.0),
-        child: Padding(
-          padding: EdgeInsets.all(6.0),
-          child: Icon(
-            icon,
-            size: 22.0,
-            color: Colors.white,
+  Widget _drawIconRound({
+    IconData icon,
+    Color color,
+    VoidCallback onTap,
+    String tooltip,
+  }) {
+    return Tooltip(
+      preferBelow: false,
+      message: tooltip ?? "",
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 6.0),
+        decoration: BoxDecoration(
+          color: color ?? Theme.of(context).accentColor,
+          shape: BoxShape.circle,
+        ),
+        child: Material(
+          type: MaterialType.transparency,
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(100.0),
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Icon(icon, size: 22.0, color: Colors.white),
+            ),
           ),
         ),
       ),

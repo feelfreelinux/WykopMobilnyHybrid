@@ -34,7 +34,7 @@ class NotificationsScreen extends StatelessWidget {
                 icon: Icons.notifications,
                 text: "Powiadomienia",
                 child: NotificationsList(
-                  headerBuilder: (newContext) => _header(),
+                  persistentHeaderBuilder: (newContext) => _header(),
                   builder: (context) => NotificationListModel(
                     loadNewNotifications: (page) =>
                         api.notifications.getNotifications(page),
@@ -45,7 +45,7 @@ class NotificationsScreen extends StatelessWidget {
                 icon: OwmGlyphs.ic_navi_my_wykop,
                 text: "Obserwowane tagi",
                 child: NotificationsList(
-                  headerBuilder: (newContext) => _header(
+                  persistentHeaderBuilder: (newContext) => _header(
                     group: () {
                       //TODO: implement group hashtag notifications
                       Scaffold.of(context).showSnackBar(

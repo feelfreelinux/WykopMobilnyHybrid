@@ -8,11 +8,12 @@ import 'package:owmflutter/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
 class NotificationsList extends ItemList<prefix0.Notification, NotificationModel> {
-  NotificationsList({ModelBuilder<NotificationListModel> builder, Widget header, WidgetBuilder headerBuilder})
+  NotificationsList({ModelBuilder<NotificationListModel> builder, Widget header, WidgetBuilder headerBuilder, WidgetBuilder persistentHeaderBuilder})
       : super(
           builder: builder,
           header: header,
           headerBuilder: headerBuilder,
+          persistentHeaderBuilder: persistentHeaderBuilder,
           buildChildren: (context) => NotificationWidget(),
         );
 }
