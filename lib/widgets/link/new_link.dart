@@ -208,11 +208,7 @@ class _NewLinkWidgetState extends State<NewLinkWidget> {
           title,
           overflow: TextOverflow.ellipsis,
           maxLines: 3,
-          style: TextStyle(
-            height: 1.1,
-            fontSize: 16.0,
-            fontWeight: FontWeight.w500,
-          ),
+          style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
         ),
       ),
     );
@@ -227,10 +223,7 @@ class _NewLinkWidgetState extends State<NewLinkWidget> {
         description,
         overflow: TextOverflow.ellipsis,
         maxLines: 4,
-        style: TextStyle(
-          height: 1.1,
-          fontSize: 14.0,
-        ),
+        style: TextStyle(fontSize: 16.0),
       ),
     );
   }

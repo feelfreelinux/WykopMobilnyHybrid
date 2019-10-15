@@ -16,6 +16,7 @@ export 'link/related.dart';
 export 'link/link_footer.dart';
 export 'links_list.dart';
 export 'entries_list.dart';
+export 'link/link_simple.dart';
 export 'link/new_link.dart';
 export 'link/link_opened.dart';
 export 'link/link_comment.dart';
