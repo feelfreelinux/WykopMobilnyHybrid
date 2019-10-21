@@ -17,6 +17,7 @@ class ProfileModel extends ChangeNotifier {
   bool get isBlocked => _isBlocked;
 
   String get backgroundUrl => _fullProfile.background;
+  String get about => _fullProfile.about;
 
   String get formattedDate => _profileLoaded
       ? "Dołączył/a ${Utils.getSimpleDate(_fullProfile.signupAt)}"
@@ -35,7 +36,7 @@ class ProfileModel extends ChangeNotifier {
       first: "obserwujący",
       many: "obserwujących",
       other: "obserwujących",
-    )}";
+    )} • od ${Utils.getSimpleDate(_fullProfile.signupAt).replaceAll(' temu', '')}";
     return prefix;
   }
 

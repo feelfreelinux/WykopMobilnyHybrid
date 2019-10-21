@@ -38,17 +38,14 @@ class AvatarWidget extends StatelessWidget {
 
   Widget _drawAvatar(BuildContext context) {
     return Container(
+      padding: EdgeInsets.all(size / 30),
       decoration: BoxDecoration(
         boxShadow: boxShadow,
         shape: BoxShape.circle,
-        border: Border.all(
-          color: badge ?? (borderColor ?? Theme.of(context).cardColor),
-          width: size / 30,
-        ),
+        color: badge ?? (borderColor ?? Theme.of(context).cardColor),
       ),
       child: Container(
         decoration: BoxDecoration(
-          boxShadow: boxShadow,
           shape: BoxShape.circle,
           border: Border.all(
             color: borderColor ?? Theme.of(context).cardColor,
