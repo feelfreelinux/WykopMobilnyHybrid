@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/widgets/widgets.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
-import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 
-import 'package:flutter/material.dart';
 import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/model/model.dart';
-import 'package:owmflutter/widgets/widgets.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -20,35 +14,95 @@ class ProfileScreen extends StatefulWidget {
   ProfileScreenState createState() => ProfileScreenState();
 }
 
+typedef Future<dynamic> ProfileEndpointCallback(int page);
+
+enum ProfileScreenType {
+  ENTRY,
+  LINKS,
+  ENTRY_LINKS,
+  ENTRY_COMMENTS,
+  LINK_COMMENTS,
+}
+
 class ProfileTab {
   final WidgetBuilder childrenBuilder;
   final String title;
+  final ProfileScreenType dataType;
+  final ProfileEndpointCallback callback;
+  final bool supportsPagination;
 
-  ProfileTab({this.childrenBuilder, this.title});
+  ProfileTab(
+      {this.childrenBuilder,
+      this.dataType,
+      this.title,
+      this.callback,
+      this.supportsPagination = true});
 }
 
 class ProfileScreenState extends State<ProfileScreen> {
-  num screenIndex = 6;
+  int screenIndex = 0;
 
   List<ProfileTab> tabs;
 
   @override
   void initState() {
+    var username = widget.profileModel.author.login;
     tabs = [
-      ProfileTab(childrenBuilder: (context) => _drawBody(), title: "Wszystko"),
-      ProfileTab(childrenBuilder: (context) => _drawBody(), title: "Linki"),
-      ProfileTab(childrenBuilder: (context) => _drawBody(), title: "Wpisy"),
       ProfileTab(
-          childrenBuilder: (context) => _drawBody(), title: "Skom. znaleziska"),
+        childrenBuilder: (context) => _drawBody(),
+        title: "Wszystko",
+        dataType: ProfileScreenType.ENTRY_LINKS,
+        callback: (page) => api.profiles.getActions(username),
+        supportsPagination: false,
+      ),
+      ProfileTab(
+        childrenBuilder: (context) => _drawBody(),
+        title: "Linki",
+        dataType: ProfileScreenType.LINKS,
+        callback: (page) => api.profiles.getAddedLinks(page, username),
+        supportsPagination: true,
+      ),
+      ProfileTab(
+        childrenBuilder: (context) => _drawBody(),
+        title: "Wpisy",
+        dataType: ProfileScreenType.ENTRY,
+        callback: (page) => api.profiles.getEntries(page, username),
+        supportsPagination: true,
+      ),
+      ProfileTab(
+        childrenBuilder: (context) => _drawBody(),
+        title: "Skom. znaleziska",
+        dataType: ProfileScreenType.LINKS,
+        callback: (page) => api.profiles.getCommentedLinks(page, username),
+        supportsPagination: true,
+      ),
       ProfileTab(
           childrenBuilder: (context) => _drawBody(),
-          title: "Kom. do znalezisk"),
+          title: "Kom. do znalezisk",
+          dataType: ProfileScreenType.LINK_COMMENTS,
+          callback: (page) => api.profiles.getLinkComments(page, username),
+          supportsPagination: true),
       ProfileTab(
-          childrenBuilder: (context) => _drawBody(), title: "Opub. znaleziska"),
+        childrenBuilder: (context) => _drawBody(),
+        title: "Opub. znaleziska",
+        dataType: ProfileScreenType.LINKS,
+        callback: (page) => api.profiles.getPublishedLinks(page, username),
+        supportsPagination: true,
+      ),
       ProfileTab(
-          childrenBuilder: (context) => _drawBody(), title: "Skom. wpisy"),
+        childrenBuilder: (context) => _drawBody(),
+        title: "Skom. wpisy",
+        dataType: ProfileScreenType.ENTRY,
+        callback: (page) => api.profiles.getCommentedEntries(page, username),
+        supportsPagination: true,
+      ),
       ProfileTab(
-          childrenBuilder: (context) => _drawBody(), title: "Kom. do wpisów"),
+        childrenBuilder: (context) => _drawBody(),
+        title: "Kom. do wpisów",
+        dataType: ProfileScreenType.ENTRY_COMMENTS,
+        callback: (page) => api.profiles.getEntryComments(page, username),
+        supportsPagination: true,
+      ),
       ProfileTab(childrenBuilder: (context) => _drawBody(), title: "Powiązane"),
       ProfileTab(
           childrenBuilder: (context) => _drawBody(), title: "Obserwujący"),
@@ -72,6 +126,7 @@ class ProfileScreenState extends State<ProfileScreen> {
           data: mqDataNew,
           child: Scaffold(
             body: SafeArea(
+              key: ValueKey(tabs[screenIndex].title),
               child: tabs[screenIndex].childrenBuilder(context),
             ),
           ),
@@ -81,14 +136,38 @@ class ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _drawBody() {
-    return EntriesLinksList(
-      header: _drawFloatingHeader(),
-      persistentHeaderBuilder: (context) => _drawHeader(),
-      builder: (context) => EntryLinkListmodel(
-        loadNewEntryLinks: (page) =>
-            api.profiles.getActions(widget.profileModel.author.login),
-      ),
-    );
+    var tab = tabs[screenIndex];
+    if (tab.dataType == ProfileScreenType.ENTRY_LINKS) {
+      return EntriesLinksList(
+        header: _drawFloatingHeader(),
+        persistentHeaderBuilder: (context) => _drawHeader(),
+        builder: (context) => EntryLinkListmodel(
+          loadNewEntryLinks: tab.callback,
+        ),
+      );
+    }
+
+    if (tab.dataType == ProfileScreenType.ENTRY) {
+      return EntriesList(
+        header: _drawFloatingHeader(),
+        persistentHeaderBuilder: (context) => _drawHeader(),
+        builder: (context) => EntryListModel(
+          loadNewEntries: tab.callback,
+        ),
+      );
+    }
+
+    if (tab.dataType == ProfileScreenType.LINKS) {
+      return LinksList(
+        header: _drawFloatingHeader(),
+        persistentHeaderBuilder: (context) => _drawHeader(),
+        builder: (context) => LinkListModel(
+          loadNewLinks: tab.callback,
+        ),
+      );
+    }
+
+    return Text("TODO");
   }
 
   Widget _drawHeader() {
@@ -406,7 +485,14 @@ class ProfileScreenState extends State<ProfileScreen> {
       text: tabs[index].title,
       index: index,
       currentIndex: screenIndex,
-      onTap: () => setState(() => screenIndex = index),
+      onTap: () {
+        setState(() {
+          screenIndex = index;
+        });
+        if (index > 2) {
+          Navigator.pop(context);
+        }
+      },
     );
   }
 
@@ -432,6 +518,7 @@ class ProfileScreenState extends State<ProfileScreen> {
         builder: (context) {
           return GreatDialogWidget(
             child: Column(
+              key: ValueKey(tabs[screenIndex].title),
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Padding(

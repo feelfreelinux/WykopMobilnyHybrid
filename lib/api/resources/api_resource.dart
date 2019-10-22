@@ -76,6 +76,12 @@ abstract class ApiResource {
         .toList();
   }
 
+  List<EntryComment> deserializeEntryComments(dynamic items) {
+    return _client
+        .deserializeList(EntryCommentResponse.serializer, items)
+        .map((e) => EntryComment.mapFromResponse(e))
+        .toList();
+  }
   List<Related> deserializeRelatedLinks(dynamic items) {
     return _client
         .deserializeList(RelatedResponse.serializer, items)
