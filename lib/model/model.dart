@@ -19,3 +19,4 @@ export 'list_model.dart';
 export 'tag_model.dart';
 export 'entry_comments_list_model.dart';
 export 'link_comments_list_model.dart';
+export 'observed_tags_model.dart';

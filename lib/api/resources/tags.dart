@@ -38,10 +38,13 @@ class TagsApi extends ApiResource {
   Future<List<Entry>> getEntries(String tag, int page) async {
     var items = await client.request('tags', 'entries',
         api: [tag], named: {'page': page.toString()});
-    var ote = await client
-        .request('tags', 'index', api: [tag], named: {'page': page.toString()}, returnFullResponse: true);
-    print(ote);
+
     return deserializeEntries(items);
+  }
+
+  Future<List<String>> getObservedTags() async {
+    var items = await client.request('tags', 'observed');
+    return List<String>.from(items.map((e) => e["tag"]).toList());
   }
 
   Future<TagMeta> getMeta(String tag) async {
