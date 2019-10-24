@@ -39,7 +39,7 @@ class MyWykopScreen extends StatelessWidget {
                 "Aktywność z obserwowanych tagów będzie widoczna po zalogowaniu.",
                 child: EntriesLinksList(
                   builder: (context) => EntryLinkListmodel(
-                      loadNewEntryLinks: (page) => api.mywykop.getTags(page)
+                      loadNewEntryLinks: (page) => api.mywykop.getTags(page),
                   ),
                 ),
               ),
@@ -47,7 +47,11 @@ class MyWykopScreen extends StatelessWidget {
                 icon: Icons.group,
                 fullText:
                 "Aktywność obserwowanych użytkowników będzie widoczna po zalogowaniu.",
-                child: Center(child: Text('Niezaimplementowane')),
+                child: EntriesLinksList(
+                  builder: (context) => EntryLinkListmodel(
+                    loadNewEntryLinks: (page) => api.mywykop.getUsers(page),
+                  ),
+                ),
               ),
               NotLoggedWidget(
                 icon: Icons.list,
