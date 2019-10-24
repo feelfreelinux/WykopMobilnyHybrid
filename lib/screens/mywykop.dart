@@ -36,13 +36,17 @@ class MyWykopScreen extends StatelessWidget {
               NotLoggedWidget(
                 icon: OwmGlyphs.ic_navi_my_wykop,
                 fullText:
-                    "Aktywność z obserwowanych tagów będzie widoczna po zalogowaniu.",
-                child: Center(child: Text('Niezaimplementowane')),
+                "Aktywność z obserwowanych tagów będzie widoczna po zalogowaniu.",
+                child: EntriesLinksList(
+                  builder: (context) => EntryLinkListmodel(
+                      loadNewEntryLinks: (page) => api.mywykop.getTags(page)
+                  ),
+                ),
               ),
               NotLoggedWidget(
                 icon: Icons.group,
                 fullText:
-                    "Aktywność obserwowanych użytkowników będzie widoczna po zalogowaniu.",
+                "Aktywność obserwowanych użytkowników będzie widoczna po zalogowaniu.",
                 child: Center(child: Text('Niezaimplementowane')),
               ),
               NotLoggedWidget(
