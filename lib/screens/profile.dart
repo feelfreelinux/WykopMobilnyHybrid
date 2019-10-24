@@ -167,6 +167,24 @@ class ProfileScreenState extends State<ProfileScreen> {
       );
     }
 
+    if (tab.dataType == ProfileScreenType.ENTRY_COMMENTS) {
+      return EntryCommentsList(
+        header: _drawFloatingHeader(),
+        persistentHeaderBuilder: (context) => _drawHeader(),
+        builder: (context) => EntryCommentsListModel(
+          loadNewComments: tab.callback,
+        ),
+      );
+    }
+    if (tab.dataType == ProfileScreenType.LINK_COMMENTS) {
+      return LinkCommentsList(
+        header: _drawFloatingHeader(),
+        persistentHeaderBuilder: (context) => _drawHeader(),
+        builder: (context) => LinkCommentListModels(
+          loadNewLinkComments: tab.callback,
+        ),
+      );
+    }
     return Text("TODO");
   }
 
