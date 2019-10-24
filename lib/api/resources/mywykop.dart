@@ -10,14 +10,13 @@ class MyWykopApi extends ApiResource {
         .request('mywykop', 'index', named: {'page': page.toString()});
     return deserializeEntryLinks(items);
   }
-/*
-  Future<Result> getTags(int page) async {
+
+  Future<List<EntryLink>> getTags(int page) async {
     var items = await client
         .request('mywykop', 'tags', named: {'page': page.toString()});
-    return normalizeEntryLinkResponse(BuiltList.from(
-        client.deserializeList(EntryLinkResponse.serializer, items)));
+    return deserializeEntryLinks(items);
   }
-
+/*
   Future<Result> getUsers(int page) async {
     var items = await client
         .request('mywykop', 'users', named: {'page': page.toString()});
