@@ -17,10 +17,16 @@ abstract class Link implements Built<Link, LinkBuilder> {
   String get sourceUrl;
 
   int get voteCount;
+  
+  int get buryCount;
+
+  bool get isFavorite;
 
   int get commentsCount;
 
   int get relatedCount;
+
+  LinkVoteState get voteState;
 
   Author get author;
 
@@ -40,12 +46,15 @@ abstract class Link implements Built<Link, LinkBuilder> {
       commentsCount: response.commentsCount,
       author: Author.fromResponse(response: response.author),
       isHot: response.isHot,
+      buryCount: response.buryCount,
+      voteState: response.userVote ?? "" == "dig" ? LinkVoteState.DIGGED : (response.userVote ?? "" == "bury" ? LinkVoteState.BURIED : LinkVoteState.NONE),
       preview: // Makes link previews load in full resolution
           response.preview != null
               ? response.preview.split(',')[0] +
                   '.' +
                   response.preview.split(',')[1].split('.')[1]
               : null,
+      isFavorite: response.favorite ?? false,
       sourceUrl: response.sourceUrl,
       canVote: response.canVote,
       description: response.description,

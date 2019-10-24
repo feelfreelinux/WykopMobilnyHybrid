@@ -52,6 +52,7 @@ class _NewLinkWidgetState extends State<NewLinkWidget> {
                             showButtonsState = !showButtonsState;
                           });
                         },
+                        
                         count: model.voteCount,
                         size: 48.0,
                         isHot: model.isHot,
@@ -104,7 +105,13 @@ class _NewLinkWidgetState extends State<NewLinkWidget> {
                 ),
               ),
               LinkFooterWidget(
-                  linkId: model.id, linkTitle: model.title, isClickable: false),
+                linkId: model.id,
+                linkTitle: model.title,
+                isClickable: false,
+                commentsCount: model.commentsCount,
+                isFavorite: model.isFavorite,
+                onFavoriteClick: () => model.favoriteToggle(),
+              ),
               DividerWidget(),
             ],
           ),

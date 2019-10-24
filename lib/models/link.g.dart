@@ -22,9 +22,15 @@ class _$Link extends Link {
   @override
   final int voteCount;
   @override
+  final int buryCount;
+  @override
+  final bool isFavorite;
+  @override
   final int commentsCount;
   @override
   final int relatedCount;
+  @override
+  final LinkVoteState voteState;
   @override
   final Author author;
   @override
@@ -45,8 +51,11 @@ class _$Link extends Link {
       this.tags,
       this.sourceUrl,
       this.voteCount,
+      this.buryCount,
+      this.isFavorite,
       this.commentsCount,
       this.relatedCount,
+      this.voteState,
       this.author,
       this.preview,
       this.isHot,
@@ -73,11 +82,20 @@ class _$Link extends Link {
     if (voteCount == null) {
       throw new BuiltValueNullFieldError('Link', 'voteCount');
     }
+    if (buryCount == null) {
+      throw new BuiltValueNullFieldError('Link', 'buryCount');
+    }
+    if (isFavorite == null) {
+      throw new BuiltValueNullFieldError('Link', 'isFavorite');
+    }
     if (commentsCount == null) {
       throw new BuiltValueNullFieldError('Link', 'commentsCount');
     }
     if (relatedCount == null) {
       throw new BuiltValueNullFieldError('Link', 'relatedCount');
+    }
+    if (voteState == null) {
+      throw new BuiltValueNullFieldError('Link', 'voteState');
     }
     if (author == null) {
       throw new BuiltValueNullFieldError('Link', 'author');
@@ -108,8 +126,11 @@ class _$Link extends Link {
         tags == other.tags &&
         sourceUrl == other.sourceUrl &&
         voteCount == other.voteCount &&
+        buryCount == other.buryCount &&
+        isFavorite == other.isFavorite &&
         commentsCount == other.commentsCount &&
         relatedCount == other.relatedCount &&
+        voteState == other.voteState &&
         author == other.author &&
         preview == other.preview &&
         isHot == other.isHot &&
@@ -129,15 +150,23 @@ class _$Link extends Link {
                                     $jc(
                                         $jc(
                                             $jc(
-                                                $jc($jc(0, id.hashCode),
-                                                    date.hashCode),
-                                                title.hashCode),
-                                            description.hashCode),
-                                        tags.hashCode),
-                                    sourceUrl.hashCode),
-                                voteCount.hashCode),
-                            commentsCount.hashCode),
-                        relatedCount.hashCode),
+                                                $jc(
+                                                    $jc(
+                                                        $jc(
+                                                            $jc(
+                                                                $jc(0,
+                                                                    id.hashCode),
+                                                                date.hashCode),
+                                                            title.hashCode),
+                                                        description.hashCode),
+                                                    tags.hashCode),
+                                                sourceUrl.hashCode),
+                                            voteCount.hashCode),
+                                        buryCount.hashCode),
+                                    isFavorite.hashCode),
+                                commentsCount.hashCode),
+                            relatedCount.hashCode),
+                        voteState.hashCode),
                     author.hashCode),
                 preview.hashCode),
             isHot.hashCode),
@@ -154,8 +183,11 @@ class _$Link extends Link {
           ..add('tags', tags)
           ..add('sourceUrl', sourceUrl)
           ..add('voteCount', voteCount)
+          ..add('buryCount', buryCount)
+          ..add('isFavorite', isFavorite)
           ..add('commentsCount', commentsCount)
           ..add('relatedCount', relatedCount)
+          ..add('voteState', voteState)
           ..add('author', author)
           ..add('preview', preview)
           ..add('isHot', isHot)
@@ -195,6 +227,14 @@ class LinkBuilder implements Builder<Link, LinkBuilder> {
   int get voteCount => _$this._voteCount;
   set voteCount(int voteCount) => _$this._voteCount = voteCount;
 
+  int _buryCount;
+  int get buryCount => _$this._buryCount;
+  set buryCount(int buryCount) => _$this._buryCount = buryCount;
+
+  bool _isFavorite;
+  bool get isFavorite => _$this._isFavorite;
+  set isFavorite(bool isFavorite) => _$this._isFavorite = isFavorite;
+
   int _commentsCount;
   int get commentsCount => _$this._commentsCount;
   set commentsCount(int commentsCount) => _$this._commentsCount = commentsCount;
@@ -202,6 +242,10 @@ class LinkBuilder implements Builder<Link, LinkBuilder> {
   int _relatedCount;
   int get relatedCount => _$this._relatedCount;
   set relatedCount(int relatedCount) => _$this._relatedCount = relatedCount;
+
+  LinkVoteState _voteState;
+  LinkVoteState get voteState => _$this._voteState;
+  set voteState(LinkVoteState voteState) => _$this._voteState = voteState;
 
   AuthorBuilder _author;
   AuthorBuilder get author => _$this._author ??= new AuthorBuilder();
@@ -230,8 +274,11 @@ class LinkBuilder implements Builder<Link, LinkBuilder> {
       _tags = _$v.tags;
       _sourceUrl = _$v.sourceUrl;
       _voteCount = _$v.voteCount;
+      _buryCount = _$v.buryCount;
+      _isFavorite = _$v.isFavorite;
       _commentsCount = _$v.commentsCount;
       _relatedCount = _$v.relatedCount;
+      _voteState = _$v.voteState;
       _author = _$v.author?.toBuilder();
       _preview = _$v.preview;
       _isHot = _$v.isHot;
@@ -267,8 +314,11 @@ class LinkBuilder implements Builder<Link, LinkBuilder> {
               tags: tags,
               sourceUrl: sourceUrl,
               voteCount: voteCount,
+              buryCount: buryCount,
+              isFavorite: isFavorite,
               commentsCount: commentsCount,
               relatedCount: relatedCount,
+              voteState: voteState,
               author: author.build(),
               preview: preview,
               isHot: isHot,

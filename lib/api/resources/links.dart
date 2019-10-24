@@ -12,6 +12,28 @@ class VoteStateResponse {
   VoteStateResponse({this.votes, this.votesPlus, this.state});
 }
 
+class BuryReason {
+  static const DUPLICATE = 1;
+  static const SPAM = 2;
+  static const FAKE_INFO = 3;
+  static const NOT_APPROPRIATE_CONTENT = 4;
+  static const INVALID = 5;
+}
+
+
+enum LinkVoteState {
+  DIGGED,
+  BURIED,
+  NONE,  
+}
+
+class DigResponse {
+  final int digs;
+  final int buries;
+  final LinkVoteState state;
+  DigResponse({this.digs, this.buries, this.state});
+}
+
 class UpcomingSort {
   static const SORTBY_COMMENTS = "comments";
   static const SORTBY_VOTES = "votes";
@@ -43,6 +65,32 @@ class LinksApi extends ApiResource {
     var items =
         await client.request('links', 'comments', api: [linkId.toString()]);
     return deserializeLinkComments(items);
+  }
+
+  Future<bool> markFavorite(int id) async {
+    var res = await client.request('links', 'favorite', api: [id.toString()]);
+    return res["user_favorite"] as bool;
+  }
+
+  Future<DigResponse> voteUp(String linkId) async {
+    var voteCount = await client.request('links', 'voteup',
+        api: [linkId]);
+
+    return DigResponse(digs: voteCount["digs"], buries: voteCount["buries"], state: LinkVoteState.DIGGED);
+  }
+
+  Future<DigResponse> voteRemove(String linkId) async {
+    var voteCount = await client.request('links', 'voteremove',
+        api: [linkId]);
+
+    return DigResponse(digs: voteCount["digs"], buries: voteCount["buries"], state: LinkVoteState.NONE);
+  }
+
+  Future<DigResponse> voteDown(String linkId, int reason) async {
+    var voteCount = await client.request('links', 'votedown',
+        api: [linkId, reason.toString()]);
+
+    return DigResponse(digs: voteCount["digs"], buries: voteCount["buries"], state: LinkVoteState.BURIED);
   }
 
   Future<VoteStateResponse> commentVoteUp(int linkCommentId, String linkId) async {

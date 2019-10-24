@@ -5,8 +5,7 @@ import 'package:owmflutter/api/api.dart';
 
 class LinkModel extends InputModel {
   @override
-  Future<void> onInputSubmitted(InputData data) async {
-  }
+  Future<void> onInputSubmitted(InputData data) async {}
   int _id;
   String _title;
   String _description;
@@ -21,7 +20,10 @@ class LinkModel extends InputModel {
   Author _author;
   List<LinkComment> _comments;
   int _commentsCount;
+  int _buryCount;
   List<Related> _relatedLinks;
+  LinkVoteState _voteState;
+  bool _isFavorite;
 
   int get id => _id;
   String get date => _date;
@@ -36,6 +38,7 @@ class LinkModel extends InputModel {
   String get preview => _preview;
   List<Related> get relatedLinks => _relatedLinks;
   bool get isHot => _isHot;
+  bool get isFavorite => _isFavorite;
   bool get canVote => _canVote;
 
   int get commentsCount => _commentsCount;
@@ -50,11 +53,14 @@ class LinkModel extends InputModel {
     _title = link.title;
     _sourceUrl = link.sourceUrl;
     _tags = link.tags;
+    _buryCount = link.buryCount;
     _relatedCount = link.relatedCount;
     _preview = link.preview;
     _isHot = link.isHot;
+    _isFavorite = link.isFavorite;
     _canVote = link.canVote;
     _relatedLinks = [];
+    _voteState = link.voteState;
     _comments = [];
     _commentsCount = link.commentsCount;
     notifyListeners();
@@ -64,9 +70,15 @@ class LinkModel extends InputModel {
     _id = id;
   }
 
+  void favoriteToggle() async {
+    _isFavorite = await api.entries.markFavorite(_id);
+    notifyListeners();
+  }
+
   Future<void> loadComments() async {
     var allComents = await api.links.getLinkComments(id);
-    _comments = allComents;/*.where((e) => e.id == e.parentId)
+    _comments = allComents;
+    /*.where((e) => e.id == e.parentId)
       ..forEach(
         (c) {
           c.children.addAll(
@@ -75,6 +87,37 @@ class LinkModel extends InputModel {
         },
       );*/
     _relatedLinks = await api.links.getRelatedLinks(id);
+    notifyListeners();
+  }
+
+  Future<void> voteUp() async {
+    if (_voteState != LinkVoteState.NONE) {
+      return voteRemove();
+    }
+
+    var res = await api.links.voteUp(_id.toString());
+    _buryCount = res.buries;
+    _voteCount = res.digs;
+    _voteState = res.state;
+    notifyListeners();
+  }
+
+  Future<void> voteDown(int reason) async {
+    if (_voteState != LinkVoteState.NONE) {
+      return voteRemove();
+    }
+    var res = await api.links.voteDown(_id.toString(), reason);
+    _buryCount = res.buries;
+    _voteCount = res.digs;
+    _voteState = res.state;
+    notifyListeners();
+  }
+
+  Future<void> voteRemove() async {
+    var res = await api.links.voteRemove(_id.toString());
+    _buryCount = res.buries;
+    _voteCount = res.digs;
+    _voteState = res.state;
     notifyListeners();
   }
 }

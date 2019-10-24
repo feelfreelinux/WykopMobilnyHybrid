@@ -72,7 +72,13 @@ class LinkOpenedWidget extends StatelessWidget {
                 horizontal: 18.0,
               ),
               child: LinkFooterWidget(
-                  linkId: model.id, linkTitle: model.title, isClickable: false),
+                linkId: model.id,
+                linkTitle: model.title,
+                isClickable: false,
+                isFavorite: model.isFavorite,
+                commentsCount: model.commentsCount,
+                onFavoriteClick: () => model.favoriteToggle(),
+              ),
             ),
             DividerWidget(
               padding: EdgeInsets.symmetric(

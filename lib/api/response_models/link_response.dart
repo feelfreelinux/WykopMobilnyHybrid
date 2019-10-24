@@ -16,6 +16,14 @@ abstract class LinkResponse
 
   String get tags;
 
+  @nullable
+  @BuiltValueField(wireName: "user_favorite")
+  bool get favorite;
+
+  @nullable
+  @BuiltValueField(wireName: "user_vote")
+  String get userVote;
+
   @BuiltValueField(wireName: "source_url")
   String get sourceUrl;
 
@@ -28,6 +36,9 @@ abstract class LinkResponse
   @BuiltValueField(wireName: "related_count")
   int get relatedCount;
 
+  @BuiltValueField(wireName: "bury_count")
+  int get buryCount;
+  
   AuthorResponse get author;
 
   @nullable
