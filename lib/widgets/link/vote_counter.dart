@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:owmflutter/api/resources/links.dart';
 import 'package:owmflutter/owm_glyphs.dart';
 
 class VoteCounterWidget extends StatelessWidget {
   final VoidCallback onTap;
-  final String voteState;
+  final LinkVoteState voteState;
   final num count;
   final bool isHot;
   final double size;
@@ -75,9 +76,9 @@ class VoteCounterWidget extends StatelessWidget {
   }
 
   Color get _frameColor {
-    if (voteState == "dig") {
+    if (voteState == LinkVoteState.DIGGED) {
       return Color(0xff3b915f);
-    } else if (voteState == "bury") {
+    } else if (voteState == LinkVoteState.BURIED) {
       return Color(0xffc0392b);
     } else {
       return Color(0xff4383af);

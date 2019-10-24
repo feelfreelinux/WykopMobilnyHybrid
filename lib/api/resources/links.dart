@@ -75,7 +75,7 @@ class LinksApi extends ApiResource {
   Future<DigResponse> voteUp(String linkId) async {
     var voteCount = await client.request('links', 'voteup',
         api: [linkId]);
-
+    print(voteCount);
     return DigResponse(digs: voteCount["digs"], buries: voteCount["buries"], state: LinkVoteState.DIGGED);
   }
 

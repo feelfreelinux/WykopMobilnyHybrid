@@ -34,12 +34,17 @@ class _GreatDialogWidgetState extends State<GreatDialogWidget>
           scale: animation,
           child: Container(
             margin: widget.margin ?? EdgeInsets.all(14.0),
-            padding: widget.padding ?? EdgeInsets.all(18.0),
-            decoration: BoxDecoration(
-              color: Theme.of(context).dialogBackgroundColor,
+            child: ClipRRect(
+              clipBehavior: Clip.hardEdge,
               borderRadius: BorderRadius.circular(20.0),
+              child: Container(
+                padding: widget.padding ?? EdgeInsets.all(18.0),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).dialogBackgroundColor,
+                ),
+                child: widget.child,
+              ),
             ),
-            child: widget.child,
           ),
         ),
       ),

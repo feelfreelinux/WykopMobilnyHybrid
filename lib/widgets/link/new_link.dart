@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/model/link_model.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
@@ -46,13 +47,16 @@ class _NewLinkWidgetState extends State<NewLinkWidget> {
                         ),
                       ),
                       VoteCounterWidget(
-                        voteState: "",
+                        voteState: model.voteState,
                         onTap: () {
+                          if (model.voteState != LinkVoteState.NONE) {
+                            model.voteRemove();
+                            return;
+                          }
                           setState(() {
                             showButtonsState = !showButtonsState;
                           });
                         },
-                        
                         count: model.voteCount,
                         size: 48.0,
                         isHot: model.isHot,
@@ -64,9 +68,21 @@ class _NewLinkWidgetState extends State<NewLinkWidget> {
                   ),
                   VotesButtonsWidget(
                     showButtonsState: showButtonsState,
-                    onTapUpVote: () {},
-                    onTapDownVote: () {},
-                  )
+                    onTapUpVote: () {
+                      model.voteUp();
+                      setState(() => showButtonsState = false);
+                    },
+                    onTapDownVote: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => BuryReasonDialog(
+                          callback: (reason) => model.voteDown(reason),
+                        ),
+                      );
+
+                      setState(() => showButtonsState = false);
+                    },
+                  ),
                 ],
               ),
               OWMSettingListener(

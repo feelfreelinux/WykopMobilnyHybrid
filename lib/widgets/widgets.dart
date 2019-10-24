@@ -33,6 +33,7 @@ export 'sized_sliver_header.dart';
 export 'avatar.dart';
 export 'conversations.dart';
 export 'author.dart';
+export 'bury_reason_dialog.dart';
 export 'body.dart';
 export 'divider.dart';
 export 'embed.dart';

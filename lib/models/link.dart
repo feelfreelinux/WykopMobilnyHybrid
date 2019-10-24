@@ -38,6 +38,15 @@ abstract class Link implements Built<Link, LinkBuilder> {
   bool get canVote;
 
   factory Link.mapFromResponse(LinkResponse response) {
+    var voteState = LinkVoteState.NONE;
+    if (response.userVote == "dig") {
+      voteState = LinkVoteState.DIGGED;
+    }
+
+    if (response.userVote == "bury") {
+      voteState = LinkVoteState.BURIED;
+    }
+
     return _$Link._(
       id: response.id,
       date: response.date,
@@ -47,7 +56,7 @@ abstract class Link implements Built<Link, LinkBuilder> {
       author: Author.fromResponse(response: response.author),
       isHot: response.isHot,
       buryCount: response.buryCount,
-      voteState: response.userVote ?? "" == "dig" ? LinkVoteState.DIGGED : (response.userVote ?? "" == "bury" ? LinkVoteState.BURIED : LinkVoteState.NONE),
+      voteState: voteState,
       preview: // Makes link previews load in full resolution
           response.preview != null
               ? response.preview.split(',')[0] +

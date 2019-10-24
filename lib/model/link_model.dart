@@ -42,6 +42,7 @@ class LinkModel extends InputModel {
   bool get canVote => _canVote;
 
   int get commentsCount => _commentsCount;
+  LinkVoteState get voteState => _voteState;
   List<LinkComment> get comments => _comments;
 
   void setData(Link link) {
