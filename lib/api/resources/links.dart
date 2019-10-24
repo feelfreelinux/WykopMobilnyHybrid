@@ -12,6 +12,13 @@ class VoteStateResponse {
   VoteStateResponse({this.votes, this.votesPlus, this.state});
 }
 
+class UpcomingSort {
+  static const SORTBY_COMMENTS = "comments";
+  static const SORTBY_VOTES = "votes";
+  static const SORTBY_DATE = "date";
+  static const SORTBY_ACTIVE = "active";
+}
+
 class LinksApi extends ApiResource {
   LinksApi(ApiClient client) : super(client);
 
@@ -19,6 +26,12 @@ class LinksApi extends ApiResource {
   Future<List<Link>> _getLinks(String resource, String endpoint, int page) async {
       var items = await client
         .request(resource, endpoint, named: {'page': page.toString()});
+    return client.deserializeList(LinkResponse.serializer, items).map((f) => Link.mapFromResponse(f)).toList();
+  }
+
+  Future<List<Link>> getUpcoming(String sortBy, int page) async {
+      var items = await client
+        .request('links', 'upcoming', named: {'page': page.toString(), 'sort': sortBy});
     return client.deserializeList(LinkResponse.serializer, items).map((f) => Link.mapFromResponse(f)).toList();
   }
 

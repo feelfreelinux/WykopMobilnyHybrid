@@ -6,11 +6,15 @@ class TabButtonWidget extends StatelessWidget {
   final int currentIndex;
   final String text;
   final VoidCallback onTap;
+  final double fontSize;
+  final bool isSelected;
 
   TabButtonWidget({
-    @required this.index,
-    @required this.currentIndex,
+    this.index,
+    this.currentIndex,
     @required this.text,
+    this.fontSize = 14,
+    this.isSelected,
     this.onTap,
   });
 
@@ -25,7 +29,7 @@ class TabButtonWidget extends StatelessWidget {
           duration: Duration(milliseconds: 100),
           padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 6.0),
           decoration: BoxDecoration(
-              color: currentIndex == index
+              color: isSelected ?? currentIndex == index
                   ? Utils.backgroundGreyOpacity(context)
                   : Colors.transparent,
               borderRadius: BorderRadius.circular(20)),
@@ -34,6 +38,7 @@ class TabButtonWidget extends StatelessWidget {
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontWeight: FontWeight.w700,
+                fontSize: fontSize,
                 color: currentIndex == index
                     ? Theme.of(context).textTheme.body1.color
                     : Theme.of(context).textTheme.caption.color),

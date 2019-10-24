@@ -11,6 +11,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String upcomingSort = UpcomingSort.SORTBY_ACTIVE;
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ShadowControlModel>(
@@ -110,7 +112,48 @@ class _HomeScreenState extends State<HomeScreen> {
                   loadNewLinks: (page) => api.links.getPromotedNew(page),
                 ),
               ),
-              Center(child: Text('Niezaimplementowane')),
+              Container(
+                key: ValueKey(upcomingSort),
+                child: LinksList(
+                  header: FloatingTabsHeader(
+                    children: <Widget>[
+                      TabButtonWidget(
+                        text: "Aktywne",
+                        fontSize: 13,
+                        isSelected: upcomingSort == UpcomingSort.SORTBY_ACTIVE,
+                        onTap: () => setState(
+                            () => upcomingSort = UpcomingSort.SORTBY_ACTIVE),
+                      ),
+                      TabButtonWidget(
+                        text: "Wykopywane",
+                        fontSize: 13,
+                        isSelected: upcomingSort == UpcomingSort.SORTBY_VOTES,
+                        onTap: () => setState(
+                            () => upcomingSort = UpcomingSort.SORTBY_VOTES),
+                      ),
+                      TabButtonWidget(
+                        text: "Najnowsze",
+                        fontSize: 13,
+                        isSelected: upcomingSort == UpcomingSort.SORTBY_DATE,
+                        onTap: () => setState(
+                            () => upcomingSort = UpcomingSort.SORTBY_DATE),
+                      ),
+                      TabButtonWidget(
+                        text: "Komentowane",
+                        fontSize: 13,
+                        isSelected:
+                            upcomingSort == UpcomingSort.SORTBY_COMMENTS,
+                        onTap: () => setState(
+                            () => upcomingSort = UpcomingSort.SORTBY_COMMENTS),
+                      ),
+                    ],
+                  ),
+                  builder: (context) => LinkListModel(
+                    loadNewLinks: (page) =>
+                        api.links.getUpcoming(upcomingSort, page),
+                  ),
+                ),
+              ),
               Center(child: Text('Niezaimplementowane')),
               NotLoggedWidget(
                 icon: Icons.favorite,
