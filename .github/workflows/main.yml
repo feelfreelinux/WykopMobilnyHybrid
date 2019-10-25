@@ -18,11 +18,9 @@ jobs:
         API_KEY: ${{ secrets.API_KEY }}
         API_SECRET: ${{ secrets.API_SECRET }}
     - run: flutter pub get
-    - run: flutter test
     - run: flutter build apk --release
-    - name: Send new release apk to discord
-      uses: sinshutu/upload-to-discord@master
-      env:
-        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+    - name: Upload an articaft
+      uses: actions/upload-artifact@master
       with:
-        args: ./build/app/outputs/apk/release/app-release.apk
+        name: owmhybrid.apk
+        path: build/app/outputs/apk/release/app-release.apk
