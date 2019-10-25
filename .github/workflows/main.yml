@@ -1,0 +1,28 @@
+on: push
+name: Test, Build and Release apk
+jobs:
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '12.x'
+    - uses: subosito/flutter-action@v1
+      with:
+        flutter-version: 'v1.9.1+hotfix.6'
+    - name: Create a file with secrets
+      run: "echo { \"wykop_key\": \"$API_KEY\", \"wykop_secret\": \"$API_SECRET\"} >> assets/secrets.json"
+      env:
+        API_KEY: ${{ secrets.API_KEY }}
+        API_SECRET: ${{ secrets.API_SECRET }}
+    - run: flutter pub get
+    - run: flutter test
+    - run: flutter build apk --release
+    - name: Send new release apk to discord
+      uses: sinshutu/upload-to-discord@master
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      with:
+        args: ./build/app/outputs/apk/release/app-release.apk
