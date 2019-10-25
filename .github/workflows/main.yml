@@ -11,7 +11,7 @@ jobs:
         java-version: '12.x'
     - uses: subosito/flutter-action@v1
       with:
-        flutter-version: 'v1.9.1+hotfix.6'
+        channel: 'stable'
     - name: Create a file with secrets
       run: "echo { \"wykop_key\": \"$API_KEY\", \"wykop_secret\": \"$API_SECRET\"} >> assets/secrets.json"
       env:
