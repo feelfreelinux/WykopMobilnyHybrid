@@ -19,8 +19,16 @@ jobs:
         API_SECRET: ${{ secrets.API_SECRET }}
     - run: flutter pub get
     - run: flutter build apk --release
-    - name: Upload an articaft
+    - name: Upload an artifact.
       uses: actions/upload-artifact@master
+      run: export BUILD_NUM $(git rev-list --count HEAD)
       with:
         name: owmhybrid.apk
         path: build/app/outputs/apk/release/app-release.apk
+    - name: Discord notification
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      run: export BUILD_NUM $(git rev-list --count HEAD)
+      uses: Ilshidur/action-discord@master
+      with:
+        args: '_Nowy build aplikacji dostępny do pobrania ($BUILD_NUM)._${{ github.sha }} \n'
