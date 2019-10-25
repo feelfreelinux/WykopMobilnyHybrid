@@ -21,7 +21,6 @@ jobs:
     - run: flutter build apk --release
     - name: Upload an artifact.
       uses: actions/upload-artifact@master
-      run: export BUILD_NUM $(git rev-list --count HEAD)
       with:
         name: owmhybrid.apk
         path: build/app/outputs/apk/release/app-release.apk
