@@ -29,4 +29,10 @@ jobs:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       uses: Ilshidur/action-discord@master
       with:
-        args: '_Nowy build aplikacji dostępny do pobrania._${{ github.sha }} \n'
+        args: 'Nowy build aplikacji dostępny do pobrania._${{ github.sha }} \n'
+    - name: Discord notification part 2
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      uses: Ilshidur/action-discord@master
+      with:
+        args: 'Link: https://github.com/feelfreelinux/WykopMobilnyHybrid/commit/${{ github.sha }}/checks'
