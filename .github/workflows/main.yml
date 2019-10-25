@@ -28,7 +28,6 @@ jobs:
     - name: Discord notification
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      run: export BUILD_NUM $(git rev-list --count HEAD)
       uses: Ilshidur/action-discord@master
       with:
-        args: '_Nowy build aplikacji dostępny do pobrania ($BUILD_NUM)._${{ github.sha }} \n'
+        args: '_Nowy build aplikacji dostępny do pobrania._${{ github.sha }} \n'
