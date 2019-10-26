@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/api/api.dart';
@@ -8,6 +10,7 @@ class AuthStateModel extends ChangeNotifier {
   int _color;
   String _backgroundUrl;
   bool _loggedIn = false;
+  Completer _syncCompleter = Completer();
 
   String get login => _login;
   String get avatarUrl => _avatarUrl;
@@ -15,8 +18,10 @@ class AuthStateModel extends ChangeNotifier {
   String get backgroundUrl => _backgroundUrl;
   bool get loggedIn => _loggedIn && _color != null;
 
+  Completer get syncCompleter => _syncCompleter;
+
   AuthStateModel() {
-    syncStateWithApi();
+    syncStateWithApi().then((e) => _syncCompleter.complete());
   }
 
   Future<void> loginUser(String login, String token) async {
