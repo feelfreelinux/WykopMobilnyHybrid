@@ -83,8 +83,7 @@ class _MainScreenState extends State<MainScreen> {
                 _addMenuButton(Icons.create, "Dodaj"),
                 _iconButton(Icons.loyalty, 2, "Mój Wykop"),
                 _iconButton(Icons.mail, 3, "Powiadomienia",
-                    badge: notifsModel.unreadNotificationsCount +
-                        1), //TODO: display number of notifications
+                    badge: notifsModel.unreadNotificationsCount), //TODO: display number of notifications
               ],
             ),
           ),
