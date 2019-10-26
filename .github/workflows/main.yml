@@ -29,7 +29,7 @@ jobs:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
       uses: Ilshidur/action-discord@master
       with:
-        args: 'Nowy build aplikacji dostępny do pobrania._${{ github.sha }} \n'
+        args: 'Nowy build aplikacji dostępny do pobrania.'
     - name: Discord notification part 2
       env:
         DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
