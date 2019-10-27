@@ -5,6 +5,8 @@ import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/cupertino.dart';
+
 
 class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
@@ -12,6 +14,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String upcomingSort = UpcomingSort.SORTBY_ACTIVE;
+  int topSelectedMonth = DateTime.now().month;
+  int topSelectedYear = DateTime.now().year;
 
   @override
   Widget build(BuildContext context) {
@@ -154,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              Center(child: Text('Niezaimplementowane')),
+              Text(""),
               NotLoggedWidget(
                 icon: Icons.favorite,
                 text: "Ulubione znaleziska",
@@ -196,6 +200,20 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class TopLinksScreen extends StatefulWidget {
+  @override
+  _TopLinksScreenState createState() => _TopLinksScreenState();
+}
+
+class _TopLinksScreenState extends State<TopLinksScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      
     );
   }
 }

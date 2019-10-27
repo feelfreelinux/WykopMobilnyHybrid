@@ -61,6 +61,14 @@ class LinksApi extends ApiResource {
 
   Future<List<Link>> getFavoriteNew(int page) => _getLinks('links', 'observed', page);
 
+  Future<List<Link>> getHitsPopular(int page) => _getLinks('hits', 'popular', page);
+
+  Future<List<Link>> getHitsDay(int page) => _getLinks('hits', 'day', page);
+
+  Future<List<Link>> getHitsWeek(int page) => _getLinks('hits', 'week', page);
+
+  // Future<List<Link>> getHitsWeek(int page) => _getLinks('hits', 'week', page);
+
   Future<List<LinkComment>> getLinkComments(int linkId) async {
     var items =
         await client.request('links', 'comments', api: [linkId.toString()]);
