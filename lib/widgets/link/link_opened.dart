@@ -29,7 +29,7 @@ class _LinkOpenedWidgetState extends State<LinkOpenedWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 horizontal: 18.0,
               ),
               child: Stack(
@@ -41,7 +41,7 @@ class _LinkOpenedWidgetState extends State<LinkOpenedWidget> {
                           author: model.author,
                           date: model.date,
                           fontSize: 15.0,
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             vertical: 10.0,
                           ),
                         ),
@@ -60,7 +60,7 @@ class _LinkOpenedWidgetState extends State<LinkOpenedWidget> {
                         count: model.voteCount,
                         size: 48.0,
                         isHot: model.isHot,
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           vertical: 12.0,
                         ),
                       ),
@@ -86,34 +86,38 @@ class _LinkOpenedWidgetState extends State<LinkOpenedWidget> {
                 ],
               ),
             ),
-            GestureDetector(
-              onTap: () => Utils.launchURL(model.sourceUrl),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Stack(
-                    children: [
-                      _drawImage(context, model.preview),
-                      _drawLinkFavicon(context, model.sourceUrl),
-                    ],
-                  ),
-                  _drawTitle(context, model.title),
-                  _drawDescription(model.description),
-                ],
+            Consumer<LinkModel>(
+              builder: (context, model, _) => GestureDetector(
+                onTap: () => Utils.launchURL(model.sourceUrl),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Stack(
+                      children: [
+                        _drawImage(context, model.preview),
+                        const _LinkFavicon(),
+                      ],
+                    ),
+                    _drawTitle(context, model.title),
+                    new _LinkDescriptionWidget(description: model.description),
+                  ],
+                ),
               ),
             ),
-            _drawTags(model.tags),
+            const _LinkTagsWidget(),
             Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: 18.0,
               ),
-              child: LinkFooterWidget(
-                linkId: model.id,
-                linkTitle: model.title,
-                isClickable: false,
-                isFavorite: model.isFavorite,
-                commentsCount: model.commentsCount,
-                onFavoriteClick: () => model.favoriteToggle(),
+              child: Consumer<LinkModel>(
+                builder: (context, model, _) => LinkFooterWidget(
+                  linkId: model.id,
+                  linkTitle: model.title,
+                  isClickable: false,
+                  isFavorite: model.isFavorite,
+                  commentsCount: model.commentsCount,
+                  onFavoriteClick: () => model.favoriteToggle(),
+                ),
               ),
             ),
             DividerWidget(
@@ -121,156 +125,16 @@ class _LinkOpenedWidgetState extends State<LinkOpenedWidget> {
                 horizontal: 18.0,
               ),
             ),
-            _drawRelated(context, model),
+            new _LinkRelatedWidget(context: context),
             DividerWidget(
               padding: EdgeInsets.symmetric(
                 horizontal: 18.0,
               ),
             ),
-            _drawCommentHeader(context, model),
+            _LinkCommentHeader(),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _drawCommentHeader(BuildContext context, LinkModel link) {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: 18.0,
-        top: 14.0,
-        right: 18.0,
-        bottom: 2.0,
-      ),
-      child: Row(
-        children: <Widget>[
-          Text(
-            link.commentsCount.toString(),
-            style: TextStyle(
-              fontSize: 16.5,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          Text(
-            " " +
-                Utils.polishPlural(
-                  count: link.commentsCount,
-                  first: "Komentarz",
-                  many: "Komentarzy",
-                  other: "Komentarze",
-                ),
-            style: TextStyle(
-              fontSize: 16.5,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          Expanded(child: Container()),
-          GestureDetector(
-            child: Icon(
-              OwmGlyphs.ic_sort,
-            ),
-            onTap: () {
-              //TODO add sorting comments
-              Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text('Niezaimplementowano'),
-              ));
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _drawRelated(BuildContext context, LinkModel link) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 18.0,
-            vertical: 14.0,
-          ),
-          child: Row(
-            children: <Widget>[
-              Text(
-                link.relatedCount.toString(),
-                style: TextStyle(
-                  fontSize: 16.5,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              Text(
-                " " +
-                    Utils.polishPlural(
-                      count: link.relatedCount,
-                      first: "Powiązany",
-                      many: "Powiązanych",
-                      other: "Powiązane",
-                    ),
-                style: TextStyle(
-                  fontSize: 16.5,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              Expanded(child: Container()),
-              GestureDetector(
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).accentColor,
-                      borderRadius: BorderRadius.circular(20)),
-                  padding: EdgeInsets.symmetric(
-                    vertical: 4.0,
-                    horizontal: 10.0,
-                  ),
-                  child: Text(
-                    "Dodaj link",
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                onTap: () {
-                  //TODO add a related add screen
-                  Scaffold.of(context).showSnackBar(SnackBar(
-                    content: Text('Niezaimplementowano'),
-                  ));
-                },
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(
-            bottom: 18.0,
-          ),
-          child: link.relatedCount > 0
-              ? SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 8.0,
-                    ),
-                    child: Row(
-                      children: link.relatedLinks
-                          .map((id) => RelatedWidget(
-                                related: id,
-                                count: link.relatedCount,
-                              ))
-                          .toList(),
-                    ),
-                  ),
-                )
-              : Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 18.0,
-                  ),
-                  child: Text(
-                    "Brak linków powiązanych ze znaleziskiem.",
-                  ),
-                ),
-        ),
-      ],
     );
   }
 
@@ -293,58 +157,6 @@ class _LinkOpenedWidgetState extends State<LinkOpenedWidget> {
     );
   }
 
-  Widget _drawLinkFavicon(BuildContext context, String sourceUrl) {
-    return Positioned(
-      right: 0,
-      child: Container(
-        margin: EdgeInsets.all(12.0),
-        padding: EdgeInsets.all(2.0),
-        decoration: BoxDecoration(
-          color: Theme.of(context).cardColor.withOpacity(0.8),
-          border: Border.all(
-            color: Color(0x337f7f7f),
-            width: 0.5,
-          ),
-          borderRadius: BorderRadius.circular(100),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(4.0),
-              decoration: BoxDecoration(
-                color: Color(0xffffffff),
-                borderRadius: BorderRadius.circular(100),
-              ),
-              child: Image(
-                image: AdvancedNetworkImage(
-                    'http://s2.googleusercontent.com/s2/favicons?domain_url=' +
-                        sourceUrl),
-                height: 10.0,
-                width: 10.0,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 4.0,
-              ),
-              child: Text(
-                sourceUrl
-                    .replaceAll('https://', '')
-                    .replaceAll('http://', '')
-                    .replaceAll('www.', '')
-                    .split('/')[0],
-                style: TextStyle(
-                  fontSize: 11.0,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _drawTitle(BuildContext context, String title) {
     return Container(
       padding: EdgeInsets.only(
@@ -362,35 +174,287 @@ class _LinkOpenedWidgetState extends State<LinkOpenedWidget> {
       ),
     );
   }
+}
 
-  Widget _drawDescription(String description) {
+class _LinkFavicon extends StatelessWidget {
+  const _LinkFavicon({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      right: 0,
+      child: Container(
+        margin: const EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(2.0),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor.withOpacity(0.8),
+          border: Border.all(
+            color: const Color(0x337f7f7f),
+            width: 0.5,
+          ),
+          borderRadius: BorderRadius.circular(100),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.all(4.0),
+              decoration: BoxDecoration(
+                color: const Color(0xffffffff),
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: Consumer<LinkModel>(
+                builder: (context, model, _) => Image(
+                  image: AdvancedNetworkImage(
+                    'http://s2.googleusercontent.com/s2/favicons?domain_url=' +
+                        model.sourceUrl,
+                    useDiskCache: false,
+                  ),
+                  height: 10.0,
+                  width: 10.0,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 4.0,
+              ),
+              child: Consumer<LinkModel>(
+                builder: (context, model, _) => Text(
+                  model.sourceUrl
+                      .replaceAll('https://', '')
+                      .replaceAll('http://', '')
+                      .replaceAll('www.', '')
+                      .split('/')[0],
+                  style: const TextStyle(
+                    fontSize: 11.0,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _LinkRelatedWidget extends StatelessWidget {
+  const _LinkRelatedWidget({
+    Key key,
+    @required this.context,
+  }) : super(key: key);
+
+  final BuildContext context;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 18.0,
+            vertical: 14.0,
+          ),
+          child: Row(
+            children: <Widget>[
+              Consumer<LinkModel>(
+                builder: (context, link, _) => Text(
+                  link.relatedCount.toString(),
+                  style: const TextStyle(
+                    fontSize: 16.5,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              Consumer<LinkModel>(
+                builder: (context, link, _) => Text(
+                  " " +
+                      Utils.polishPlural(
+                        count: link.relatedCount,
+                        first: "Powiązany",
+                        many: "Powiązanych",
+                        other: "Powiązane",
+                      ),
+                  style: const TextStyle(
+                    fontSize: 16.5,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              Expanded(child: Container()),
+              GestureDetector(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).accentColor,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 4.0,
+                    horizontal: 10.0,
+                  ),
+                  child: const Text(
+                    "Dodaj link",
+                    style: TextStyle(
+                      fontSize: 12.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  //TODO add a related add screen
+                  Scaffold.of(context).showSnackBar(SnackBar(
+                    content: Text('Niezaimplementowano'),
+                  ));
+                },
+              ),
+            ],
+          ),
+        ),
+        Consumer<LinkModel>(
+          builder: (context, link, _) => Padding(
+            padding: const EdgeInsets.only(
+              bottom: 18.0,
+            ),
+            child: link.relatedCount > 0
+                ? SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8.0,
+                      ),
+                      child: Row(
+                        children: link.relatedLinks
+                            .map((id) => RelatedWidget(
+                                  related: id,
+                                  count: link.relatedCount,
+                                ))
+                            .toList(),
+                      ),
+                    ),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 18.0,
+                    ),
+                    child: const Text(
+                      "Brak linków powiązanych ze znaleziskiem.",
+                    ),
+                  ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _LinkDescriptionWidget extends StatelessWidget {
+  const _LinkDescriptionWidget({
+    Key key,
+    @required this.description,
+  }) : super(key: key);
+
+  final String description;
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(
+      padding: const EdgeInsets.only(
         left: 18.0,
         top: 10.0,
         right: 18.0,
       ),
       child: Text(
         description,
-        style: TextStyle(
+        style: const TextStyle(
           height: 1.1,
         ),
       ),
     );
   }
+}
 
-  Widget _drawTags(String tags) {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: 18.0,
-        top: 10.0,
-        right: 18.0,
-      ),
-      child: Text(
-        tags,
-        style: TextStyle(
-          height: 1.1,
+class _LinkTagsWidget extends StatelessWidget {
+  const _LinkTagsWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<LinkModel>(
+      builder: (context, model, _) => Padding(
+        padding: const EdgeInsets.only(
+          left: 18.0,
+          top: 10.0,
+          right: 18.0,
         ),
+        child: Text(
+          model.tags,
+          style: const TextStyle(
+            height: 1.1,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _LinkCommentHeader extends StatelessWidget {
+  const _LinkCommentHeader({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 18.0,
+        top: 14.0,
+        right: 18.0,
+        bottom: 2.0,
+      ),
+      child: Row(
+        children: <Widget>[
+          Consumer<LinkModel>(
+            builder: (context, link, _) => Text(
+              link.commentsCount.toString(),
+              style: const TextStyle(
+                fontSize: 16.5,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ),
+          Consumer<LinkModel>(
+            builder: (context, link, _) => Text(
+              " " +
+                  Utils.polishPlural(
+                    count: link.commentsCount,
+                    first: "Komentarz",
+                    many: "Komentarzy",
+                    other: "Komentarze",
+                  ),
+              style: const TextStyle(
+                fontSize: 16.5,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          Expanded(child: Container()),
+          GestureDetector(
+            child: const Icon(
+              OwmGlyphs.ic_sort,
+            ),
+            onTap: () {
+              //TODO add sorting comments
+              Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text('Niezaimplementowano'),
+              ));
+            },
+          ),
+        ],
       ),
     );
   }

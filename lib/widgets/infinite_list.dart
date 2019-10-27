@@ -103,6 +103,7 @@ class _InfiniteListState extends State<InfiniteList> {
 
                   return widget.itemBuilder(context, index);
                 },
+                addAutomaticKeepAlives: false,
                 childCount: itemCount,
               ),
             ),
