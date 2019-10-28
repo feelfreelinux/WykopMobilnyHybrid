@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:owmflutter/models/link.dart';
 import 'package:owmflutter/utils/utils.dart';
+import 'package:owmflutter/widgets/month_picker.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
-
 
 class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
@@ -158,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              Text(""),
+              TopLinksScreen(),
               NotLoggedWidget(
                 icon: Icons.favorite,
                 text: "Ulubione znaleziska",
@@ -210,10 +211,108 @@ class TopLinksScreen extends StatefulWidget {
 }
 
 class _TopLinksScreenState extends State<TopLinksScreen> {
+  int selectedIndex = 0;
+  int selectedMonth = DateTime.now().month;
+  int selectedYear = DateTime.now().year;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      
+      key: ValueKey(selectedIndex.toString() +
+          selectedMonth.toString() +
+          selectedYear.toString()),
+      child: LinksList(
+        header: FloatingTabsHeader(
+          children: <Widget>[
+            TabButtonWidget(
+              text: "Popularne",
+              fontSize: 12,
+              index: 0,
+              currentIndex: selectedIndex,
+              onTap: () => setState(() => selectedIndex = 0),
+            ),
+            TabButtonWidget(
+              text: "Dnia",
+              fontSize: 12,
+              index: 1,
+              currentIndex: selectedIndex,
+              onTap: () => setState(() => selectedIndex = 1),
+            ),
+            TabButtonWidget(
+              text: "Tygodnia",
+              index: 2,
+              currentIndex: selectedIndex,
+              fontSize: 12,
+              onTap: () => setState(() => selectedIndex = 2),
+            ),
+            TabButtonWidget(
+              text: "Miesiąca",
+              fontSize: 12,
+              index: 3,
+              currentIndex: selectedIndex,
+              onTap: () async {
+                var selection = await showMonthPicker(
+                  context: context,
+                  firstDate: DateTime(2005, 12),
+                  initialDate: DateTime(selectedYear, selectedMonth),
+                  lastDate: DateTime.now(),
+                );
+                setState(() {
+                  selectedMonth = selection.month;
+                  selectedYear = selection.year;
+                  selectedIndex = 3;
+                });
+              },
+            ),
+            TabButtonWidget(
+              text: "Roku",
+              fontSize: 12,
+              index: 4,
+              currentIndex: selectedIndex,
+              onTap: () async {
+                await showDialog(
+                    context: context,
+                    builder: (context) => GreatDialogWidget(
+                          child: SizedBox(
+                              height: 230,
+                              width: 300,
+                              child: YearPicker(
+                                firstDate: DateTime(2006),
+                                selectedDate: DateTime(selectedYear),
+                                lastDate: DateTime.now(),
+                                onChanged: (date) {
+                                  setState(() {
+                                    selectedYear = date.year;
+                                    selectedIndex = 4;
+                                  });
+                                  Navigator.of(context).pop();
+                                },
+                              )),
+                        ));
+              },
+            ),
+          ],
+        ),
+        builder: (context) => LinkListModel(
+          loadNewLinks: (page) => getCurrentLinkEndpoint(page),
+        ),
+      ),
     );
+  }
+
+  Future<List<Link>> getCurrentLinkEndpoint(int page) {
+    if (selectedIndex == 0) {
+      return api.links.getHitsDay(page);
+    }
+    if (selectedIndex == 1) {
+      return api.links.getHitsPopular(page);
+    }
+    if (selectedIndex == 2) {
+      return api.links.getHitsWeek(page);
+    }
+    if (selectedIndex == 3) {
+      return api.links.getHitsMonth(page, selectedMonth, selectedYear);
+    }
+    return api.links.getHitsYear(page, selectedYear);
   }
 }
