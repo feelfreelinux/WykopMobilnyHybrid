@@ -5,7 +5,28 @@ import 'package:owmflutter/api/api.dart';
 
 class LinkModel extends InputModel {
   @override
-  Future<void> onInputSubmitted(InputData data) async {}
+  Future<void> onInputSubmitted(InputData data) async {
+    var newComm;
+    if (!isResponding) {
+      newComm = await api.links.addComment(_id, data);
+    } else {
+      newComm = await api.links.addComment(_id, data, commentId: _respondingTo);
+    }
+    cancelReply();
+    loadComments();
+  }
+
+  void replyTo(Author author, int parentId) {
+    _respondingTo = parentId;
+    inputBarKey.currentState.replyToUser(author);
+    notifyListeners();
+  }
+
+  void cancelReply() {
+    _respondingTo = -1;
+    notifyListeners();
+  }
+
   int _id;
   String _title;
   String _description;
@@ -25,6 +46,11 @@ class LinkModel extends InputModel {
   LinkVoteState _voteState;
   bool _isFavorite;
 
+  int _respondingTo = -1;
+
+  bool get isResponding => _respondingTo != -1;
+  Author get respondingTo =>
+      _comments.firstWhere((e) => e.id == _respondingTo).author;
   int get id => _id;
   String get date => _date;
   int get voteCount => _voteCount;

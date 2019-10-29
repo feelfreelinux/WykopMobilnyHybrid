@@ -77,7 +77,7 @@ class LinksApi extends ApiResource {
   Future<List<Link>> getHitsMonth(int page, int month, int year) async {
     var items = await client.request('hits', 'month',
         named: {'page': page.toString()},
-        api: [year.toString(),month.toString()]);
+        api: [year.toString(), month.toString()]);
     return client
         .deserializeList(LinkResponse.serializer, items)
         .map((f) => Link.mapFromResponse(f))
@@ -86,8 +86,7 @@ class LinksApi extends ApiResource {
 
   Future<List<Link>> getHitsYear(int page, int year) async {
     var items = await client.request('hits', 'year',
-        named: {'page': page.toString()},
-        api: [year.toString()]);
+        named: {'page': page.toString()}, api: [year.toString()]);
     return client
         .deserializeList(LinkResponse.serializer, items)
         .map((f) => Link.mapFromResponse(f))
@@ -171,5 +170,24 @@ class LinksApi extends ApiResource {
     var items =
         await client.request('links', 'related', api: [linkId.toString()]);
     return deserializeRelatedLinks(items);
+  }
+
+  Future<LinkComment> addComment(int linkId, InputData data,
+      {int commentId}) async {
+    var linkComment;
+    if (commentId != null) {
+      linkComment = await client.request('links', 'CommentAdd',
+          post: {'body': data.body},
+          image: data.file,
+          api: [linkId.toString(), commentId.toString()]);
+      print(linkComment);
+    } else {
+      linkComment = await client.request('links', 'CommentAdd',
+          post: {'body': data.body},
+          image: data.file,
+          api: [linkId.toString()]);
+    }
+
+    return deserializeLinkComment(linkComment);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:owmflutter/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/widgets/widgets.dart';
@@ -42,9 +43,53 @@ class _LinkScreenState extends State<LinkScreen>
               child: MediaQuery(
                 data: mqDataNew,
                 child: Scaffold(
-                  bottomNavigationBar: InputBarWidget(
-                    key: model.inputBarKey,
-                  ),
+                  bottomNavigationBar: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        model.isResponding ? DividerWidget() : Container(),
+                        model.isResponding
+                            ? Container(
+                                child: Padding(
+                                    padding: const EdgeInsets.only(left: 16.0),
+                                    child: Row(
+                                      children: [
+                                        RichText(
+                                          text: TextSpan(
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 16),
+                                            children: [
+                                              TextSpan(
+                                                  text:
+                                                      "W odpowiedzi na komentarz "),
+                                              TextSpan(
+                                                text: model.respondingTo.login,
+                                                style: TextStyle(
+                                                  color: Utils.getAuthorColor(
+                                                      model.respondingTo.color,
+                                                      context),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Container(),
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.close),
+                                          onPressed: () => model.cancelReply(),
+                                        ),
+                                      ],
+                                    )),
+                              )
+                            : Container(),
+                        InputBarWidget(
+                          key: model.inputBarKey,
+                        )
+                      ]),
                   resizeToAvoidBottomPadding: false,
                   appBar: AppbarNormalWidget(
                     leading: IconButtonWidget(

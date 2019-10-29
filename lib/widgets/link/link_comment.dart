@@ -199,8 +199,12 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
                       Flexible(
                         child: TextButton(
                           padding: EdgeInsets.only(top: 2.0, bottom: 4.0),
-                          onTap: () => inputModel.inputBarKey.currentState
-                              .replyToUser(model.author),
+                          onTap: () =>
+                              Provider.of<LinkModel>(context, listen: false)
+                                  .replyTo(
+                            model.author,
+                            model.parentId,
+                          ),
                           text: "Odpowiedz",
                         ),
                       ),
