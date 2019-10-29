@@ -25,11 +25,11 @@ class ShadowControlModel extends ChangeNotifier {
 
   updateNotificationState(double scrollPixels, double maxScrollExtent, {bool hideOnAllTop = false, ScrollDirection scrollDirection = ScrollDirection.reverse}) {
     if (scrollPixels > scrollDelayPixels && scrollPixels < maxScrollExtent) {
-      if (!hideOnAllTop && _showTopShadow == false && scrollDirection == ScrollDirection.idle) {
+      if (hideOnAllTop && _showTopShadow == false && scrollDirection == ScrollDirection.idle) {
         return;
       }
       
-      if (!hideOnAllTop && scrollDirection == ScrollDirection.forward) {
+      if (hideOnAllTop && scrollDirection == ScrollDirection.forward) {
         if (_showTopShadow == true) {
           _showTopShadow = false;
           _showSubbarShadow = true;

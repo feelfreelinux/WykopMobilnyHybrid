@@ -28,7 +28,6 @@ class EntryOpenWidget extends StatelessWidget {
                       count: model.voteCount,
                       onClicked: () {
                         model.voteToggle();
-                        model.loadUpVoters();
                       },
                     ),
                   ],

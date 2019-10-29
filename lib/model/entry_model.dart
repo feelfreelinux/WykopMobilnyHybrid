@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:owmflutter/model/entry_comment_model.dart';
 import 'package:owmflutter/model/input_model.dart';
 import 'package:owmflutter/models/models.dart';
@@ -30,6 +31,7 @@ class EntryModel extends InputModel {
   bool get isNsfw => _isNsfw;
   int get commentsCount => _commentsCount;
   bool get isLoading => _loading;
+
   List<EntryCommentModel> get comments => _comments;
   List<Voter> get upvoters => _upvoters;
 
@@ -73,6 +75,7 @@ class EntryModel extends InputModel {
       _isVoted = false;
     }
     notifyListeners();
+
     loadUpVoters();
   }
 

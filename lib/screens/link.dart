@@ -16,6 +16,8 @@ class LinkScreen extends StatefulWidget {
 class _LinkScreenState extends State<LinkScreen>
     with SingleTickerProviderStateMixin {
   LinkModel _linkModel;
+  GlobalKey<RefreshIndicatorState> refreshIndicatorKey = GlobalKey();
+
   @override
   void initState() {
     _linkModel = (widget.model ?? (LinkModel()..setId(widget.linkId))
@@ -56,6 +58,7 @@ class _LinkScreenState extends State<LinkScreen>
                         icon: Icons.refresh,
                         padding: EdgeInsets.all(0.0),
                         iconColor: Theme.of(context).accentColor,
+                        onTap: () => refreshIndicatorKey.currentState.show(),
                       ),
                       IconButtonWidget(
                         icon: Icons.more_horiz,
@@ -67,6 +70,7 @@ class _LinkScreenState extends State<LinkScreen>
                     decoration:
                         BoxDecoration(color: Theme.of(context).backgroundColor),
                     child: RefreshIndicator(
+                      key: refreshIndicatorKey,
                       onRefresh: () {
                         return model.loadComments();
                       },

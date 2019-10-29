@@ -85,7 +85,7 @@ class _InfiniteListState extends State<InfiniteList> {
       behavior: NotSuddenJumpScrollBehavior(),
       child: ShadowNotificationListener(
         scrollController: _scrollController,
-        hideOnAllTop: (headerWidget is SliverPersistentHeader),
+        hideOnAllTop: headerWidget is! Container,
         child: CustomScrollView(
           controller: _scrollController,
           slivers: <Widget>[
