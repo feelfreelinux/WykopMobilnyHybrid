@@ -188,6 +188,33 @@ class ProfileScreenState extends State<ProfileScreen> {
     return Text("TODO");
   }
 
+  Widget _drawHeaderButton(String text, bool isSelected, VoidCallback onTap,
+      {EdgeInsets margin = EdgeInsets.zero}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        alignment: Alignment.center,
+        width: 110,
+        margin: margin,
+        padding: EdgeInsets.all(6.0),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? Theme.of(context).accentColor
+              : Theme.of(context).backgroundColor,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [BoxShadow(blurRadius: 6.0, color: Colors.black26)],
+        ),
+        child: Text(
+          text,
+          style: TextStyle(
+            color: isSelected ? Colors.white : Colors.black,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _drawHeader() {
     return Consumer<ProfileModel>(
       builder: (context, profileModel, _) => Column(
@@ -227,43 +254,14 @@ class ProfileScreenState extends State<ProfileScreen> {
                 children: <Widget>[
                   Column(
                     children: <Widget>[
-                      Container(
-                        alignment: Alignment.center,
-                        width: 110,
+                      _drawHeaderButton(
+                        profileModel.isObserved ? "Obserwujesz" : "Obserwuj",
+                        profileModel.isObserved,
+                        () => profileModel.toggleObserve(),
                         margin: EdgeInsets.only(top: 2.0),
-                        padding: EdgeInsets.all(6.0),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).accentColor,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(blurRadius: 6.0, color: Colors.black26)
-                          ],
-                        ),
-                        child: Text(
-                          "Obserwuj",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
                       ),
-                      Container(
-                        alignment: Alignment.center,
-                        width: 110,
-                        margin: EdgeInsets.only(top: 8.0),
-                        padding: EdgeInsets.all(6.0),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).backgroundColor,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(blurRadius: 6.0, color: Colors.black26)
-                          ],
-                        ),
-                        child: Text(
-                          "Odznaki",
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                      ),
+                      _drawHeaderButton("Odznaki", false, () {},
+                          margin: EdgeInsets.only(top: 8.0)),
                     ],
                   ),
                   AvatarWidget(
@@ -275,39 +273,9 @@ class ProfileScreenState extends State<ProfileScreen> {
                   ),
                   Column(
                     children: <Widget>[
-                      Container(
-                        alignment: Alignment.center,
-                        width: 110,
-                        padding: EdgeInsets.all(6.0),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).backgroundColor,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(blurRadius: 6.0, color: Colors.black26)
-                          ],
-                        ),
-                        child: Text(
-                          "Blokuj",
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                      Container(
-                        alignment: Alignment.center,
-                        width: 110,
-                        margin: EdgeInsets.only(top: 8.0),
-                        padding: EdgeInsets.all(6.0),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).backgroundColor,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(blurRadius: 6.0, color: Colors.black26)
-                          ],
-                        ),
-                        child: Text(
-                          "Szczegóły",
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                      ),
+                      _drawHeaderButton(profileModel.isBlocked ? "Zablokowany" : "Blokuj", profileModel.isBlocked, () => profileModel.toggleBlock()),
+                      _drawHeaderButton("Szczegóły", false, () {},
+                          margin: EdgeInsets.only(top: 8.0)),
                     ],
                   ),
                 ],
@@ -376,125 +344,9 @@ class ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
           ),
-          /*Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.only(left: 18.0, right: 18.0, top: 8.0),
-            child: Text(
-              "Ban za chodzenie po wodzie lorem Ipsum printing and typesetting industry.",
-              style: TextStyle(fontSize: 13.0, color: Colors.red),
-            ),
-          ),*/
           SizedBox(height: 8.0)
         ],
-      ), /*
-      Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).accentColor,
-          image: profileModel.backgroundUrl != null
-              ? DecorationImage(
-                  image: AdvancedNetworkImage(profileModel.backgroundUrl),
-                  fit: BoxFit.cover,
-                )
-              : null,
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 8),
-              child: RoundIconButtonWidget(
-                roundColor: Colors.black.withOpacity(0.4),
-                iconColor: Colors.white.withOpacity(0.5),
-                icon: Icons.arrow_back,
-                onTap: () => Navigator.of(context).pop(),
-                iconSize: 26.0,
-                iconPadding: EdgeInsets.all(5.0),
-              ),
-            ),
-            Expanded(
-              child: GestureDetector(
-                // onTap: () => _showDialogWithBody(tagModel),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 8.0, right: 8.0, top: 16, bottom: 16),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 16.0),
-                          child: AvatarWidget(
-                            author: profileModel.author,
-                            size: 36,
-                          ),
-                        ),
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 8.0),
-                                child: Text(
-                                  widget.profileModel.author.login,
-                                  style: TextStyle(
-                                      color: Utils.getAuthorColor(
-                                          widget.profileModel.author.color,
-                                          context),
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ),
-                              Text(
-                                widget.profileModel.formatRankAndObservers(),
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w300),
-                              ),
-                            ]),
-                      ]),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: Container(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      RoundIconButtonWidget(
-                        padding: EdgeInsets.only(left: 8, right: 16, bottom: 8),
-                        roundColor: Colors.black.withOpacity(0.4),
-                        iconColor: Colors.white.withOpacity(0.5),
-                        icon: Icons.lock,
-                        onTap: () => Navigator.of(context).pop(),
-                        iconSize: 22.0,
-                        iconPadding: EdgeInsets.all(5.0),
-                      ),
-                      RoundIconButtonWidget(
-                        padding: EdgeInsets.only(left: 8, right: 16),
-                        roundColor: Colors.black.withOpacity(0.4),
-                        iconColor: Colors.white.withOpacity(0.5),
-                        icon: Icons.remove_red_eye,
-                        onTap: () => Navigator.of(context).pop(),
-                        iconSize: 22.0,
-                        iconPadding: EdgeInsets.all(5.0),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),*/
+      ),
     );
   }
 

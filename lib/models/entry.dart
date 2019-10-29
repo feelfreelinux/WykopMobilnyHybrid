@@ -33,7 +33,7 @@ abstract class Entry implements Built<Entry, EntryBuilder> {
         date: response.date,
         body: response.body,
         voteCount: response.voteCount,
-        commentsCount: response.commentsCount,
+        commentsCount: response.commentsCount ?? 0,
         comments: response.comments == null
             ? BuiltList.from([])
             : BuiltList.from(response.comments.map((el) {
