@@ -242,7 +242,15 @@ class MainSettingsScreen extends StatelessWidget {
               icon: Icons.bug_report,
               color: Colors.red,
               title: "Zgłoś błąd",
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(
+                  Utils.getPageTransition(
+                    TagScreen(
+                      tag: 'owmbugi',
+                    ),
+                  ),
+                );
+              },
             ),
             _drawButton(
               context,
