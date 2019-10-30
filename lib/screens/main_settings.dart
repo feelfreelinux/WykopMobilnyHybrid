@@ -170,6 +170,16 @@ class MainSettingsScreen extends StatelessWidget {
                 onTap: () {},
               ),
             ),
+            Visibility(
+              visible: authStateModel.loggedIn,
+              child: _drawButton(
+                context,
+                icon: Icons.report,
+                color: Colors.orange,
+                title: 'Panel zgłoszeń',
+                onTap: () => Utils.launchURL('https://wykop.pl/naruszenia/moderated')
+              ),
+            ),
             _drawButton(
               context,
               icon: Icons.exit_to_app,
