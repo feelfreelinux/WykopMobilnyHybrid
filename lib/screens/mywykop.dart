@@ -25,6 +25,7 @@ class MyWykopScreen extends StatelessWidget {
             ],
           ),
           body: TabBarView(
+            physics: NeverScrollableScrollPhysics(),
             children: [
               NotLoggedWidget(
                 icon: Icons.loyalty,

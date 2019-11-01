@@ -56,6 +56,7 @@ class _MikroblogScreenState extends State<MikroblogScreen> {
             ],
           ),
           body: TabBarView(
+            physics: NeverScrollableScrollPhysics(),
             children: [
               Container(
                 key: PageStorageKey("NEWEST"),
