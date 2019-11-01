@@ -15,6 +15,7 @@ import 'package:owmflutter/utils/utils.dart';
 import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:path/path.dart' as Path;
 import 'package:mime/mime.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class MediaModel extends ChangeNotifier {
   // Matchers for spliting domains
@@ -26,9 +27,11 @@ class MediaModel extends ChangeNotifier {
 
   bool _isImage = true;
   bool _isLoading = true;
+  bool _isYoutube = false;
   bool _showIcons = false;
   bool get showIcons => _showIcons;
   bool get isImage => _isImage;
+  bool get isYoutube => _isYoutube;
   bool get isLoading => _isLoading;
   String _videoUrl;
 
@@ -43,6 +46,7 @@ class MediaModel extends ChangeNotifier {
   MediaModel({this.embed});
 
   void toogleIcons() {
+    if (isYoutube) return;
     _showIcons = !_showIcons;
     notifyListeners();
   }
@@ -52,7 +56,15 @@ class MediaModel extends ChangeNotifier {
     notifyListeners();
 
     if (!_isImage) {
-      if (embed.url.contains(GFYCAT_MATCHER)) {
+      if (embed.url.contains(YOUTUBE_MATCHER) ||
+          embed.url.contains(SIMPLE_YOUTUBE_MATCHER)) {
+        _videoUrl = embed.url;
+        _isYoutube = true;
+        _isLoading = false;
+        _showIcons = false;
+        notifyListeners();
+        return;
+      } else if (embed.url.contains(GFYCAT_MATCHER)) {
         _videoUrl = await api.embed.getGfycatUrl(embed.url);
       } else if (embed.url.contains(STREAMABLE_MATCHER)) {
         _videoUrl = await api.embed.getStreamableUrl(embed.url);
@@ -65,6 +77,8 @@ class MediaModel extends ChangeNotifier {
     _isLoading = false;
     notifyListeners();
   }
+
+  String getYoutubeId() => YoutubePlayer.convertUrlToId(_videoUrl);
 }
 
 class MediaScreen extends StatefulWidget {
@@ -193,7 +207,7 @@ class _MediaScreenState extends State<MediaScreen> {
               ),
               child: Column(
                 children: <Widget>[
-                  !mediaModel.isImage
+                  !mediaModel.isImage && !mediaModel.isYoutube
                       ? VideoControlsToolbar(
                           controller: mediaModel.videoPlayerController)
                       : Container(),
@@ -462,8 +476,22 @@ class _MediaScreenState extends State<MediaScreen> {
   Widget _handleVideo() {
     try {
       return Consumer<MediaModel>(
-        builder: (context, mediaModel, _) => EmbedVideoPlayer(
-            url: mediaModel.url, controller: mediaModel.videoPlayerController),
+        builder: (context, mediaModel, _) => mediaModel.isYoutube
+            ? YoutubePlayer(
+                context: context,
+                initialVideoId: model.getYoutubeId(),
+                flags: YoutubePlayerFlags(
+                  autoPlay: true,
+                  showVideoProgressIndicator: true,
+                ),
+                progressColors: ProgressBarColors(
+                  playedColor: Colors.amber,
+                  handleColor: Colors.amberAccent,
+                ),
+              )
+            : EmbedVideoPlayer(
+                url: mediaModel.url,
+                controller: mediaModel.videoPlayerController),
       );
     } catch (e) {
       Navigator.pop(context);
