@@ -68,6 +68,8 @@ class MediaModel extends ChangeNotifier {
         _videoUrl = await api.embed.getGfycatUrl(embed.url);
       } else if (embed.url.contains(STREAMABLE_MATCHER)) {
         _videoUrl = await api.embed.getStreamableUrl(embed.url);
+      } else if (embed.url.contains(COUB_MATCHER)) {
+        _videoUrl = await api.embed.getCoubUrl(embed.url);
       }
       _vpController = VideoPlayerController.network(_videoUrl);
       await _vpController.initialize();

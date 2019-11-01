@@ -24,10 +24,10 @@ class EmbedApi extends ApiResource {
     return json.decode(data.body)["gfyItem"]["webmUrl"];
   }
 
-  // TODO: Implement coub (base64 decoding, separate audio track)
-  // Sample api request: https://coub.com/api/v2/coubs/w1nz6
   Future<String> getCoubUrl(String url) async {
-    return '';
+    var coubId = url.replaceAll("https://coub.com/view/", "");
+    var data = await http.get('https://coub.com/api/v2/coubs/' + coubId);
+    return json.decode(data.body)['file_versions']['mobile']['video'];
   }
 
   Future<String> getStreamableUrl(String url) async {
