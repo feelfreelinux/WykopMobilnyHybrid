@@ -170,6 +170,16 @@ class MainSettingsScreen extends StatelessWidget {
                 onTap: () {},
               ),
             ),
+            Visibility(
+              visible: authStateModel.loggedIn,
+              child: _drawButton(
+                context,
+                icon: Icons.report,
+                color: Colors.orange,
+                title: 'Panel zgłoszeń',
+                onTap: () => Utils.launchURL('https://wykop.pl/naruszenia/moderated')
+              ),
+            ),
             _drawButton(
               context,
               icon: Icons.exit_to_app,
@@ -242,7 +252,15 @@ class MainSettingsScreen extends StatelessWidget {
               icon: Icons.bug_report,
               color: Colors.red,
               title: "Zgłoś błąd",
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(
+                  Utils.getPageTransition(
+                    TagScreen(
+                      tag: 'owmbugi',
+                    ),
+                  ),
+                );
+              },
             ),
             _drawButton(
               context,
