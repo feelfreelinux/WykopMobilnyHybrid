@@ -66,7 +66,7 @@ class AboutScreen extends StatelessWidget {
           title: Text("Github"),
           trailing: Icon(Icons.chevron_right),
           onTap: () =>
-              Utils.launchURL("https://github.com/feelfreelinux/WykopMobilny"),
+              Utils.launchURL("https://github.com/feelfreelinux/WykopMobilnyHybrid"),
         ),
         ListTile(
           title: Text("Discord"),
