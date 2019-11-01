@@ -27,6 +27,7 @@ class NotificationsScreen extends StatelessWidget {
             ],
           ),
           body: TabBarView(
+            physics: NeverScrollableScrollPhysics(),
             children: [
               NotLoggedWidget(
                 icon: Icons.mail,
