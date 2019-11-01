@@ -9,11 +9,15 @@ class LinkModel extends InputModel {
     var newComm;
     if (!isResponding) {
       newComm = await api.links.addComment(_id, data);
+      _comments.add(LinkCommentModel()..setData(newComm));
     } else {
       newComm = await api.links.addComment(_id, data, commentId: _respondingTo);
+      var comm = _comments.lastWhere((e) => e.parentId == _respondingTo);
+      _comments.insert(_comments.indexOf(comm) + 1, LinkCommentModel()..setData(newComm));
     }
+    _commentsCount = comments.length;
     cancelReply();
-    loadComments();
+    // loadComments();
   }
 
   void replyTo(Author author, int parentId) {
@@ -39,12 +43,12 @@ class LinkModel extends InputModel {
   String _date;
   int _voteCount;
   Author _author;
-  List<LinkComment> _comments;
   int _commentsCount;
   int _buryCount;
   List<Related> _relatedLinks;
   LinkVoteState _voteState;
   bool _isFavorite;
+  List<LinkCommentModel> _comments = [];
 
   int _respondingTo = -1;
 
@@ -69,7 +73,7 @@ class LinkModel extends InputModel {
 
   int get commentsCount => _commentsCount;
   LinkVoteState get voteState => _voteState;
-  List<LinkComment> get comments => _comments;
+  List<LinkCommentModel> get comments => _comments;
 
   void setData(Link link) {
     _id = link.id;
@@ -104,7 +108,7 @@ class LinkModel extends InputModel {
 
   Future<void> loadComments() async {
     var allComents = await api.links.getLinkComments(id);
-    _comments = allComents;
+    _comments = allComents.map((e) => LinkCommentModel()..setData(e)).toList();
     /*.where((e) => e.id == e.parentId)
       ..forEach(
         (c) {

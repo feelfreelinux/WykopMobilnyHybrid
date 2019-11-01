@@ -122,24 +122,25 @@ class _LinkScreenState extends State<LinkScreen>
                       child: ScrollConfiguration(
                         behavior: NotSuddenJumpScrollBehavior(),
                         child: ShadowNotificationListener(
-                          child: ListView.builder(
-                            physics: AlwaysScrollableScrollPhysics(),
-                            itemCount: model.comments.length + 1,
-                            itemBuilder: (context, index) {
-                              if (index == 0) {
-                                return LinkOpenedWidget();
-                              }
-                              return ChangeNotifierProvider<LinkCommentModel>(
-                                builder: (context) => LinkCommentModel()
-                                  ..setData(model.comments[index - 1]),
-                                child: AuthorRelationBuilder(
-                                  relationType: RelationType.LINK_COMMENT,
-                                  builder: (context, relation) =>
-                                      LinkCommentWidget(
-                                          linkId: model.id, relation: relation),
-                                ),
-                              );
-                            },
+                          child: Consumer<LinkModel>(
+                            builder: (context, commModel, _) => ListView.builder(
+                              physics: AlwaysScrollableScrollPhysics(),
+                              itemCount: commModel.comments.length + 1,
+                              itemBuilder: (context, index) {
+                                if (index == 0) {
+                                  return LinkOpenedWidget();
+                                }
+                                return ChangeNotifierProvider<LinkCommentModel>.value(
+                                  value: commModel.comments[index - 1],
+                                  child: AuthorRelationBuilder(
+                                    relationType: RelationType.LINK_COMMENT,
+                                    builder: (context, relation) =>
+                                        LinkCommentWidget(
+                                            linkId: model.id, relation: relation),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ),
