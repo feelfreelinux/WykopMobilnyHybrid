@@ -37,6 +37,9 @@ class _$ProfileResponseSerializer
       'links_published_count',
       serializers.serialize(object.linksPublishedCount,
           specifiedType: const FullType(int)),
+      'avatar',
+      serializers.serialize(object.avatarUrl,
+          specifiedType: const FullType(String)),
       'rank',
       serializers.serialize(object.rank, specifiedType: const FullType(int)),
     ];
@@ -131,6 +134,10 @@ class _$ProfileResponseSerializer
           result.linksPublishedCount = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
+        case 'avatar':
+          result.avatarUrl = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
         case 'rank':
           result.rank = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
@@ -172,6 +179,8 @@ class _$ProfileResponse extends ProfileResponse {
   @override
   final int linksPublishedCount;
   @override
+  final String avatarUrl;
+  @override
   final int rank;
   @override
   final String about;
@@ -192,6 +201,7 @@ class _$ProfileResponse extends ProfileResponse {
       this.background,
       this.linksAddedCount,
       this.linksPublishedCount,
+      this.avatarUrl,
       this.rank,
       this.about,
       this.violationUrl})
@@ -214,6 +224,9 @@ class _$ProfileResponse extends ProfileResponse {
     if (linksPublishedCount == null) {
       throw new BuiltValueNullFieldError(
           'ProfileResponse', 'linksPublishedCount');
+    }
+    if (avatarUrl == null) {
+      throw new BuiltValueNullFieldError('ProfileResponse', 'avatarUrl');
     }
     if (rank == null) {
       throw new BuiltValueNullFieldError('ProfileResponse', 'rank');
@@ -242,6 +255,7 @@ class _$ProfileResponse extends ProfileResponse {
         background == other.background &&
         linksAddedCount == other.linksAddedCount &&
         linksPublishedCount == other.linksPublishedCount &&
+        avatarUrl == other.avatarUrl &&
         rank == other.rank &&
         about == other.about &&
         violationUrl == other.violationUrl;
@@ -260,16 +274,18 @@ class _$ProfileResponse extends ProfileResponse {
                                     $jc(
                                         $jc(
                                             $jc(
-                                                $jc($jc(0, login.hashCode),
-                                                    color.hashCode),
-                                                sex.hashCode),
-                                            signupAt.hashCode),
-                                        isBlocked.hashCode),
-                                    followers.hashCode),
-                                isObserved.hashCode),
-                            background.hashCode),
-                        linksAddedCount.hashCode),
-                    linksPublishedCount.hashCode),
+                                                $jc(
+                                                    $jc($jc(0, login.hashCode),
+                                                        color.hashCode),
+                                                    sex.hashCode),
+                                                signupAt.hashCode),
+                                            isBlocked.hashCode),
+                                        followers.hashCode),
+                                    isObserved.hashCode),
+                                background.hashCode),
+                            linksAddedCount.hashCode),
+                        linksPublishedCount.hashCode),
+                    avatarUrl.hashCode),
                 rank.hashCode),
             about.hashCode),
         violationUrl.hashCode));
@@ -288,6 +304,7 @@ class _$ProfileResponse extends ProfileResponse {
           ..add('background', background)
           ..add('linksAddedCount', linksAddedCount)
           ..add('linksPublishedCount', linksPublishedCount)
+          ..add('avatarUrl', avatarUrl)
           ..add('rank', rank)
           ..add('about', about)
           ..add('violationUrl', violationUrl))
@@ -341,6 +358,10 @@ class ProfileResponseBuilder
   set linksPublishedCount(int linksPublishedCount) =>
       _$this._linksPublishedCount = linksPublishedCount;
 
+  String _avatarUrl;
+  String get avatarUrl => _$this._avatarUrl;
+  set avatarUrl(String avatarUrl) => _$this._avatarUrl = avatarUrl;
+
   int _rank;
   int get rank => _$this._rank;
   set rank(int rank) => _$this._rank = rank;
@@ -367,6 +388,7 @@ class ProfileResponseBuilder
       _background = _$v.background;
       _linksAddedCount = _$v.linksAddedCount;
       _linksPublishedCount = _$v.linksPublishedCount;
+      _avatarUrl = _$v.avatarUrl;
       _rank = _$v.rank;
       _about = _$v.about;
       _violationUrl = _$v.violationUrl;
@@ -402,6 +424,7 @@ class ProfileResponseBuilder
             background: background,
             linksAddedCount: linksAddedCount,
             linksPublishedCount: linksPublishedCount,
+            avatarUrl: avatarUrl,
             rank: rank,
             about: about,
             violationUrl: violationUrl);

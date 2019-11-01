@@ -33,7 +33,7 @@ class EntryModel extends InputModel {
   bool get isLoading => _loading;
 
   List<EntryCommentModel> get comments => _comments;
-  List<Voter> get upvoters => _upvoters;
+  List<Voter> get upvoters => _upvoters.reversed.toList();
 
   void setData(Entry entry) {
     _id = entry.id;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:owmflutter/model/model.dart';
+import 'package:owmflutter/screens/profile.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/screens/settings/appearance.dart';
 import 'package:owmflutter/screens/settings/profile_edit/profile_edit.dart';
@@ -149,7 +150,14 @@ class MainSettingsScreen extends StatelessWidget {
                 icon: Icons.account_circle,
                 color: Utils.getAuthorColor(authStateModel.color, context),
                 title: "Twój profil",
-                onTap: () {},
+                onTap: () => Navigator.push(
+                  context,
+                  Utils.getPageTransition(
+                    ProfileScreen(
+                      username: authStateModel.login,
+                    ),
+                  ),
+                ),
               ),
             ),
             _drawButton(
@@ -172,13 +180,12 @@ class MainSettingsScreen extends StatelessWidget {
             ),
             Visibility(
               visible: authStateModel.loggedIn,
-              child: _drawButton(
-                context,
-                icon: Icons.report,
-                color: Colors.orange,
-                title: 'Panel zgłoszeń',
-                onTap: () => Utils.launchURL('https://wykop.pl/naruszenia/moderated')
-              ),
+              child: _drawButton(context,
+                  icon: Icons.report,
+                  color: Colors.orange,
+                  title: 'Panel zgłoszeń',
+                  onTap: () =>
+                      Utils.launchURL('https://wykop.pl/naruszenia/moderated')),
             ),
             _drawButton(
               context,

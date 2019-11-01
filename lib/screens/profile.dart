@@ -8,7 +8,8 @@ import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   final ProfileModel profileModel;
-  ProfileScreen({this.profileModel});
+  final String username;
+  ProfileScreen({this.profileModel, this.username});
 
   @override
   ProfileScreenState createState() => ProfileScreenState();
@@ -44,9 +45,15 @@ class ProfileScreenState extends State<ProfileScreen> {
 
   List<ProfileTab> tabs;
 
+  ProfileModel _profileModel;
+  GlobalKey<RefreshIndicatorState> refreshIndicatorKey = GlobalKey();
+
   @override
   void initState() {
-    var username = widget.profileModel.author.login;
+    _profileModel = (widget.profileModel ??
+        (ProfileModel.fromUsername(widget.username)..loadFullProfile()));
+
+    var username = _profileModel.author.login;
     tabs = [
       ProfileTab(
         childrenBuilder: (context) => _drawBody(),
@@ -119,7 +126,7 @@ class ProfileScreenState extends State<ProfileScreen> {
     final mqData = MediaQuery.of(context);
     final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
     return ChangeNotifierProvider<ProfileModel>.value(
-      value: widget.profileModel,
+      value: _profileModel,
       child: ChangeNotifierProvider<ShadowControlModel>(
         builder: (context) => ShadowControlModel(),
         child: MediaQuery(
@@ -217,136 +224,149 @@ class ProfileScreenState extends State<ProfileScreen> {
 
   Widget _drawHeader() {
     return Consumer<ProfileModel>(
-      builder: (context, profileModel, _) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              Container(
-                margin: EdgeInsets.only(bottom: 50.0),
-                color: Utils.backgroundGreyOpacity(context),
-                child: profileModel.backgroundUrl != null
-                    ? Image(
-                        height: 140.0,
-                        width: MediaQuery.of(context).size.width,
-                        fit: BoxFit.cover,
-                        image: NetworkImage(profileModel.backgroundUrl),
-                      )
-                    : Container(
-                        height:
-                            profileModel.backgroundUrl == null ? 90.0 : 140.0,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topRight,
-                            end: Alignment.bottomLeft,
-                            colors: [
-                              Theme.of(context).accentColor.withOpacity(0.8),
-                              Theme.of(context).accentColor.withBlue(255)
-                            ],
-                          ),
-                        ),
-                      ),
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      _drawHeaderButton(
-                        profileModel.isObserved ? "Obserwujesz" : "Obserwuj",
-                        profileModel.isObserved,
-                        () => profileModel.toggleObserve(),
-                        margin: EdgeInsets.only(top: 2.0),
-                      ),
-                      _drawHeaderButton("Odznaki", false, () {},
-                          margin: EdgeInsets.only(top: 8.0)),
-                    ],
-                  ),
-                  AvatarWidget(
-                    author: profileModel.author,
-                    size: 70.0,
-                    boxShadow: [
-                      BoxShadow(blurRadius: 6.0, color: Colors.black26)
-                    ],
-                  ),
-                  Column(
-                    children: <Widget>[
-                      _drawHeaderButton(profileModel.isBlocked ? "Zablokowany" : "Blokuj", profileModel.isBlocked, () => profileModel.toggleBlock()),
-                      _drawHeaderButton("Szczegóły", false, () {},
-                          margin: EdgeInsets.only(top: 8.0)),
-                    ],
-                  ),
-                ],
-              ),
-              Positioned(
-                top: 0.0,
-                left: 0.0,
-                right: 0.0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    RoundIconButtonWidget(
-                      roundColor: Colors.black45,
-                      iconColor: Colors.white,
-                      icon: Icons.arrow_back,
-                      onTap: () => Navigator.of(context).pop(),
-                      iconSize: 26.0,
-                      iconPadding: EdgeInsets.all(5.0),
-                      padding: EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 16.0),
+      builder: (context, profileModel, _) => !profileModel.isFullyLoaded
+          ? CircularProgressIndicator()
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(bottom: 50.0),
+                      color: Utils.backgroundGreyOpacity(context),
+                      child: profileModel.backgroundUrl != null
+                          ? Image(
+                              height: 140.0,
+                              width: MediaQuery.of(context).size.width,
+                              fit: BoxFit.cover,
+                              image: NetworkImage(profileModel.backgroundUrl),
+                            )
+                          : Container(
+                              height: profileModel.backgroundUrl == null
+                                  ? 90.0
+                                  : 140.0,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topRight,
+                                  end: Alignment.bottomLeft,
+                                  colors: [
+                                    Theme.of(context)
+                                        .accentColor
+                                        .withOpacity(0.8),
+                                    Theme.of(context).accentColor.withBlue(255)
+                                  ],
+                                ),
+                              ),
+                            ),
                     ),
-                    RoundIconButtonWidget(
-                      roundColor: Colors.black45,
-                      iconColor: Colors.white,
-                      icon: Icons.share,
-                      iconSize: 20.0,
-                      iconPadding: EdgeInsets.all(8.0),
-                      padding: EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 16.0),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            _drawHeaderButton(
+                              profileModel.isObserved
+                                  ? "Obserwujesz"
+                                  : "Obserwuj",
+                              profileModel.isObserved,
+                              () => profileModel.toggleObserve(),
+                              margin: EdgeInsets.only(top: 2.0),
+                            ),
+                            _drawHeaderButton("Odznaki", false, () {},
+                                margin: EdgeInsets.only(top: 8.0)),
+                          ],
+                        ),
+                        AvatarWidget(
+                          author: profileModel.author,
+                          size: 70.0,
+                          boxShadow: [
+                            BoxShadow(blurRadius: 6.0, color: Colors.black26)
+                          ],
+                        ),
+                        Column(
+                          children: <Widget>[
+                            _drawHeaderButton(
+                                profileModel.isBlocked
+                                    ? "Zablokowany"
+                                    : "Blokuj",
+                                profileModel.isBlocked,
+                                () => profileModel.toggleBlock()),
+                            _drawHeaderButton("Szczegóły", false, () {},
+                                margin: EdgeInsets.only(top: 8.0)),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Positioned(
+                      top: 0.0,
+                      left: 0.0,
+                      right: 0.0,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          RoundIconButtonWidget(
+                            roundColor: Colors.black45,
+                            iconColor: Colors.white,
+                            icon: Icons.arrow_back,
+                            onTap: () => Navigator.of(context).pop(),
+                            iconSize: 26.0,
+                            iconPadding: EdgeInsets.all(5.0),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 16.0),
+                          ),
+                          RoundIconButtonWidget(
+                            roundColor: Colors.black45,
+                            iconColor: Colors.white,
+                            icon: Icons.share,
+                            iconSize: 20.0,
+                            iconPadding: EdgeInsets.all(8.0),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 16.0),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.only(left: 18.0, top: 14.0, right: 18.0),
-            child: Text(
-              profileModel.author.login,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: Utils.getAuthorColor(profileModel.author.color, context),
-                fontSize: 22.0,
-                fontWeight: FontWeight.w600,
-              ),
+                Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.only(left: 18.0, top: 14.0, right: 18.0),
+                  child: Text(
+                    profileModel.author.login,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: Utils.getAuthorColor(
+                          profileModel.author.color, context),
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.only(left: 18.0, right: 18.0, top: 6.0),
+                  child: Text(
+                    _profileModel.formatRankAndObservers(),
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 14.0),
+                  ),
+                ),
+                Visibility(
+                  visible: profileModel.about != null,
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.only(left: 18.0, right: 18.0, top: 8.0),
+                    child: Text(
+                      profileModel.about ?? "",
+                      style: TextStyle(fontSize: 13.0),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 8.0)
+              ],
             ),
-          ),
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.only(left: 18.0, right: 18.0, top: 6.0),
-            child: Text(
-              widget.profileModel.formatRankAndObservers(),
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontSize: 14.0),
-            ),
-          ),
-          Visibility(
-            visible: profileModel.about != null,
-            child: Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.only(left: 18.0, right: 18.0, top: 8.0),
-              child: Text(
-                profileModel.about ?? "",
-                style: TextStyle(fontSize: 13.0),
-              ),
-            ),
-          ),
-          SizedBox(height: 8.0)
-        ],
-      ),
     );
   }
 
