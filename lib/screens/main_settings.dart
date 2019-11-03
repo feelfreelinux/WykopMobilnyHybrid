@@ -165,7 +165,8 @@ class MainSettingsScreen extends StatelessWidget {
               icon: Icons.history,
               color: Colors.purple,
               title: "Historia wyszukiwania",
-              onTap: () {},
+              onTap: () => Navigator.push(
+                  context, Utils.getPageTransition(SearchHistoryScreen())),
             ),
             Visibility(
               visible: authStateModel.loggedIn,
@@ -180,12 +181,14 @@ class MainSettingsScreen extends StatelessWidget {
             ),
             Visibility(
               visible: authStateModel.loggedIn,
-              child: _drawButton(context,
-                  icon: Icons.report,
-                  color: Colors.orange,
-                  title: 'Panel zgłoszeń',
-                  onTap: () =>
-                      Utils.launchURL('https://wykop.pl/naruszenia/moderated')),
+              child: _drawButton(
+                context,
+                icon: Icons.report,
+                color: Colors.orange,
+                title: 'Panel zgłoszeń',
+                onTap: () => //TODO: tu coś nie bangla, działa tylko raz
+                    Utils.launchURL('https://wykop.pl/naruszenia/moderated'),
+              ),
             ),
             _drawButton(
               context,

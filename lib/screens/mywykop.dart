@@ -69,38 +69,36 @@ class MyWykopScreen extends StatelessWidget {
   }
 
   Widget _drawObservedTags() {
-    return ChangeNotifierProvider(
-      builder: (context) => ObservedTagsModel()..loadObservedTags(),
-      child: Consumer<ObservedTagsModel>(
-        builder: (context, model, _) {
-          if (model.isLoading) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return ListView.builder(
-            itemCount: model.tags.length,
-            itemBuilder: (context, index) => InkWell(
-              onTap: () {
-                Navigator.of(context).push(
-                  Utils.getPageTransition(
-                    TagScreen(
-                      tag: model.tags[index].replaceFirst("#", ""),
+    return ShadowNotificationListener(
+      child: ChangeNotifierProvider(
+        builder: (context) => ObservedTagsModel()..loadObservedTags(),
+        child: Consumer<ObservedTagsModel>(
+          builder: (context, model, _) {
+            if (model.isLoading) {
+              return Center(child: CircularProgressIndicator());
+            }
+            return ListView.builder(
+              itemCount: model.tags.length,
+              itemBuilder: (context, index) => InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    Utils.getPageTransition(
+                      TagScreen(tag: model.tags[index].replaceFirst("#", "")),
                     ),
+                  );
+                },
+                child: Padding(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 12.0, horizontal: 18.0),
+                  child: Text(
+                    model.tags[index],
+                    style: TextStyle(fontSize: 16.0),
                   ),
-                );
-              },
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-                child: Text(
-                  model.tags[index],
-                  style: TextStyle(fontSize: 18),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

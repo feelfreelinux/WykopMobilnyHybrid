@@ -10,13 +10,13 @@ import 'votes_buttons.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/screens/screens.dart';
 
-class NewLinkWidget extends StatefulWidget {
-  NewLinkWidget();
+class LinkWidget extends StatefulWidget {
+  LinkWidget();
 
   _NewLinkWidgetState createState() => _NewLinkWidgetState();
 }
 
-class _NewLinkWidgetState extends State<NewLinkWidget> {
+class _NewLinkWidgetState extends State<LinkWidget> {
   bool showButtonsState = false;
 
   @override
@@ -105,11 +105,7 @@ class _NewLinkWidgetState extends State<NewLinkWidget> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    Utils.getPageTransition(
-                      LinkScreen(
-                        model: model,
-                      ),
-                    ),
+                    Utils.getPageTransition(LinkScreen(model: model)),
                   );
                 },
                 child: Column(
@@ -120,14 +116,7 @@ class _NewLinkWidgetState extends State<NewLinkWidget> {
                   ],
                 ),
               ),
-              LinkFooterWidget(
-                linkId: model.id,
-                linkTitle: model.title,
-                isClickable: false,
-                commentsCount: model.commentsCount,
-                isFavorite: model.isFavorite,
-                onFavoriteClick: () => model.favoriteToggle(),
-              ),
+              LinkFooterWidget(link: model, isClickable: true),
               DividerWidget(),
             ],
           ),
@@ -150,7 +139,7 @@ class _NewLinkWidgetState extends State<NewLinkWidget> {
                 ? AdvancedNetworkImage(
                     settings.highResImageLink
                         ? preview
-                        : preview.replaceAll(".jpg", ",q150.jpg"),
+                        : preview.replaceAll(".jpg", ",w207h139.jpg"),
                     useDiskCache: true,
                   )
                 : AssetImage(
@@ -239,14 +228,15 @@ class _NewLinkWidgetState extends State<NewLinkWidget> {
 
   Widget _drawDescription(String description) {
     return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: 2.0,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: 2.0),
       child: Text(
         description,
         overflow: TextOverflow.ellipsis,
-        maxLines: 4,
-        style: TextStyle(fontSize: 16.0),
+        maxLines: 6,
+        style: TextStyle(
+          fontSize: 13.0,
+          color: Theme.of(context).textTheme.caption.color,
+        ),
       ),
     );
   }

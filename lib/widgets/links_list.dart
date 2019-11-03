@@ -15,6 +15,6 @@ class LinksList extends ItemList<Link, LinkModel> {
           buildChildren: (context) =>
               Provider.of<OWMSettings>(context, listen: false).simpleLinkView
                   ? LinkSimpleWidget()
-                  : NewLinkWidget(),
+                  : LinkWidget(),
         );
 }

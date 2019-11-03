@@ -80,19 +80,19 @@ class _MikroblogScreenState extends State<MikroblogScreen> {
                   header: FloatingTabsHeader(
                     children: <Widget>[
                       TabButtonWidget(
-                        text: "6h",
+                        text: "6 godz.",
                         index: 6,
                         currentIndex: hotScreen,
                         onTap: () => setState(() => hotScreen = 6),
                       ),
                       TabButtonWidget(
-                        text: "12h",
+                        text: "12 godz.",
                         index: 12,
                         currentIndex: hotScreen,
                         onTap: () => setState(() => hotScreen = 12),
                       ),
                       TabButtonWidget(
-                        text: "24h",
+                        text: "24 godz.",
                         index: 24,
                         currentIndex: hotScreen,
                         onTap: () => setState(() => hotScreen = 24),

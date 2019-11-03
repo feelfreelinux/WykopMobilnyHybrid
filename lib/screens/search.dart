@@ -19,8 +19,10 @@ class _SearchScreenState extends State<SearchScreen> {
     final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
 
     final List<dynamic> _children = [
-      (query) => SearchResultPage(searchResType: SearchResultType.LINK, query: query),
-      (query) => SearchResultPage(searchResType: SearchResultType.ENTRY, query: query),
+      (query) =>
+          SearchResultPage(searchResType: SearchResultType.LINK, query: query),
+      (query) =>
+          SearchResultPage(searchResType: SearchResultType.ENTRY, query: query),
       (_) => _getHistory(),
     ];
 
@@ -132,6 +134,14 @@ class _SearchScreenState extends State<SearchScreen> {
                 fontWeight: FontWeight.w600,
                 color: Theme.of(context).textTheme.caption.color,
               ),
+            ),
+          ),
+          Visibility(
+            visible:
+                Provider.of<OWMSettings>(context).searchHistory.length == 0,
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 18.0),
+              child: Text("Tutaj pojawi się kilka ostatnich wyszukiwań"),
             ),
           ),
           ...List<int>.generate(

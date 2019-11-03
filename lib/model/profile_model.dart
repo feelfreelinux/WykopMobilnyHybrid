@@ -39,7 +39,7 @@ class ProfileModel extends ChangeNotifier {
       first: "obserwujący",
       many: "obserwujących",
       other: "obserwujących",
-    )} • od ${Utils.getSimpleDate(_fullProfile.signupAt).replaceAll(' temu', '')}";
+    )}";
     return prefix;
   }
 

@@ -207,14 +207,16 @@ class ProfileScreenState extends State<ProfileScreen> {
         decoration: BoxDecoration(
           color: isSelected
               ? Theme.of(context).accentColor
-              : Theme.of(context).backgroundColor,
+              : Utils.backgroundCommentButton(context),
           borderRadius: BorderRadius.circular(20),
-          boxShadow: [BoxShadow(blurRadius: 6.0, color: Colors.black26)],
+          boxShadow: [BoxShadow(blurRadius: 4.0, color: Colors.black12)],
         ),
         child: Text(
           text,
           style: TextStyle(
-            color: isSelected ? Colors.white : Colors.black,
+            color: isSelected
+                ? Colors.white
+                : Theme.of(context).textTheme.body1.color,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -233,7 +235,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                   alignment: Alignment.bottomCenter,
                   children: [
                     Container(
-                      margin: EdgeInsets.only(bottom: 50.0),
+                      margin: EdgeInsets.only(bottom: 60.0),
                       color: Utils.backgroundGreyOpacity(context),
                       child: profileModel.backgroundUrl != null
                           ? Image(
@@ -272,29 +274,35 @@ class ProfileScreenState extends State<ProfileScreen> {
                                   : "Obserwuj",
                               profileModel.isObserved,
                               () => profileModel.toggleObserve(),
-                              margin: EdgeInsets.only(top: 2.0),
                             ),
-                            _drawHeaderButton("Odznaki", false, () {},
-                                margin: EdgeInsets.only(top: 8.0)),
+                            _drawHeaderButton(
+                              "Odznaki",
+                              false,
+                              () {},
+                              margin: EdgeInsets.only(top: 8.0, bottom: 10.0),
+                            ),
                           ],
                         ),
                         AvatarWidget(
                           author: profileModel.author,
-                          size: 70.0,
+                          size: 74.0,
                           boxShadow: [
-                            BoxShadow(blurRadius: 6.0, color: Colors.black26)
+                            BoxShadow(blurRadius: 4.0, color: Colors.black12)
                           ],
                         ),
                         Column(
                           children: <Widget>[
                             _drawHeaderButton(
-                                profileModel.isBlocked
-                                    ? "Zablokowany"
-                                    : "Blokuj",
-                                profileModel.isBlocked,
-                                () => profileModel.toggleBlock()),
-                            _drawHeaderButton("Szczegóły", false, () {},
-                                margin: EdgeInsets.only(top: 8.0)),
+                              profileModel.isBlocked ? "Zablokowany" : "Blokuj",
+                              profileModel.isBlocked,
+                              () => profileModel.toggleBlock(),
+                            ),
+                            _drawHeaderButton(
+                              "Szczegóły",
+                              false,
+                              () {},
+                              margin: EdgeInsets.only(top: 8.0, bottom: 10.0),
+                            ),
                           ],
                         ),
                       ],
