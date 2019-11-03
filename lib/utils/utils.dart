@@ -12,7 +12,6 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'dart:io' show Platform;
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart' as cct;
 
-
 void launchDefaultBrowser(String url) {
   urlLauncher.launch(url);
 }
@@ -23,22 +22,22 @@ void launchUrl(String url, {BuildContext context}) async {
   if (owmSettings.linkOpenBrowser) {
     launchDefaultBrowser(url);
   } else {
-      await cct.launch(
-        url,
-        option: new cct.CustomTabsOption(
-          toolbarColor: Theme.of(context).primaryColor,
-          enableDefaultShare: true,
-          enableUrlBarHiding: true,
-          showPageTitle: true,
-          animation: new cct.CustomTabsAnimation.slideIn(),
-          extraCustomTabs: <String>[
-            // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
-            'org.mozilla.firefox',
-            // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx
-            'com.microsoft.emmx',
-          ],        
-        ),
-      );
+    await cct.launch(
+      url,
+      option: new cct.CustomTabsOption(
+        toolbarColor: Theme.of(context).primaryColor,
+        enableDefaultShare: true,
+        enableUrlBarHiding: true,
+        showPageTitle: true,
+        animation: new cct.CustomTabsAnimation.slideIn(),
+        extraCustomTabs: <String>[
+          // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
+          'org.mozilla.firefox',
+          // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx
+          'com.microsoft.emmx',
+        ],
+      ),
+    );
   }
 }
 
@@ -137,7 +136,8 @@ class Utils {
   }
 
   static Route getPageTransition(Widget screen) {
-    if (true) { // okay i know its crappy but i need to fix one thing with iOS first
+    if (true) {
+      // okay i know its crappy but i need to fix one thing with iOS first
       return PageRouteBuilder(
         opaque: true,
         pageBuilder: (BuildContext context, Animation<double> animation,
@@ -238,4 +238,33 @@ class Utils {
   static void launchURL(String url, BuildContext context) async {
     launchUrl(url, context: context);
   }
+}
+
+Future<bool> showConfirmDialog(
+    BuildContext context, String title) async {
+  var resolve = false;
+  await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: new Text(title),
+        actions: <Widget>[
+          new FlatButton(
+            child: new Text("Anuluj"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          new FlatButton(
+            child: new Text("OK"),
+            onPressed: () {
+              resolve = true;
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+  return resolve;
 }
