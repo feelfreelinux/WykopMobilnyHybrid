@@ -45,7 +45,7 @@ class _MainCollapsingToolbarState extends State<TagScreen> {
       persistentHeaderBuilder: (context) => _drawHeader(),
       header: _drawFloatingHeader(),
       builder: (context) => EntryListModel(
-        loadNewEntries: (page) => api.tags.getEntries(widget.tag, page),
+        context: context, loadNewEntries: (page) => api.tags.getEntries(widget.tag, page),
       ),
     );
   }
@@ -55,7 +55,7 @@ class _MainCollapsingToolbarState extends State<TagScreen> {
       persistentHeaderBuilder: (context) => _drawHeader(),
       header: _drawFloatingHeader(),
       builder: (context) => LinkListModel(
-        loadNewLinks: (page) => api.tags.getLinks(widget.tag, page),
+        context: context, loadNewLinks: (page) => api.tags.getLinks(widget.tag, page),
       ),
     );
   }
@@ -65,7 +65,7 @@ class _MainCollapsingToolbarState extends State<TagScreen> {
       persistentHeaderBuilder: (context) => _drawHeader(),
       header: _drawFloatingHeader(),
       builder: (context) => EntryLinkListmodel(
-        loadNewEntryLinks: (page) => api.tags.getIndex(widget.tag, page),
+        context: context, loadNewEntryLinks: (page) => api.tags.getIndex(widget.tag, page),
       ),
     );
   }

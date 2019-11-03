@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:owmflutter/model/link_model.dart';
-import 'package:owmflutter/owm_glyphs.dart';
+import 'package:owmflutter/widgets/content_hidden.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:provider/provider.dart';
@@ -24,92 +24,11 @@ class _LinkSimpleWidgetState extends State<LinkSimpleWidget> {
         color: Theme.of(context).backgroundColor,
         child: Padding(
           padding: EdgeInsets.only(right: 18.0, left: 18.0, top: 16.0),
-          child: Column(
+          child: !model.isExpanded ? ContentHiddenWidget(onTap: () => model.expand(),) :  Column(
             children: <Widget>[
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        GestureDetector(
-                          key: Key(model.id.toString()),
-                          onTap: () => Navigator.push(
-                              context,
-                              Utils.getPageTransition(
-                                  LinkScreen(model: model))),
-                          child: _drawTitle(context, model.title),
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(right: 18.0),
-                          height: 28.0,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Expanded(
-                                child: Row(
-                                  children: <Widget>[
-                                    Icon(
-                                      OwmGlyphs.ic_buttontoolbar_wykop,
-                                      size: 18.0,
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .caption
-                                          .color,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 6.0),
-                                      child: Text(
-                                        model.voteCount.toString(),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 15.0,
-                                          color: Theme.of(context)
-                                              .textTheme
-                                              .caption
-                                              .color,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                child: Row(
-                                  children: <Widget>[
-                                    Icon(
-                                      FontAwesomeIcons.comment,
-                                      size: 16.0,
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .caption
-                                          .color,
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 6.0),
-                                      child: Text(
-                                        model.commentsCount.toString(),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 15.0,
-                                          color: Theme.of(context)
-                                              .textTheme
-                                              .caption
-                                              .color,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                   OWMSettingListener(
                     rebuildOnChange: (settings) =>
                         settings.hiddingLinkThumbStream,
@@ -118,6 +37,21 @@ class _LinkSimpleWidgetState extends State<LinkSimpleWidget> {
                       child: GestureDetector(
                         onTap: () => Utils.launchURL(model.sourceUrl, context),
                         child: _drawImage(context, model.preview),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      key: Key(model.id.toString()),
+                      onTap: () => Navigator.push(context,
+                          Utils.getPageTransition(LinkScreen(model: model))),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          _drawTitle(context, model),
+                          _drawDescription(context, model),
+                          _drawFooter(context, model)
+                        ],
                       ),
                     ),
                   ),
@@ -135,8 +69,8 @@ class _LinkSimpleWidgetState extends State<LinkSimpleWidget> {
     return OWMSettingListener(
       rebuildOnChange: (settings) => settings.highResImageLinkStream,
       builder: (context, settings) => Container(
-        width: 140,
-        height: 100,
+        width: 80,
+        height: 80,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(14.0),
           boxShadow: [BoxShadow(color: Color(0x33000000))],
@@ -160,20 +94,93 @@ class _LinkSimpleWidgetState extends State<LinkSimpleWidget> {
     );
   }
 
-  Widget _drawTitle(BuildContext context, String title) {
+  Widget _drawTitle(BuildContext context, LinkModel model) {
     return OWMSettingListener(
       rebuildOnChange: (settings) => settings.hiddingLinkThumbStream,
       builder: (context, settings) => Container(
         padding: EdgeInsets.only(
-          top: 8.0,
-          right: settings.hiddingLinkThumb ? 0.0 : 18.0,
+          left: settings.hiddingLinkThumb ? 0.0 : 12.0,
           bottom: 4.0,
         ),
         child: Text(
-          title,
+          model.title,
           overflow: TextOverflow.ellipsis,
-          maxLines: 3,
+          maxLines: 2,
           style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+        ),
+      ),
+    );
+  }
+
+  Widget _drawDescription(BuildContext context, LinkModel model) {
+    return OWMSettingListener(
+      rebuildOnChange: (settings) => settings.hiddingLinkThumbStream,
+      builder: (context, settings) => Container(
+        padding: EdgeInsets.only(
+          left: settings.hiddingLinkThumb ? 0.0 : 12.0,
+          bottom: 6.0,
+        ),
+        child: Text(
+          model.description,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+          style: TextStyle(
+            fontSize: 13.0,
+            color: Theme.of(context).textTheme.caption.color,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _drawFooter(BuildContext context, LinkModel model) {
+    return OWMSettingListener(
+      rebuildOnChange: (settings) => settings.hiddingLinkThumbStream,
+      builder: (context, settings) => Container(
+        padding: EdgeInsets.only(
+          left: settings.hiddingLinkThumb ? 0.0 : 12.0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Visibility(
+              visible: model.isHot,
+              child: Padding(
+                padding: EdgeInsets.only(right: 4.0),
+                child: Icon(
+                  FontAwesomeIcons.hotjar,
+                  size: 11.0,
+                  color: Colors.red,
+                ),
+              ),
+            ),
+            Flexible(
+              child: Text(
+                model.voteCount.toString() +
+                    " " +
+                    Utils.polishPlural(
+                      count: model.commentsCount,
+                      first: "wykop",
+                      many: "wykopów",
+                      other: "wykopy",
+                    ) +
+                    " • " +
+                    model.commentsCount.toString() +
+                    " " +
+                    Utils.polishPlural(
+                      count: model.commentsCount,
+                      first: "komentarz",
+                      many: "komentarzy",
+                      other: "komentarze",
+                    ),
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).textTheme.caption.color,
+                ),
+              ),
+            )
+          ],
         ),
       ),
     );

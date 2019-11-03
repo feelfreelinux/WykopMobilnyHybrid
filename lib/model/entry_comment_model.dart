@@ -10,6 +10,7 @@ class EntryCommentModel extends ChangeNotifier {
   Author _author;
   Embed _embed;
   bool _isVoted;
+  bool _isExpanded;
 
   int get id => _id;
   String get body => _body;
@@ -17,8 +18,13 @@ class EntryCommentModel extends ChangeNotifier {
   int get voteCount => _voteCount;
   Author get author => _author;
   Embed get embed => _embed;
+  bool get isExpanded => _isExpanded;
   bool get isVoted => _isVoted;
 
+  void expand() {
+    _isExpanded = true;
+    notifyListeners();
+  }
   void setData(EntryComment comment) {
     _id = comment.id;
     _body = comment.body;
@@ -27,6 +33,7 @@ class EntryCommentModel extends ChangeNotifier {
     _author = comment.author;
     _embed = comment.embed;
     _isVoted = comment.isVoted;
+    _isExpanded = comment.isExpanded;
     notifyListeners();
   }
 

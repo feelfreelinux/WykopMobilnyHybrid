@@ -165,7 +165,8 @@ class MainSettingsScreen extends StatelessWidget {
               icon: Icons.history,
               color: Colors.purple,
               title: "Historia wyszukiwania",
-              onTap: () {},
+              onTap: () => Navigator.push(
+                  context, Utils.getPageTransition(SearchHistoryScreen())),
             ),
             Visibility(
               visible: authStateModel.loggedIn,

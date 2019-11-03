@@ -110,14 +110,8 @@ class _LinkOpenedWidgetState extends State<LinkOpenedWidget> {
                 horizontal: 18.0,
               ),
               child: Consumer<LinkModel>(
-                builder: (context, model, _) => LinkFooterWidget(
-                  linkId: model.id,
-                  linkTitle: model.title,
-                  isClickable: false,
-                  isFavorite: model.isFavorite,
-                  commentsCount: model.commentsCount,
-                  onFavoriteClick: () => model.favoriteToggle(),
-                ),
+                builder: (context, model, _) =>
+                    LinkFooterWidget(link: model, isClickable: false),
               ),
             ),
             DividerWidget(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:owmflutter/widgets/content_hidden.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/utils/utils.dart';
@@ -19,7 +20,7 @@ class NewEntryWidget extends StatelessWidget {
         color: Theme.of(context).cardColor,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 18.0),
-          child: Column(
+          child: !model.isExpanded ? ContentHiddenWidget(onTap: () => model.expand(),) : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Row(

@@ -9,6 +9,7 @@ export 'notifications.dart';
 export 'mywykop.dart';
 export 'media.dart';
 export 'pm.dart';
+export 'search_history.dart';
 export 'main_settings.dart';
 export 'settings/appearance.dart';
 export 'settings/pictures.dart';

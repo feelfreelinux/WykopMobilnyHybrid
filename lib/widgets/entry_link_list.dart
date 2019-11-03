@@ -48,7 +48,7 @@ class EntriesLinksListState extends State<EntriesLinksList>
                 } else {
                   return ListenableProvider<LinkModel>.value(
                     value: model.items[index],
-                    child: NewLinkWidget(),
+                    child: LinkWidget(),
                   );
                 }
               },

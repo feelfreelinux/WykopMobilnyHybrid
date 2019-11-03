@@ -11,11 +11,17 @@ class _$EntryLink extends EntryLink {
   final Entry entry;
   @override
   final Link link;
+  @override
+  final bool isExpanded;
 
   factory _$EntryLink([void Function(EntryLinkBuilder) updates]) =>
       (new EntryLinkBuilder()..update(updates)).build();
 
-  _$EntryLink._({this.entry, this.link}) : super._();
+  _$EntryLink._({this.entry, this.link, this.isExpanded}) : super._() {
+    if (isExpanded == null) {
+      throw new BuiltValueNullFieldError('EntryLink', 'isExpanded');
+    }
+  }
 
   @override
   EntryLink rebuild(void Function(EntryLinkBuilder) updates) =>
@@ -27,19 +33,24 @@ class _$EntryLink extends EntryLink {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is EntryLink && entry == other.entry && link == other.link;
+    return other is EntryLink &&
+        entry == other.entry &&
+        link == other.link &&
+        isExpanded == other.isExpanded;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, entry.hashCode), link.hashCode));
+    return $jf(
+        $jc($jc($jc(0, entry.hashCode), link.hashCode), isExpanded.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('EntryLink')
           ..add('entry', entry)
-          ..add('link', link))
+          ..add('link', link)
+          ..add('isExpanded', isExpanded))
         .toString();
   }
 }
@@ -55,12 +66,17 @@ class EntryLinkBuilder implements Builder<EntryLink, EntryLinkBuilder> {
   LinkBuilder get link => _$this._link ??= new LinkBuilder();
   set link(LinkBuilder link) => _$this._link = link;
 
+  bool _isExpanded;
+  bool get isExpanded => _$this._isExpanded;
+  set isExpanded(bool isExpanded) => _$this._isExpanded = isExpanded;
+
   EntryLinkBuilder();
 
   EntryLinkBuilder get _$this {
     if (_$v != null) {
       _entry = _$v.entry?.toBuilder();
       _link = _$v.link?.toBuilder();
+      _isExpanded = _$v.isExpanded;
       _$v = null;
     }
     return this;
@@ -84,7 +100,10 @@ class EntryLinkBuilder implements Builder<EntryLink, EntryLinkBuilder> {
     _$EntryLink _$result;
     try {
       _$result = _$v ??
-          new _$EntryLink._(entry: _entry?.build(), link: _link?.build());
+          new _$EntryLink._(
+              entry: _entry?.build(),
+              link: _link?.build(),
+              isExpanded: isExpanded);
     } catch (_) {
       String _$failedField;
       try {

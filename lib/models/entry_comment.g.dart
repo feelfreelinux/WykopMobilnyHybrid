@@ -18,6 +18,8 @@ class _$EntryComment extends EntryComment {
   @override
   final bool isVoted;
   @override
+  final bool isExpanded;
+  @override
   final Author author;
   @override
   final Embed embed;
@@ -31,6 +33,7 @@ class _$EntryComment extends EntryComment {
       this.body,
       this.voteCount,
       this.isVoted,
+      this.isExpanded,
       this.author,
       this.embed})
       : super._() {
@@ -45,6 +48,9 @@ class _$EntryComment extends EntryComment {
     }
     if (isVoted == null) {
       throw new BuiltValueNullFieldError('EntryComment', 'isVoted');
+    }
+    if (isExpanded == null) {
+      throw new BuiltValueNullFieldError('EntryComment', 'isExpanded');
     }
     if (author == null) {
       throw new BuiltValueNullFieldError('EntryComment', 'author');
@@ -67,6 +73,7 @@ class _$EntryComment extends EntryComment {
         body == other.body &&
         voteCount == other.voteCount &&
         isVoted == other.isVoted &&
+        isExpanded == other.isExpanded &&
         author == other.author &&
         embed == other.embed;
   }
@@ -76,9 +83,13 @@ class _$EntryComment extends EntryComment {
     return $jf($jc(
         $jc(
             $jc(
-                $jc($jc($jc($jc(0, id.hashCode), date.hashCode), body.hashCode),
-                    voteCount.hashCode),
-                isVoted.hashCode),
+                $jc(
+                    $jc(
+                        $jc($jc($jc(0, id.hashCode), date.hashCode),
+                            body.hashCode),
+                        voteCount.hashCode),
+                    isVoted.hashCode),
+                isExpanded.hashCode),
             author.hashCode),
         embed.hashCode));
   }
@@ -91,6 +102,7 @@ class _$EntryComment extends EntryComment {
           ..add('body', body)
           ..add('voteCount', voteCount)
           ..add('isVoted', isVoted)
+          ..add('isExpanded', isExpanded)
           ..add('author', author)
           ..add('embed', embed))
         .toString();
@@ -121,6 +133,10 @@ class EntryCommentBuilder
   bool get isVoted => _$this._isVoted;
   set isVoted(bool isVoted) => _$this._isVoted = isVoted;
 
+  bool _isExpanded;
+  bool get isExpanded => _$this._isExpanded;
+  set isExpanded(bool isExpanded) => _$this._isExpanded = isExpanded;
+
   AuthorBuilder _author;
   AuthorBuilder get author => _$this._author ??= new AuthorBuilder();
   set author(AuthorBuilder author) => _$this._author = author;
@@ -138,6 +154,7 @@ class EntryCommentBuilder
       _body = _$v.body;
       _voteCount = _$v.voteCount;
       _isVoted = _$v.isVoted;
+      _isExpanded = _$v.isExpanded;
       _author = _$v.author?.toBuilder();
       _embed = _$v.embed?.toBuilder();
       _$v = null;
@@ -169,6 +186,7 @@ class EntryCommentBuilder
               body: body,
               voteCount: voteCount,
               isVoted: isVoted,
+              isExpanded: isExpanded,
               author: author.build(),
               embed: _embed?.build());
     } catch (_) {

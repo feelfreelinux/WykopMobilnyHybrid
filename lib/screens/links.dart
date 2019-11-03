@@ -24,7 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context) => ShadowControlModel(),
       child: DefaultTabController(
         length: 4,
-        initialIndex: Provider.of<OWMSettings>(context, listen: false).defaultLinkScreen,
+        initialIndex:
+            Provider.of<OWMSettings>(context, listen: false).defaultLinkScreen,
         child: Scaffold(
           resizeToAvoidBottomPadding: false,
           appBar: AppbarTabsWidget(
@@ -116,6 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 builder: (context) => LinkListModel(
+                  context: context,
                   loadNewLinks: (page) => api.links.getPromotedNew(page),
                 ),
               ),
@@ -126,28 +128,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: <Widget>[
                       TabButtonWidget(
                         text: "Aktywne",
-                        fontSize: 13,
                         isSelected: upcomingSort == UpcomingSort.SORTBY_ACTIVE,
                         onTap: () => setState(
                             () => upcomingSort = UpcomingSort.SORTBY_ACTIVE),
                       ),
                       TabButtonWidget(
                         text: "Wykopywane",
-                        fontSize: 13,
                         isSelected: upcomingSort == UpcomingSort.SORTBY_VOTES,
                         onTap: () => setState(
                             () => upcomingSort = UpcomingSort.SORTBY_VOTES),
                       ),
                       TabButtonWidget(
                         text: "Najnowsze",
-                        fontSize: 13,
                         isSelected: upcomingSort == UpcomingSort.SORTBY_DATE,
                         onTap: () => setState(
                             () => upcomingSort = UpcomingSort.SORTBY_DATE),
                       ),
                       TabButtonWidget(
                         text: "Komentowane",
-                        fontSize: 13,
                         isSelected:
                             upcomingSort == UpcomingSort.SORTBY_COMMENTS,
                         onTap: () => setState(
@@ -156,6 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   builder: (context) => LinkListModel(
+                    context: context,
                     loadNewLinks: (page) =>
                         api.links.getUpcoming(upcomingSort, page),
                   ),
@@ -167,6 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 text: "Ulubione znaleziska",
                 child: LinksList(
                   builder: (context) => LinkListModel(
+                    context: context,
                     loadNewLinks: (page) => api.links.getFavoriteNew(page),
                   ),
                 ),
@@ -228,14 +228,12 @@ class _TopLinksScreenState extends State<TopLinksScreen> {
           children: <Widget>[
             TabButtonWidget(
               text: "Popularne",
-              fontSize: 12,
               index: 0,
               currentIndex: selectedIndex,
               onTap: () => setState(() => selectedIndex = 0),
             ),
             TabButtonWidget(
               text: "Dnia",
-              fontSize: 12,
               index: 1,
               currentIndex: selectedIndex,
               onTap: () => setState(() => selectedIndex = 1),
@@ -244,12 +242,10 @@ class _TopLinksScreenState extends State<TopLinksScreen> {
               text: "Tygodnia",
               index: 2,
               currentIndex: selectedIndex,
-              fontSize: 12,
               onTap: () => setState(() => selectedIndex = 2),
             ),
             TabButtonWidget(
               text: "Miesiąca",
-              fontSize: 12,
               index: 3,
               currentIndex: selectedIndex,
               onTap: () async {
@@ -268,36 +264,37 @@ class _TopLinksScreenState extends State<TopLinksScreen> {
             ),
             TabButtonWidget(
               text: "Roku",
-              fontSize: 12,
               index: 4,
               currentIndex: selectedIndex,
               onTap: () async {
                 await showDialog(
-                    context: context,
-                    builder: (context) => GreatDialogWidget(
-                          child: SizedBox(
-                              height: 230,
-                              width: 300,
-                              child: YearPicker(
-                                firstDate: DateTime(2006),
-                                selectedDate: DateTime(selectedYear),
-                                lastDate: DateTime.now(),
-                                onChanged: (date) {
-                                  setState(() {
-                                    selectedYear = date.year;
-                                    selectedIndex = 4;
-                                  });
-                                  Navigator.of(context).pop();
-                                },
-                              )),
-                        ));
+                  context: context,
+                  builder: (context) => GreatDialogWidget(
+                    child: SizedBox(
+                      height: 230,
+                      width: 300,
+                      child: YearPicker(
+                        firstDate: DateTime(2006),
+                        selectedDate: DateTime(selectedYear),
+                        lastDate: DateTime.now(),
+                        onChanged: (date) {
+                          setState(() {
+                            selectedYear = date.year;
+                            selectedIndex = 4;
+                          });
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ),
+                  ),
+                );
               },
             ),
           ],
         ),
         builder: (context) => LinkListModel(
-          loadNewLinks: (page) => getCurrentLinkEndpoint(page),
-        ),
+            context: context,
+            loadNewLinks: (page) => getCurrentLinkEndpoint(page)),
       ),
     );
   }

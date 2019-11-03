@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/models/models.dart';
+import 'package:owmflutter/widgets/content_hidden.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +26,7 @@ class _EntryCommentWidgetState extends State<EntryCommentWidget> {
       builder: (context, model, _) => Material(
         key: Key(model.id.toString()),
         color: Theme.of(context).backgroundColor,
-        child: _buildEntryCommentBody(model, context),
+        child: !model.isExpanded ? ContentHiddenWidget(onTap: () => model.expand()) :_buildEntryCommentBody(model, context),
       ),
     );
   }

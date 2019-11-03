@@ -11,7 +11,8 @@ abstract class LinkResponse
   String get date;
 
   String get title;
-
+  
+  @nullable
   String get description;
 
   String get tags;

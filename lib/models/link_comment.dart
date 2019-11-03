@@ -16,6 +16,7 @@ abstract class LinkComment implements Built<LinkComment, LinkCommentBuilder> {
 
   @nullable
   String get body;
+  bool get isExpanded;
 
   int get voteCount;
 
@@ -43,6 +44,7 @@ abstract class LinkComment implements Built<LinkComment, LinkCommentBuilder> {
         id: response.id,
         date: response.date,
         body: response.body,
+        isExpanded: true,
         isBlocked: response.isBlocked,
         userVote: response.userVote,
         voteCountPlus: response.voteCountPlus,
