@@ -247,7 +247,7 @@ class _MediaScreenState extends State<MediaScreen> {
                                     title: Text('Otwórz w ...'),
                                     onTap: () {
                                       Navigator.pop(contextsecond);
-                                      Utils.launchURL(widget.embed.url);
+                                      Utils.launchURL(widget.embed.url, context);
                                     },
                                   ),
                                   ListTile(

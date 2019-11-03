@@ -185,7 +185,7 @@ class MainSettingsScreen extends StatelessWidget {
                   color: Colors.orange,
                   title: 'Panel zgłoszeń',
                   onTap: () =>
-                      Utils.launchURL('https://wykop.pl/naruszenia/moderated')),
+                      Utils.launchURL('https://wykop.pl/naruszenia/moderated', context)),
             ),
             _drawButton(
               context,
@@ -276,7 +276,7 @@ class MainSettingsScreen extends StatelessWidget {
               title: "Wsparcie",
               description: "Zostań patronem na patronite.pl",
               onTap: () =>
-                  Utils.launchURL("https://patronite.pl/wykop-mobilny/"),
+                  Utils.launchURL("https://patronite.pl/wykop-mobilny/", context),
             ),
             _drawButton(
               context,

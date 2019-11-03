@@ -116,7 +116,7 @@ class _LinkSimpleWidgetState extends State<LinkSimpleWidget> {
                     builder: (context, settings) => Visibility(
                       visible: !settings.hiddingLinkThumb,
                       child: GestureDetector(
-                        onTap: () => Utils.launchURL(model.sourceUrl),
+                        onTap: () => Utils.launchURL(model.sourceUrl, context),
                         child: _drawImage(context, model.preview),
                       ),
                     ),

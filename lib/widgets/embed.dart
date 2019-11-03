@@ -194,6 +194,10 @@ class _EmbedState extends State<EmbedWidget> {
 
   // Open fullscreen image viewer
   void openFullscreen() {
+    if (Provider.of<OWMSettings>(context, listen: false).imageOpenBrowser) {
+      launchDefaultBrowser(widget.embed.url);
+      return;
+    }
     Navigator.push(
         context, Utils.getPageSlideToUp(MediaScreen(embed: widget.embed)));
   }

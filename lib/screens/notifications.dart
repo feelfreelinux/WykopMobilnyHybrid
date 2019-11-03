@@ -9,14 +9,14 @@ import 'package:owmflutter/models/models.dart' as prefix0;
 
 class NotificationsScreen extends StatelessWidget {
   final int initialIndex;
-  NotificationsScreen({this.initialIndex = 0});
+  NotificationsScreen({this.initialIndex});
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ShadowControlModel>(
       builder: (context) => ShadowControlModel(scrollDelayPixels: 4),
       child: DefaultTabController(
         length: 3,
-        initialIndex: initialIndex,
+        initialIndex: initialIndex ?? Provider.of<OWMSettings>(context, listen: false).defaultNotificationScreen,
         child: Scaffold(
           resizeToAvoidBottomPadding: false,
           appBar: AppbarTabsWidget(

@@ -97,7 +97,7 @@ class RelatedWidget extends StatelessWidget {
 
   Widget _drawTitle(BuildContext context, Models.Related related) {
     return GestureDetector(
-      onTap: () => Utils.launchURL(related.url),
+      onTap: () => Utils.launchURL(related.url,context),
       child: Padding(
         padding: EdgeInsets.symmetric(
           vertical: 8.0,
@@ -115,7 +115,7 @@ class RelatedWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         GestureDetector(
-          onTap: () => Utils.launchURL(link),
+          onTap: () => Utils.launchURL(link, context),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[

@@ -14,6 +14,7 @@ class MyWykopScreen extends StatelessWidget {
       builder: (context) => ShadowControlModel(),
       child: DefaultTabController(
         length: 4,
+        initialIndex: Provider.of<OWMSettings>(context, listen: false).defaultMyWykopScreen,
         child: Scaffold(
           resizeToAvoidBottomPadding: false,
           appBar: AppbarTabsWidget(

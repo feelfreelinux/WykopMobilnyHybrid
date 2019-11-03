@@ -90,7 +90,7 @@ class _NewLinkWidgetState extends State<NewLinkWidget> {
                 builder: (context, settings) => Visibility(
                   visible: !settings.hiddingLinkThumb,
                   child: GestureDetector(
-                    onTap: () => Utils.launchURL(model.sourceUrl),
+                    onTap: () => Utils.launchURL(model.sourceUrl, context),
                     child: Stack(
                       children: [
                         _drawImage(context, model.preview),

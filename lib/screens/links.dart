@@ -24,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context) => ShadowControlModel(),
       child: DefaultTabController(
         length: 4,
+        initialIndex: Provider.of<OWMSettings>(context, listen: false).defaultLinkScreen,
         child: Scaffold(
           resizeToAvoidBottomPadding: false,
           appBar: AppbarTabsWidget(

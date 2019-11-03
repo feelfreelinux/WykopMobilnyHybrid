@@ -39,6 +39,7 @@ dependencies:
   background_fetch: ^0.3.2
   flutter_local_notifications: ^0.8.4
   youtube_player_flutter: ^5.2.0+1
+  flutter_custom_tabs: ^0.6.0
 
 dev_dependencies:
   flutter_test:

@@ -18,14 +18,14 @@ class AboutScreen extends StatelessWidget {
           backgroundColor: Theme.of(context).backgroundColor,
           appBar: AppbarNormalWidget(title: "O aplikacji"),
           body: ShadowNotificationListener(
-            child: SingleChildScrollView(child: _drawList()),
+            child: SingleChildScrollView(child: _drawList(context)),
           ),
         ),
       ),
     );
   }
 
-  Widget _drawList() {
+  Widget _drawList(BuildContext context) {
     return Column(
       children: <Widget>[
         Padding(
@@ -59,26 +59,26 @@ class AboutScreen extends StatelessWidget {
           title: Text("Obserwuj tag"),
           trailing: Icon(Icons.chevron_right),
           onTap: () =>
-              Utils.launchURL("https://www.wykop.pl/tag/otwartywykopmobilny/"),
+              Utils.launchURL("https://www.wykop.pl/tag/otwartywykopmobilny/", context),
         ),
         Divider(indent: 16.0, endIndent: 16.0),
         ListTile(
           title: Text("Github"),
           trailing: Icon(Icons.chevron_right),
           onTap: () =>
-              Utils.launchURL("https://github.com/feelfreelinux/WykopMobilnyHybrid"),
+              Utils.launchURL("https://github.com/feelfreelinux/WykopMobilnyHybrid", context),
         ),
         ListTile(
           title: Text("Discord"),
           trailing: Icon(Icons.chevron_right),
-          onTap: () => Utils.launchURL("https://discord.gg/WgQZJD3"),
+          onTap: () => Utils.launchURL("https://discord.gg/WgQZJD3", context),
         ),
         Divider(indent: 16.0, endIndent: 16.0),
         ListTile(
           title: Text("Licencja MIT"),
           trailing: Icon(Icons.chevron_right),
           onTap: () => Utils.launchURL(
-              "https://github.com/feelfreelinux/WykopMobilny/blob/master/LICENSE"),
+              "https://github.com/feelfreelinux/WykopMobilny/blob/master/LICENSE", context),
         ),
         SizedBox(height: 8.0),
       ],
