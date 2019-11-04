@@ -54,6 +54,12 @@ class EntryModel extends InputModel {
     notifyListeners();
   }
 
+  Future<void> delete() async {
+    await api.entries.deleteEntry(_id);
+    _body = "[Wpis usunięty]";
+    notifyListeners();
+  }
+
   void expand() {
     _isExpanded = true;
     notifyListeners();

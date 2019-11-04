@@ -47,6 +47,12 @@ class LinkCommentModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> delete() async {
+    await api.links.deleteComment(_id);
+    _body = "[Komentarz usunięty]";
+    notifyListeners();
+  }
+
   Future<void> voteUp() async {
     if (_voteState != LinkCommentVoteState.NOT_VOTED) {
       return voteRemove();

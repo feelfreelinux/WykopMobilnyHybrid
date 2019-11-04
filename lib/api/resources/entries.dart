@@ -97,6 +97,14 @@ class EntriesApi extends ApiResource {
     return int.parse(voteCount["vote_count"]);
   }
 
+  Future<void> deleteEntry(int id) async {
+      await client.request('entries', 'delete', api: [id.toString()]);
+  }
+  
+  Future<void> deleteComment(int id) async {
+      await client.request('entries', 'commentdelete', api: [id.toString()]);
+  }
+
   Future<int> voteCommentDown(int id) async {
     var voteCount =
         await client.request('entries', 'commentvoteremove', api: [id.toString()]);

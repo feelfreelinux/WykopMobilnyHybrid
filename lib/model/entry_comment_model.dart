@@ -37,6 +37,12 @@ class EntryCommentModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> delete() async {
+    await api.entries.deleteComment(_id);
+    _body = "[Komentarz usunięty]";
+    notifyListeners();
+  }
+
   Future<void> toggleVote() async {
     if (!_isVoted) {
       _voteCount = await api.entries.voteComemntUp(_id);

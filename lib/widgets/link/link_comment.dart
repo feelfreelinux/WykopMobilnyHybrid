@@ -266,10 +266,14 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
                   Visibility(
                     visible: authStateModel.loggedIn &&
                         widget.relation == AuthorRelation.User,
-                    child: _drawToolbarIcon(Icons.delete, "Usuń", () {
-                      Navigator.pop(context); //TODO: implement delete comment
-                      Scaffold.of(contextmain).showSnackBar(
-                          SnackBar(content: Text("Niezaimplementowane")));
+                    child: _drawToolbarIcon(Icons.delete, "Usuń", () async {
+                      Navigator.pop(context);
+                      if (await showConfirmDialog(
+                        context,
+                        "Jesteś tego pewien?",
+                      )) {
+                        comment.delete();
+                      }
                     }),
                   ),
                 ],
