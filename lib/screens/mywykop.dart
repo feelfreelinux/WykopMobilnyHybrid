@@ -14,6 +14,7 @@ class MyWykopScreen extends StatelessWidget {
       builder: (context) => ShadowControlModel(),
       child: DefaultTabController(
         length: 4,
+        initialIndex: Provider.of<OWMSettings>(context, listen: false).defaultMyWykopScreen,
         child: Scaffold(
           resizeToAvoidBottomPadding: false,
           appBar: AppbarTabsWidget(
@@ -32,7 +33,7 @@ class MyWykopScreen extends StatelessWidget {
                 fullText: "Mój wykop będzie widoczny po zalogowaniu.",
                 child: EntriesLinksList(
                   builder: (context) => EntryLinkListmodel(
-                    loadNewEntryLinks: (page) => api.mywykop.getIndex(page),
+                    context: context, loadNewEntryLinks: (page) => api.mywykop.getIndex(page),
                   ),
                 ),
               ),
@@ -42,7 +43,7 @@ class MyWykopScreen extends StatelessWidget {
                     "Aktywność z obserwowanych tagów będzie widoczna po zalogowaniu.",
                 child: EntriesLinksList(
                   builder: (context) => EntryLinkListmodel(
-                    loadNewEntryLinks: (page) => api.mywykop.getTags(page),
+                    context: context, loadNewEntryLinks: (page) => api.mywykop.getTags(page),
                   ),
                 ),
               ),
@@ -52,7 +53,7 @@ class MyWykopScreen extends StatelessWidget {
                     "Aktywność obserwowanych użytkowników będzie widoczna po zalogowaniu.",
                 child: EntriesLinksList(
                   builder: (context) => EntryLinkListmodel(
-                    loadNewEntryLinks: (page) => api.mywykop.getUsers(page),
+                    context: context, loadNewEntryLinks: (page) => api.mywykop.getUsers(page),
                   ),
                 ),
               ),

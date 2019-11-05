@@ -26,9 +26,6 @@ class _$LinkResponseSerializer implements StructuredSerializer<LinkResponse> {
       'title',
       serializers.serialize(object.title,
           specifiedType: const FullType(String)),
-      'description',
-      serializers.serialize(object.description,
-          specifiedType: const FullType(String)),
       'tags',
       serializers.serialize(object.tags, specifiedType: const FullType(String)),
       'source_url',
@@ -55,6 +52,12 @@ class _$LinkResponseSerializer implements StructuredSerializer<LinkResponse> {
       serializers.serialize(object.canVote,
           specifiedType: const FullType(bool)),
     ];
+    if (object.description != null) {
+      result
+        ..add('description')
+        ..add(serializers.serialize(object.description,
+            specifiedType: const FullType(String)));
+    }
     if (object.favorite != null) {
       result
         ..add('user_favorite')
@@ -221,9 +224,6 @@ class _$LinkResponse extends LinkResponse {
     }
     if (title == null) {
       throw new BuiltValueNullFieldError('LinkResponse', 'title');
-    }
-    if (description == null) {
-      throw new BuiltValueNullFieldError('LinkResponse', 'description');
     }
     if (tags == null) {
       throw new BuiltValueNullFieldError('LinkResponse', 'tags');

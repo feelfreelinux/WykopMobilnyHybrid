@@ -9,6 +9,7 @@ import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/themes.dart';
 import 'package:owmflutter/keys.dart';
 import 'package:owmflutter/utils/utils.dart';
+var owmSettings = OWMSettings(SharedPreferencesAdapter());
 
 class OwmApp extends StatelessWidget {
   OwmApp({Key key}) : super(key: key);
@@ -21,7 +22,7 @@ class OwmApp extends StatelessWidget {
         child: MultiProvider(
           providers: [
             ChangeNotifierProvider.value(value: AuthStateModel()),
-            Provider.value(value: OWMSettings(SharedPreferencesAdapter())),
+            Provider.value(value: owmSettings),
             ChangeNotifierProvider.value(value: SuggestionsModel()),
           ],
           child: NotificationsHandler(

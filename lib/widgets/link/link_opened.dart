@@ -88,7 +88,7 @@ class _LinkOpenedWidgetState extends State<LinkOpenedWidget> {
             ),
             Consumer<LinkModel>(
               builder: (context, model, _) => GestureDetector(
-                onTap: () => Utils.launchURL(model.sourceUrl),
+                onTap: () => Utils.launchURL(model.sourceUrl, context),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[

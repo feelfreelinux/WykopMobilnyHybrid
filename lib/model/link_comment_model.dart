@@ -11,6 +11,7 @@ class LinkCommentModel extends ChangeNotifier {
   Author _author;
   Embed _embed;
   int _parentId;
+  bool _isExpanded;
   String _linkId;
   LinkCommentVoteState _voteState;
 
@@ -22,13 +23,20 @@ class LinkCommentModel extends ChangeNotifier {
   int get voteCountPlus => _voteCountPlus;
   Author get author => _author;
   Embed get embed => _embed;
+  bool get isExpanded => _isExpanded;
   LinkCommentVoteState get voteState => _voteState;
   bool get isParentComment => _id == _parentId;
+
+  void expand() {
+    _isExpanded = true;
+    notifyListeners();
+  }
 
   void setData(LinkComment comment) {
     _id = comment.id;
     _body = comment.body;
     _date = comment.date;
+    _isExpanded = comment.isExpanded;
     _voteCount = comment.voteCount;
     _author = comment.author;
     _embed = comment.embed;
@@ -36,6 +44,12 @@ class LinkCommentModel extends ChangeNotifier {
     _linkId = comment.linkId;
     _voteCountPlus = comment.voteCountPlus;
     _voteState = comment.voteState;
+    notifyListeners();
+  }
+
+  Future<void> delete() async {
+    await api.links.deleteComment(_id);
+    _body = "[Komentarz usunięty]";
     notifyListeners();
   }
 

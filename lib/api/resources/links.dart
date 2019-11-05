@@ -71,6 +71,10 @@ class LinksApi extends ApiResource {
   Future<List<Link>> getHitsPopular(int page) =>
       _getLinks('hits', 'popular', page);
 
+  Future<void> deleteComment(int id) async {
+      await client.request('links', 'commentdelete', api: [id.toString()]);
+  }
+
   Future<List<Link>> getHitsDay(int page) => _getLinks('hits', 'day', page);
 
   Future<List<Link>> getHitsWeek(int page) => _getLinks('hits', 'week', page);

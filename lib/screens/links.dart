@@ -24,6 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context) => ShadowControlModel(),
       child: DefaultTabController(
         length: 4,
+        initialIndex:
+            Provider.of<OWMSettings>(context, listen: false).defaultLinkScreen,
         child: Scaffold(
           resizeToAvoidBottomPadding: false,
           appBar: AppbarTabsWidget(
@@ -115,6 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 builder: (context) => LinkListModel(
+                  context: context,
                   loadNewLinks: (page) => api.links.getPromotedNew(page),
                 ),
               ),
@@ -151,6 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   builder: (context) => LinkListModel(
+                    context: context,
                     loadNewLinks: (page) =>
                         api.links.getUpcoming(upcomingSort, page),
                   ),
@@ -162,6 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 text: "Ulubione znaleziska",
                 child: LinksList(
                   builder: (context) => LinkListModel(
+                    context: context,
                     loadNewLinks: (page) => api.links.getFavoriteNew(page),
                   ),
                 ),
@@ -287,8 +292,9 @@ class _TopLinksScreenState extends State<TopLinksScreen> {
             ),
           ],
         ),
-        builder: (context) =>
-            LinkListModel(loadNewLinks: (page) => getCurrentLinkEndpoint(page)),
+        builder: (context) => LinkListModel(
+            context: context,
+            loadNewLinks: (page) => getCurrentLinkEndpoint(page)),
       ),
     );
   }

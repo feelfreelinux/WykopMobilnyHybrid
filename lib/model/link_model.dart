@@ -33,6 +33,7 @@ class LinkModel extends InputModel {
 
   int _id;
   String _title;
+  bool _isExpanded;
   String _description;
   String _tags;
   String _sourceUrl;
@@ -69,18 +70,25 @@ class LinkModel extends InputModel {
   List<Related> get relatedLinks => _relatedLinks;
   bool get isHot => _isHot;
   bool get isFavorite => _isFavorite;
+  bool get isExpanded => _isExpanded;
   bool get canVote => _canVote;
 
   int get commentsCount => _commentsCount;
   LinkVoteState get voteState => _voteState;
   List<LinkCommentModel> get comments => _comments;
 
+  void expand() {
+    _isExpanded = true;
+    notifyListeners();
+  }
+  
   void setData(Link link) {
     _id = link.id;
     _date = link.date;
     _voteCount = link.voteCount;
     _author = link.author;
     _description = link.description;
+    _isExpanded = link.isExpanded;
     _title = link.title;
     _sourceUrl = link.sourceUrl;
     _tags = link.tags;

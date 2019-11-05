@@ -59,7 +59,7 @@ class WykopNavigator {
 
       Navigator.of(context).push(Utils.getPageTransition(widget));
     } catch (e) {
-      launchUrl(url);
+      launchUrl(url, context: context);
     }
   }
 }

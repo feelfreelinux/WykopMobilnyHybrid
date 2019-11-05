@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:owmflutter/app.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/widgets/widgets.dart';
@@ -120,34 +121,42 @@ class InputBarWidgetState extends State<InputBarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthStateModel>(
-      builder: (context, authModel, _) => authModel.loggedIn
-          ? Consumer<ShadowControlModel>(
-              builder: (context, shadowControlModel, _) => AnimatedContainer(
-                duration: Duration(milliseconds: 200),
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(
-                          shadowControlModel.showInputShadow ? 0.1 : 0.0),
-                      blurRadius:
-                          shadowControlModel.showInputShadow ? 1.0 : 0.0,
-                    ),
-                  ],
-                  color: Theme.of(context).primaryColor,
+    return WillPopScope(
+      onWillPop: () async {
+        if (textController.text.length > 0 && owmSettings.confirmExitWriting) {
+          return await showConfirmDialog(context, "Przerwać pisanie?");
+        }
+        return true;
+      },
+      child: Consumer<AuthStateModel>(
+        builder: (context, authModel, _) => authModel.loggedIn
+            ? Consumer<ShadowControlModel>(
+                builder: (context, shadowControlModel, _) => AnimatedContainer(
+                  duration: Duration(milliseconds: 200),
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(
+                            shadowControlModel.showInputShadow ? 0.1 : 0.0),
+                        blurRadius:
+                            shadowControlModel.showInputShadow ? 1.0 : 0.0,
+                      ),
+                    ],
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _drawSuggestions(),
+                      hasExternalInput ? Container() : _drawInputBar(),
+                      _drawButtons(),
+                    ],
+                  ),
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    _drawSuggestions(),
-                    hasExternalInput ? Container() : _drawInputBar(),
-                    _drawButtons(),
-                  ],
-                ),
-              ),
-            )
-          : Container(height: 0),
+              )
+            : Container(height: 0),
+      ),
     );
   }
 
@@ -450,6 +459,11 @@ class InputBarWidgetState extends State<InputBarWidget> {
   }
 
   void _sendButtonClicked(BuildContext context) async {
+    if (owmSettings.confirmSend) {
+      var res = await showConfirmDialog(context, "Jesteś pewien?");
+      if (!res) return;
+    }
+    
     setState(() {
       this.sending = true;
     });

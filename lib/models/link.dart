@@ -34,6 +34,7 @@ abstract class Link implements Built<Link, LinkBuilder> {
   String get preview;
 
   bool get isHot;
+  bool get isExpanded;
 
   bool get canVote;
 
@@ -51,6 +52,7 @@ abstract class Link implements Built<Link, LinkBuilder> {
       id: response.id,
       date: response.date,
       title: response.title,
+      isExpanded: true,
       voteCount: response.voteCount,
       commentsCount: response.commentsCount,
       author: Author.fromResponse(response: response.author),
@@ -66,7 +68,7 @@ abstract class Link implements Built<Link, LinkBuilder> {
       isFavorite: response.favorite ?? false,
       sourceUrl: response.sourceUrl,
       canVote: response.canVote,
-      description: response.description,
+      description: response.description ?? '',
       relatedCount: response.relatedCount,
       tags: response.tags,
     );

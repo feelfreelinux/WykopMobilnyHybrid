@@ -62,7 +62,7 @@ class _MikroblogScreenState extends State<MikroblogScreen> {
                 key: PageStorageKey("NEWEST"),
                 child: EntriesList(
                   builder: (context) => EntryListModel(
-                    loadNewEntries: (page) => api.entries.getNewest(page),
+                    context: context, loadNewEntries: (page) => api.entries.getNewest(page),
                   ),
                 ),
               ),
@@ -70,7 +70,7 @@ class _MikroblogScreenState extends State<MikroblogScreen> {
                 key: PageStorageKey("ACTIVE"),
                 child: EntriesList(
                   builder: (context) => EntryListModel(
-                    loadNewEntries: (page) => api.entries.getActive(page),
+                    context: context, loadNewEntries: (page) => api.entries.getActive(page),
                   ),
                 ),
               ),
@@ -100,7 +100,7 @@ class _MikroblogScreenState extends State<MikroblogScreen> {
                     ],
                   ),
                   builder: (context) => EntryListModel(
-                    loadNewEntries: (page) =>
+                    context: context, loadNewEntries: (page) =>
                         api.entries.getHot(page, hotScreen.toString()),
                   ),
                 ),
@@ -113,7 +113,7 @@ class _MikroblogScreenState extends State<MikroblogScreen> {
                     key: PageStorageKey("FAVORITE"),
                     child: EntriesList(
                       builder: (context) => EntryListModel(
-                        loadNewEntries: (page) => api.entries.getFavorite(page),
+                        context: context, loadNewEntries: (page) => api.entries.getFavorite(page),
                       ),
                     ),
                   ),

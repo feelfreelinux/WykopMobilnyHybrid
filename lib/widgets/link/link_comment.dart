@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/models/models.dart';
+import 'package:owmflutter/widgets/content_hidden.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +26,7 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
       builder: (context, model, _) => Material(
         key: Key(model.id.toString()),
         color: Theme.of(context).backgroundColor,
-        child: _buildLinkCommentBody(model, context),
+        child: !model.isExpanded ? ContentHiddenWidget(onTap: () => model.expand()) : _buildLinkCommentBody(model, context),
       ),
     );
   }
@@ -265,10 +266,14 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
                   Visibility(
                     visible: authStateModel.loggedIn &&
                         widget.relation == AuthorRelation.User,
-                    child: _drawToolbarIcon(Icons.delete, "Usuń", () {
-                      Navigator.pop(context); //TODO: implement delete comment
-                      Scaffold.of(contextmain).showSnackBar(
-                          SnackBar(content: Text("Niezaimplementowane")));
+                    child: _drawToolbarIcon(Icons.delete, "Usuń", () async {
+                      Navigator.pop(context);
+                      if (await showConfirmDialog(
+                        context,
+                        "Jesteś tego pewien?",
+                      )) {
+                        comment.delete();
+                      }
                     }),
                   ),
                 ],

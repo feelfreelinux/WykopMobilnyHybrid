@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:owmflutter/model/link_model.dart';
+import 'package:owmflutter/widgets/content_hidden.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:provider/provider.dart';
@@ -23,7 +24,7 @@ class _LinkSimpleWidgetState extends State<LinkSimpleWidget> {
         color: Theme.of(context).backgroundColor,
         child: Padding(
           padding: EdgeInsets.only(right: 18.0, left: 18.0, top: 16.0),
-          child: Column(
+          child: !model.isExpanded ? ContentHiddenWidget(onTap: () => model.expand(),) :  Column(
             children: <Widget>[
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,7 +35,7 @@ class _LinkSimpleWidgetState extends State<LinkSimpleWidget> {
                     builder: (context, settings) => Visibility(
                       visible: !settings.hiddingLinkThumb,
                       child: GestureDetector(
-                        onTap: () => Utils.launchURL(model.sourceUrl),
+                        onTap: () => Utils.launchURL(model.sourceUrl, context),
                         child: _drawImage(context, model.preview),
                       ),
                     ),

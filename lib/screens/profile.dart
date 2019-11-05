@@ -156,7 +156,7 @@ class ProfileScreenState extends State<ProfileScreen> {
         header: _drawFloatingHeader(),
         persistentHeaderBuilder: (context) => _drawHeader(),
         builder: (context) => EntryLinkListmodel(
-          loadNewEntryLinks: tab.callback,
+          context: context, loadNewEntryLinks: tab.callback,
         ),
       );
     }
@@ -166,7 +166,7 @@ class ProfileScreenState extends State<ProfileScreen> {
         header: _drawFloatingHeader(),
         persistentHeaderBuilder: (context) => _drawHeader(),
         builder: (context) => EntryListModel(
-          loadNewEntries: tab.callback,
+          context: context, loadNewEntries: tab.callback,
         ),
       );
     }
@@ -176,7 +176,7 @@ class ProfileScreenState extends State<ProfileScreen> {
         header: _drawFloatingHeader(),
         persistentHeaderBuilder: (context) => _drawHeader(),
         builder: (context) => LinkListModel(
-          loadNewLinks: tab.callback,
+          context: context, loadNewLinks: tab.callback,
         ),
       );
     }
@@ -186,7 +186,7 @@ class ProfileScreenState extends State<ProfileScreen> {
         header: _drawFloatingHeader(),
         persistentHeaderBuilder: (context) => _drawHeader(),
         builder: (context) => EntryCommentsListModel(
-          loadNewComments: tab.callback,
+          context: context, loadNewComments: tab.callback,
         ),
       );
     }
@@ -195,7 +195,7 @@ class ProfileScreenState extends State<ProfileScreen> {
         header: _drawFloatingHeader(),
         persistentHeaderBuilder: (context) => _drawHeader(),
         builder: (context) => LinkCommentListModels(
-          loadNewLinkComments: tab.callback,
+          context: context, loadNewLinkComments: tab.callback,
         ),
       );
     }

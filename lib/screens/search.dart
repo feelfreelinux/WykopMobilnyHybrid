@@ -194,7 +194,7 @@ class _SearchResultPageState extends State<SearchResultPage>
       return Container(
         child: LinksList(
           builder: (context) => LinkListModel(
-            loadNewLinks: (page) => api.search.searchLinks(page, widget.query),
+            context: context, loadNewLinks: (page) => api.search.searchLinks(page, widget.query),
           ),
         ),
       );
@@ -202,7 +202,7 @@ class _SearchResultPageState extends State<SearchResultPage>
       return Container(
         child: EntriesList(
           builder: (context) => EntryListModel(
-            loadNewEntries: (page) =>
+            context: context, loadNewEntries: (page) =>
                 api.search.searchEntries(page, widget.query),
           ),
         ),

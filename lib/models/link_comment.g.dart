@@ -14,6 +14,8 @@ class _$LinkComment extends LinkComment {
   @override
   final String body;
   @override
+  final bool isExpanded;
+  @override
   final int voteCount;
   @override
   final int voteCountPlus;
@@ -41,6 +43,7 @@ class _$LinkComment extends LinkComment {
       {this.id,
       this.date,
       this.body,
+      this.isExpanded,
       this.voteCount,
       this.voteCountPlus,
       this.userVote,
@@ -57,6 +60,9 @@ class _$LinkComment extends LinkComment {
     }
     if (date == null) {
       throw new BuiltValueNullFieldError('LinkComment', 'date');
+    }
+    if (isExpanded == null) {
+      throw new BuiltValueNullFieldError('LinkComment', 'isExpanded');
     }
     if (voteCount == null) {
       throw new BuiltValueNullFieldError('LinkComment', 'voteCount');
@@ -101,6 +107,7 @@ class _$LinkComment extends LinkComment {
         id == other.id &&
         date == other.date &&
         body == other.body &&
+        isExpanded == other.isExpanded &&
         voteCount == other.voteCount &&
         voteCountPlus == other.voteCountPlus &&
         userVote == other.userVote &&
@@ -126,9 +133,11 @@ class _$LinkComment extends LinkComment {
                                     $jc(
                                         $jc(
                                             $jc(
-                                                $jc($jc(0, id.hashCode),
-                                                    date.hashCode),
-                                                body.hashCode),
+                                                $jc(
+                                                    $jc($jc(0, id.hashCode),
+                                                        date.hashCode),
+                                                    body.hashCode),
+                                                isExpanded.hashCode),
                                             voteCount.hashCode),
                                         voteCountPlus.hashCode),
                                     userVote.hashCode),
@@ -147,6 +156,7 @@ class _$LinkComment extends LinkComment {
           ..add('id', id)
           ..add('date', date)
           ..add('body', body)
+          ..add('isExpanded', isExpanded)
           ..add('voteCount', voteCount)
           ..add('voteCountPlus', voteCountPlus)
           ..add('userVote', userVote)
@@ -175,6 +185,10 @@ class LinkCommentBuilder implements Builder<LinkComment, LinkCommentBuilder> {
   String _body;
   String get body => _$this._body;
   set body(String body) => _$this._body = body;
+
+  bool _isExpanded;
+  bool get isExpanded => _$this._isExpanded;
+  set isExpanded(bool isExpanded) => _$this._isExpanded = isExpanded;
 
   int _voteCount;
   int get voteCount => _$this._voteCount;
@@ -224,6 +238,7 @@ class LinkCommentBuilder implements Builder<LinkComment, LinkCommentBuilder> {
       _id = _$v.id;
       _date = _$v.date;
       _body = _$v.body;
+      _isExpanded = _$v.isExpanded;
       _voteCount = _$v.voteCount;
       _voteCountPlus = _$v.voteCountPlus;
       _userVote = _$v.userVote;
@@ -261,6 +276,7 @@ class LinkCommentBuilder implements Builder<LinkComment, LinkCommentBuilder> {
               id: id,
               date: date,
               body: body,
+              isExpanded: isExpanded,
               voteCount: voteCount,
               voteCountPlus: voteCountPlus,
               userVote: userVote,

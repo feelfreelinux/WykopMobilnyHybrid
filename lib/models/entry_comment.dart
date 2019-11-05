@@ -15,6 +15,7 @@ abstract class EntryComment
   int get voteCount;
 
   bool get isVoted;
+  bool get isExpanded;
 
   Author get author;
 
@@ -24,6 +25,7 @@ abstract class EntryComment
   factory EntryComment.mapFromResponse(EntryCommentResponse response) {
     return _$EntryComment._(
         id: response.id,
+        isExpanded: true,
         date: response.date,
         body: response.body,
         voteCount: response.voteCount,

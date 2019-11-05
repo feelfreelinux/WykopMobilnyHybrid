@@ -38,6 +38,8 @@ class _$Link extends Link {
   @override
   final bool isHot;
   @override
+  final bool isExpanded;
+  @override
   final bool canVote;
 
   factory _$Link([void Function(LinkBuilder) updates]) =>
@@ -59,6 +61,7 @@ class _$Link extends Link {
       this.author,
       this.preview,
       this.isHot,
+      this.isExpanded,
       this.canVote})
       : super._() {
     if (id == null) {
@@ -103,6 +106,9 @@ class _$Link extends Link {
     if (isHot == null) {
       throw new BuiltValueNullFieldError('Link', 'isHot');
     }
+    if (isExpanded == null) {
+      throw new BuiltValueNullFieldError('Link', 'isExpanded');
+    }
     if (canVote == null) {
       throw new BuiltValueNullFieldError('Link', 'canVote');
     }
@@ -134,6 +140,7 @@ class _$Link extends Link {
         author == other.author &&
         preview == other.preview &&
         isHot == other.isHot &&
+        isExpanded == other.isExpanded &&
         canVote == other.canVote;
   }
 
@@ -154,22 +161,24 @@ class _$Link extends Link {
                                                     $jc(
                                                         $jc(
                                                             $jc(
-                                                                $jc(0,
-                                                                    id.hashCode),
-                                                                date.hashCode),
-                                                            title.hashCode),
-                                                        description.hashCode),
-                                                    tags.hashCode),
-                                                sourceUrl.hashCode),
-                                            voteCount.hashCode),
-                                        buryCount.hashCode),
-                                    isFavorite.hashCode),
-                                commentsCount.hashCode),
-                            relatedCount.hashCode),
-                        voteState.hashCode),
-                    author.hashCode),
-                preview.hashCode),
-            isHot.hashCode),
+                                                                $jc(
+                                                                    $jc(0,
+                                                                        id.hashCode),
+                                                                    date.hashCode),
+                                                                title.hashCode),
+                                                            description.hashCode),
+                                                        tags.hashCode),
+                                                    sourceUrl.hashCode),
+                                                voteCount.hashCode),
+                                            buryCount.hashCode),
+                                        isFavorite.hashCode),
+                                    commentsCount.hashCode),
+                                relatedCount.hashCode),
+                            voteState.hashCode),
+                        author.hashCode),
+                    preview.hashCode),
+                isHot.hashCode),
+            isExpanded.hashCode),
         canVote.hashCode));
   }
 
@@ -191,6 +200,7 @@ class _$Link extends Link {
           ..add('author', author)
           ..add('preview', preview)
           ..add('isHot', isHot)
+          ..add('isExpanded', isExpanded)
           ..add('canVote', canVote))
         .toString();
   }
@@ -259,6 +269,10 @@ class LinkBuilder implements Builder<Link, LinkBuilder> {
   bool get isHot => _$this._isHot;
   set isHot(bool isHot) => _$this._isHot = isHot;
 
+  bool _isExpanded;
+  bool get isExpanded => _$this._isExpanded;
+  set isExpanded(bool isExpanded) => _$this._isExpanded = isExpanded;
+
   bool _canVote;
   bool get canVote => _$this._canVote;
   set canVote(bool canVote) => _$this._canVote = canVote;
@@ -282,6 +296,7 @@ class LinkBuilder implements Builder<Link, LinkBuilder> {
       _author = _$v.author?.toBuilder();
       _preview = _$v.preview;
       _isHot = _$v.isHot;
+      _isExpanded = _$v.isExpanded;
       _canVote = _$v.canVote;
       _$v = null;
     }
@@ -322,6 +337,7 @@ class LinkBuilder implements Builder<Link, LinkBuilder> {
               author: author.build(),
               preview: preview,
               isHot: isHot,
+              isExpanded: isExpanded,
               canVote: canVote);
     } catch (_) {
       String _$failedField;

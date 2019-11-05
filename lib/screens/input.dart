@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:owmflutter/app.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/model/new_entry_model.dart';
 import 'package:owmflutter/screens/entry.dart';
@@ -70,78 +71,90 @@ class _InputScreenState extends State<InputScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ShadowControlModel>(
-      builder: (context) => ShadowControlModel(),
-      child: _SystemPadding(
-        child: Scaffold(
-          bottomNavigationBar: InputBarWidget(
-            key: inputBarKey,
-            externalController:
-                textController, //TODO: nie zaznacza tekstu z przycisku, ukrywa klawiature
-            imageStateChanged: (image) => setState(() => this.image = image),
-          ),
-          resizeToAvoidBottomPadding: false,
-          appBar: AppbarNormalWidget(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
-            leading: RoundIconButtonWidget(
-              icon: Icons.close,
-              onTap: () => Navigator.of(context).pop(),
-              iconSize: 26.0,
-              iconPadding: EdgeInsets.all(5.0),
+    return Container(
+      child: ChangeNotifierProvider<ShadowControlModel>(
+        builder: (context) => ShadowControlModel(),
+        child: _SystemPadding(
+          child: Scaffold(
+            bottomNavigationBar: InputBarWidget(
+              key: inputBarKey,
+              externalController:
+                  textController, //TODO: nie zaznacza tekstu z przycisku, ukrywa klawiature
+              imageStateChanged: (image) => setState(() => this.image = image),
             ),
-            title: inputHint,
-            actions: <Widget>[
-              RoundIconButtonWidget(
-                icon: Icons.check,
-                onTap: () {}, //TODO: zrobic akcje wysylania
+            resizeToAvoidBottomPadding: false,
+            appBar: AppbarNormalWidget(
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
+              leading: RoundIconButtonWidget(
+                icon: Icons.close,
+                onTap: () => Navigator.of(context).pop(),
                 iconSize: 26.0,
                 iconPadding: EdgeInsets.all(5.0),
               ),
-            ],
-          ),
-          body: Column(
-            children: <Widget>[
-              Visibility(
-                visible: this.image != null,
-                child: Container(
-                  margin: EdgeInsets.only(left: 13.0, right: 14.0, bottom: 6.0),
-                  child: SelectedImageWidget(
-                    backgroundColor: Utils.backgroundGreyOpacity(context),
-                    image: this.image,
-                    onTap: () => inputBarKey.currentState.removeImage(),
+              title: inputHint,
+              actions: <Widget>[
+                RoundIconButtonWidget(
+                  icon: Icons.check,
+                  onTap: () async {
+                    if (owmSettings.confirmSend) {
+                      var res =
+                          await showConfirmDialog(context, "Jesteś pewien?");
+                      if (!res) return;
+                    }
+                    Provider.of<InputModel>(context, listen: false)
+                        .onInputSubmitted(InputData(
+                            body: this.textController.text, file: this.image));
+                  },
+                  iconSize: 26.0,
+                  iconPadding: EdgeInsets.all(5.0),
+                ),
+              ],
+            ),
+            body: Column(
+              children: <Widget>[
+                Visibility(
+                  visible: this.image != null,
+                  child: Container(
+                    margin:
+                        EdgeInsets.only(left: 13.0, right: 14.0, bottom: 6.0),
+                    child: SelectedImageWidget(
+                      backgroundColor: Utils.backgroundGreyOpacity(context),
+                      image: this.image,
+                      onTap: () => inputBarKey.currentState.removeImage(),
+                    ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: Scrollbar(
-                  child: SingleChildScrollView(
-                    child: Container(
-                      margin:
-                          EdgeInsets.only(left: 18.0, right: 18.0, bottom: 6.0),
-                      child: Consumer<SuggestionsModel>(
-                        builder: (context, model, _) => TextField(
-                          autofocus: true,
-                          onChanged: (text) {
-                            model.loadSuggestions(
-                                inputBarKey.currentState.extractSuggestions());
-                          },
-                          style: DefaultTextStyle.of(context).style.merge(
-                                TextStyle(fontSize: 18.0),
-                              ),
-                          maxLines: null,
-                          controller: textController,
-                          keyboardType: TextInputType.multiline,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Napisz coś ciekawego',
+                Expanded(
+                  child: Scrollbar(
+                    child: SingleChildScrollView(
+                      child: Container(
+                        margin: EdgeInsets.only(
+                            left: 18.0, right: 18.0, bottom: 6.0),
+                        child: Consumer<SuggestionsModel>(
+                          builder: (context, model, _) => TextField(
+                            autofocus: true,
+                            onChanged: (text) {
+                              model.loadSuggestions(inputBarKey.currentState
+                                  .extractSuggestions());
+                            },
+                            style: DefaultTextStyle.of(context).style.merge(
+                                  TextStyle(fontSize: 18.0),
+                                ),
+                            maxLines: null,
+                            controller: textController,
+                            keyboardType: TextInputType.multiline,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Napisz coś ciekawego',
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/model/link_model.dart';
+import 'package:owmflutter/widgets/content_hidden.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:provider/provider.dart';
@@ -29,97 +30,101 @@ class _NewLinkWidgetState extends State<LinkWidget> {
           padding: EdgeInsets.symmetric(
             horizontal: 18.0,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: AuthorWidget(
-                          author: model.author,
-                          date: model.date,
-                          fontSize: 15.0,
-                          padding: EdgeInsets.symmetric(
-                            vertical: 10.0,
+          child: !model.isExpanded
+              ? ContentHiddenWidget(onTap: () => model.expand())
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Stack(
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: AuthorWidget(
+                                author: model.author,
+                                date: model.date,
+                                fontSize: 15.0,
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 10.0,
+                                ),
+                              ),
+                            ),
+                            VoteCounterWidget(
+                              voteState: model.voteState,
+                              onTap: () {
+                                if (model.voteState != LinkVoteState.NONE) {
+                                  model.voteRemove();
+                                  return;
+                                }
+                                setState(() {
+                                  showButtonsState = !showButtonsState;
+                                });
+                              },
+                              count: model.voteCount,
+                              size: 48.0,
+                              isHot: model.isHot,
+                              padding: EdgeInsets.symmetric(
+                                vertical: 12.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                        VotesButtonsWidget(
+                          showButtonsState: showButtonsState,
+                          onTapUpVote: () {
+                            model.voteUp();
+                            setState(() => showButtonsState = false);
+                          },
+                          onTapDownVote: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => BuryReasonDialog(
+                                callback: (reason) => model.voteDown(reason),
+                              ),
+                            );
+
+                            setState(() => showButtonsState = false);
+                          },
+                        ),
+                      ],
+                    ),
+                    OWMSettingListener(
+                      rebuildOnChange: (settings) =>
+                          settings.hiddingLinkThumbStream,
+                      builder: (context, settings) => Visibility(
+                        visible: !settings.hiddingLinkThumb,
+                        child: GestureDetector(
+                          onTap: () =>
+                              Utils.launchURL(model.sourceUrl, context),
+                          child: Stack(
+                            children: [
+                              _drawImage(context, model.preview),
+                              _drawLinkFavicon(context, model.sourceUrl),
+                            ],
                           ),
                         ),
                       ),
-                      VoteCounterWidget(
-                        voteState: model.voteState,
-                        onTap: () {
-                          if (model.voteState != LinkVoteState.NONE) {
-                            model.voteRemove();
-                            return;
-                          }
-                          setState(() {
-                            showButtonsState = !showButtonsState;
-                          });
-                        },
-                        count: model.voteCount,
-                        size: 48.0,
-                        isHot: model.isHot,
-                        padding: EdgeInsets.symmetric(
-                          vertical: 12.0,
-                        ),
-                      ),
-                    ],
-                  ),
-                  VotesButtonsWidget(
-                    showButtonsState: showButtonsState,
-                    onTapUpVote: () {
-                      model.voteUp();
-                      setState(() => showButtonsState = false);
-                    },
-                    onTapDownVote: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => BuryReasonDialog(
-                          callback: (reason) => model.voteDown(reason),
-                        ),
-                      );
-
-                      setState(() => showButtonsState = false);
-                    },
-                  ),
-                ],
-              ),
-              OWMSettingListener(
-                rebuildOnChange: (settings) => settings.hiddingLinkThumbStream,
-                builder: (context, settings) => Visibility(
-                  visible: !settings.hiddingLinkThumb,
-                  child: GestureDetector(
-                    onTap: () => Utils.launchURL(model.sourceUrl),
-                    child: Stack(
-                      children: [
-                        _drawImage(context, model.preview),
-                        _drawLinkFavicon(context, model.sourceUrl),
-                      ],
                     ),
-                  ),
-                ),
-              ),
-              GestureDetector(
-                key: Key(model.id.toString()),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    Utils.getPageTransition(LinkScreen(model: model)),
-                  );
-                },
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    _drawTitle(context, model.title),
-                    _drawDescription(model.description),
+                    GestureDetector(
+                      key: Key(model.id.toString()),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          Utils.getPageTransition(LinkScreen(model: model)),
+                        );
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          _drawTitle(context, model.title),
+                          _drawDescription(model.description),
+                        ],
+                      ),
+                    ),
+                    LinkFooterWidget(link: model, isClickable: true),
+                    DividerWidget(),
                   ],
                 ),
-              ),
-              LinkFooterWidget(link: model, isClickable: true),
-              DividerWidget(),
-            ],
-          ),
         ),
       ),
     );

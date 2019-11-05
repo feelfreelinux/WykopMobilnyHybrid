@@ -181,14 +181,12 @@ class MainSettingsScreen extends StatelessWidget {
             ),
             Visibility(
               visible: authStateModel.loggedIn,
-              child: _drawButton(
-                context,
-                icon: Icons.report,
-                color: Colors.orange,
-                title: 'Panel zgłoszeń',
-                onTap: () => //TODO: tu coś nie bangla, działa tylko raz
-                    Utils.launchURL('https://wykop.pl/naruszenia/moderated'),
-              ),
+              child: _drawButton(context,
+                  icon: Icons.report,
+                  color: Colors.orange,
+                  title: 'Panel zgłoszeń',
+                  onTap: () =>
+                      Utils.launchURL('https://wykop.pl/naruszenia/moderated', context)),
             ),
             _drawButton(
               context,
@@ -279,7 +277,7 @@ class MainSettingsScreen extends StatelessWidget {
               title: "Wsparcie",
               description: "Zostań patronem na patronite.pl",
               onTap: () =>
-                  Utils.launchURL("https://patronite.pl/wykop-mobilny/"),
+                  Utils.launchURL("https://patronite.pl/wykop-mobilny/", context),
             ),
             _drawButton(
               context,
