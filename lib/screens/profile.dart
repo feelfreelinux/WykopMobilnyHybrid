@@ -5,6 +5,7 @@ import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 
 class ProfileScreen extends StatefulWidget {
   final ProfileModel profileModel;
@@ -112,10 +113,16 @@ class ProfileScreenState extends State<ProfileScreen> {
       ),
       ProfileTab(childrenBuilder: (context) => _drawBody(), title: "Powiązane"),
       ProfileTab(
-          childrenBuilder: (context) => _drawBody(), title: "Obserwujący"),
+        childrenBuilder: (context) => _drawBody(), title: "Obserwujący"),
       ProfileTab(childrenBuilder: (context) => _drawBody(), title: "Obserwuje"),
       ProfileTab(childrenBuilder: (context) => _drawBody(), title: "Odznaki"),
-      ProfileTab(childrenBuilder: (context) => _drawBody(), title: "Wykopane"),
+      ProfileTab(
+        childrenBuilder: (context) => _drawBody(),
+        title: "Wykopane",
+        dataType: ProfileScreenType.LINKS,
+        callback: (page) => api.profiles.getDigged(page, username),
+        supportsPagination: true,
+      ),
       ProfileTab(childrenBuilder: (context) => _drawBody(), title: "Zakopane"),
     ];
     super.initState();
@@ -332,6 +339,8 @@ class ProfileScreenState extends State<ProfileScreen> {
                             iconPadding: EdgeInsets.all(8.0),
                             padding: EdgeInsets.symmetric(
                                 vertical: 10.0, horizontal: 16.0),
+                            onTap: () =>
+                              Share.share('https://wykop.pl/ludzie/' + _profileModel.author.login)
                           ),
                         ],
                       ),

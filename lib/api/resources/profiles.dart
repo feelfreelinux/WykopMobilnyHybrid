@@ -1,3 +1,5 @@
+import 'dart:core';
+
 import 'package:owmflutter/api/api.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:owmflutter/api/api.dart' as prefix0;
@@ -60,6 +62,12 @@ class ProfilesApi extends ApiResource {
     var items = await client.request('profiles', 'index', api: [username]);
     print(items);
     return deserializeProfile(items);
+  }
+
+  Future<List<Link>> getDigged(int page, String username) async {
+    var items = await client
+      .request('profiles', 'digged', api: [username], named: {'page': page.toString()});
+    return deserializeLinks(items);
   }
 
   Future<bool> observe(String username) async {

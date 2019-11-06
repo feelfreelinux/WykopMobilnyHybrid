@@ -60,6 +60,13 @@ class EntryModel extends InputModel {
     notifyListeners();
   }
 
+  Future<void> edit(InputData data) async {
+    await api.entries.editEntry(_id, data);
+    GlobalKey<RefreshIndicatorState> refreshIndicatorKey = GlobalKey();
+    refreshIndicatorKey.currentState.show();
+    notifyListeners();
+  }
+
   void expand() {
     _isExpanded = true;
     notifyListeners();

@@ -100,6 +100,11 @@ class EntriesApi extends ApiResource {
   Future<void> deleteEntry(int id) async {
       await client.request('entries', 'delete', api: [id.toString()]);
   }
+
+  Future<void> editEntry(int id, InputData data) async {
+    var entry = await client.request('entries', 'edit', api: [id.toString()],
+      post: {'body': data.body}, image: data.file);
+  }
   
   Future<void> deleteComment(int id) async {
       await client.request('entries', 'commentdelete', api: [id.toString()]);
