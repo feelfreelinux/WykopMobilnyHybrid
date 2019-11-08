@@ -72,7 +72,7 @@ class LinksApi extends ApiResource {
       _getLinks('hits', 'popular', page);
 
   Future<void> deleteComment(int id) async {
-      await client.request('links', 'commentdelete', api: [id.toString()]);
+    await client.request('links', 'commentdelete', api: [id.toString()]);
   }
 
   Future<List<Link>> getHitsDay(int page) => _getLinks('hits', 'day', page);
@@ -191,6 +191,13 @@ class LinksApi extends ApiResource {
           image: data.file,
           api: [linkId.toString()]);
     }
+
+    return deserializeLinkComment(linkComment);
+  }
+
+  Future<LinkComment> editComment(int id, InputData data) async {
+    var linkComment = await client.request('links', 'CommentEdit',
+        post: {'body': data.body}, image: data.file, api: [id.toString()]);
 
     return deserializeLinkComment(linkComment);
   }

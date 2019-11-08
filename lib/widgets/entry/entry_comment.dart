@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/models/models.dart';
+import 'package:owmflutter/screens/input.dart';
 import 'package:owmflutter/widgets/content_hidden.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/utils/utils.dart';
@@ -264,8 +265,17 @@ class _EntryCommentWidgetState extends State<EntryCommentWidget> {
                         widget.relation == AuthorRelation.User,
                     child: _drawToolbarIcon(Icons.edit, "Edytuj", () {
                       Navigator.pop(context); //TODO: implement edit comment
-                      Scaffold.of(contextmain).showSnackBar(
-                          SnackBar(content: Text("Niezaimplementowane")));
+                      Navigator.of(context).push(
+                        Utils.getPageTransition(
+                          EditInputScreen(
+                            id: comment.id,
+                            inputData: InputData(body: comment.body),
+                            inputType: InputType.ENTRY_COMMENT,
+                            commentEdited: (editedComment) =>
+                                comment.setData(editedComment),
+                          ),
+                        ),
+                      );
                     }),
                   ),
                   Visibility(

@@ -20,7 +20,7 @@ class EntryInputScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: ChangeNotifierProvider<InputModel>(
-        builder: (context) => NewEntryModel(
+        builder: (context) => EditModel(
           entryCreated: (entry) {
             Navigator.of(context).pop();
             Navigator.of(context).push(
@@ -33,6 +33,48 @@ class EntryInputScreen extends StatelessWidget {
           },
         ),
         child: InputScreen(inputType: InputType.ENTRY),
+      ),
+    );
+  }
+}
+
+class EditInputScreen extends StatelessWidget {
+  final InputData inputData;
+  final int id;
+  final InputType inputType;
+  final ValueChanged<EntryComment> commentEdited;
+  final ValueChanged<Entry> entryEdited;
+  final ValueChanged<LinkComment> linkCommentEdited;
+
+  EditInputScreen(
+      {this.inputData,
+      this.id,
+      this.inputType,
+      this.commentEdited,
+      this.entryEdited,
+      this.linkCommentEdited});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: ChangeNotifierProvider<InputModel>(
+        builder: (context) => EditModel(
+          entryEdited: (entry) {
+            Navigator.of(context).pop();
+            entryEdited(entry);
+          },
+          commentEdited: (comment) {
+            Navigator.of(context).pop();
+            commentEdited(comment);
+          },
+          linkCommentEdited: (comment) {
+            Navigator.of(context).pop();
+            linkCommentEdited(comment);
+          },
+          edit: true,
+          itemId: this.id,
+          inputType: inputType,
+        ),
+        child: InputScreen(inputType: this.inputType, inputData: inputData),
       ),
     );
   }
@@ -78,6 +120,7 @@ class _InputScreenState extends State<InputScreen> {
           child: Scaffold(
             bottomNavigationBar: InputBarWidget(
               key: inputBarKey,
+              existingInputData: widget.inputData,
               externalController:
                   textController, //TODO: nie zaznacza tekstu z przycisku, ukrywa klawiature
               imageStateChanged: (image) => setState(() => this.image = image),

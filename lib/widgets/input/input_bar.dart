@@ -24,12 +24,14 @@ class InputBarWidget extends StatefulWidget {
   final TextEditingController externalController;
   final Color iconsColor;
   final String hintText;
+  final InputData existingInputData;
 
   InputBarWidget({
     @required Key key,
     this.externalController,
     this.imageStateChanged,
     this.iconsColor,
+    this.existingInputData,
     this.hintText = 'Treść komentarza',
   }) : super(key: key);
 
@@ -52,6 +54,13 @@ class InputBarWidgetState extends State<InputBarWidget> {
     super.initState();
     if (widget.externalController != null) {
       this.textController = widget.externalController;
+    }
+
+    if (widget.existingInputData != null) {
+      this.textController.text = widget.existingInputData.body;
+      if (widget.existingInputData.file != null) {
+        setImage(widget.existingInputData.file);
+      }
     }
     textController.addListener(() => _watchTextChanges());
   }

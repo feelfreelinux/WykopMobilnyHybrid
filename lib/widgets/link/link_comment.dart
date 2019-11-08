@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/models/models.dart';
+import 'package:owmflutter/screens/input.dart';
 import 'package:owmflutter/widgets/content_hidden.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/utils/utils.dart';
@@ -26,7 +27,9 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
       builder: (context, model, _) => Material(
         key: Key(model.id.toString()),
         color: Theme.of(context).backgroundColor,
-        child: !model.isExpanded ? ContentHiddenWidget(onTap: () => model.expand()) : _buildLinkCommentBody(model, context),
+        child: !model.isExpanded
+            ? ContentHiddenWidget(onTap: () => model.expand())
+            : _buildLinkCommentBody(model, context),
       ),
     );
   }
@@ -257,11 +260,24 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
                   Visibility(
                     visible: authStateModel.loggedIn &&
                         widget.relation == AuthorRelation.User,
-                    child: _drawToolbarIcon(Icons.edit, "Edytuj", () {
-                      Navigator.pop(context); //TODO: implement edit comment
-                      Scaffold.of(contextmain).showSnackBar(
-                          SnackBar(content: Text("Niezaimplementowane")));
-                    }),
+                    child: _drawToolbarIcon(
+                      Icons.edit,
+                      "Edytuj",
+                      () {
+                        Navigator.pop(context); 
+                        Navigator.of(context).push(
+                          Utils.getPageTransition(
+                            EditInputScreen(
+                              id: comment.id,
+                              inputData: InputData(body: comment.body),
+                              inputType: InputType.LINK_COMMENT,
+                              linkCommentEdited: (editedComment) =>
+                                  comment.setData(editedComment),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                   Visibility(
                     visible: authStateModel.loggedIn &&

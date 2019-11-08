@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:owmflutter/models/input_data.dart';
 import 'package:owmflutter/widgets/content_hidden.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/screens/screens.dart';
@@ -52,7 +53,8 @@ class NewEntryWidget extends StatelessWidget {
                     AuthorRelationBuilder(
                       relationType: RelationType.ENTRY,
                       builder: (context, relation) => GestureDetector(
-                        onLongPress: () => _showActionsDialog(context, model, relation),
+                        onLongPress: () =>
+                            _showActionsDialog(context, model, relation),
                         onTap: isClickable
                             ? () => Navigator.of(context).push(
                                 Utils.getPageSlideToUp(
@@ -166,9 +168,17 @@ class NewEntryWidget extends StatelessWidget {
                     visible: authStateModel.loggedIn &&
                         relation == AuthorRelation.User,
                     child: _drawToolbarIcon(Icons.edit, "Edytuj", () {
-                      Navigator.pop(context); //TODO: implement edit comment
-                      Scaffold.of(contextmain).showSnackBar(
-                          SnackBar(content: Text("Niezaimplementowane")));
+                      Navigator.pop(context);
+                      Navigator.of(context).push(
+                        Utils.getPageTransition(
+                          EditInputScreen(
+                            id: entry.id,
+                            inputData: InputData(body: entry.body),
+                            inputType: InputType.ENTRY,
+                            entryEdited: (editedEntry) => entry.setData(editedEntry),
+                          ),
+                        ),
+                      );
                     }),
                   ),
                   Visibility(
