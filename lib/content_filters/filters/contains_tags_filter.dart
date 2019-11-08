@@ -13,7 +13,7 @@ class EntryContainsTagsFilter extends MultiTypeContentFilter {
 
   @override
   bool performFilterOnEntry(Entry entry) {
-    return tagsRegex.hasMatch(removeAllHtmlTags(entry.body));
+    return tagsRegex.hasMatch(removeAllHtmlTags(entry.body ?? ""));
   }
 
   String removeAllHtmlTags(String htmlText) {
