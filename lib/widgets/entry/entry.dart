@@ -75,6 +75,7 @@ class NewEntryWidget extends StatelessWidget {
                       child: EmbedWidget(
                         padding: EdgeInsets.only(top: 12.0, bottom: 2.0),
                         embed: model.embed,
+                        type: ImageType.ENTRY,
                         borderRadius: 20.0,
                         reducedWidth: 36.0,
                         isNsfwTag: model.isNsfw,

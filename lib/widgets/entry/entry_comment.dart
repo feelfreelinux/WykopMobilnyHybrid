@@ -150,6 +150,7 @@ class _EntryCommentWidgetState extends State<EntryCommentWidget> {
                                 padding: EdgeInsets.only(
                                     top: model.body != null ? 0.0 : 4.0),
                                 embed: model.embed,
+                                type: ImageType.COMMENT,
                                 borderRadius: 20.0,
                                 reducedWidth: 82.0,
                               ),

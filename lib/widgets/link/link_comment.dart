@@ -158,6 +158,7 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
                                 padding: EdgeInsets.only(
                                     top: model.body != null ? 0.0 : 4.0),
                                 embed: model.embed,
+                                type: ImageType.COMMENT,
                                 borderRadius: 20.0,
                                 reducedWidth:
                                     model.isParentComment ? 82.0 : 104.0,
