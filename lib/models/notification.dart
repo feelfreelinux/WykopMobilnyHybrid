@@ -46,6 +46,8 @@ abstract class Notification
     );
   }
 
+  String getTag() => "#" + this.body.split("#")[1].split(" ")[0];
+
   Notification._();
   static Serializer<Notification> get serializer => _$notificationSerializer;
 }

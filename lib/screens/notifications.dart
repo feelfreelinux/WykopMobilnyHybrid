@@ -16,7 +16,9 @@ class NotificationsScreen extends StatelessWidget {
       builder: (context) => ShadowControlModel(scrollDelayPixels: 4),
       child: DefaultTabController(
         length: 3,
-        initialIndex: initialIndex ?? Provider.of<OWMSettings>(context, listen: false).defaultNotificationScreen,
+        initialIndex: initialIndex ??
+            Provider.of<OWMSettings>(context, listen: false)
+                .defaultNotificationScreen,
         child: Scaffold(
           resizeToAvoidBottomPadding: false,
           appBar: AppbarTabsWidget(
@@ -48,25 +50,56 @@ class NotificationsScreen extends StatelessWidget {
               NotLoggedWidget(
                 icon: OwmGlyphs.ic_navi_my_wykop,
                 text: "Obserwowane tagi",
-                child: NotificationsList(
-                  persistentHeaderBuilder: (newContext) => _header(
-                    group: () {
-                      //TODO: implement group hashtag notifications
-                      Scaffold.of(context).showSnackBar(
-                          SnackBar(content: Text("Niezaimplementowane")));
-                    },
-                    isGroup:
-                        false, //TODO: implement state hashtag notifications
-                  ),
-                  builder: (context) => NotificationListModel(
-                    loadNewNotifications: (page) =>
-                        api.notifications.getHashtagNotifications(page),
-                  ),
-                ),
+                child: true
+                    ? _drawGrouppedNotifs()
+                    : NotificationsList(
+                        persistentHeaderBuilder: (newContext) => _header(
+                          group: () {
+                            //TODO: implement group hashtag notifications
+                            Scaffold.of(context).showSnackBar(
+                                SnackBar(content: Text("Niezaimplementowane")));
+                          },
+                          isGroup:
+                              false, //TODO: implement state hashtag notifications
+                        ),
+                        builder: (context) => NotificationListModel(
+                          loadNewNotifications: (page) =>
+                              api.notifications.getHashtagNotifications(page),
+                        ),
+                      ),
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _drawGrouppedNotifs() {
+    return ChangeNotifierProvider<
+        ListModel<prefix0.Notification, NotificationModel>>(
+      builder: (context) => NotificationListModel(
+        loadNewNotifications: (page) =>
+            api.notifications.getHashtagNotifications(page),
+      )..loadGroupedTagNotifs(),
+      child: Consumer<ListModel<prefix0.Notification, NotificationModel>>(
+        builder: (context, notifModel, _) {
+          return InfiniteList(
+            itemCount: (notifModel as NotificationListModel)
+                .grouppedNotifications
+                .length,
+            itemBuilder: (context, index) => new GrouppedTagWidget(tag: (notifModel as NotificationListModel).grouppedNotifications[index],),
+            loadData: () {},
+            persistentHeaderBuilder: (newContext) => _header(
+              group: () {
+                //TODO: implement group hashtag notifications
+                Scaffold.of(context).showSnackBar(
+                    SnackBar(content: Text("Niezaimplementowane")));
+              },
+              isGroup: true, //TODO: implement state hashtag notifications
+            ),
+          );
+        },
       ),
     );
   }
@@ -143,6 +176,52 @@ class NotificationsScreen extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class GrouppedTagWidget extends StatefulWidget {
+  final GroupedTagNotificationsModel tag;
+
+  GrouppedTagWidget({this.tag});
+
+  @override
+  _GrouppedTagWidgetState createState() => _GrouppedTagWidgetState();
+}
+
+class _GrouppedTagWidgetState extends State<GrouppedTagWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<GroupedTagNotificationsModel>.value(
+      value: widget.tag,
+      child: Consumer<GroupedTagNotificationsModel>(
+        builder: (context, tagModel, _) {
+          if (tagModel.isExpanded) {
+            return ListView.builder(
+physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: tagModel.notifications.length + 1,
+              itemBuilder: (context, index) {
+                if (index == 0) return _header();
+                return ChangeNotifierProvider<NotificationModel>.value(
+                  value: tagModel.notifications[index - 1],
+                  child: NotificationWidget(),
+                );
+              },
+            );
+          } else return _header();
+        },
+      ),
+    );
+  }
+
+  Widget _header() {
+    return GestureDetector(
+      onTap: () => widget.tag.toggleExpanded(),
+          child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(widget.tag.tag + " " + widget.tag.notifications.length.toString()),
+      ),
     );
   }
 }

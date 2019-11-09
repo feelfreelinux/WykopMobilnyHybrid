@@ -21,6 +21,11 @@ class NotificationsApi extends ApiResource {
     return items["count"];
   }
 
+  Future<int> getHashNotificationsCount() async {
+    var items = await client.request('notifications', 'HashTagscount');
+
+    return items["count"];
+  }
   Future<void> readAllDirectedNotifs() async {
     await client.request('notifications', 'ReadDirectedNotifications');
   }
