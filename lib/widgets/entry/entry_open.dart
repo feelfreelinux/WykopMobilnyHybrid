@@ -30,6 +30,9 @@ class EntryOpenWidget extends StatelessWidget {
                       onClicked: () {
                         model.voteToggle();
                       },
+                      onLongClicked: () => model.upvoters.length == 0
+                          ? null
+                          : _showVotersDialog(context, model.upvoters),
                     ),
                   ],
                 ),
@@ -45,7 +48,7 @@ class EntryOpenWidget extends StatelessWidget {
                 child: EmbedWidget(
                   padding: EdgeInsets.only(top: 12.0, bottom: 2.0),
                   embed: model.embed,
-                                type: ImageType.ENTRY,
+                  type: ImageType.ENTRY,
                   borderRadius: 20.0,
                   reducedWidth: 36.0,
                 ),
@@ -125,16 +128,22 @@ class EntryOpenWidget extends StatelessWidget {
 
   void _showVotersDialog(BuildContext context, List<Voter> voters) {
     showDialog(
-        context: context,
-        builder: (context) => GreatDialogWidget(
-          padding: EdgeInsets.zero,
-              child: ListView.builder(
-                  itemCount: voters.length,
-                  itemBuilder: (context, index) {
-                    return AuthorWidget(
-                            author: voters[index].author,
-                            date: voters[index].date);
-                  }),
-            ));
+      context: context,
+      builder: (context) => GreatDialogWidget(
+        padding: EdgeInsets.zero,
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: voters.length,
+          itemBuilder: (context, index) {
+            return AuthorWidget(
+              author: voters[index].author,
+              date: voters[index].date,
+              fontSize: 14.0,
+              avatarBorderColor: Theme.of(context).dialogBackgroundColor,
+            );
+          },
+        ),
+      ),
+    );
   }
 }

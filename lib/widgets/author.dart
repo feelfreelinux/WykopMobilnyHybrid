@@ -11,6 +11,7 @@ class AuthorWidget extends StatefulWidget {
   final EdgeInsets padding;
   final bool showUserDialog;
   final bool isAuthor;
+  final Color avatarBorderColor;
 
   AuthorWidget({
     @required this.author,
@@ -21,6 +22,7 @@ class AuthorWidget extends StatefulWidget {
         const EdgeInsets.only(left: 12.0, top: 10.0, right: 12.0, bottom: 6.0),
     this.showUserDialog: true,
     this.isAuthor: false,
+    this.avatarBorderColor,
   });
 
   _AuthorWidgetState createState() => _AuthorWidgetState();
@@ -48,6 +50,7 @@ class _AuthorWidgetState extends State<AuthorWidget> {
             child: AvatarWidget(
               author: widget.author,
               size: widget.avatarSize,
+              borderColor: widget.avatarBorderColor,
             ),
           ),
           Flexible(
