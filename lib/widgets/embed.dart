@@ -187,12 +187,13 @@ class _EmbedState extends State<EmbedWidget> {
           child: Text(
             hide ? "IMG" : "NSFW",
             style: TextStyle(
-                fontSize:
-                    (MediaQuery.of(context).size.width - widget.reducedWidth) /
-                        5.0,
-                letterSpacing: 6.0,
-                fontWeight: FontWeight.bold,
-                color: Utils.backgroundGreyOpacity(context)),
+              fontSize:
+                  (MediaQuery.of(context).size.width - widget.reducedWidth) /
+                      5.0,
+              letterSpacing: 6.0,
+              fontWeight: FontWeight.bold,
+              color: Utils.backgroundGreyOpacity(context),
+            ),
           ),
         ),
       ),
@@ -202,6 +203,26 @@ class _EmbedState extends State<EmbedWidget> {
   Widget _drawFooter() {
     return Stack(
       children: [
+        Visibility(
+          visible: widget.embed.isAnimated || widget.embed.type != "image",
+          child: Center(
+            child: Container(
+              padding: EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Utils.backgroundGrey(context),
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 6.0,
+                    offset: Offset(0.0, 1.0),
+                    color: Colors.black38,
+                  )
+                ],
+              ),
+              child: Icon(Icons.play_arrow, size: 32.0),
+            ),
+          ),
+        ),
         Positioned(
           child: _drawPlaceholder(),
         ),
