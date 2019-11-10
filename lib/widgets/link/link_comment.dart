@@ -58,9 +58,7 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
                       title,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w600,
-                      ),
+                          fontSize: 12.0, fontWeight: FontWeight.w600),
                     ),
                   ),
                 ],
@@ -126,7 +124,7 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
                                             _votePadding(model.voteCountPlus) +
                                             _votePadding(-(model.voteCount -
                                                 model.voteCountPlus))
-                                        : _votePadding(model.voteCount)),
+                                        : 8 + _votePadding(model.voteCount)),
                                 top: 8.0,
                                 bottom: 4.0,
                               ),
@@ -265,7 +263,7 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
                       Icons.edit,
                       "Edytuj",
                       () {
-                        Navigator.pop(context); 
+                        Navigator.pop(context);
                         Navigator.of(context).push(
                           Utils.getPageTransition(
                             EditInputScreen(
@@ -324,30 +322,35 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
               ),
             ],
           )
-        : Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 2.0,
-                  offset: Offset(0.0, 1.0),
-                )
-              ],
-              color: Theme.of(context).brightness == Brightness.light
-                  ? Color(0xffffffff)
-                  : Color(0xff303030),
-            ),
-            child: Row(
-              children: <Widget>[
-                VoteButton(
-                  isSelected: model.voteState == LinkCommentVoteState.UP_VOTED,
-                  isComment: true,
-                  onlyIcon: true,
-                  onClicked: () => model.voteUp(),
+        : Row(
+            children: <Widget>[
+              VoteButton(
+                isSelected: model.voteState == LinkCommentVoteState.UP_VOTED,
+                isComment: true,
+                onlyIcon: true,
+                onClicked: () => model.voteUp(),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 4.0),
+                padding: EdgeInsets.all(15 / 3.5),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 2.0,
+                      offset: Offset(0.0, 1.0),
+                    )
+                  ],
+                  color: Utils.voteBackgroundStateColor(
+                    context,
+                    isComment: true,
+                    isSelected: false,
+                    negativeIcon: false,
+                  ),
                 ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15 / 3.5),
                   child: Text(
                     (model.voteCount > 0 ? "+" : "") +
                         (model.voteCount).toString(),
@@ -362,16 +365,15 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
                     ),
                   ),
                 ),
-                VoteButton(
-                  negativeIcon: true,
-                  isSelected:
-                      model.voteState == LinkCommentVoteState.DOWN_VOTED,
-                  isComment: true,
-                  onlyIcon: true,
-                  onClicked: () => model.voteDown(),
-                ),
-              ],
-            ),
+              ),
+              VoteButton(
+                negativeIcon: true,
+                isSelected: model.voteState == LinkCommentVoteState.DOWN_VOTED,
+                isComment: true,
+                onlyIcon: true,
+                onClicked: () => model.voteDown(),
+              ),
+            ],
           );
   }
 

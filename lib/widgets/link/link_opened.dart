@@ -2,14 +2,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/model/link_model.dart';
-import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/widgets/link/votes_buttons.dart';
 import 'package:owmflutter/widgets/widgets.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:provider/provider.dart';
 import 'vote_counter.dart';
-import 'package:owmflutter/owm_glyphs.dart';
 
 class LinkOpenedWidget extends StatefulWidget {
   @override
@@ -28,10 +25,9 @@ class _LinkOpenedWidgetState extends State<LinkOpenedWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            _drawTitle(model.title),
             Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 18.0,
-              ),
+              padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 2.0),
               child: Stack(
                 children: <Widget>[
                   Row(
@@ -41,9 +37,7 @@ class _LinkOpenedWidgetState extends State<LinkOpenedWidget> {
                           author: model.author,
                           date: model.date,
                           fontSize: 15.0,
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 10.0,
-                          ),
+                          padding: EdgeInsets.symmetric(vertical: 10.0),
                         ),
                       ),
                       VoteCounterWidget(
@@ -53,16 +47,12 @@ class _LinkOpenedWidgetState extends State<LinkOpenedWidget> {
                             model.voteRemove();
                             return;
                           }
-                          setState(() {
-                            showButtonsState = !showButtonsState;
-                          });
+                          setState(() => showButtonsState = !showButtonsState);
                         },
                         count: model.voteCount,
                         size: 48.0,
                         isHot: model.isHot,
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 12.0,
-                        ),
+                        padding: EdgeInsets.symmetric(vertical: 12.0),
                       ),
                     ],
                   ),
@@ -79,152 +69,221 @@ class _LinkOpenedWidgetState extends State<LinkOpenedWidget> {
                           callback: (reason) => model.voteDown(reason),
                         ),
                       );
-
                       setState(() => showButtonsState = false);
                     },
                   ),
                 ],
               ),
             ),
-            Consumer<LinkModel>(
-              builder: (context, model, _) => GestureDetector(
-                onTap: () => Utils.launchURL(model.sourceUrl, context),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    Stack(
-                      children: [
-                        _drawImage(context, model.preview),
-                        const _LinkFavicon(),
-                      ],
-                    ),
-                    _drawTitle(context, model.title),
-                    new _LinkDescriptionWidget(description: model.description),
-                  ],
-                ),
+            GestureDetector(
+              onTap: () => Utils.launchURL(model.sourceUrl, context),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Stack(
+                    children: [
+                      _drawImage(context, model.preview),
+                      _drawLinkFavicon(context, model.sourceUrl),
+                    ],
+                  ),
+                  _drawDescription(model.description),
+                ],
               ),
             ),
-            const _LinkTagsWidget(),
+            _drawTags(model.tags),
             Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 18.0,
-              ),
-              child: Consumer<LinkModel>(
-                builder: (context, model, _) =>
-                    LinkFooterWidget(link: model, isClickable: false),
-              ),
+              padding: EdgeInsets.symmetric(horizontal: 18.0),
+              child: LinkFooterWidget(link: model, isClickable: false),
             ),
-            DividerWidget(
-              padding: EdgeInsets.symmetric(
-                horizontal: 18.0,
-              ),
-            ),
-            new _LinkRelatedWidget(context: context),
-            DividerWidget(
-              padding: EdgeInsets.symmetric(
-                horizontal: 18.0,
-              ),
-            ),
-            _LinkCommentHeader(),
+            DividerWidget(padding: EdgeInsets.symmetric(horizontal: 18.0)),
+            _drawRelated(context, model),
+            DividerWidget(padding: EdgeInsets.symmetric(horizontal: 18.0)),
+            _drawCommentHeader(context, model),
           ],
         ),
       ),
     );
   }
 
-  Widget _drawImage(BuildContext context, String preview) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: 180,
-      decoration: BoxDecoration(
-        boxShadow: [BoxShadow(color: Color(0x33000000))],
-        image: DecorationImage(
-          image: AdvancedNetworkImage(
-            preview != null
-                ? preview
-                : 'https://www.wykop.pl/cdn/c2526412/no-picture-night.jpg',
-            useDiskCache: true,
+  Widget _drawCommentHeader(BuildContext context, LinkModel link) {
+    return Padding(
+      padding:
+          EdgeInsets.only(left: 18.0, right: 10.0, top: 14.0, bottom: 14.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            link.commentsCount.toString() +
+                " " +
+                Utils.polishPlural(
+                  count: link.commentsCount,
+                  first: "komentarz",
+                  many: "komentarzy",
+                  other: "komentarze",
+                ),
+            style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
           ),
-          fit: BoxFit.cover,
-        ),
+          InkWell(
+            borderRadius: BorderRadius.circular(30),
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 3.0, horizontal: 8.0),
+              child: Text(
+                "NAJSTARSZE",
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+            ),
+            onTap: () => _openCommentsSortDialog(),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _drawTitle(BuildContext context, String title) {
-    return Container(
-      padding: EdgeInsets.only(
-        left: 18.0,
-        top: 12.0,
-        right: 18.0,
-      ),
-      child: Text(
-        title,
-        style: TextStyle(
-          height: 1.1,
-          fontSize: 18.0,
-          fontWeight: FontWeight.w500,
+  Widget _drawRelated(BuildContext context, LinkModel link) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding:
+              EdgeInsets.only(left: 18.0, right: 10.0, top: 14.0, bottom: 14.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                link.relatedCount.toString() +
+                    " " +
+                    Utils.polishPlural(
+                      count: link.relatedCount,
+                      first: "powiązany",
+                      many: "powiązanych",
+                      other: "powiązane",
+                    ),
+                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500),
+              ),
+              InkWell(
+                borderRadius: BorderRadius.circular(30),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 3.0, horizontal: 8.0),
+                  child: Text(
+                    "DODAJ LINK",
+                    style: TextStyle(fontWeight: FontWeight.w500),
+                  ),
+                ),
+                onTap: () => _openAddRelatedDialog(),
+              ),
+            ],
+          ),
         ),
-      ),
+        Padding(
+          padding: EdgeInsets.only(bottom: 18.0),
+          child: link.relatedCount > 0
+              ? SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Row(
+                      children: link.relatedLinks
+                          .map((id) => RelatedWidget(
+                                related: id,
+                                count: link.relatedCount,
+                              ))
+                          .toList(),
+                    ),
+                  ),
+                )
+              : Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 18.0),
+                  child: Text("Brak linków powiązanych ze znaleziskiem."),
+                ),
+        ),
+      ],
     );
   }
-}
 
-class _LinkFavicon extends StatelessWidget {
-  const _LinkFavicon({
-    Key key,
-  }) : super(key: key);
+  Widget _drawImage(BuildContext context, String preview) {
+    return Stack(
+      children: <Widget>[
+        Container(
+          width: MediaQuery.of(context).size.width,
+          height: 180,
+          padding: EdgeInsets.all(8.0),
+          decoration: BoxDecoration(color: Utils.backgroundGrey(context)),
+          child: Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                  Theme.of(context).iconTheme.color),
+              strokeWidth: 2.0,
+            ),
+          ),
+        ),
+        OWMSettingListener(
+          rebuildOnChange: (settings) => settings.highResImageLinkStream,
+          builder: (context, settings) => Container(
+            width: MediaQuery.of(context).size.width,
+            height: 180,
+            decoration: BoxDecoration(
+              boxShadow: [BoxShadow(color: Color(0x33000000))],
+              image: DecorationImage(
+                image: preview != null
+                    ? NetworkImage(
+                        settings.highResImageLink
+                            ? preview
+                            : preview.replaceAll(".jpg", ",w207h139.jpg"),
+                      )
+                    : AssetImage(
+                        Theme.of(context).brightness == Brightness.light
+                            ? 'assets/no_picture.jpg'
+                            : 'assets/no_picture_night.jpg',
+                      ),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _drawLinkFavicon(BuildContext context, String sourceUrl) {
     return Positioned(
       right: 0,
       child: Container(
-        margin: const EdgeInsets.all(12.0),
-        padding: const EdgeInsets.all(2.0),
+        margin: EdgeInsets.all(12.0),
+        padding: EdgeInsets.all(2.0),
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor.withOpacity(0.8),
-          border: Border.all(
-            color: const Color(0x337f7f7f),
-            width: 0.5,
-          ),
+          border: Border.all(color: Color(0x337f7f7f), width: 0.5),
           borderRadius: BorderRadius.circular(100),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Container(
-              padding: const EdgeInsets.all(4.0),
+              padding: EdgeInsets.all(4.0),
               decoration: BoxDecoration(
-                color: const Color(0xffffffff),
+                color: Color(0xffffffff),
                 borderRadius: BorderRadius.circular(100),
               ),
-              child: Consumer<LinkModel>(
-                builder: (context, model, _) => Image(
-                  image: AdvancedNetworkImage(
+              child: Image(
+                image: NetworkImage(
                     'http://s2.googleusercontent.com/s2/favicons?domain_url=' +
-                        model.sourceUrl,
-                    useDiskCache: false,
-                  ),
-                  height: 10.0,
-                  width: 10.0,
-                ),
+                        sourceUrl),
+                height: 10.0,
+                width: 10.0,
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(
+              padding: EdgeInsets.symmetric(
                 horizontal: 4.0,
               ),
-              child: Consumer<LinkModel>(
-                builder: (context, model, _) => Text(
-                  model.sourceUrl
-                      .replaceAll('https://', '')
-                      .replaceAll('http://', '')
-                      .replaceAll('www.', '')
-                      .split('/')[0],
-                  style: const TextStyle(
-                    fontSize: 11.0,
-                  ),
+              child: Text(
+                sourceUrl
+                    .replaceAll('https://', '')
+                    .replaceAll('http://', '')
+                    .replaceAll('www.', '')
+                    .split('/')[0],
+                style: TextStyle(
+                  fontSize: 11.0,
                 ),
               ),
             ),
@@ -233,223 +292,177 @@ class _LinkFavicon extends StatelessWidget {
       ),
     );
   }
-}
 
-class _LinkRelatedWidget extends StatelessWidget {
-  const _LinkRelatedWidget({
-    Key key,
-    @required this.context,
-  }) : super(key: key);
+  Widget _drawTitle(String title) {
+    return Padding(
+      padding: EdgeInsets.only(left: 18.0, top: 6.0, right: 18.0),
+      child: Text(
+        title,
+        style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w500),
+      ),
+    );
+  }
 
-  final BuildContext context;
+  Widget _drawDescription(String description) {
+    return Padding(
+      padding: EdgeInsets.only(left: 18.0, top: 16.0, right: 18.0),
+      child: Text(description, style: TextStyle(fontSize: 16.0)),
+    );
+  }
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 18.0,
-            vertical: 14.0,
-          ),
-          child: Row(
+  Widget _drawTags(String tags) {
+    return Padding(
+      padding: EdgeInsets.only(left: 18.0, top: 10.0, right: 18.0),
+      child: Text(tags),
+    );
+  }
+
+  void _openAddRelatedDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return GreatDialogWidget(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Consumer<LinkModel>(
-                builder: (context, link, _) => Text(
-                  link.relatedCount.toString(),
-                  style: const TextStyle(
-                    fontSize: 16.5,
-                    fontWeight: FontWeight.w700,
+              Text(
+                "Dodaj powiązany link",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 18.0),
+                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 1.0),
+                decoration: BoxDecoration(
+                  color: Utils.backgroundGreyOpacity(context),
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                child: TextField(
+                  cursorRadius: Radius.circular(20.0),
+                  style: TextStyle(fontSize: 14.0),
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+                    border: InputBorder.none,
+                    hintText: "Podaj adres URL strony, którą chcesz dodać",
                   ),
                 ),
               ),
-              Consumer<LinkModel>(
-                builder: (context, link, _) => Text(
-                  " " +
-                      Utils.polishPlural(
-                        count: link.relatedCount,
-                        first: "Powiązany",
-                        many: "Powiązanych",
-                        other: "Powiązane",
-                      ),
-                  style: const TextStyle(
-                    fontSize: 16.5,
-                    fontWeight: FontWeight.w500,
+              Container(
+                margin: EdgeInsets.only(top: 10.0),
+                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 1.0),
+                decoration: BoxDecoration(
+                  color: Utils.backgroundGreyOpacity(context),
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+                child: TextField(
+                  cursorRadius: Radius.circular(20.0),
+                  style: TextStyle(fontSize: 14.0),
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+                    border: InputBorder.none,
+                    hintText: "Napisz krótki opisujący stronę tytuł",
                   ),
                 ),
               ),
-              Expanded(child: Container()),
-              GestureDetector(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).accentColor,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 4.0,
-                    horizontal: 10.0,
-                  ),
-                  child: const Text(
-                    "Dodaj link",
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      color: Colors.white,
+              Padding(
+                padding: EdgeInsets.only(top: 4.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(left: 8.0),
+                      child: Text("Oznacz link jako 18+"),
+                    ),
+                    Switch(
+                      //TODO: 18+ related switch
+                      value: true,
+                      onChanged: (v) {},
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 8.0),
+                child: GestureDetector(
+                  onTap: () {}, //TODO: akcja dodania powiazanych
+                  child: Container(
+                    constraints: BoxConstraints(minWidth: double.infinity),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 18.0, vertical: 12.0),
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).accentColor,
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Text(
+                      "Dodaj link",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
-                onTap: () {
-                  //TODO add a related add screen
-                  Scaffold.of(context).showSnackBar(SnackBar(
-                    content: Text('Niezaimplementowano'),
-                  ));
-                },
               ),
             ],
           ),
-        ),
-        Consumer<LinkModel>(
-          builder: (context, link, _) => Padding(
-            padding: const EdgeInsets.only(
-              bottom: 18.0,
-            ),
-            child: link.relatedCount > 0
-                ? SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0,
-                      ),
-                      child: Row(
-                        children: link.relatedLinks
-                            .map((id) => RelatedWidget(
-                                  related: id,
-                                  count: link.relatedCount,
-                                ))
-                            .toList(),
-                      ),
-                    ),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 18.0,
-                    ),
-                    child: const Text(
-                      "Brak linków powiązanych ze znaleziskiem.",
+        );
+      },
+    );
+  }
+
+  void _openCommentsSortDialog() {
+    showDialog(
+      //TODO: podpiąć sortowanie komentarzy
+      context: context,
+      builder: (context) {
+        return GreatDialogWidget(
+          padding: EdgeInsets.zero,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: Text(
+                    "Sortuj komentarze",
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _LinkDescriptionWidget extends StatelessWidget {
-  const _LinkDescriptionWidget({
-    Key key,
-    @required this.description,
-  }) : super(key: key);
-
-  final String description;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: 18.0,
-        top: 10.0,
-        right: 18.0,
-      ),
-      child: Text(
-        description,
-        style: const TextStyle(
-          height: 1.1,
-        ),
-      ),
-    );
-  }
-}
-
-class _LinkTagsWidget extends StatelessWidget {
-  const _LinkTagsWidget({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<LinkModel>(
-      builder: (context, model, _) => Padding(
-        padding: const EdgeInsets.only(
-          left: 18.0,
-          top: 10.0,
-          right: 18.0,
-        ),
-        child: Text(
-          model.tags,
-          style: const TextStyle(
-            height: 1.1,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _LinkCommentHeader extends StatelessWidget {
-  const _LinkCommentHeader({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: 18.0,
-        top: 14.0,
-        right: 18.0,
-        bottom: 2.0,
-      ),
-      child: Row(
-        children: <Widget>[
-          Consumer<LinkModel>(
-            builder: (context, link, _) => Text(
-              link.commentsCount.toString(),
-              style: const TextStyle(
-                fontSize: 16.5,
-                fontWeight: FontWeight.w700,
-              ),
+                ),
+                Column(
+                  children: <Widget>[
+                    RadioListTile(
+                      groupValue: 1,
+                      onChanged: (value) {
+                        Navigator.of(context).pop();
+                      },
+                      value: 1,
+                      title: Text("Najlepsze"),
+                    ),
+                    RadioListTile(
+                      groupValue: 1,
+                      onChanged: (value) {
+                        Navigator.of(context).pop();
+                      },
+                      value: 2,
+                      title: Text("Najnowsze"),
+                    ),
+                    RadioListTile(
+                      groupValue: 1,
+                      onChanged: (value) {
+                        Navigator.of(context).pop();
+                      },
+                      value: 3,
+                      title: Text("Najstarsze"),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 18.0),
+              ],
             ),
           ),
-          Consumer<LinkModel>(
-            builder: (context, link, _) => Text(
-              " " +
-                  Utils.polishPlural(
-                    count: link.commentsCount,
-                    first: "Komentarz",
-                    many: "Komentarzy",
-                    other: "Komentarze",
-                  ),
-              style: const TextStyle(
-                fontSize: 16.5,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          Expanded(child: Container()),
-          GestureDetector(
-            child: const Icon(
-              OwmGlyphs.ic_sort,
-            ),
-            onTap: () {
-              //TODO add sorting comments
-              Scaffold.of(context).showSnackBar(SnackBar(
-                content: Text('Niezaimplementowano'),
-              ));
-            },
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
