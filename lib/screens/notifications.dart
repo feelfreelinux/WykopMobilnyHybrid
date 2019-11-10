@@ -29,7 +29,6 @@ class NotificationsScreen extends StatelessWidget {
             ],
           ),
           body: TabBarView(
-            physics: NeverScrollableScrollPhysics(),
             children: [
               NotLoggedWidget(
                 icon: Icons.mail,
@@ -88,7 +87,10 @@ class NotificationsScreen extends StatelessWidget {
             itemCount: (notifModel as NotificationListModel)
                 .grouppedNotifications
                 .length,
-            itemBuilder: (context, index) => new GrouppedTagWidget(tag: (notifModel as NotificationListModel).grouppedNotifications[index],),
+            itemBuilder: (context, index) => new GrouppedTagWidget(
+              tag: (notifModel as NotificationListModel)
+                  .grouppedNotifications[index],
+            ),
             loadData: () {},
             persistentHeaderBuilder: (newContext) => _header(
               group: () {
@@ -198,7 +200,7 @@ class _GrouppedTagWidgetState extends State<GrouppedTagWidget> {
         builder: (context, tagModel, _) {
           if (tagModel.isExpanded) {
             return ListView.builder(
-physics: const NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: tagModel.notifications.length + 1,
               itemBuilder: (context, index) {
@@ -209,18 +211,32 @@ physics: const NeverScrollableScrollPhysics(),
                 );
               },
             );
-          } else return _header();
+          } else
+            return _header();
         },
       ),
     );
   }
 
   Widget _header() {
-    return GestureDetector(
+    return InkWell(
       onTap: () => widget.tag.toggleExpanded(),
-          child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(widget.tag.tag + " " + widget.tag.notifications.length.toString()),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 18.0),
+        child: Text(
+          widget.tag.tag +
+              " - " +
+              widget.tag.notifications.length.toString() +
+              " " +
+              Utils.polishPlural(
+                count: widget.tag.notifications.length,
+                first: "wpis",
+                many: "wpisów",
+                other: "wpisy",
+              ),
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontSize: 16.0),
+        ),
       ),
     );
   }
