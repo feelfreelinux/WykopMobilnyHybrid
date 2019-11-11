@@ -20,6 +20,10 @@ class LinkModel extends InputModel {
     // loadComments();
   }
 
+  void updateLink() async {
+    setData(await api.links.getLink(_id));
+  }
+
   void replyTo(Author author, int parentId) {
     _respondingTo = parentId;
     inputBarKey.currentState.replyToUser(author);
@@ -60,7 +64,7 @@ class LinkModel extends InputModel {
   String get date => _date;
   int get voteCount => _voteCount;
   Author get author => _author;
-  String get title => _title.replaceAll('&quot;', '"').replaceAll('&amp;', '&');
+  String get title => (_title ?? "").replaceAll('&quot;', '"').replaceAll('&amp;', '&');
   String get description =>
       _description.replaceAll('&quot;', '"').replaceAll('&amp;', '&');
   String get sourceUrl => _sourceUrl;
@@ -76,7 +80,7 @@ class LinkModel extends InputModel {
   int get commentsCount => _commentsCount;
   LinkVoteState get voteState => _voteState;
   List<LinkCommentModel> get comments => _comments;
-
+  bool get isLoading => _title == null;
   void expand() {
     _isExpanded = true;
     notifyListeners();
@@ -86,7 +90,7 @@ class LinkModel extends InputModel {
     _id = link.id;
     _date = link.date;
     _voteCount = link.voteCount;
-    _author = link.author;
+    _author = link.author ?? Author.fromAuthState(username: "", avatarUrl: "", color: 0);
     _description = link.description;
     _isExpanded = link.isExpanded;
     _title = link.title;

@@ -22,6 +22,7 @@ class _LinkScreenState extends State<LinkScreen>
   @override
   void initState() {
     _linkModel = (widget.model ?? (LinkModel()..setId(widget.linkId))
+      ..updateLink()
       ..loadComments());
     super.initState();
   }
@@ -43,7 +44,7 @@ class _LinkScreenState extends State<LinkScreen>
               child: MediaQuery(
                 data: mqDataNew,
                 child: Scaffold(
-                  bottomNavigationBar: Column(
+                  bottomNavigationBar: model.isLoading ? Center(child: CircularProgressIndicator(),) : Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [

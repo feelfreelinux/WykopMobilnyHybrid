@@ -96,8 +96,12 @@ class LinksApi extends ApiResource {
         .map((f) => Link.mapFromResponse(f))
         .toList();
   }
-  // Future<List<Link>> getHitsWeek(int page) => _getLinks('hits', 'week', page);
 
+  Future<Link> getLink(int linkId) async {
+    var items =
+        await client.request('links', 'link', api: [linkId.toString()]);
+    return deserializeLink(items);
+  }
   Future<List<LinkComment>> getLinkComments(int linkId) async {
     var items =
         await client.request('links', 'comments', api: [linkId.toString()]);

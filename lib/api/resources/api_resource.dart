@@ -39,6 +39,10 @@ abstract class ApiResource {
         _client.deserializeElement(EntryResponse.serializer, item));
   }
 
+  Link deserializeLink(dynamic item) {
+    return Link.mapFromResponse(
+        _client.deserializeElement(LinkResponse.serializer, item));
+  }
   Author deserializeAuthor(dynamic item) {
     return Author.fromResponse(
         response: _client.deserializeElement(AuthorResponse.serializer, item));

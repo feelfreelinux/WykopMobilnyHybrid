@@ -38,7 +38,7 @@ class HtmlWidget extends StatelessWidget {
         textSize: textSize,
         linkColor: linkColor,
       ).parseFromStr(
-        html
+        (html ?? "")
             .replaceAll('<cite>  ', '<cite>')
             .replaceAll('<br />', '<br/>')
             .replaceAll('<br/>\n  ', '<br/>')
