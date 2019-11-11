@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/model/model.dart';
+import 'package:owmflutter/models/models.dart' as prefix0;
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/navigator/navigator.dart';
@@ -14,8 +15,9 @@ class NotificationWidget extends StatelessWidget {
       builder: (context, model, _) => Material(
         type: MaterialType.transparency,
         child: InkWell(
-          onTap: () {
+          onTap: () async {
             model.markAsRead();
+            (Provider.of<ListModel<prefix0.Notification, NotificationModel>>(context, listen: false) as NotificationListModel).updateNotifCount();
             WykopNavigator.handleUrl(context, model.url);
           },
           child: Column(

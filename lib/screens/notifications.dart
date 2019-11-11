@@ -33,39 +33,44 @@ class NotificationsScreen extends StatelessWidget {
               NotLoggedWidget(
                 icon: Icons.mail,
                 text: "Prywatne wiadomości",
-                child: ConversationsList(),
+                child: Container(
+                  key: PageStorageKey("MESSAGES"),
+                  child: ConversationsList(),
+                ),
               ),
               NotLoggedWidget(
                 icon: Icons.notifications,
                 text: "Powiadomienia",
-                child: NotificationsList(
-                  persistentHeaderBuilder: (newContext) => _header(),
-                  builder: (context) => NotificationListModel(
-                    loadNewNotifications: (page) =>
-                        api.notifications.getNotifications(page),
+                child: Container(
+                  key: PageStorageKey("NOTIFS"),
+                  child: NotificationsList(
+                    persistentHeaderBuilder: (newContext) => _header(),
+                    builder: (context) => NotificationListModel(
+                      loadNewNotifications: (page) =>
+                          api.notifications.getNotifications(page),
+                    ),
                   ),
                 ),
               ),
               NotLoggedWidget(
                 icon: OwmGlyphs.ic_navi_my_wykop,
                 text: "Obserwowane tagi",
-                child: true
-                    ? _drawGrouppedNotifs()
-                    : NotificationsList(
-                        persistentHeaderBuilder: (newContext) => _header(
-                          group: () {
-                            //TODO: implement group hashtag notifications
-                            Scaffold.of(context).showSnackBar(
-                                SnackBar(content: Text("Niezaimplementowane")));
-                          },
-                          isGroup:
-                              false, //TODO: implement state hashtag notifications
-                        ),
-                        builder: (context) => NotificationListModel(
-                          loadNewNotifications: (page) =>
-                              api.notifications.getHashtagNotifications(page),
-                        ),
-                      ),
+                child: Container(
+                  key: PageStorageKey("HASHNOTIFS"),
+                  child: OWMSettingListener(
+                    rebuildOnChange: (settings) => settings.groupNotifsStream,
+                    builder: (context, owmSettings) => owmSettings.groupNotifs
+                        ? _drawGrouppedNotifs()
+                        : NotificationsList(
+                            persistentHeaderBuilder: (newContext) =>
+                                _header(shouldShowGroupButton: true),
+                            builder: (context) => NotificationListModel(
+                              loadNewNotifications: (page) => api.notifications
+                                  .getHashtagNotifications(page),
+                            ),
+                          ),
+                  ),
+                ),
               ),
             ],
           ),
@@ -92,90 +97,88 @@ class NotificationsScreen extends StatelessWidget {
                   .grouppedNotifications[index],
             ),
             loadData: () {},
-            persistentHeaderBuilder: (newContext) => _header(
-              group: () {
-                //TODO: implement group hashtag notifications
-                Scaffold.of(context).showSnackBar(
-                    SnackBar(content: Text("Niezaimplementowane")));
-              },
-              isGroup: true, //TODO: implement state hashtag notifications
-            ),
+            persistentHeaderBuilder: (newContext) =>
+                _header(shouldShowGroupButton: true),
           );
         },
       ),
     );
   }
 
-  Widget _header({VoidCallback group, bool isGroup: false}) {
+  Widget _header({bool shouldShowGroupButton = false}) {
     return Builder(
       builder: (context) {
-        var notifModel =
-            (Provider.of<ListModel<prefix0.Notification, NotificationModel>>(
-                context,
-                listen: false) as NotificationListModel);
-        var notifsCount = notifModel.unreadNotifsCount;
-
-        return Container(
-          padding: EdgeInsets.only(
-            top: 6.0,
-            bottom: 10.0,
-            left: 18.0,
-            right: 16.0,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                notifsCount > 0
-                    ? "$notifsCount " +
-                        Utils.polishPlural(
-                          count: notifsCount,
-                          first: "nieprzeczytane",
-                          many: "nieprzeczytanych",
-                          other: "nieprzeczytane",
-                        )
-                    : "Wszystkie przeczytane",
-                style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.w500,
-                  color: Theme.of(context).textTheme.body1.color,
-                ),
+        return Consumer<ListModel<prefix0.Notification, NotificationModel>>(
+          builder: (context, listModel, _) {
+            var notifModel = listModel as NotificationListModel;
+            return Container(
+              padding: EdgeInsets.only(
+                top: 6.0,
+                bottom: 10.0,
+                left: 18.0,
+                right: 16.0,
               ),
-              Row(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Visibility(
-                    visible: group != null,
-                    child: Tooltip(
-                      message: isGroup
-                          ? "Nie grupuj powiadomień"
-                          : "Grupuj powiadomienia",
-                      child: RoundIconButtonWidget(
-                        icon: isGroup
-                            ? Icons.format_list_numbered
-                            : Icons.format_list_bulleted,
-                        padding: EdgeInsets.symmetric(horizontal: 12.0),
-                        onTap: group,
-                      ),
+                  Text(
+                    notifModel.unreadNotifsCount > 0
+                        ? "${notifModel.unreadNotifsCount} " +
+                            Utils.polishPlural(
+                              count: notifModel.unreadNotifsCount,
+                              first: "nieprzeczytane",
+                              many: "nieprzeczytanych",
+                              other: "nieprzeczytane",
+                            )
+                        : "Wszystkie przeczytane",
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).textTheme.body1.color,
                     ),
                   ),
-                  Tooltip(
-                    message: "Oznacz jako odczytane",
-                    child: RoundIconButtonWidget(
-                      icon: OwmGlyphs.ic_mark_read,
-                      padding: EdgeInsets.all(0.0),
-                      onTap: () {
-                        if (group == null) {
-                          notifModel.readDirectedNotifs();
-                        } else {
-                          notifModel.readHashNotifs();
-                        }
-                      },
-                    ),
+                  Row(
+                    children: <Widget>[
+                      Visibility(
+                        visible: shouldShowGroupButton,
+                        child: OWMSettingListener(
+                          rebuildOnChange: (settings) =>
+                              settings.groupNotifsStream,
+                          builder: (context, owmSettings) => Tooltip(
+                            message: owmSettings.groupNotifs
+                                ? "Nie grupuj powiadomień"
+                                : "Grupuj powiadomienia",
+                            child: RoundIconButtonWidget(
+                              icon: owmSettings.groupNotifs
+                                  ? Icons.format_list_numbered
+                                  : Icons.format_list_bulleted,
+                              padding: EdgeInsets.symmetric(horizontal: 12.0),
+                              onTap: () => owmSettings.groupNotifs =
+                                  !owmSettings.groupNotifs,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Tooltip(
+                        message: "Oznacz jako odczytane",
+                        child: RoundIconButtonWidget(
+                          icon: OwmGlyphs.ic_mark_read,
+                          padding: EdgeInsets.all(0.0),
+                          onTap: () {
+                            if (!shouldShowGroupButton) {
+                              notifModel.readDirectedNotifs();
+                            } else {
+                              notifModel.readHashNotifs();
+                            }
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
+            );
+          },
         );
       },
     );
@@ -234,8 +237,8 @@ class _GrouppedTagWidgetState extends State<GrouppedTagWidget> {
                 many: "wpisów",
                 other: "wpisy",
               ),
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontSize: 16.0),
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(fontSize: 16.0),
         ),
       ),
     );

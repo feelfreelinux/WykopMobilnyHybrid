@@ -284,6 +284,12 @@ class _$OWMSettings implements OWMSettings {
             _confirmExitAppSubject.add(value);
           }))
         .sink;
+    groupNotifsSink = (StreamController<bool>.broadcast()
+          ..stream.listen((value) async {
+            await adapter.setBool("groupNotifs", value);
+            _groupNotifsSubject.add(value);
+          }))
+        .sink;
     _adapter.getBool("useDarkTheme").then((value) {
       return value ?? false;
     }).then(useDarkThemeSink.add);
@@ -422,6 +428,9 @@ class _$OWMSettings implements OWMSettings {
     _adapter.getBool("confirmExitApp").then((value) {
       return value ?? true;
     }).then(confirmExitAppSink.add);
+    _adapter.getBool("groupNotifs").then((value) {
+      return value ?? true;
+    }).then(groupNotifsSink.add);
   }
 
   final PreferenceAdapter _adapter;
@@ -564,6 +573,9 @@ class _$OWMSettings implements OWMSettings {
   final BehaviorSubject<bool> _confirmExitAppSubject =
       BehaviorSubject<bool>(seedValue: true);
 
+  final BehaviorSubject<bool> _groupNotifsSubject =
+      BehaviorSubject<bool>(seedValue: true);
+
   Sink<bool> useDarkThemeSink;
 
   Sink<int> autoDarkThemeSink;
@@ -656,6 +668,8 @@ class _$OWMSettings implements OWMSettings {
 
   Sink<bool> confirmExitAppSink;
 
+  Sink<bool> groupNotifsSink;
+
   Stream<bool> get useDarkThemeStream =>
       _useDarkThemeSubject.asBroadcastStream();
   Stream<int> get autoDarkThemeStream =>
@@ -743,6 +757,7 @@ class _$OWMSettings implements OWMSettings {
       _confirmExitWritingSubject.asBroadcastStream();
   Stream<bool> get confirmExitAppStream =>
       _confirmExitAppSubject.asBroadcastStream();
+  Stream<bool> get groupNotifsStream => _groupNotifsSubject.asBroadcastStream();
   bool get useDarkTheme => _useDarkThemeSubject.value;
   int get autoDarkTheme => _autoDarkThemeSubject.value;
   String get autoDarkThemeTimeFrom => _autoDarkThemeTimeFromSubject.value;
@@ -789,6 +804,7 @@ class _$OWMSettings implements OWMSettings {
   bool get confirmSend => _confirmSendSubject.value;
   bool get confirmExitWriting => _confirmExitWritingSubject.value;
   bool get confirmExitApp => _confirmExitAppSubject.value;
+  bool get groupNotifs => _groupNotifsSubject.value;
   set useDarkTheme(bool value) => useDarkThemeSink.add(value);
   set autoDarkTheme(int value) => autoDarkThemeSink.add(value);
   set autoDarkThemeTimeFrom(String value) =>
@@ -838,6 +854,7 @@ class _$OWMSettings implements OWMSettings {
   set confirmSend(bool value) => confirmSendSink.add(value);
   set confirmExitWriting(bool value) => confirmExitWritingSink.add(value);
   set confirmExitApp(bool value) => confirmExitAppSink.add(value);
+  set groupNotifs(bool value) => groupNotifsSink.add(value);
   void dispose() {
     useDarkThemeSink.close();
     autoDarkThemeSink.close();
@@ -885,6 +902,7 @@ class _$OWMSettings implements OWMSettings {
     confirmSendSink.close();
     confirmExitWritingSink.close();
     confirmExitAppSink.close();
+    groupNotifsSink.close();
   }
 }
 
@@ -981,6 +999,8 @@ abstract class OWMSettingsPreferences {
 
   Sink<bool> confirmExitAppSink;
 
+  Sink<bool> groupNotifsSink;
+
   Stream<bool> get useDarkThemeStream;
   Stream<int> get autoDarkThemeStream;
   Stream<String> get autoDarkThemeTimeFromStream;
@@ -1027,6 +1047,7 @@ abstract class OWMSettingsPreferences {
   Stream<bool> get confirmSendStream;
   Stream<bool> get confirmExitWritingStream;
   Stream<bool> get confirmExitAppStream;
+  Stream<bool> get groupNotifsStream;
   void dispose() {
     useDarkThemeSink.close();
     autoDarkThemeSink.close();
@@ -1074,5 +1095,6 @@ abstract class OWMSettingsPreferences {
     confirmSendSink.close();
     confirmExitWritingSink.close();
     confirmExitAppSink.close();
+    groupNotifsSink.close();
   }
 }

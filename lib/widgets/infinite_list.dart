@@ -87,6 +87,7 @@ class _InfiniteListState extends State<InfiniteList> {
         scrollController: _scrollController,
         hideOnAllTop: headerWidget is! Container,
         child: CustomScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
           controller: _scrollController,
           slivers: <Widget>[
             SliverToBoxAdapter(child: persistentHeader),

@@ -26,6 +26,10 @@ class NotificationListModel extends ListModel<Notification, NotificationModel> {
   bool get canGroup => _canGroup;
   List<GroupedTagNotificationsModel> get grouppedNotifications => _grouppedNotifs;
 
+  void updateNotifCount() {
+    notifyListeners();
+  }
+
   Future<void> loadGroupedTagNotifs() async {
     var notifCount = await api.notifications.getHashNotificationsCount();
 
