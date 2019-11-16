@@ -130,26 +130,46 @@ class _InputScreenState extends State<InputScreen> {
               padding: EdgeInsets.symmetric(horizontal: 8.0),
               leading: RoundIconButtonWidget(
                 icon: Icons.close,
-                onTap: () => Navigator.of(context).pop(),
+                onTap: () async {
+                  if (owmSettings.confirmExitWriting) {
+                    var res =
+                        await showConfirmDialog(context, "Czy na pewno wyjść?");
+                    if (!res) return;
+                  }
+                  Navigator.of(context).pop();
+                },
                 iconSize: 26.0,
                 iconPadding: EdgeInsets.all(5.0),
               ),
               title: inputHint,
               actions: <Widget>[
-                RoundIconButtonWidget(
-                  icon: Icons.check,
-                  onTap: () async {
-                    if (owmSettings.confirmSend) {
-                      var res =
-                          await showConfirmDialog(context, "Jesteś pewien?");
-                      if (!res) return;
-                    }
-                    Provider.of<InputModel>(context, listen: false)
-                        .onInputSubmitted(InputData(
-                            body: this.textController.text, file: this.image));
-                  },
-                  iconSize: 26.0,
-                  iconPadding: EdgeInsets.all(5.0),
+                Builder(
+                  builder: (context) => RoundIconButtonWidget(
+                    icon: Icons.check,
+                    onTap: () async {
+                      if (this.textController.text.length >= 3 ||
+                          this.image != null) {
+                        if (owmSettings.confirmSend) {
+                          var res = await showConfirmDialog(
+                              context, "Czy na pewno wysłać?");
+                          if (!res) return;
+                        }
+
+                        Provider.of<InputModel>(context, listen: false)
+                            .onInputSubmitted(InputData(
+                                body: (this.textController.text.length < 3 &&
+                                        this.image != null)
+                                    ? this.textController.text + "​​​​​"
+                                    : this.textController.text,
+                                file: this.image));
+                      } else {
+                        Scaffold.of(context).showSnackBar(
+                            SnackBar(content: Text("Treść jest za krótka")));
+                      }
+                    },
+                    iconSize: 26.0,
+                    iconPadding: EdgeInsets.all(5.0),
+                  ),
                 ),
               ],
             ),
