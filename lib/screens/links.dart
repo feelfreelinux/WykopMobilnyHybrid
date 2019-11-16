@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           body: TabBarView(
-            physics: NeverScrollableScrollPhysics(),
+            //physics: NeverScrollableScrollPhysics(),
             children: [
               LinksList(
                 persistentHeaderBuilder: (context) => Column(
