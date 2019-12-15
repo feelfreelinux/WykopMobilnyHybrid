@@ -37,6 +37,8 @@ class MediaModel extends ChangeNotifier {
 
   VideoPlayerController _vpController;
   VideoPlayerController get videoPlayerController => _vpController;
+  YoutubePlayerController _ytController;
+  YoutubePlayerController get youtubePlayerController => _ytController;
 
   String get url => isImage
       ? embed.isAnimated ? embed.url.replaceAll(".jpg", ".gif") : embed.url
@@ -58,6 +60,14 @@ class MediaModel extends ChangeNotifier {
     if (!_isImage) {
       if (embed.url.contains(YOUTUBE_MATCHER) ||
           embed.url.contains(SIMPLE_YOUTUBE_MATCHER)) {
+        _ytController = YoutubePlayerController(
+          initialVideoId: YoutubePlayer.convertUrlToId(embed.url),
+          flags: YoutubePlayerFlags(
+            autoPlay: true,
+            mute: true,
+          ),
+        );
+
         _videoUrl = embed.url;
         _isYoutube = true;
         _isLoading = false;
@@ -247,7 +257,8 @@ class _MediaScreenState extends State<MediaScreen> {
                                     title: Text('Otwórz w ...'),
                                     onTap: () {
                                       Navigator.pop(contextsecond);
-                                      Utils.launchURL(widget.embed.url, context);
+                                      Utils.launchURL(
+                                          widget.embed.url, context);
                                     },
                                   ),
                                   ListTile(
@@ -478,12 +489,8 @@ class _MediaScreenState extends State<MediaScreen> {
       return Consumer<MediaModel>(
         builder: (context, mediaModel, _) => mediaModel.isYoutube
             ? YoutubePlayer(
-                context: context,
-                initialVideoId: model.getYoutubeId(),
-                flags: YoutubePlayerFlags(
-                  autoPlay: true,
-                  showVideoProgressIndicator: true,
-                ),
+                controller: model.youtubePlayerController,
+                showVideoProgressIndicator: true,
                 progressColors: ProgressBarColors(
                   playedColor: Colors.amber,
                   handleColor: Colors.amberAccent,
