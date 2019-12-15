@@ -11,10 +11,13 @@ abstract class EntryLink implements Built<EntryLink, EntryLinkBuilder> {
   @nullable
   Link get link;
 
+  bool get isExpanded;
+
   bool get hasEntry => entry != null;
 
   factory EntryLink.mapFromResponse(EntryLinkResponse response) {
     return _$EntryLink._(
+      isExpanded: true,
         entry: response.entry == null
             ? null
             : Entry.mapFromResponse(response.entry),

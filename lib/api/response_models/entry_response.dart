@@ -28,6 +28,7 @@ abstract class EntryResponse
   int get voteCount;
 
   @BuiltValueField(wireName: "comments_count")
+  @nullable
   int get commentsCount;
 
   AuthorResponse get author;

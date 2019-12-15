@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:owmflutter/models/voter.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:provider/provider.dart';
@@ -28,8 +29,10 @@ class EntryOpenWidget extends StatelessWidget {
                       count: model.voteCount,
                       onClicked: () {
                         model.voteToggle();
-                        model.loadUpVoters();
                       },
+                      onLongClicked: () => model.upvoters.length == 0
+                          ? null
+                          : _showVotersDialog(context, model.upvoters),
                     ),
                   ],
                 ),
@@ -45,6 +48,7 @@ class EntryOpenWidget extends StatelessWidget {
                 child: EmbedWidget(
                   padding: EdgeInsets.only(top: 12.0, bottom: 2.0),
                   embed: model.embed,
+                  type: ImageType.ENTRY,
                   borderRadius: 20.0,
                   reducedWidth: 36.0,
                 ),
@@ -59,61 +63,86 @@ class EntryOpenWidget extends StatelessWidget {
 
   Widget _drawVotersList(BuildContext context, EntryModel model) {
     return Expanded(
-      child: Stack(
-        children: <Widget>[
-          Visibility(
-            visible: model.upvoters.length == 0,
-            child: Container(
-              height: 34.5,
-              alignment: Alignment.centerLeft,
-              child: Text("Jeszcze nikt nie dał plusa"),
+      child: GestureDetector(
+        onTap: () => _showVotersDialog(context, model.upvoters),
+        child: Stack(
+          children: <Widget>[
+            Visibility(
+              visible: model.upvoters.length == 0,
+              child: Container(
+                height: 34.5,
+                alignment: Alignment.centerLeft,
+                child: Text("Jeszcze nikt nie dał plusa"),
+              ),
             ),
-          ),
-          ...List<int>.generate(
-                  model.upvoters.length >= 6 ? 6 : model.upvoters.length,
-                  (i) => i)
-              .map((e) => e == 0
-                  ? AvatarWidget(
-                      author: model.upvoters[e].author,
-                      size: 30.0,
-                      genderVisibility: false,
-                    )
-                  : Positioned(
-                      left: 26.0 * e.toDouble(),
-                      child: AvatarWidget(
-                        author: model.upvoters[e].author,
-                        size: 30.0,
-                        genderVisibility: false,
+            ...List<int>.generate(
+                    model.upvoters.length >= 6 ? 6 : model.upvoters.length,
+                    (i) => i)
+                .map(
+                  (e) => e == 0
+                      ? AvatarWidget(
+                          author: model.upvoters[e].author,
+                          size: 30.0,
+                          genderVisibility: false,
+                        )
+                      : Positioned(
+                          left: 26.0 * e.toDouble(),
+                          child: AvatarWidget(
+                            author: model.upvoters[e].author,
+                            size: 30.0,
+                            genderVisibility: false,
+                          ),
+                        ),
+                )
+                .toList(),
+            Visibility(
+              visible: model.upvoters.length > 6,
+              child: Positioned(
+                left: 156.0,
+                child: GestureDetector(
+                  child: Container(
+                    height: 34.5,
+                    width: 34.5,
+                    decoration: BoxDecoration(
+                      color: Utils.backgroundGrey(context),
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Theme.of(context).backgroundColor,
+                        width: 2.0,
                       ),
-                    ))
-              .toList(),
-          Visibility(
-            visible: model.upvoters.length > 6,
-            child: Positioned(
-              left: 156.0,
-              child: GestureDetector(
-                //TODO: Voters list
-                child: Container(
-                  height: 34.5,
-                  width: 34.5,
-                  decoration: BoxDecoration(
-                    color: Utils.backgroundGrey(context),
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Theme.of(context).backgroundColor,
-                      width: 2.0,
                     ),
-                  ),
-                  child: Icon(
-                    Icons.more_horiz,
-                    size: 21.0,
-                    color: Theme.of(context).iconTheme.color,
+                    child: Icon(
+                      Icons.more_horiz,
+                      size: 21.0,
+                      color: Theme.of(context).iconTheme.color,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showVotersDialog(BuildContext context, List<Voter> voters) {
+    showDialog(
+      context: context,
+      builder: (context) => GreatDialogWidget(
+        padding: EdgeInsets.zero,
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: voters.length,
+          itemBuilder: (context, index) {
+            return AuthorWidget(
+              author: voters[index].author,
+              date: voters[index].date,
+              fontSize: 14.0,
+              avatarBorderColor: Theme.of(context).dialogBackgroundColor,
+            );
+          },
+        ),
       ),
     );
   }

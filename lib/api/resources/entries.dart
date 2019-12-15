@@ -50,20 +50,6 @@ class EntriesApi extends ApiResource {
     );
   }
 
-/*
-  Future<Result> deleteEntry(int id) async {
-    var items = await client.request('entries', 'delete', api: [id.toString()]);
-    return normalizeEntryResponse(
-        client.deserializeElement(EntryResponse.serializer, items));
-  }
-
-  Future<Result> deleteEntryComment(int id) async {
-    var items =
-        await client.request('entries', 'commentdelete', api: [id.toString()]);
-    return normalizeEntryCommentResponse(
-        client.deserializeElement(EntryCommentResponse.serializer, items));
-  }
-*/
   Future<EntryComment> addEntryComment(int entryId, InputData data) async {
     var comment = await client.request('entries', 'commentadd',
         api: [entryId.toString()], post: {'body': data.body}, image: data.file);
@@ -104,16 +90,39 @@ class EntriesApi extends ApiResource {
     return int.parse(voteCount["vote_count"]);
   }
 
-    Future<int> voteComemntUp(int id) async {
+  Future<int> voteComemntUp(int id) async {
     var voteCount =
         await client.request('entries', 'commentvoteup', api: [id.toString()]);
 
     return int.parse(voteCount["vote_count"]);
   }
 
+  Future<void> deleteEntry(int id) async {
+    await client.request('entries', 'delete', api: [id.toString()]);
+  }
+
+  Future<Entry> editEntry(int id, InputData data) async {
+    var entry = await client.request('entries', 'edit',
+        api: [id.toString()], post: {'body': data.body}, image: data.file);
+    return Entry.mapFromResponse(
+        client.deserializeElement(prefix0.EntryResponse.serializer, entry));
+  }
+
+  Future<EntryComment> editEntryComment(int id, InputData data) async {
+    var entry = await client.request('entries', 'CommentEdit',
+        api: [id.toString()], post: {'body': data.body}, image: data.file);
+    return EntryComment.mapFromResponse(
+      client.deserializeElement(prefix0.EntryCommentResponse.serializer, entry),
+    );
+  }
+
+  Future<void> deleteComment(int id) async {
+    await client.request('entries', 'commentdelete', api: [id.toString()]);
+  }
+
   Future<int> voteCommentDown(int id) async {
-    var voteCount =
-        await client.request('entries', 'commentvoteremove', api: [id.toString()]);
+    var voteCount = await client
+        .request('entries', 'commentvoteremove', api: [id.toString()]);
     print(voteCount);
     return int.parse(voteCount["vote_count"]);
   }

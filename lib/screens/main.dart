@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:owmflutter/app.dart';
+import 'package:owmflutter/model/notifications_count_model.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/keys.dart';
 import 'package:owmflutter/owm_glyphs.dart';
@@ -9,29 +11,39 @@ import 'package:owmflutter/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
+  final int defaultScreenIndex;
+
+  MainScreen({this.defaultScreenIndex = 0});
   @override
   _MainScreenState createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
   int _currentIndex = 0;
-  final List<Widget> _children = [
-    HomeScreen(),
-    MikroblogScreen(),
-    MyWykopScreen(),
-    NotificationsScreen(),
-  ];
+  List<Widget> _children;
 
   StreamSubscription<int> _screenSub;
 
   @override
-  void initState() { 
-    _screenSub = Provider.of<OWMSettings>(context, listen: false).defaultAppScreenStream.listen((e) => {
-      setState(() {
-        _currentIndex = e;
-      })
-    });
-    _currentIndex = Provider.of<OWMSettings>(context, listen: false).defaultAppScreen;
+  void initState() {
+    _currentIndex = widget.defaultScreenIndex;
+    _children = [
+      HomeScreen(),
+      MikroblogScreen(),
+      MyWykopScreen(),
+      NotificationsScreen(
+        initialIndex: widget.defaultScreenIndex == 3 ? 1 : 0,
+      ),
+    ];
+    _screenSub = Provider.of<OWMSettings>(context, listen: false)
+        .defaultAppScreenStream
+        .listen((e) => {
+              setState(() {
+                _currentIndex = e;
+              })
+            });
+    _currentIndex =
+        Provider.of<OWMSettings>(context, listen: false).defaultAppScreen;
     super.initState();
   }
 
@@ -46,33 +58,43 @@ class _MainScreenState extends State<MainScreen> {
     final mqData = MediaQuery.of(context);
     final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
 
-    return MediaQuery(
-      data: mqDataNew,
-      child: Scaffold(
-        resizeToAvoidBottomPadding: false,
-        key: OwmKeys.mainScaffoldKey,
-        body: _children[_currentIndex],
-        bottomNavigationBar: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 1.0,
+    return WillPopScope(
+      onWillPop: () async {
+        if (owmSettings.confirmExitApp) {
+          return await showConfirmDialog(context, "Zamknąć aplikację?");
+        }
+        return true;
+      },
+      child: MediaQuery(
+        data: mqDataNew,
+        child: Scaffold(
+          resizeToAvoidBottomPadding: false,
+          key: OwmKeys.mainScaffoldKey,
+          body: _children[_currentIndex],
+          bottomNavigationBar: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 1.0,
+                ),
+              ],
+            ),
+            child: Consumer<NotificationsCountModel>(
+              builder: (context, notifsModel, _) => Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  _iconButton(Icons.home, 0, "Strona główna"),
+                  _iconButton(Icons.add_box, 1, "Mikroblog"),
+                  _addMenuButton(Icons.create, "Dodaj"),
+                  _iconButton(Icons.loyalty, 2, "Mój Wykop"),
+                  _iconButton(Icons.mail, 3, "Powiadomienia",
+                      badge: notifsModel.unreadNotificationsCount), //TODO: display number of notifications
+                ],
               ),
-            ],
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              _iconButton(Icons.home, 0, "Strona główna"),
-              _iconButton(Icons.add_box, 1, "Mikroblog"),
-              _addMenuButton(Icons.create, "Dodaj"),
-              _iconButton(Icons.loyalty, 2, "Mój Wykop"),
-              _iconButton(Icons.mail, 3, "Powiadomienia",
-                  badge: 0), //TODO: display number of notifications
-            ],
+            ),
           ),
         ),
       ),

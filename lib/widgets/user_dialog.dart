@@ -210,6 +210,7 @@ class _UserDialogWidgetState extends State<UserDialogWidget>
                         padding: EdgeInsets.only(top: 18.0),
                         child: GestureDetector(
                           onTap: () {
+                            Navigator.of(context).pop();
                             Navigator.of(context).push(
                               Utils.getPageTransition(
                                 ProfileScreen(profileModel: profileModel),

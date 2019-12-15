@@ -103,5 +103,8 @@ abstract class OWMSettings implements OWMSettingsPreferences {
   @DefaultValue(true)
   bool confirmExitApp;
 
+
+  @DefaultValue(true)
+  bool groupNotifs;
   factory OWMSettings(PreferenceAdapter adapter) = _$OWMSettings;
 }

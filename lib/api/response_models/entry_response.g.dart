@@ -26,9 +26,6 @@ class _$EntryResponseSerializer implements StructuredSerializer<EntryResponse> {
       'vote_count',
       serializers.serialize(object.voteCount,
           specifiedType: const FullType(int)),
-      'comments_count',
-      serializers.serialize(object.commentsCount,
-          specifiedType: const FullType(int)),
       'author',
       serializers.serialize(object.author,
           specifiedType: const FullType(AuthorResponse)),
@@ -57,6 +54,12 @@ class _$EntryResponseSerializer implements StructuredSerializer<EntryResponse> {
         ..add('favorite')
         ..add(serializers.serialize(object.favorite,
             specifiedType: const FullType(bool)));
+    }
+    if (object.commentsCount != null) {
+      result
+        ..add('comments_count')
+        ..add(serializers.serialize(object.commentsCount,
+            specifiedType: const FullType(int)));
     }
     if (object.embed != null) {
       result
@@ -173,9 +176,6 @@ class _$EntryResponse extends EntryResponse {
     }
     if (voteCount == null) {
       throw new BuiltValueNullFieldError('EntryResponse', 'voteCount');
-    }
-    if (commentsCount == null) {
-      throw new BuiltValueNullFieldError('EntryResponse', 'commentsCount');
     }
     if (author == null) {
       throw new BuiltValueNullFieldError('EntryResponse', 'author');

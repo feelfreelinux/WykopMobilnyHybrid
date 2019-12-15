@@ -5,10 +5,12 @@ import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 
 class ProfileScreen extends StatefulWidget {
   final ProfileModel profileModel;
-  ProfileScreen({this.profileModel});
+  final String username;
+  ProfileScreen({this.profileModel, this.username});
 
   @override
   ProfileScreenState createState() => ProfileScreenState();
@@ -44,9 +46,15 @@ class ProfileScreenState extends State<ProfileScreen> {
 
   List<ProfileTab> tabs;
 
+  ProfileModel _profileModel;
+  GlobalKey<RefreshIndicatorState> refreshIndicatorKey = GlobalKey();
+
   @override
   void initState() {
-    var username = widget.profileModel.author.login;
+    _profileModel = (widget.profileModel ??
+        (ProfileModel.fromUsername(widget.username)..loadFullProfile()));
+
+    var username = _profileModel.author.login;
     tabs = [
       ProfileTab(
         childrenBuilder: (context) => _drawBody(),
@@ -105,10 +113,16 @@ class ProfileScreenState extends State<ProfileScreen> {
       ),
       ProfileTab(childrenBuilder: (context) => _drawBody(), title: "Powiązane"),
       ProfileTab(
-          childrenBuilder: (context) => _drawBody(), title: "Obserwujący"),
+        childrenBuilder: (context) => _drawBody(), title: "Obserwujący"),
       ProfileTab(childrenBuilder: (context) => _drawBody(), title: "Obserwuje"),
       ProfileTab(childrenBuilder: (context) => _drawBody(), title: "Odznaki"),
-      ProfileTab(childrenBuilder: (context) => _drawBody(), title: "Wykopane"),
+      ProfileTab(
+        childrenBuilder: (context) => _drawBody(),
+        title: "Wykopane",
+        dataType: ProfileScreenType.LINKS,
+        callback: (page) => api.profiles.getDigged(page, username),
+        supportsPagination: true,
+      ),
       ProfileTab(childrenBuilder: (context) => _drawBody(), title: "Zakopane"),
     ];
     super.initState();
@@ -119,7 +133,7 @@ class ProfileScreenState extends State<ProfileScreen> {
     final mqData = MediaQuery.of(context);
     final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
     return ChangeNotifierProvider<ProfileModel>.value(
-      value: widget.profileModel,
+      value: _profileModel,
       child: ChangeNotifierProvider<ShadowControlModel>(
         builder: (context) => ShadowControlModel(),
         child: MediaQuery(
@@ -142,7 +156,7 @@ class ProfileScreenState extends State<ProfileScreen> {
         header: _drawFloatingHeader(),
         persistentHeaderBuilder: (context) => _drawHeader(),
         builder: (context) => EntryLinkListmodel(
-          loadNewEntryLinks: tab.callback,
+          context: context, loadNewEntryLinks: tab.callback,
         ),
       );
     }
@@ -152,7 +166,7 @@ class ProfileScreenState extends State<ProfileScreen> {
         header: _drawFloatingHeader(),
         persistentHeaderBuilder: (context) => _drawHeader(),
         builder: (context) => EntryListModel(
-          loadNewEntries: tab.callback,
+          context: context, loadNewEntries: tab.callback,
         ),
       );
     }
@@ -162,7 +176,7 @@ class ProfileScreenState extends State<ProfileScreen> {
         header: _drawFloatingHeader(),
         persistentHeaderBuilder: (context) => _drawHeader(),
         builder: (context) => LinkListModel(
-          loadNewLinks: tab.callback,
+          context: context, loadNewLinks: tab.callback,
         ),
       );
     }
@@ -172,7 +186,7 @@ class ProfileScreenState extends State<ProfileScreen> {
         header: _drawFloatingHeader(),
         persistentHeaderBuilder: (context) => _drawHeader(),
         builder: (context) => EntryCommentsListModel(
-          loadNewComments: tab.callback,
+          context: context, loadNewComments: tab.callback,
         ),
       );
     }
@@ -181,320 +195,195 @@ class ProfileScreenState extends State<ProfileScreen> {
         header: _drawFloatingHeader(),
         persistentHeaderBuilder: (context) => _drawHeader(),
         builder: (context) => LinkCommentListModels(
-          loadNewLinkComments: tab.callback,
+          context: context, loadNewLinkComments: tab.callback,
         ),
       );
     }
     return Text("TODO");
   }
 
+  Widget _drawHeaderButton(String text, bool isSelected, VoidCallback onTap,
+      {EdgeInsets margin = EdgeInsets.zero}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        alignment: Alignment.center,
+        width: 110,
+        margin: margin,
+        padding: EdgeInsets.all(6.0),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? Theme.of(context).accentColor
+              : Utils.backgroundCommentButton(context),
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [BoxShadow(blurRadius: 4.0, color: Colors.black12)],
+        ),
+        child: Text(
+          text,
+          style: TextStyle(
+            color: isSelected
+                ? Colors.white
+                : Theme.of(context).textTheme.body1.color,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _drawHeader() {
     return Consumer<ProfileModel>(
-      builder: (context, profileModel, _) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              Container(
-                margin: EdgeInsets.only(bottom: 50.0),
-                color: Utils.backgroundGreyOpacity(context),
-                child: profileModel.backgroundUrl != null
-                    ? Image(
-                        height: 140.0,
-                        width: MediaQuery.of(context).size.width,
-                        fit: BoxFit.cover,
-                        image: NetworkImage(profileModel.backgroundUrl),
-                      )
-                    : Container(
-                        height:
-                            profileModel.backgroundUrl == null ? 90.0 : 140.0,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topRight,
-                            end: Alignment.bottomLeft,
-                            colors: [
-                              Theme.of(context).accentColor.withOpacity(0.8),
-                              Theme.of(context).accentColor.withBlue(255)
-                            ],
-                          ),
-                        ),
-                      ),
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Container(
-                        alignment: Alignment.center,
-                        width: 110,
-                        margin: EdgeInsets.only(top: 2.0),
-                        padding: EdgeInsets.all(6.0),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).accentColor,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(blurRadius: 6.0, color: Colors.black26)
-                          ],
-                        ),
-                        child: Text(
-                          "Obserwuj",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        alignment: Alignment.center,
-                        width: 110,
-                        margin: EdgeInsets.only(top: 8.0),
-                        padding: EdgeInsets.all(6.0),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).backgroundColor,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(blurRadius: 6.0, color: Colors.black26)
-                          ],
-                        ),
-                        child: Text(
-                          "Odznaki",
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                    ],
-                  ),
-                  AvatarWidget(
-                    author: profileModel.author,
-                    size: 70.0,
-                    boxShadow: [
-                      BoxShadow(blurRadius: 6.0, color: Colors.black26)
-                    ],
-                  ),
-                  Column(
-                    children: <Widget>[
-                      Container(
-                        alignment: Alignment.center,
-                        width: 110,
-                        padding: EdgeInsets.all(6.0),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).backgroundColor,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(blurRadius: 6.0, color: Colors.black26)
-                          ],
-                        ),
-                        child: Text(
-                          "Blokuj",
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                      Container(
-                        alignment: Alignment.center,
-                        width: 110,
-                        margin: EdgeInsets.only(top: 8.0),
-                        padding: EdgeInsets.all(6.0),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).backgroundColor,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(blurRadius: 6.0, color: Colors.black26)
-                          ],
-                        ),
-                        child: Text(
-                          "Szczegóły",
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Positioned(
-                top: 0.0,
-                left: 0.0,
-                right: 0.0,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    RoundIconButtonWidget(
-                      roundColor: Colors.black45,
-                      iconColor: Colors.white,
-                      icon: Icons.arrow_back,
-                      onTap: () => Navigator.of(context).pop(),
-                      iconSize: 26.0,
-                      iconPadding: EdgeInsets.all(5.0),
-                      padding: EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 16.0),
+      builder: (context, profileModel, _) => !profileModel.isFullyLoaded
+          ? CircularProgressIndicator()
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(bottom: 60.0),
+                      color: Utils.backgroundGreyOpacity(context),
+                      child: profileModel.backgroundUrl != null
+                          ? Image(
+                              height: 140.0,
+                              width: MediaQuery.of(context).size.width,
+                              fit: BoxFit.cover,
+                              image: NetworkImage(profileModel.backgroundUrl),
+                            )
+                          : Container(
+                              height: profileModel.backgroundUrl == null
+                                  ? 90.0
+                                  : 140.0,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topRight,
+                                  end: Alignment.bottomLeft,
+                                  colors: [
+                                    Theme.of(context)
+                                        .accentColor
+                                        .withOpacity(0.8),
+                                    Theme.of(context).accentColor.withBlue(255)
+                                  ],
+                                ),
+                              ),
+                            ),
                     ),
-                    RoundIconButtonWidget(
-                      roundColor: Colors.black45,
-                      iconColor: Colors.white,
-                      icon: Icons.share,
-                      iconSize: 20.0,
-                      iconPadding: EdgeInsets.all(8.0),
-                      padding: EdgeInsets.symmetric(
-                          vertical: 10.0, horizontal: 16.0),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            _drawHeaderButton(
+                              profileModel.isObserved
+                                  ? "Obserwujesz"
+                                  : "Obserwuj",
+                              profileModel.isObserved,
+                              () => profileModel.toggleObserve(),
+                            ),
+                            _drawHeaderButton(
+                              "Odznaki",
+                              false,
+                              () {},
+                              margin: EdgeInsets.only(top: 8.0, bottom: 10.0),
+                            ),
+                          ],
+                        ),
+                        AvatarWidget(
+                          author: profileModel.author,
+                          size: 74.0,
+                          boxShadow: [
+                            BoxShadow(blurRadius: 4.0, color: Colors.black12)
+                          ],
+                        ),
+                        Column(
+                          children: <Widget>[
+                            _drawHeaderButton(
+                              profileModel.isBlocked ? "Zablokowany" : "Blokuj",
+                              profileModel.isBlocked,
+                              () => profileModel.toggleBlock(),
+                            ),
+                            _drawHeaderButton(
+                              "Szczegóły",
+                              false,
+                              () {},
+                              margin: EdgeInsets.only(top: 8.0, bottom: 10.0),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Positioned(
+                      top: 0.0,
+                      left: 0.0,
+                      right: 0.0,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          RoundIconButtonWidget(
+                            roundColor: Colors.black45,
+                            iconColor: Colors.white,
+                            icon: Icons.arrow_back,
+                            onTap: () => Navigator.of(context).pop(),
+                            iconSize: 26.0,
+                            iconPadding: EdgeInsets.all(5.0),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 16.0),
+                          ),
+                          RoundIconButtonWidget(
+                            roundColor: Colors.black45,
+                            iconColor: Colors.white,
+                            icon: Icons.share,
+                            iconSize: 20.0,
+                            iconPadding: EdgeInsets.all(8.0),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 16.0),
+                            onTap: () =>
+                              Share.share('https://wykop.pl/ludzie/' + _profileModel.author.login)
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.only(left: 18.0, top: 14.0, right: 18.0),
-            child: Text(
-              profileModel.author.login,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: Utils.getAuthorColor(profileModel.author.color, context),
-                fontSize: 22.0,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-          Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.only(left: 18.0, right: 18.0, top: 6.0),
-            child: Text(
-              widget.profileModel.formatRankAndObservers(),
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontSize: 14.0),
-            ),
-          ),
-          Visibility(
-            visible: profileModel.about != null,
-            child: Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.only(left: 18.0, right: 18.0, top: 8.0),
-              child: Text(
-                profileModel.about ?? "",
-                style: TextStyle(fontSize: 13.0),
-              ),
-            ),
-          ),
-          /*Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.only(left: 18.0, right: 18.0, top: 8.0),
-            child: Text(
-              "Ban za chodzenie po wodzie lorem Ipsum printing and typesetting industry.",
-              style: TextStyle(fontSize: 13.0, color: Colors.red),
-            ),
-          ),*/
-          SizedBox(height: 8.0)
-        ],
-      ), /*
-      Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).accentColor,
-          image: profileModel.backgroundUrl != null
-              ? DecorationImage(
-                  image: AdvancedNetworkImage(profileModel.backgroundUrl),
-                  fit: BoxFit.cover,
-                )
-              : null,
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0, left: 8),
-              child: RoundIconButtonWidget(
-                roundColor: Colors.black.withOpacity(0.4),
-                iconColor: Colors.white.withOpacity(0.5),
-                icon: Icons.arrow_back,
-                onTap: () => Navigator.of(context).pop(),
-                iconSize: 26.0,
-                iconPadding: EdgeInsets.all(5.0),
-              ),
-            ),
-            Expanded(
-              child: GestureDetector(
-                // onTap: () => _showDialogWithBody(tagModel),
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 8.0, right: 8.0, top: 16, bottom: 16),
+                Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.only(left: 18.0, top: 14.0, right: 18.0),
+                  child: Text(
+                    profileModel.author.login,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: Utils.getAuthorColor(
+                          profileModel.author.color, context),
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.only(left: 18.0, right: 18.0, top: 6.0),
+                  child: Text(
+                    _profileModel.formatRankAndObservers(),
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 14.0),
+                  ),
+                ),
+                Visibility(
+                  visible: profileModel.about != null,
                   child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 16.0),
-                          child: AvatarWidget(
-                            author: profileModel.author,
-                            size: 36,
-                          ),
-                        ),
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 8.0),
-                                child: Text(
-                                  widget.profileModel.author.login,
-                                  style: TextStyle(
-                                      color: Utils.getAuthorColor(
-                                          widget.profileModel.author.color,
-                                          context),
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ),
-                              Text(
-                                widget.profileModel.formatRankAndObservers(),
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w300),
-                              ),
-                            ]),
-                      ]),
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.only(left: 18.0, right: 18.0, top: 8.0),
+                    child: Text(
+                      profileModel.about ?? "",
+                      style: TextStyle(fontSize: 13.0),
                     ),
                   ),
                 ),
-              ),
+                SizedBox(height: 8.0)
+              ],
             ),
-            Container(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: Container(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      RoundIconButtonWidget(
-                        padding: EdgeInsets.only(left: 8, right: 16, bottom: 8),
-                        roundColor: Colors.black.withOpacity(0.4),
-                        iconColor: Colors.white.withOpacity(0.5),
-                        icon: Icons.lock,
-                        onTap: () => Navigator.of(context).pop(),
-                        iconSize: 22.0,
-                        iconPadding: EdgeInsets.all(5.0),
-                      ),
-                      RoundIconButtonWidget(
-                        padding: EdgeInsets.only(left: 8, right: 16),
-                        roundColor: Colors.black.withOpacity(0.4),
-                        iconColor: Colors.white.withOpacity(0.5),
-                        icon: Icons.remove_red_eye,
-                        onTap: () => Navigator.of(context).pop(),
-                        iconSize: 22.0,
-                        iconPadding: EdgeInsets.all(5.0),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),*/
     );
   }
 

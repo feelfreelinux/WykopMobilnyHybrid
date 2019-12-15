@@ -37,6 +37,9 @@ abstract class ProfileResponse
 
   @BuiltValueField(wireName: "links_published_count")
   int get linksPublishedCount;
+
+  @BuiltValueField(wireName: "avatar")
+  String get avatarUrl;
   
   int get rank;
   

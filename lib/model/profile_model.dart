@@ -4,8 +4,10 @@ import 'package:owmflutter/models/author.dart';
 import 'package:owmflutter/utils/utils.dart';
 
 class ProfileModel extends ChangeNotifier {
-  final Author author;
+  Author author;
   ProfileModel(this.author);
+
+  factory ProfileModel.fromUsername(String username) => ProfileModel(Author.fromAuthState(username: username, color: 997, avatarUrl: ""));
   bool _profileLoaded = false;
 
   ProfileResponse _fullProfile;
@@ -15,6 +17,7 @@ class ProfileModel extends ChangeNotifier {
 
   bool get isObserved => _isObserved;
   bool get isBlocked => _isBlocked;
+  bool get isFullyLoaded => _fullProfile != null;
 
   String get backgroundUrl => _fullProfile.background;
   String get about => _fullProfile.about;
@@ -36,7 +39,7 @@ class ProfileModel extends ChangeNotifier {
       first: "obserwujący",
       many: "obserwujących",
       other: "obserwujących",
-    )} • od ${Utils.getSimpleDate(_fullProfile.signupAt).replaceAll(' temu', '')}";
+    )}";
     return prefix;
   }
 
@@ -46,6 +49,7 @@ class ProfileModel extends ChangeNotifier {
       _profileLoaded = true;
       _isBlocked = _fullProfile.isBlocked;
       _isObserved = _fullProfile.isObserved;
+      author = Author.fromAuthState(username: _fullProfile.login, color: _fullProfile.color, avatarUrl: _fullProfile.avatarUrl);
       notifyListeners();
     }
   }

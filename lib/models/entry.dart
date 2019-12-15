@@ -17,6 +17,8 @@ abstract class Entry implements Built<Entry, EntryBuilder> {
   int get commentsCount;
 
   bool get isVoted;
+
+  bool get isExpanded;
   
   bool get isFavorite;
 
@@ -33,7 +35,8 @@ abstract class Entry implements Built<Entry, EntryBuilder> {
         date: response.date,
         body: response.body,
         voteCount: response.voteCount,
-        commentsCount: response.commentsCount,
+        isExpanded: true,
+        commentsCount: response.commentsCount ?? 0,
         comments: response.comments == null
             ? BuiltList.from([])
             : BuiltList.from(response.comments.map((el) {

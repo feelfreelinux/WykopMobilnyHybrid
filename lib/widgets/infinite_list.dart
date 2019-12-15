@@ -85,8 +85,9 @@ class _InfiniteListState extends State<InfiniteList> {
       behavior: NotSuddenJumpScrollBehavior(),
       child: ShadowNotificationListener(
         scrollController: _scrollController,
-        hideOnAllTop: (headerWidget is SliverPersistentHeader),
+        hideOnAllTop: headerWidget is! Container,
         child: CustomScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
           controller: _scrollController,
           slivers: <Widget>[
             SliverToBoxAdapter(child: persistentHeader),
@@ -103,6 +104,7 @@ class _InfiniteListState extends State<InfiniteList> {
 
                   return widget.itemBuilder(context, index);
                 },
+                addAutomaticKeepAlives: false,
                 childCount: itemCount,
               ),
             ),

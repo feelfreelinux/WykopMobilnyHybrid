@@ -27,10 +27,8 @@ class FloatingTabsHeader extends StatelessWidget {
                 color: Theme.of(context).backgroundColor,
                 child: Padding(
                   padding: EdgeInsets.only(
-                      bottom: 6.0, top: 10.0, right: 18.0, left: 18.0),
-                  child: Row(
-                    children: children,
-                  ),
+                      bottom: 8.0, top: 8.0, right: 18.0, left: 18.0),
+                  child: Row(children: children),
                 ),
               ),
             );

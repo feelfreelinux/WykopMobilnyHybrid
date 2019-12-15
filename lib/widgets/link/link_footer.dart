@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:owmflutter/models/models.dart';
+import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:share/share.dart';
 
 class LinkFooterWidget extends StatelessWidget {
-  final String linkTitle;
-  final int linkId;
+  final LinkModel link;
   final bool isClickable;
-  LinkFooterWidget({this.linkTitle, this.linkId, this.isClickable});
+
+  LinkFooterWidget({this.link, this.isClickable});
 
   @override
   Widget build(BuildContext context) {
@@ -20,29 +20,25 @@ class LinkFooterWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           FavoriteButton(
-            isFavorite: false,
-            onTap: () {},
+            isFavorite: link.isFavorite,
+            onTap: () => link.favoriteToggle(),
           ),
           CommentsButton(
-            count: 15,
+            count: link.commentsCount,
             onTap: () {
               if (isClickable) {
                 Navigator.push(
                   context,
-                  Utils.getPageTransition(
-                    LinkScreen(
-                      linkId: linkId,
-                    ),
-                  ),
+                  Utils.getPageTransition(LinkScreen(model: link)),
                 );
               }
             },
           ),
-          ShareButton(onTap: () {
-            Share.share(this.linkTitle +
+          ShareButton(
+            onTap: () => Share.share(link.title +
                 "\nhttps://www.wykop.pl/link/" +
-                linkId.toString());
-          }),
+                link.id.toString()),
+          ),
         ],
       ),
     );

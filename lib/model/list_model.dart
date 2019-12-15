@@ -14,16 +14,19 @@ class ListModel<T, D> extends BaseModel {
   List<D> _items = [];
   bool _haveReachedEnd = false;
   bool _isLoading = false;
+  bool _isRefreshing = false;
   int _page = 1;
 
   List<D> get items => _items;
   bool get haveReachedEnd => _haveReachedEnd;
+  bool get isRefreshing => _isRefreshing;
   bool get isLoading => _isLoading && _page == 1;
 
   Future<void> refresh() => scheduleFuture(_refresh());
 
   Future<void> _refresh() async {
     _page = 1;
+    _isRefreshing = true;
     _isLoading = true;
     notifyListeners();
     _items = (await loadNewItems(_page)).map((e) => mapper(e)).toList();
@@ -31,6 +34,7 @@ class ListModel<T, D> extends BaseModel {
       _haveReachedEnd = true;
     }
     _isLoading = false;
+    _isRefreshing = false;
     _page += 1;
     notifyListeners();
   }

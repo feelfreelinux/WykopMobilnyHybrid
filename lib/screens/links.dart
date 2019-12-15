@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:owmflutter/models/link.dart';
 import 'package:owmflutter/utils/utils.dart';
+import 'package:owmflutter/widgets/month_picker.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/api/api.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/cupertino.dart';
 
 class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
@@ -12,6 +15,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String upcomingSort = UpcomingSort.SORTBY_ACTIVE;
+  int topSelectedMonth = DateTime.now().month;
+  int topSelectedYear = DateTime.now().year;
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context) => ShadowControlModel(),
       child: DefaultTabController(
         length: 4,
+        initialIndex:
+            Provider.of<OWMSettings>(context, listen: false).defaultLinkScreen,
         child: Scaffold(
           resizeToAvoidBottomPadding: false,
           appBar: AppbarTabsWidget(
@@ -30,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           body: TabBarView(
+            //physics: NeverScrollableScrollPhysics(),
             children: [
               LinksList(
                 persistentHeaderBuilder: (context) => Column(
@@ -109,6 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 builder: (context) => LinkListModel(
+                  context: context,
                   loadNewLinks: (page) => api.links.getPromotedNew(page),
                 ),
               ),
@@ -119,28 +128,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: <Widget>[
                       TabButtonWidget(
                         text: "Aktywne",
-                        fontSize: 13,
                         isSelected: upcomingSort == UpcomingSort.SORTBY_ACTIVE,
                         onTap: () => setState(
                             () => upcomingSort = UpcomingSort.SORTBY_ACTIVE),
                       ),
                       TabButtonWidget(
                         text: "Wykopywane",
-                        fontSize: 13,
                         isSelected: upcomingSort == UpcomingSort.SORTBY_VOTES,
                         onTap: () => setState(
                             () => upcomingSort = UpcomingSort.SORTBY_VOTES),
                       ),
                       TabButtonWidget(
                         text: "Najnowsze",
-                        fontSize: 13,
                         isSelected: upcomingSort == UpcomingSort.SORTBY_DATE,
                         onTap: () => setState(
                             () => upcomingSort = UpcomingSort.SORTBY_DATE),
                       ),
                       TabButtonWidget(
                         text: "Komentowane",
-                        fontSize: 13,
                         isSelected:
                             upcomingSort == UpcomingSort.SORTBY_COMMENTS,
                         onTap: () => setState(
@@ -149,17 +154,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   builder: (context) => LinkListModel(
+                    context: context,
                     loadNewLinks: (page) =>
                         api.links.getUpcoming(upcomingSort, page),
                   ),
                 ),
               ),
-              Center(child: Text('Niezaimplementowane')),
+              TopLinksScreen(),
               NotLoggedWidget(
                 icon: Icons.favorite,
                 text: "Ulubione znaleziska",
                 child: LinksList(
                   builder: (context) => LinkListModel(
+                    context: context,
                     loadNewLinks: (page) => api.links.getFavoriteNew(page),
                   ),
                 ),
@@ -197,5 +204,114 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+}
+
+class TopLinksScreen extends StatefulWidget {
+  @override
+  _TopLinksScreenState createState() => _TopLinksScreenState();
+}
+
+class _TopLinksScreenState extends State<TopLinksScreen> {
+  int selectedIndex = 0;
+  int selectedMonth = DateTime.now().month;
+  int selectedYear = DateTime.now().year;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      key: ValueKey(selectedIndex.toString() +
+          selectedMonth.toString() +
+          selectedYear.toString()),
+      child: LinksList(
+        header: FloatingTabsHeader(
+          children: <Widget>[
+            TabButtonWidget(
+              text: "Popularne",
+              index: 0,
+              currentIndex: selectedIndex,
+              onTap: () => setState(() => selectedIndex = 0),
+            ),
+            TabButtonWidget(
+              text: "Dnia",
+              index: 1,
+              currentIndex: selectedIndex,
+              onTap: () => setState(() => selectedIndex = 1),
+            ),
+            TabButtonWidget(
+              text: "Tygodnia",
+              index: 2,
+              currentIndex: selectedIndex,
+              onTap: () => setState(() => selectedIndex = 2),
+            ),
+            TabButtonWidget(
+              text: "Miesiąca",
+              index: 3,
+              currentIndex: selectedIndex,
+              onTap: () async {
+                var selection = await showMonthPicker(
+                  context: context,
+                  firstDate: DateTime(2005, 12),
+                  initialDate: DateTime(selectedYear, selectedMonth),
+                  lastDate: DateTime.now(),
+                );
+                setState(() {
+                  selectedMonth = selection.month;
+                  selectedYear = selection.year;
+                  selectedIndex = 3;
+                });
+              },
+            ),
+            TabButtonWidget(
+              text: "Roku",
+              index: 4,
+              currentIndex: selectedIndex,
+              onTap: () async {
+                await showDialog(
+                  context: context,
+                  builder: (context) => GreatDialogWidget(
+                    child: SizedBox(
+                      height: 230,
+                      width: 300,
+                      child: YearPicker(
+                        firstDate: DateTime(2006),
+                        selectedDate: DateTime(selectedYear),
+                        lastDate: DateTime.now(),
+                        onChanged: (date) {
+                          setState(() {
+                            selectedYear = date.year;
+                            selectedIndex = 4;
+                          });
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+        builder: (context) => LinkListModel(
+            context: context,
+            loadNewLinks: (page) => getCurrentLinkEndpoint(page)),
+      ),
+    );
+  }
+
+  Future<List<Link>> getCurrentLinkEndpoint(int page) {
+    if (selectedIndex == 0) {
+      return api.links.getHitsDay(page);
+    }
+    if (selectedIndex == 1) {
+      return api.links.getHitsPopular(page);
+    }
+    if (selectedIndex == 2) {
+      return api.links.getHitsWeek(page);
+    }
+    if (selectedIndex == 3) {
+      return api.links.getHitsMonth(page, selectedMonth, selectedYear);
+    }
+    return api.links.getHitsYear(page, selectedYear);
   }
 }

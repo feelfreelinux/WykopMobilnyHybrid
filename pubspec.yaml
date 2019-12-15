@@ -6,6 +6,7 @@ dependencies:
     sdk: flutter
   rxdart: ^0.19.0
   pref_gen_annotations: ^0.0.1
+<<<<<<< HEAD
   validate: ^1.7.0
   built_collection: ^4.2.2
   built_value: ^6.7.0
@@ -20,22 +21,34 @@ dependencies:
   flutter_inappbrowser: ^1.2.1
   redux_thunk: ^0.2.1
   timeago: ^2.0.17
+=======
+  pref_gen_flutter: ^0.0.3
+  built_collection: ^4.2.2
+  shared_preferences: ^0.5.4+1
+  built_value: ^6.7.0
+  cupertino_icons: ^0.1.2
+  http: ^0.12.0+2
+  image_picker: ^0.6.2+3
+  flutter_advanced_networkimage: ^0.6.2
+  video_player: ^0.10.5
+  path_provider: ^1.5.1
+  timeago: ^2.0.22
+>>>>>>> develop
   font_awesome_flutter: ^8.4.0
-  transparent_image: ^1.0.0
-  photo_view: ^0.4.2
-  uuid: ^2.0.2
+  photo_view: ^0.9.0
   share: ^0.6.2+1
-  package_info: ^0.4.0+6
-  bubble_tab_indicator: ^0.1.4
-  color: ^2.1.1
   font_awesome: ^5.9.0
-  provider: ^3.0.0
+  provider: ^3.2.0
   intl: ^0.15.8
-  flutter_material_color_picker: ^1.0.3
+  flutter_material_color_picker: ^1.0.5
   esys_flutter_share: ^1.0.2
   mime: ^0.9.6+3
-  image_downloader: ^0.19.0
-  async: ^2.2.0
+  image_downloader: ^0.19.1
+  async: ^2.4.0
+  background_fetch: ^0.3.2
+  flutter_local_notifications: ^0.8.4
+  youtube_player_flutter: ^6.0.3+2
+  flutter_custom_tabs: ^0.6.0
 
 dev_dependencies:
   flutter_test:

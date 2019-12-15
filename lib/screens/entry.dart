@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/models/author.dart';
+import 'package:owmflutter/models/voter.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,7 @@ class EntryScreen extends StatefulWidget {
 class _EntryScreenState extends State<EntryScreen>
     with SingleTickerProviderStateMixin {
   EntryModel _entryModel;
+  GlobalKey<RefreshIndicatorState> refreshIndicatorKey = GlobalKey();
 
   @override
   void initState() {
@@ -79,10 +81,7 @@ class _EntryScreenState extends State<EntryScreen>
                               icon: Icons.refresh,
                               iconColor: Theme.of(context).accentColor,
                               padding: EdgeInsets.all(0.0),
-                              onTap: () {
-                                model.updateEntry();
-                                model.loadUpVoters();
-                              },
+                              onTap: () => refreshIndicatorKey.currentState.show(),
                             ),
                             IconButtonWidget(
                               icon: Icons.more_horiz,
@@ -92,9 +91,10 @@ class _EntryScreenState extends State<EntryScreen>
                           ],
                         ),
                         body: RefreshIndicator(
+                          key: refreshIndicatorKey,
                           onRefresh: () async {
-                            model.updateEntry();
-                            model.loadUpVoters();
+                            await model.updateEntry();
+                            await model.loadUpVoters();
                           },
                           child: ScrollConfiguration(
                             behavior: NotSuddenJumpScrollBehavior(),

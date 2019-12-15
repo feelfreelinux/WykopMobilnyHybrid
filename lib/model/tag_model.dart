@@ -24,7 +24,7 @@ class TagModel extends ChangeNotifier {
       ? _tagMeta.description
       : '...';
 
-  String get subHeader => _metaLoaded ? "${_tagMeta.linksCount} wpisów • ${_tagMeta.entriesCount} znalezisk" : '...';
+  String get subHeader => _metaLoaded ? "${_tagMeta.entriesCount} wpisów • ${_tagMeta.linksCount} znalezisk" : '...';
 
   Future<void> loadMeta() async {
     _tagMeta = await api.tags.getMeta(tag);

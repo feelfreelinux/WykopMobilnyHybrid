@@ -1,0 +1,38 @@
+on: push
+name: Test, Build and Release apk
+jobs:
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '12.x'
+    - uses: subosito/flutter-action@v1
+      with:
+        channel: 'stable'
+    - name: Create a file with secrets
+      run: "echo { \"wykop_key\": \"$API_KEY\", \"wykop_secret\": \"$API_SECRET\"} >> assets/secrets.json"
+      env:
+        API_KEY: ${{ secrets.API_KEY }}
+        API_SECRET: ${{ secrets.API_SECRET }}
+    - run: flutter pub get
+    - run: flutter build apk --release
+    - name: Upload an artifact.
+      uses: actions/upload-artifact@master
+      with:
+        name: owmhybrid.apk
+        path: build/app/outputs/apk/release/app-release.apk
+    - name: Discord notification
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      uses: Ilshidur/action-discord@master
+      with:
+        args: 'Nowy build aplikacji dostępny do pobrania.'
+    - name: Discord notification part 2
+      env:
+        DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      uses: Ilshidur/action-discord@master
+      with:
+        args: 'Link: https://github.com/feelfreelinux/WykopMobilnyHybrid/commit/${{ github.sha }}/checks'

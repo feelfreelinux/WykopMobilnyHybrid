@@ -13,8 +13,8 @@ class LinksList extends ItemList<Link, LinkModel> {
           persistentHeaderBuilder: persistentHeaderBuilder,
           header: header,
           buildChildren: (context) =>
-              Provider.of<OWMSettings>(context).simpleLinkView
+              Provider.of<OWMSettings>(context, listen: false).simpleLinkView
                   ? LinkSimpleWidget()
-                  : NewLinkWidget(),
+                  : LinkWidget(),
         );
 }

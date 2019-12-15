@@ -19,8 +19,10 @@ class _SearchScreenState extends State<SearchScreen> {
     final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
 
     final List<dynamic> _children = [
-      (query) => SearchResultPage(searchResType: SearchResultType.LINK, query: query),
-      (query) => SearchResultPage(searchResType: SearchResultType.ENTRY, query: query),
+      (query) =>
+          SearchResultPage(searchResType: SearchResultType.LINK, query: query),
+      (query) =>
+          SearchResultPage(searchResType: SearchResultType.ENTRY, query: query),
       (_) => _getHistory(),
     ];
 
@@ -134,6 +136,14 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             ),
           ),
+          Visibility(
+            visible:
+                Provider.of<OWMSettings>(context).searchHistory.length == 0,
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 6.0, horizontal: 18.0),
+              child: Text("Tutaj pojawi się kilka ostatnich wyszukiwań"),
+            ),
+          ),
           ...List<int>.generate(
                   Provider.of<OWMSettings>(context).searchHistory.length >= 5
                       ? 5
@@ -184,7 +194,7 @@ class _SearchResultPageState extends State<SearchResultPage>
       return Container(
         child: LinksList(
           builder: (context) => LinkListModel(
-            loadNewLinks: (page) => api.search.searchLinks(page, widget.query),
+            context: context, loadNewLinks: (page) => api.search.searchLinks(page, widget.query),
           ),
         ),
       );
@@ -192,7 +202,7 @@ class _SearchResultPageState extends State<SearchResultPage>
       return Container(
         child: EntriesList(
           builder: (context) => EntryListModel(
-            loadNewEntries: (page) =>
+            context: context, loadNewEntries: (page) =>
                 api.search.searchEntries(page, widget.query),
           ),
         ),

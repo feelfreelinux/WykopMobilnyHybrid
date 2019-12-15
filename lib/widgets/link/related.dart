@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:owmflutter/models/models.dart' as Models;
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/utils/utils.dart';
@@ -7,6 +6,7 @@ import 'package:owmflutter/utils/utils.dart';
 class RelatedWidget extends StatelessWidget {
   final Models.Related related;
   final int count;
+
   RelatedWidget({
     this.related,
     this.count,
@@ -17,19 +17,11 @@ class RelatedWidget extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width - (count > 1 ? 48.0 : 32.0),
       decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.grey.withOpacity(0.16),
-          width: 0.6,
-        ),
+        color: Utils.backgroundGrey(context),
         borderRadius: BorderRadius.circular(14.0),
       ),
-      margin: EdgeInsets.symmetric(
-        horizontal: 8.0,
-      ),
-      padding: EdgeInsets.symmetric(
-        vertical: 10.0,
-        horizontal: 12.0,
-      ),
+      margin: EdgeInsets.symmetric(horizontal: 8.0),
+      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
@@ -47,12 +39,11 @@ class RelatedWidget extends StatelessWidget {
         AvatarWidget(
           author: related.author,
           size: 26.0,
+          borderColor: Utils.backgroundGrey(context),
         ),
         Expanded(
           child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: 8.0,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
             child: Text(
               related.author.login,
               overflow: TextOverflow.ellipsis,
@@ -65,15 +56,13 @@ class RelatedWidget extends StatelessWidget {
           ),
         ),
         VoteButton(
-            onlyIcon: true,
-            isSelected: related.isVoted,
-            onClicked: () {
-              //callback();
-            }),
+          onlyIcon: true,
+          isSelected: related.isVoted,
+          isComment: true,
+          onClicked: () {}, //TODO: glosy powiazanych
+        ),
         Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 8.0,
-          ),
+          padding: EdgeInsets.symmetric(horizontal: 8.0),
           child: Text(
             (related.voteCount > 0 ? "+" : "") + related.voteCount.toString(),
             style: TextStyle(
@@ -85,27 +74,22 @@ class RelatedWidget extends StatelessWidget {
           ),
         ),
         VoteButton(
-            negativeIcon: true,
-            onlyIcon: true,
-            isSelected: related.isVoted,
-            onClicked: () {
-              //callback();
-            }),
+          negativeIcon: true,
+          onlyIcon: true,
+          isSelected: related.isVoted,
+          isComment: true,
+          onClicked: () {}, //TODO: glosy powiazanych
+        ),
       ],
     );
   }
 
   Widget _drawTitle(BuildContext context, Models.Related related) {
     return GestureDetector(
-      onTap: () => Utils.launchURL(related.url),
+      onTap: () => Utils.launchURL(related.url, context),
       child: Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: 8.0,
-        ),
-        child: Text(
-          related.title,
-          overflow: TextOverflow.ellipsis,
-        ),
+        padding: EdgeInsets.symmetric(vertical: 8.0),
+        child: Text(related.title, overflow: TextOverflow.ellipsis),
       ),
     );
   }
@@ -115,29 +99,39 @@ class RelatedWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         GestureDetector(
-          onTap: () => Utils.launchURL(link),
+          onTap: () => Utils.launchURL(link, context),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Container(
-                padding: EdgeInsets.all(6.0),
+                padding: EdgeInsets.all(25 / 3.5),
                 decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(100),
+                  borderRadius: BorderRadius.circular(30),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 2.0,
+                      offset: Offset(0.0, 1.0),
+                    )
+                  ],
+                  color: Utils.voteBackgroundStateColor(
+                    context,
+                    isComment: true,
+                    isSelected: false,
+                    negativeIcon: false,
+                  ),
                 ),
                 child: Image(
-                  image: AdvancedNetworkImage(
+                  image: NetworkImage(
                     'http://s2.googleusercontent.com/s2/favicons?domain_url=' +
                         link,
                   ),
-                  height: 12.0,
-                  width: 12.0,
+                  height: 10.0 * 1.19,
+                  width: 10.0 * 1.19,
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 6.0,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 6.0),
                 child: Text(
                   link
                       .replaceAll('https://', '')
@@ -145,26 +139,33 @@ class RelatedWidget extends StatelessWidget {
                       .replaceAll('www.', '')
                       .split('/')[0],
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 12.0,
-                  ),
+                  style: TextStyle(fontSize: 12.0),
                 ),
               ),
             ],
           ),
         ),
         GestureDetector(
+          //TODO: udostepnienie powiazanych
           child: Container(
-            padding: EdgeInsets.all(4.0),
+            padding: EdgeInsets.all(21 / 3.5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
-              color: Colors.grey.withOpacity(0.1),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 2.0,
+                  offset: Offset(0.0, 1.0),
+                )
+              ],
+              color: Utils.voteBackgroundStateColor(
+                context,
+                isComment: true,
+                isSelected: false,
+                negativeIcon: false,
+              ),
             ),
-            child: Icon(
-              Icons.share,
-              size: 16.0,
-              color: Theme.of(context).textTheme.caption.color,
-            ),
+            child: Icon(Icons.share, size: 12.0 * 1.19),
           ),
         )
       ],

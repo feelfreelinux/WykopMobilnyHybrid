@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:owmflutter/app.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/model/new_entry_model.dart';
 import 'package:owmflutter/screens/entry.dart';
@@ -19,7 +20,7 @@ class EntryInputScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: ChangeNotifierProvider<InputModel>(
-        builder: (context) => NewEntryModel(
+        builder: (context) => EditModel(
           entryCreated: (entry) {
             Navigator.of(context).pop();
             Navigator.of(context).push(
@@ -32,6 +33,48 @@ class EntryInputScreen extends StatelessWidget {
           },
         ),
         child: InputScreen(inputType: InputType.ENTRY),
+      ),
+    );
+  }
+}
+
+class EditInputScreen extends StatelessWidget {
+  final InputData inputData;
+  final int id;
+  final InputType inputType;
+  final ValueChanged<EntryComment> commentEdited;
+  final ValueChanged<Entry> entryEdited;
+  final ValueChanged<LinkComment> linkCommentEdited;
+
+  EditInputScreen(
+      {this.inputData,
+      this.id,
+      this.inputType,
+      this.commentEdited,
+      this.entryEdited,
+      this.linkCommentEdited});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: ChangeNotifierProvider<InputModel>(
+        builder: (context) => EditModel(
+          entryEdited: (entry) {
+            Navigator.of(context).pop();
+            entryEdited(entry);
+          },
+          commentEdited: (comment) {
+            Navigator.of(context).pop();
+            commentEdited(comment);
+          },
+          linkCommentEdited: (comment) {
+            Navigator.of(context).pop();
+            linkCommentEdited(comment);
+          },
+          edit: true,
+          itemId: this.id,
+          inputType: inputType,
+        ),
+        child: InputScreen(inputType: this.inputType, inputData: inputData),
       ),
     );
   }
@@ -70,78 +113,111 @@ class _InputScreenState extends State<InputScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ShadowControlModel>(
-      builder: (context) => ShadowControlModel(),
-      child: _SystemPadding(
-        child: Scaffold(
-          bottomNavigationBar: InputBarWidget(
-            key: inputBarKey,
-            externalController:
-                textController, //TODO: nie zaznacza tekstu z przycisku, ukrywa klawiature
-            imageStateChanged: (image) => setState(() => this.image = image),
-          ),
-          resizeToAvoidBottomPadding: false,
-          appBar: AppbarNormalWidget(
-            padding: EdgeInsets.symmetric(horizontal: 8.0),
-            leading: RoundIconButtonWidget(
-              icon: Icons.close,
-              onTap: () => Navigator.of(context).pop(),
-              iconSize: 26.0,
-              iconPadding: EdgeInsets.all(5.0),
+    return Container(
+      child: ChangeNotifierProvider<ShadowControlModel>(
+        builder: (context) => ShadowControlModel(),
+        child: _SystemPadding(
+          child: Scaffold(
+            bottomNavigationBar: InputBarWidget(
+              key: inputBarKey,
+              existingInputData: widget.inputData,
+              externalController:
+                  textController, //TODO: nie zaznacza tekstu z przycisku, ukrywa klawiature
+              imageStateChanged: (image) => setState(() => this.image = image),
             ),
-            title: inputHint,
-            actions: <Widget>[
-              RoundIconButtonWidget(
-                icon: Icons.check,
-                onTap: () {}, //TODO: zrobic akcje wysylania
+            resizeToAvoidBottomPadding: false,
+            appBar: AppbarNormalWidget(
+              padding: EdgeInsets.symmetric(horizontal: 8.0),
+              leading: RoundIconButtonWidget(
+                icon: Icons.close,
+                onTap: () async {
+                  if (owmSettings.confirmExitWriting) {
+                    var res =
+                        await showConfirmDialog(context, "Czy na pewno wyjść?");
+                    if (!res) return;
+                  }
+                  Navigator.of(context).pop();
+                },
                 iconSize: 26.0,
                 iconPadding: EdgeInsets.all(5.0),
               ),
-            ],
-          ),
-          body: Column(
-            children: <Widget>[
-              Visibility(
-                visible: this.image != null,
-                child: Container(
-                  margin: EdgeInsets.only(left: 13.0, right: 14.0, bottom: 6.0),
-                  child: SelectedImageWidget(
-                    backgroundColor: Utils.backgroundGreyOpacity(context),
-                    image: this.image,
-                    onTap: () => inputBarKey.currentState.removeImage(),
+              title: inputHint,
+              actions: <Widget>[
+                Builder(
+                  builder: (context) => RoundIconButtonWidget(
+                    icon: Icons.check,
+                    onTap: () async {
+                      if (this.textController.text.length >= 3 ||
+                          this.image != null) {
+                        if (owmSettings.confirmSend) {
+                          var res = await showConfirmDialog(
+                              context, "Czy na pewno wysłać?");
+                          if (!res) return;
+                        }
+
+                        Provider.of<InputModel>(context, listen: false)
+                            .onInputSubmitted(InputData(
+                                body: (this.textController.text.length < 3 &&
+                                        this.image != null)
+                                    ? this.textController.text + "​​​​​"
+                                    : this.textController.text,
+                                file: this.image));
+                      } else {
+                        Scaffold.of(context).showSnackBar(
+                            SnackBar(content: Text("Treść jest za krótka")));
+                      }
+                    },
+                    iconSize: 26.0,
+                    iconPadding: EdgeInsets.all(5.0),
                   ),
                 ),
-              ),
-              Expanded(
-                child: Scrollbar(
-                  child: SingleChildScrollView(
-                    child: Container(
-                      margin:
-                          EdgeInsets.only(left: 18.0, right: 18.0, bottom: 6.0),
-                      child: Consumer<SuggestionsModel>(
-                        builder: (context, model, _) => TextField(
-                          autofocus: true,
-                          onChanged: (text) {
-                            model.loadSuggestions(
-                                inputBarKey.currentState.extractSuggestions());
-                          },
-                          style: DefaultTextStyle.of(context).style.merge(
-                                TextStyle(fontSize: 18.0),
-                              ),
-                          maxLines: null,
-                          controller: textController,
-                          keyboardType: TextInputType.multiline,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Napisz coś ciekawego',
+              ],
+            ),
+            body: Column(
+              children: <Widget>[
+                Visibility(
+                  visible: this.image != null,
+                  child: Container(
+                    margin:
+                        EdgeInsets.only(left: 13.0, right: 14.0, bottom: 6.0),
+                    child: SelectedImageWidget(
+                      backgroundColor: Utils.backgroundGreyOpacity(context),
+                      image: this.image,
+                      onTap: () => inputBarKey.currentState.removeImage(),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Scrollbar(
+                    child: SingleChildScrollView(
+                      child: Container(
+                        margin: EdgeInsets.only(
+                            left: 18.0, right: 18.0, bottom: 6.0),
+                        child: Consumer<SuggestionsModel>(
+                          builder: (context, model, _) => TextField(
+                            autofocus: true,
+                            onChanged: (text) {
+                              model.loadSuggestions(inputBarKey.currentState
+                                  .extractSuggestions());
+                            },
+                            style: DefaultTextStyle.of(context).style.merge(
+                                  TextStyle(fontSize: 18.0),
+                                ),
+                            maxLines: null,
+                            controller: textController,
+                            keyboardType: TextInputType.multiline,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Napisz coś ciekawego',
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

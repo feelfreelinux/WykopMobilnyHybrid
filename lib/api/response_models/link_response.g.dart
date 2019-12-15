@@ -26,9 +26,6 @@ class _$LinkResponseSerializer implements StructuredSerializer<LinkResponse> {
       'title',
       serializers.serialize(object.title,
           specifiedType: const FullType(String)),
-      'description',
-      serializers.serialize(object.description,
-          specifiedType: const FullType(String)),
       'tags',
       serializers.serialize(object.tags, specifiedType: const FullType(String)),
       'source_url',
@@ -43,6 +40,9 @@ class _$LinkResponseSerializer implements StructuredSerializer<LinkResponse> {
       'related_count',
       serializers.serialize(object.relatedCount,
           specifiedType: const FullType(int)),
+      'bury_count',
+      serializers.serialize(object.buryCount,
+          specifiedType: const FullType(int)),
       'author',
       serializers.serialize(object.author,
           specifiedType: const FullType(AuthorResponse)),
@@ -52,6 +52,24 @@ class _$LinkResponseSerializer implements StructuredSerializer<LinkResponse> {
       serializers.serialize(object.canVote,
           specifiedType: const FullType(bool)),
     ];
+    if (object.description != null) {
+      result
+        ..add('description')
+        ..add(serializers.serialize(object.description,
+            specifiedType: const FullType(String)));
+    }
+    if (object.favorite != null) {
+      result
+        ..add('user_favorite')
+        ..add(serializers.serialize(object.favorite,
+            specifiedType: const FullType(bool)));
+    }
+    if (object.userVote != null) {
+      result
+        ..add('user_vote')
+        ..add(serializers.serialize(object.userVote,
+            specifiedType: const FullType(String)));
+    }
     if (object.preview != null) {
       result
         ..add('preview')
@@ -92,6 +110,14 @@ class _$LinkResponseSerializer implements StructuredSerializer<LinkResponse> {
           result.tags = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'user_favorite':
+          result.favorite = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
+        case 'user_vote':
+          result.userVote = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
         case 'source_url':
           result.sourceUrl = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
@@ -106,6 +132,10 @@ class _$LinkResponseSerializer implements StructuredSerializer<LinkResponse> {
           break;
         case 'related_count':
           result.relatedCount = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
+        case 'bury_count':
+          result.buryCount = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
         case 'author':
@@ -143,6 +173,10 @@ class _$LinkResponse extends LinkResponse {
   @override
   final String tags;
   @override
+  final bool favorite;
+  @override
+  final String userVote;
+  @override
   final String sourceUrl;
   @override
   final int voteCount;
@@ -150,6 +184,8 @@ class _$LinkResponse extends LinkResponse {
   final int commentsCount;
   @override
   final int relatedCount;
+  @override
+  final int buryCount;
   @override
   final AuthorResponse author;
   @override
@@ -168,10 +204,13 @@ class _$LinkResponse extends LinkResponse {
       this.title,
       this.description,
       this.tags,
+      this.favorite,
+      this.userVote,
       this.sourceUrl,
       this.voteCount,
       this.commentsCount,
       this.relatedCount,
+      this.buryCount,
       this.author,
       this.preview,
       this.isHot,
@@ -185,9 +224,6 @@ class _$LinkResponse extends LinkResponse {
     }
     if (title == null) {
       throw new BuiltValueNullFieldError('LinkResponse', 'title');
-    }
-    if (description == null) {
-      throw new BuiltValueNullFieldError('LinkResponse', 'description');
     }
     if (tags == null) {
       throw new BuiltValueNullFieldError('LinkResponse', 'tags');
@@ -203,6 +239,9 @@ class _$LinkResponse extends LinkResponse {
     }
     if (relatedCount == null) {
       throw new BuiltValueNullFieldError('LinkResponse', 'relatedCount');
+    }
+    if (buryCount == null) {
+      throw new BuiltValueNullFieldError('LinkResponse', 'buryCount');
     }
     if (author == null) {
       throw new BuiltValueNullFieldError('LinkResponse', 'author');
@@ -231,10 +270,13 @@ class _$LinkResponse extends LinkResponse {
         title == other.title &&
         description == other.description &&
         tags == other.tags &&
+        favorite == other.favorite &&
+        userVote == other.userVote &&
         sourceUrl == other.sourceUrl &&
         voteCount == other.voteCount &&
         commentsCount == other.commentsCount &&
         relatedCount == other.relatedCount &&
+        buryCount == other.buryCount &&
         author == other.author &&
         preview == other.preview &&
         isHot == other.isHot &&
@@ -254,15 +296,23 @@ class _$LinkResponse extends LinkResponse {
                                     $jc(
                                         $jc(
                                             $jc(
-                                                $jc($jc(0, id.hashCode),
-                                                    date.hashCode),
-                                                title.hashCode),
-                                            description.hashCode),
-                                        tags.hashCode),
-                                    sourceUrl.hashCode),
-                                voteCount.hashCode),
-                            commentsCount.hashCode),
-                        relatedCount.hashCode),
+                                                $jc(
+                                                    $jc(
+                                                        $jc(
+                                                            $jc(
+                                                                $jc(0,
+                                                                    id.hashCode),
+                                                                date.hashCode),
+                                                            title.hashCode),
+                                                        description.hashCode),
+                                                    tags.hashCode),
+                                                favorite.hashCode),
+                                            userVote.hashCode),
+                                        sourceUrl.hashCode),
+                                    voteCount.hashCode),
+                                commentsCount.hashCode),
+                            relatedCount.hashCode),
+                        buryCount.hashCode),
                     author.hashCode),
                 preview.hashCode),
             isHot.hashCode),
@@ -277,10 +327,13 @@ class _$LinkResponse extends LinkResponse {
           ..add('title', title)
           ..add('description', description)
           ..add('tags', tags)
+          ..add('favorite', favorite)
+          ..add('userVote', userVote)
           ..add('sourceUrl', sourceUrl)
           ..add('voteCount', voteCount)
           ..add('commentsCount', commentsCount)
           ..add('relatedCount', relatedCount)
+          ..add('buryCount', buryCount)
           ..add('author', author)
           ..add('preview', preview)
           ..add('isHot', isHot)
@@ -313,6 +366,14 @@ class LinkResponseBuilder
   String get tags => _$this._tags;
   set tags(String tags) => _$this._tags = tags;
 
+  bool _favorite;
+  bool get favorite => _$this._favorite;
+  set favorite(bool favorite) => _$this._favorite = favorite;
+
+  String _userVote;
+  String get userVote => _$this._userVote;
+  set userVote(String userVote) => _$this._userVote = userVote;
+
   String _sourceUrl;
   String get sourceUrl => _$this._sourceUrl;
   set sourceUrl(String sourceUrl) => _$this._sourceUrl = sourceUrl;
@@ -328,6 +389,10 @@ class LinkResponseBuilder
   int _relatedCount;
   int get relatedCount => _$this._relatedCount;
   set relatedCount(int relatedCount) => _$this._relatedCount = relatedCount;
+
+  int _buryCount;
+  int get buryCount => _$this._buryCount;
+  set buryCount(int buryCount) => _$this._buryCount = buryCount;
 
   AuthorResponseBuilder _author;
   AuthorResponseBuilder get author =>
@@ -355,10 +420,13 @@ class LinkResponseBuilder
       _title = _$v.title;
       _description = _$v.description;
       _tags = _$v.tags;
+      _favorite = _$v.favorite;
+      _userVote = _$v.userVote;
       _sourceUrl = _$v.sourceUrl;
       _voteCount = _$v.voteCount;
       _commentsCount = _$v.commentsCount;
       _relatedCount = _$v.relatedCount;
+      _buryCount = _$v.buryCount;
       _author = _$v.author?.toBuilder();
       _preview = _$v.preview;
       _isHot = _$v.isHot;
@@ -392,10 +460,13 @@ class LinkResponseBuilder
               title: title,
               description: description,
               tags: tags,
+              favorite: favorite,
+              userVote: userVote,
               sourceUrl: sourceUrl,
               voteCount: voteCount,
               commentsCount: commentsCount,
               relatedCount: relatedCount,
+              buryCount: buryCount,
               author: author.build(),
               preview: preview,
               isHot: isHot,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:owmflutter/model/model.dart';
+import 'package:owmflutter/screens/profile.dart';
 import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/screens/settings/appearance.dart';
 import 'package:owmflutter/screens/settings/profile_edit/profile_edit.dart';
@@ -149,7 +150,14 @@ class MainSettingsScreen extends StatelessWidget {
                 icon: Icons.account_circle,
                 color: Utils.getAuthorColor(authStateModel.color, context),
                 title: "Twój profil",
-                onTap: () {},
+                onTap: () => Navigator.push(
+                  context,
+                  Utils.getPageTransition(
+                    ProfileScreen(
+                      username: authStateModel.login,
+                    ),
+                  ),
+                ),
               ),
             ),
             _drawButton(
@@ -157,7 +165,8 @@ class MainSettingsScreen extends StatelessWidget {
               icon: Icons.history,
               color: Colors.purple,
               title: "Historia wyszukiwania",
-              onTap: () {},
+              onTap: () => Navigator.push(
+                  context, Utils.getPageTransition(SearchHistoryScreen())),
             ),
             Visibility(
               visible: authStateModel.loggedIn,
@@ -169,6 +178,15 @@ class MainSettingsScreen extends StatelessWidget {
                 description: "Lista blokowanych tagów i użytkowników",
                 onTap: () {},
               ),
+            ),
+            Visibility(
+              visible: authStateModel.loggedIn,
+              child: _drawButton(context,
+                  icon: Icons.report,
+                  color: Colors.orange,
+                  title: 'Panel zgłoszeń',
+                  onTap: () =>
+                      Utils.launchURL('https://wykop.pl/naruszenia/moderated', context)),
             ),
             _drawButton(
               context,
@@ -242,7 +260,15 @@ class MainSettingsScreen extends StatelessWidget {
               icon: Icons.bug_report,
               color: Colors.red,
               title: "Zgłoś błąd",
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(
+                  Utils.getPageTransition(
+                    TagScreen(
+                      tag: 'owmbugi',
+                    ),
+                  ),
+                );
+              },
             ),
             _drawButton(
               context,
@@ -251,7 +277,7 @@ class MainSettingsScreen extends StatelessWidget {
               title: "Wsparcie",
               description: "Zostań patronem na patronite.pl",
               onTap: () =>
-                  Utils.launchURL("https://patronite.pl/wykop-mobilny/"),
+                  Utils.launchURL("https://patronite.pl/wykop-mobilny/", context),
             ),
             _drawButton(
               context,

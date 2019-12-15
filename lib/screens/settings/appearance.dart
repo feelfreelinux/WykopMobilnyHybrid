@@ -206,37 +206,41 @@ class AppearanceSettingScreen extends StatelessWidget {
                   context: context,
                   builder: (BuildContext context) => Dialog(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(20.0),
-                          child: Text(
-                            "Wybierz kolor akcentu",
-                            style: TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.w700,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.all(20.0),
+                            child: Text(
+                              "Wybierz kolor akcentu",
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
                           ),
-                        ),
-                        OWMSettingListener(
-                          rebuildOnChange: (settings) =>
-                              settings.accentColorStream,
-                          builder: (context, settings) {
-                            return MaterialColorPicker(
-                              onMainColorChange: (Color color) {
-                                settings.accentColor = color.value;
-                                Navigator.of(context).pop();
+                          SizedBox(
+                            height: 220,
+                            child: OWMSettingListener(
+                              rebuildOnChange: (settings) =>
+                                  settings.accentColorStream,
+                              builder: (context, settings) {
+                                return MaterialColorPicker(
+                                  onMainColorChange: (Color color) {
+                                    settings.accentColor = color.value;
+                                    Navigator.of(context).pop();
+                                  },
+                                  allowShades: false,
+                                  selectedColor: Color(settings.accentColor),
+                                );
                               },
-                              allowShades: false,
-                              selectedColor: Color(settings.accentColor),
-                            );
-                          },
-                        ),
-                        SizedBox(height: 18.0),
-                      ],
+                            ),
+                          ),
+                          SizedBox(height: 18.0),
+                        ],
+                      ),
                     ),
-                  ),
+                  
                 );
               },
             );

@@ -4,29 +4,41 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:owmflutter/models/models.dart';
 import 'package:owmflutter/widgets/author_relation_builder.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart' as urlLauncher;
+import 'owm_settings.dart';
 export 'owm_settings.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'dart:io' show Platform;
-import 'package:flutter_inappbrowser/flutter_inappbrowser.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart' as cct;
 
-InAppBrowser inAppBrowserFallback = new InAppBrowser();
-ChromeSafariBrowser chromeSafariBrowser =
-    new ChromeSafariBrowser(inAppBrowserFallback);
+void launchDefaultBrowser(String url) {
+  urlLauncher.launch(url);
+}
 
 void launchUrl(String url, {BuildContext context}) async {
-  var hex = "#000000";
-  if (context != null) {
-    hex = Theme.of(context).primaryColor.value.toRadixString(16);
+  var owmSettings = Provider.of<OWMSettings>(context, listen: false);
+
+  if (owmSettings.linkOpenBrowser) {
+    launchDefaultBrowser(url);
+  } else {
+    await cct.launch(
+      url,
+      option: new cct.CustomTabsOption(
+        toolbarColor: Theme.of(context).primaryColor,
+        enableDefaultShare: true,
+        enableUrlBarHiding: true,
+        showPageTitle: true,
+        animation: new cct.CustomTabsAnimation.slideIn(),
+        extraCustomTabs: <String>[
+          // ref. https://play.google.com/store/apps/details?id=org.mozilla.firefox
+          'org.mozilla.firefox',
+          // ref. https://play.google.com/store/apps/details?id=com.microsoft.emmx
+          'com.microsoft.emmx',
+        ],
+      ),
+    );
   }
-  chromeSafariBrowser.open(url, options: {
-    "addShareButton": false,
-    "toolbarBackgroundColor": hex,
-    "dismissButtonStyle": 1,
-    "preferredBarTintColor": "#000000",
-  }, optionsFallback: {
-    "toolbarTopBackgroundColor": "#000000",
-    "closeButtonCaption": "Close"
-  });
 }
 
 class Utils {
@@ -124,7 +136,8 @@ class Utils {
   }
 
   static Route getPageTransition(Widget screen) {
-    if (true) { // okay i know its crappy but i need to fix one thing with iOS first
+    if (true) {
+      // okay i know its crappy but i need to fix one thing with iOS first
       return PageRouteBuilder(
         opaque: true,
         pageBuilder: (BuildContext context, Animation<double> animation,
@@ -222,7 +235,36 @@ class Utils {
         .showSnackBar(SnackBar(content: Text("Skopiowano do schowka")));
   }
 
-  static void launchURL(String url) async {
-    launchUrl(url);
+  static void launchURL(String url, BuildContext context) async {
+    launchUrl(url, context: context);
   }
+}
+
+Future<bool> showConfirmDialog(
+    BuildContext context, String title) async {
+  var resolve = false;
+  await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: new Text(title),
+        actions: <Widget>[
+          new FlatButton(
+            child: new Text("Anuluj"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          new FlatButton(
+            child: new Text("OK"),
+            onPressed: () {
+              resolve = true;
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+  return resolve;
 }

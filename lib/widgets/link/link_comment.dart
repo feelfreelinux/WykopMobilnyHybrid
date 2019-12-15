@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/models/models.dart';
+import 'package:owmflutter/screens/input.dart';
+import 'package:owmflutter/widgets/content_hidden.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +27,9 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
       builder: (context, model, _) => Material(
         key: Key(model.id.toString()),
         color: Theme.of(context).backgroundColor,
-        child: _buildLinkCommentBody(model, context),
+        child: !model.isExpanded
+            ? ContentHiddenWidget(onTap: () => model.expand())
+            : _buildLinkCommentBody(model, context),
       ),
     );
   }
@@ -54,9 +58,7 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
                       title,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w600,
-                      ),
+                          fontSize: 12.0, fontWeight: FontWeight.w600),
                     ),
                   ),
                 ],
@@ -122,7 +124,7 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
                                             _votePadding(model.voteCountPlus) +
                                             _votePadding(-(model.voteCount -
                                                 model.voteCountPlus))
-                                        : _votePadding(model.voteCount)),
+                                        : 8 + _votePadding(model.voteCount)),
                                 top: 8.0,
                                 bottom: 4.0,
                               ),
@@ -154,6 +156,7 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
                                 padding: EdgeInsets.only(
                                     top: model.body != null ? 0.0 : 4.0),
                                 embed: model.embed,
+                                type: ImageType.COMMENT,
                                 borderRadius: 20.0,
                                 reducedWidth:
                                     model.isParentComment ? 82.0 : 104.0,
@@ -199,8 +202,12 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
                       Flexible(
                         child: TextButton(
                           padding: EdgeInsets.only(top: 2.0, bottom: 4.0),
-                          onTap: () => inputModel.inputBarKey.currentState
-                              .replyToUser(model.author),
+                          onTap: () =>
+                              Provider.of<LinkModel>(context, listen: false)
+                                  .replyTo(
+                            model.author,
+                            model.parentId,
+                          ),
                           text: "Odpowiedz",
                         ),
                       ),
@@ -252,19 +259,36 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
                   Visibility(
                     visible: authStateModel.loggedIn &&
                         widget.relation == AuthorRelation.User,
-                    child: _drawToolbarIcon(Icons.edit, "Edytuj", () {
-                      Navigator.pop(context); //TODO: implement edit comment
-                      Scaffold.of(contextmain).showSnackBar(
-                          SnackBar(content: Text("Niezaimplementowane")));
-                    }),
+                    child: _drawToolbarIcon(
+                      Icons.edit,
+                      "Edytuj",
+                      () {
+                        Navigator.pop(context);
+                        Navigator.of(context).push(
+                          Utils.getPageTransition(
+                            EditInputScreen(
+                              id: comment.id,
+                              inputData: InputData(body: comment.body),
+                              inputType: InputType.LINK_COMMENT,
+                              linkCommentEdited: (editedComment) =>
+                                  comment.setData(editedComment),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                   Visibility(
                     visible: authStateModel.loggedIn &&
                         widget.relation == AuthorRelation.User,
-                    child: _drawToolbarIcon(Icons.delete, "Usuń", () {
-                      Navigator.pop(context); //TODO: implement delete comment
-                      Scaffold.of(contextmain).showSnackBar(
-                          SnackBar(content: Text("Niezaimplementowane")));
+                    child: _drawToolbarIcon(Icons.delete, "Usuń", () async {
+                      Navigator.pop(context);
+                      if (await showConfirmDialog(
+                        context,
+                        "Jesteś tego pewien?",
+                      )) {
+                        comment.delete();
+                      }
                     }),
                   ),
                 ],
@@ -298,30 +322,35 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
               ),
             ],
           )
-        : Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 2.0,
-                  offset: Offset(0.0, 1.0),
-                )
-              ],
-              color: Theme.of(context).brightness == Brightness.light
-                  ? Color(0xffffffff)
-                  : Color(0xff303030),
-            ),
-            child: Row(
-              children: <Widget>[
-                VoteButton(
-                  isSelected: model.voteState == LinkCommentVoteState.UP_VOTED,
-                  isComment: true,
-                  onlyIcon: true,
-                  onClicked: () => model.voteUp(),
+        : Row(
+            children: <Widget>[
+              VoteButton(
+                isSelected: model.voteState == LinkCommentVoteState.UP_VOTED,
+                isComment: true,
+                onlyIcon: true,
+                onClicked: () => model.voteUp(),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 4.0),
+                padding: EdgeInsets.all(15 / 3.5),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 2.0,
+                      offset: Offset(0.0, 1.0),
+                    )
+                  ],
+                  color: Utils.voteBackgroundStateColor(
+                    context,
+                    isComment: true,
+                    isSelected: false,
+                    negativeIcon: false,
+                  ),
                 ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15 / 3.5),
                   child: Text(
                     (model.voteCount > 0 ? "+" : "") +
                         (model.voteCount).toString(),
@@ -336,16 +365,15 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
                     ),
                   ),
                 ),
-                VoteButton(
-                  negativeIcon: true,
-                  isSelected:
-                      model.voteState == LinkCommentVoteState.DOWN_VOTED,
-                  isComment: true,
-                  onlyIcon: true,
-                  onClicked: () => model.voteDown(),
-                ),
-              ],
-            ),
+              ),
+              VoteButton(
+                negativeIcon: true,
+                isSelected: model.voteState == LinkCommentVoteState.DOWN_VOTED,
+                isComment: true,
+                onlyIcon: true,
+                onClicked: () => model.voteDown(),
+              ),
+            ],
           );
   }
 

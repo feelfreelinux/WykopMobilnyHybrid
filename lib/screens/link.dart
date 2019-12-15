@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:owmflutter/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/widgets/widgets.dart';
@@ -16,9 +17,12 @@ class LinkScreen extends StatefulWidget {
 class _LinkScreenState extends State<LinkScreen>
     with SingleTickerProviderStateMixin {
   LinkModel _linkModel;
+  GlobalKey<RefreshIndicatorState> refreshIndicatorKey = GlobalKey();
+
   @override
   void initState() {
     _linkModel = (widget.model ?? (LinkModel()..setId(widget.linkId))
+      ..updateLink()
       ..loadComments());
     super.initState();
   }
@@ -40,9 +44,53 @@ class _LinkScreenState extends State<LinkScreen>
               child: MediaQuery(
                 data: mqDataNew,
                 child: Scaffold(
-                  bottomNavigationBar: InputBarWidget(
-                    key: model.inputBarKey,
-                  ),
+                  bottomNavigationBar: model.isLoading ? Center(child: CircularProgressIndicator(),) : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        model.isResponding ? DividerWidget() : Container(),
+                        model.isResponding
+                            ? Container(
+                                child: Padding(
+                                    padding: const EdgeInsets.only(left: 16.0),
+                                    child: Row(
+                                      children: [
+                                        RichText(
+                                          text: TextSpan(
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 16),
+                                            children: [
+                                              TextSpan(
+                                                  text:
+                                                      "W odpowiedzi na komentarz "),
+                                              TextSpan(
+                                                text: model.respondingTo.login,
+                                                style: TextStyle(
+                                                  color: Utils.getAuthorColor(
+                                                      model.respondingTo.color,
+                                                      context),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Container(),
+                                        ),
+                                        IconButton(
+                                          icon: Icon(Icons.close),
+                                          onPressed: () => model.cancelReply(),
+                                        ),
+                                      ],
+                                    )),
+                              )
+                            : Container(),
+                        InputBarWidget(
+                          key: model.inputBarKey,
+                        )
+                      ]),
                   resizeToAvoidBottomPadding: false,
                   appBar: AppbarNormalWidget(
                     leading: IconButtonWidget(
@@ -56,6 +104,7 @@ class _LinkScreenState extends State<LinkScreen>
                         icon: Icons.refresh,
                         padding: EdgeInsets.all(0.0),
                         iconColor: Theme.of(context).accentColor,
+                        onTap: () => refreshIndicatorKey.currentState.show(),
                       ),
                       IconButtonWidget(
                         icon: Icons.more_horiz,
@@ -67,30 +116,32 @@ class _LinkScreenState extends State<LinkScreen>
                     decoration:
                         BoxDecoration(color: Theme.of(context).backgroundColor),
                     child: RefreshIndicator(
+                      key: refreshIndicatorKey,
                       onRefresh: () {
                         return model.loadComments();
                       },
                       child: ScrollConfiguration(
                         behavior: NotSuddenJumpScrollBehavior(),
                         child: ShadowNotificationListener(
-                          child: ListView.builder(
-                            physics: AlwaysScrollableScrollPhysics(),
-                            itemCount: model.comments.length + 1,
-                            itemBuilder: (context, index) {
-                              if (index == 0) {
-                                return LinkOpenedWidget();
-                              }
-                              return ChangeNotifierProvider<LinkCommentModel>(
-                                builder: (context) => LinkCommentModel()
-                                  ..setData(model.comments[index - 1]),
-                                child: AuthorRelationBuilder(
-                                  relationType: RelationType.LINK_COMMENT,
-                                  builder: (context, relation) =>
-                                      LinkCommentWidget(
-                                          linkId: model.id, relation: relation),
-                                ),
-                              );
-                            },
+                          child: Consumer<LinkModel>(
+                            builder: (context, commModel, _) => ListView.builder(
+                              physics: AlwaysScrollableScrollPhysics(),
+                              itemCount: commModel.comments.length + 1,
+                              itemBuilder: (context, index) {
+                                if (index == 0) {
+                                  return LinkOpenedWidget();
+                                }
+                                return ChangeNotifierProvider<LinkCommentModel>.value(
+                                  value: commModel.comments[index - 1],
+                                  child: AuthorRelationBuilder(
+                                    relationType: RelationType.LINK_COMMENT,
+                                    builder: (context, relation) =>
+                                        LinkCommentWidget(
+                                            linkId: model.id, relation: relation),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ),

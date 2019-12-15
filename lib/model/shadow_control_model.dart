@@ -28,9 +28,9 @@ class ShadowControlModel extends ChangeNotifier {
       if (hideOnAllTop && _showTopShadow == false && scrollDirection == ScrollDirection.idle) {
         return;
       }
+      
       if (hideOnAllTop && scrollDirection == ScrollDirection.forward) {
         if (_showTopShadow == true) {
-          print("Z UP I MIDDLE");
           _showTopShadow = false;
           _showSubbarShadow = true;
           notifyListeners();
@@ -39,7 +39,6 @@ class ShadowControlModel extends ChangeNotifier {
       }
 
       if (_showInputShadow != true || showTopShadow != true) {
-        print("middle");
         _showTopShadow = true;
         _showInputShadow = true;
         notifyListeners();
@@ -49,14 +48,12 @@ class ShadowControlModel extends ChangeNotifier {
     if (scrollPixels >= maxScrollExtent) {
       if (this.reverse) {
         if (_showTopShadow != false) {
-          print("Z BOTTOM");
           _showTopShadow = false;
           _showSubbarShadow = false;
           notifyListeners();
         }
       } else {
         if (_showInputShadow != false) {
-          print("bottom");
           _showInputShadow = false;
           notifyListeners();
         }
@@ -67,7 +64,6 @@ class ShadowControlModel extends ChangeNotifier {
     if (scrollPixels <= maxScrollExtent) {
       if (this.reverse) {
         if (_showInputShadow != false) {
-          print("top");
           _showInputShadow = false;
           notifyListeners();
         }
