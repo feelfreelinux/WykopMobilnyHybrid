@@ -15,12 +15,16 @@ class ProfileModel extends ChangeNotifier {
   bool _isObserved = false;
   bool _isBlocked = false;
 
+  String _violationUrl;
+
   bool get isObserved => _isObserved;
   bool get isBlocked => _isBlocked;
   bool get isFullyLoaded => _fullProfile != null;
 
   String get backgroundUrl => _fullProfile.background;
   String get about => _fullProfile.about;
+
+  String get violationUrl => _violationUrl;
 
   String get formattedDate => _profileLoaded
       ? "Dołączył/a ${Utils.getSimpleDate(_fullProfile.signupAt)}"
@@ -49,6 +53,7 @@ class ProfileModel extends ChangeNotifier {
       _profileLoaded = true;
       _isBlocked = _fullProfile.isBlocked;
       _isObserved = _fullProfile.isObserved;
+      _violationUrl = _fullProfile.violationUrl;
       author = Author.fromAuthState(username: _fullProfile.login, color: _fullProfile.color, avatarUrl: _fullProfile.avatarUrl);
       notifyListeners();
     }

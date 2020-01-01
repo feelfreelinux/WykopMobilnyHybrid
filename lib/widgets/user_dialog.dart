@@ -199,7 +199,7 @@ class _UserDialogWidgetState extends State<UserDialogWidget>
                               _button(
                                 text: "Zgłoś",
                                 onTap:
-                                    () {}, //TODO: show violation dialog/webview
+                                    () => Utils.launchURL(profileModel.violationUrl, context),
                                 padding: EdgeInsets.only(left: 6.0),
                               ),
                             ],
