@@ -37,6 +37,10 @@ abstract class LinkCommentResponse
   @nullable
   EmbedResponse get embed;
 
+  @nullable
+  @BuiltValueField(wireName: "violation_url")
+  String get violationUrl;
+
   LinkCommentResponse._();
   static Serializer<LinkCommentResponse> get serializer =>
       _$linkCommentResponseSerializer;

@@ -26,6 +26,10 @@ abstract class EntryCommentResponse
   @nullable
   EmbedResponse get embed;
 
+  @nullable
+  @BuiltValueField(wireName: "violation_url")
+  String get violationUrl;
+
   EntryCommentResponse._();
   static Serializer<EntryCommentResponse> get serializer =>
       _$entryCommentResponseSerializer;

@@ -35,6 +35,8 @@ class _$LinkComment extends LinkComment {
   final Author author;
   @override
   final Embed embed;
+  @override
+  final String violationUrl;
 
   factory _$LinkComment([void Function(LinkCommentBuilder) updates]) =>
       (new LinkCommentBuilder()..update(updates)).build();
@@ -53,7 +55,8 @@ class _$LinkComment extends LinkComment {
       this.voteState,
       this.isBlocked,
       this.author,
-      this.embed})
+      this.embed,
+      this.violationUrl})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('LinkComment', 'id');
@@ -117,7 +120,8 @@ class _$LinkComment extends LinkComment {
         voteState == other.voteState &&
         isBlocked == other.isBlocked &&
         author == other.author &&
-        embed == other.embed;
+        embed == other.embed &&
+        violationUrl == other.violationUrl;
   }
 
   @override
@@ -134,20 +138,22 @@ class _$LinkComment extends LinkComment {
                                         $jc(
                                             $jc(
                                                 $jc(
-                                                    $jc($jc(0, id.hashCode),
-                                                        date.hashCode),
-                                                    body.hashCode),
-                                                isExpanded.hashCode),
-                                            voteCount.hashCode),
-                                        voteCountPlus.hashCode),
-                                    userVote.hashCode),
-                                linkId.hashCode),
-                            parentId.hashCode),
-                        children.hashCode),
-                    voteState.hashCode),
-                isBlocked.hashCode),
-            author.hashCode),
-        embed.hashCode));
+                                                    $jc(
+                                                        $jc($jc(0, id.hashCode),
+                                                            date.hashCode),
+                                                        body.hashCode),
+                                                    isExpanded.hashCode),
+                                                voteCount.hashCode),
+                                            voteCountPlus.hashCode),
+                                        userVote.hashCode),
+                                    linkId.hashCode),
+                                parentId.hashCode),
+                            children.hashCode),
+                        voteState.hashCode),
+                    isBlocked.hashCode),
+                author.hashCode),
+            embed.hashCode),
+        violationUrl.hashCode));
   }
 
   @override
@@ -166,7 +172,8 @@ class _$LinkComment extends LinkComment {
           ..add('voteState', voteState)
           ..add('isBlocked', isBlocked)
           ..add('author', author)
-          ..add('embed', embed))
+          ..add('embed', embed)
+          ..add('violationUrl', violationUrl))
         .toString();
   }
 }
@@ -231,6 +238,10 @@ class LinkCommentBuilder implements Builder<LinkComment, LinkCommentBuilder> {
   EmbedBuilder get embed => _$this._embed ??= new EmbedBuilder();
   set embed(EmbedBuilder embed) => _$this._embed = embed;
 
+  String _violationUrl;
+  String get violationUrl => _$this._violationUrl;
+  set violationUrl(String violationUrl) => _$this._violationUrl = violationUrl;
+
   LinkCommentBuilder();
 
   LinkCommentBuilder get _$this {
@@ -249,6 +260,7 @@ class LinkCommentBuilder implements Builder<LinkComment, LinkCommentBuilder> {
       _isBlocked = _$v.isBlocked;
       _author = _$v.author?.toBuilder();
       _embed = _$v.embed?.toBuilder();
+      _violationUrl = _$v.violationUrl;
       _$v = null;
     }
     return this;
@@ -286,7 +298,8 @@ class LinkCommentBuilder implements Builder<LinkComment, LinkCommentBuilder> {
               voteState: voteState,
               isBlocked: isBlocked,
               author: author.build(),
-              embed: _embed?.build());
+              embed: _embed?.build(),
+              violationUrl: violationUrl);
     } catch (_) {
       String _$failedField;
       try {

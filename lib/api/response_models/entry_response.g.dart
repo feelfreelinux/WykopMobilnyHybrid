@@ -67,6 +67,12 @@ class _$EntryResponseSerializer implements StructuredSerializer<EntryResponse> {
         ..add(serializers.serialize(object.embed,
             specifiedType: const FullType(EmbedResponse)));
     }
+    if (object.violationUrl != null) {
+      result
+        ..add('violation_url')
+        ..add(serializers.serialize(object.violationUrl,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -124,6 +130,10 @@ class _$EntryResponseSerializer implements StructuredSerializer<EntryResponse> {
           result.embed.replace(serializers.deserialize(value,
               specifiedType: const FullType(EmbedResponse)) as EmbedResponse);
           break;
+        case 'violation_url':
+          result.violationUrl = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
       }
     }
 
@@ -152,6 +162,8 @@ class _$EntryResponse extends EntryResponse {
   final AuthorResponse author;
   @override
   final EmbedResponse embed;
+  @override
+  final String violationUrl;
 
   factory _$EntryResponse([void Function(EntryResponseBuilder) updates]) =>
       (new EntryResponseBuilder()..update(updates)).build();
@@ -166,7 +178,8 @@ class _$EntryResponse extends EntryResponse {
       this.voteCount,
       this.commentsCount,
       this.author,
-      this.embed})
+      this.embed,
+      this.violationUrl})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('EntryResponse', 'id');
@@ -202,7 +215,8 @@ class _$EntryResponse extends EntryResponse {
         voteCount == other.voteCount &&
         commentsCount == other.commentsCount &&
         author == other.author &&
-        embed == other.embed;
+        embed == other.embed &&
+        violationUrl == other.violationUrl;
   }
 
   @override
@@ -214,15 +228,17 @@ class _$EntryResponse extends EntryResponse {
                     $jc(
                         $jc(
                             $jc(
-                                $jc($jc($jc(0, id.hashCode), date.hashCode),
-                                    userVote.hashCode),
-                                comments.hashCode),
-                            body.hashCode),
-                        favorite.hashCode),
-                    voteCount.hashCode),
-                commentsCount.hashCode),
-            author.hashCode),
-        embed.hashCode));
+                                $jc(
+                                    $jc($jc($jc(0, id.hashCode), date.hashCode),
+                                        userVote.hashCode),
+                                    comments.hashCode),
+                                body.hashCode),
+                            favorite.hashCode),
+                        voteCount.hashCode),
+                    commentsCount.hashCode),
+                author.hashCode),
+            embed.hashCode),
+        violationUrl.hashCode));
   }
 
   @override
@@ -237,7 +253,8 @@ class _$EntryResponse extends EntryResponse {
           ..add('voteCount', voteCount)
           ..add('commentsCount', commentsCount)
           ..add('author', author)
-          ..add('embed', embed))
+          ..add('embed', embed)
+          ..add('violationUrl', violationUrl))
         .toString();
   }
 }
@@ -290,6 +307,10 @@ class EntryResponseBuilder
       _$this._embed ??= new EmbedResponseBuilder();
   set embed(EmbedResponseBuilder embed) => _$this._embed = embed;
 
+  String _violationUrl;
+  String get violationUrl => _$this._violationUrl;
+  set violationUrl(String violationUrl) => _$this._violationUrl = violationUrl;
+
   EntryResponseBuilder();
 
   EntryResponseBuilder get _$this {
@@ -304,6 +325,7 @@ class EntryResponseBuilder
       _commentsCount = _$v.commentsCount;
       _author = _$v.author?.toBuilder();
       _embed = _$v.embed?.toBuilder();
+      _violationUrl = _$v.violationUrl;
       _$v = null;
     }
     return this;
@@ -337,7 +359,8 @@ class EntryResponseBuilder
               voteCount: voteCount,
               commentsCount: commentsCount,
               author: author.build(),
-              embed: _embed?.build());
+              embed: _embed?.build(),
+              violationUrl: violationUrl);
     } catch (_) {
       String _$failedField;
       try {

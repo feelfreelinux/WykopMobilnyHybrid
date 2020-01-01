@@ -160,9 +160,8 @@ class NewEntryWidget extends StatelessWidget {
                     visible: authStateModel.loggedIn &&
                         relation != AuthorRelation.User,
                     child: _drawToolbarIcon(Icons.report, "Zgłoś", () {
-                      Navigator.pop(context); //TODO: implement report comment
-                      Scaffold.of(contextmain).showSnackBar(
-                          SnackBar(content: Text("Niezaimplementowane")));
+                      Navigator.pop(context);
+                      Utils.launchURL(entry.violationUrl, context);
                     }),
                   ),
                   Visibility(

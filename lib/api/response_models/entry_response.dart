@@ -36,6 +36,10 @@ abstract class EntryResponse
   @nullable
   EmbedResponse get embed;
 
+  @nullable
+  @BuiltValueField(wireName: "violation_url")
+  String get violationUrl;
+
   EntryResponse._();
   static Serializer<EntryResponse> get serializer => _$entryResponseSerializer;
 }

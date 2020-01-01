@@ -251,9 +251,8 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
                     visible: authStateModel.loggedIn &&
                         widget.relation != AuthorRelation.User,
                     child: _drawToolbarIcon(Icons.report, "Zgłoś", () {
-                      Navigator.pop(context); //TODO: implement report comment
-                      Scaffold.of(contextmain).showSnackBar(
-                          SnackBar(content: Text("Niezaimplementowane")));
+                      Navigator.pop(context);
+                      Utils.launchURL(comment.violationUrl, context);
                     }),
                   ),
                   Visibility(
