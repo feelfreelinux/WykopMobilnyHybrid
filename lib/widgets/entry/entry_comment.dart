@@ -257,8 +257,7 @@ class _EntryCommentWidgetState extends State<EntryCommentWidget> {
                         widget.relation != AuthorRelation.User,
                     child: _drawToolbarIcon(Icons.report, "Zgłoś", () {
                       Navigator.pop(context); //TODO: implement report comment
-                      Scaffold.of(contextmain).showSnackBar(
-                          SnackBar(content: Text("Niezaimplementowane")));
+                      Utils.launchURL('https://a.wykop.pl/naruszenia/form/ot/entrycomment/od/${comment.id}', context);
                     }),
                   ),
                   Visibility(
