@@ -20,6 +20,7 @@ class EntryModel extends InputModel {
   List<Voter> _upvoters = [];
   int _commentsCount;
   bool _loading = false;
+  String _violationUrl;
 
   int get id => _id;
   String get body => _body;
@@ -33,6 +34,7 @@ class EntryModel extends InputModel {
   bool get isNsfw => _isNsfw;
   int get commentsCount => _commentsCount;
   bool get isLoading => _loading;
+  String get violationUrl => _violationUrl;
 
   List<EntryCommentModel> get comments => _comments;
   List<Voter> get upvoters => _upvoters.reversed.toList();
@@ -51,6 +53,7 @@ class EntryModel extends InputModel {
     _isNsfw = (entry.body ?? "").contains("#nsfw") ?? false;
     _isFavorite = entry.isFavorite;
     _commentsCount = entry.commentsCount;
+    _violationUrl = entry.violationUrl;
     notifyListeners();
   }
 

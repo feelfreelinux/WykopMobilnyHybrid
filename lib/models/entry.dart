@@ -29,6 +29,9 @@ abstract class Entry implements Built<Entry, EntryBuilder> {
   @nullable
   Embed get embed;
 
+  @nullable
+  String get violationUrl;
+
   factory Entry.mapFromResponse(EntryResponse response) {
     return _$Entry._(
         id: response.id,
@@ -47,7 +50,8 @@ abstract class Entry implements Built<Entry, EntryBuilder> {
         author: Author.fromResponse(response: response.author),
         embed: (response.embed != null
             ? Embed.fromResponse(response: response.embed)
-            : null));
+            : null),
+        violationUrl: response.violationUrl);
   }
 
   Entry._();

@@ -22,6 +22,9 @@ abstract class EntryComment
   @nullable
   Embed get embed;
 
+  @nullable
+  String get violationUrl;
+
   factory EntryComment.mapFromResponse(EntryCommentResponse response) {
     return _$EntryComment._(
         id: response.id,
@@ -33,7 +36,8 @@ abstract class EntryComment
         isVoted: response.userVote != null && response.userVote > 0,
         embed: (response.embed != null
             ? Embed.fromResponse(response: response.embed)
-            : null));
+            : null),
+        violationUrl: response.violationUrl);
   }
 
   EntryComment._();

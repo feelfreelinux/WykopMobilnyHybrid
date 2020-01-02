@@ -23,6 +23,8 @@ class _$EntryComment extends EntryComment {
   final Author author;
   @override
   final Embed embed;
+  @override
+  final String violationUrl;
 
   factory _$EntryComment([void Function(EntryCommentBuilder) updates]) =>
       (new EntryCommentBuilder()..update(updates)).build();
@@ -35,7 +37,8 @@ class _$EntryComment extends EntryComment {
       this.isVoted,
       this.isExpanded,
       this.author,
-      this.embed})
+      this.embed,
+      this.violationUrl})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('EntryComment', 'id');
@@ -75,7 +78,8 @@ class _$EntryComment extends EntryComment {
         isVoted == other.isVoted &&
         isExpanded == other.isExpanded &&
         author == other.author &&
-        embed == other.embed;
+        embed == other.embed &&
+        violationUrl == other.violationUrl;
   }
 
   @override
@@ -85,13 +89,15 @@ class _$EntryComment extends EntryComment {
             $jc(
                 $jc(
                     $jc(
-                        $jc($jc($jc(0, id.hashCode), date.hashCode),
-                            body.hashCode),
-                        voteCount.hashCode),
-                    isVoted.hashCode),
-                isExpanded.hashCode),
-            author.hashCode),
-        embed.hashCode));
+                        $jc(
+                            $jc($jc($jc(0, id.hashCode), date.hashCode),
+                                body.hashCode),
+                            voteCount.hashCode),
+                        isVoted.hashCode),
+                    isExpanded.hashCode),
+                author.hashCode),
+            embed.hashCode),
+        violationUrl.hashCode));
   }
 
   @override
@@ -104,7 +110,8 @@ class _$EntryComment extends EntryComment {
           ..add('isVoted', isVoted)
           ..add('isExpanded', isExpanded)
           ..add('author', author)
-          ..add('embed', embed))
+          ..add('embed', embed)
+          ..add('violationUrl', violationUrl))
         .toString();
   }
 }
@@ -145,6 +152,10 @@ class EntryCommentBuilder
   EmbedBuilder get embed => _$this._embed ??= new EmbedBuilder();
   set embed(EmbedBuilder embed) => _$this._embed = embed;
 
+  String _violationUrl;
+  String get violationUrl => _$this._violationUrl;
+  set violationUrl(String violationUrl) => _$this._violationUrl = violationUrl;
+
   EntryCommentBuilder();
 
   EntryCommentBuilder get _$this {
@@ -157,6 +168,7 @@ class EntryCommentBuilder
       _isExpanded = _$v.isExpanded;
       _author = _$v.author?.toBuilder();
       _embed = _$v.embed?.toBuilder();
+      _violationUrl = _$v.violationUrl;
       _$v = null;
     }
     return this;
@@ -188,7 +200,8 @@ class EntryCommentBuilder
               isVoted: isVoted,
               isExpanded: isExpanded,
               author: author.build(),
-              embed: _embed?.build());
+              embed: _embed?.build(),
+              violationUrl: violationUrl);
     } catch (_) {
       String _$failedField;
       try {

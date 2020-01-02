@@ -64,6 +64,12 @@ class _$LinkCommentResponseSerializer
         ..add(serializers.serialize(object.embed,
             specifiedType: const FullType(EmbedResponse)));
     }
+    if (object.violationUrl != null) {
+      result
+        ..add('violation_url')
+        ..add(serializers.serialize(object.violationUrl,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -123,6 +129,10 @@ class _$LinkCommentResponseSerializer
           result.embed.replace(serializers.deserialize(value,
               specifiedType: const FullType(EmbedResponse)) as EmbedResponse);
           break;
+        case 'violation_url':
+          result.violationUrl = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
       }
     }
 
@@ -153,6 +163,8 @@ class _$LinkCommentResponse extends LinkCommentResponse {
   final AuthorResponse author;
   @override
   final EmbedResponse embed;
+  @override
+  final String violationUrl;
 
   factory _$LinkCommentResponse(
           [void Function(LinkCommentResponseBuilder) updates]) =>
@@ -169,7 +181,8 @@ class _$LinkCommentResponse extends LinkCommentResponse {
       this.parentId,
       this.isBlocked,
       this.author,
-      this.embed})
+      this.embed,
+      this.violationUrl})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('LinkCommentResponse', 'id');
@@ -221,7 +234,8 @@ class _$LinkCommentResponse extends LinkCommentResponse {
         parentId == other.parentId &&
         isBlocked == other.isBlocked &&
         author == other.author &&
-        embed == other.embed;
+        embed == other.embed &&
+        violationUrl == other.violationUrl;
   }
 
   @override
@@ -234,16 +248,20 @@ class _$LinkCommentResponse extends LinkCommentResponse {
                         $jc(
                             $jc(
                                 $jc(
-                                    $jc($jc($jc(0, id.hashCode), link.hashCode),
-                                        date.hashCode),
-                                    body.hashCode),
-                                userVote.hashCode),
-                            voteCount.hashCode),
-                        voteCountPlus.hashCode),
-                    parentId.hashCode),
-                isBlocked.hashCode),
-            author.hashCode),
-        embed.hashCode));
+                                    $jc(
+                                        $jc(
+                                            $jc($jc(0, id.hashCode),
+                                                link.hashCode),
+                                            date.hashCode),
+                                        body.hashCode),
+                                    userVote.hashCode),
+                                voteCount.hashCode),
+                            voteCountPlus.hashCode),
+                        parentId.hashCode),
+                    isBlocked.hashCode),
+                author.hashCode),
+            embed.hashCode),
+        violationUrl.hashCode));
   }
 
   @override
@@ -259,7 +277,8 @@ class _$LinkCommentResponse extends LinkCommentResponse {
           ..add('parentId', parentId)
           ..add('isBlocked', isBlocked)
           ..add('author', author)
-          ..add('embed', embed))
+          ..add('embed', embed)
+          ..add('violationUrl', violationUrl))
         .toString();
   }
 }
@@ -314,6 +333,10 @@ class LinkCommentResponseBuilder
       _$this._embed ??= new EmbedResponseBuilder();
   set embed(EmbedResponseBuilder embed) => _$this._embed = embed;
 
+  String _violationUrl;
+  String get violationUrl => _$this._violationUrl;
+  set violationUrl(String violationUrl) => _$this._violationUrl = violationUrl;
+
   LinkCommentResponseBuilder();
 
   LinkCommentResponseBuilder get _$this {
@@ -329,6 +352,7 @@ class LinkCommentResponseBuilder
       _isBlocked = _$v.isBlocked;
       _author = _$v.author?.toBuilder();
       _embed = _$v.embed?.toBuilder();
+      _violationUrl = _$v.violationUrl;
       _$v = null;
     }
     return this;
@@ -363,7 +387,8 @@ class LinkCommentResponseBuilder
               parentId: parentId,
               isBlocked: isBlocked,
               author: author.build(),
-              embed: _embed?.build());
+              embed: _embed?.build(),
+              violationUrl: violationUrl);
     } catch (_) {
       String _$failedField;
       try {

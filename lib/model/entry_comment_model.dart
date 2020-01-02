@@ -11,6 +11,7 @@ class EntryCommentModel extends ChangeNotifier {
   Embed _embed;
   bool _isVoted;
   bool _isExpanded;
+  String _violationUrl;
 
   int get id => _id;
   String get body => _body;
@@ -20,6 +21,7 @@ class EntryCommentModel extends ChangeNotifier {
   Embed get embed => _embed;
   bool get isExpanded => _isExpanded;
   bool get isVoted => _isVoted;
+  String get violationUrl => _violationUrl;
 
   void expand() {
     _isExpanded = true;
@@ -34,6 +36,7 @@ class EntryCommentModel extends ChangeNotifier {
     _embed = comment.embed;
     _isVoted = comment.isVoted;
     _isExpanded = comment.isExpanded;
+    _violationUrl = comment.violationUrl;
     notifyListeners();
   }
 
