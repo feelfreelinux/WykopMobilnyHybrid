@@ -398,7 +398,13 @@ class InputBarWidgetState extends State<InputBarWidget> {
                             if (i.isOdd) return Divider();
                             final index = i ~/ 2;
                             return ListTile(
-                              title: Text(lennies[index])
+                              title: GestureDetector(
+                                child: Text(lennies[index]),
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  textController.text += lennies[index];
+                                },
+                              )
                             );
                           }
                         ),
