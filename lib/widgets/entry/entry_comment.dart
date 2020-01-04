@@ -167,13 +167,10 @@ class _EntryCommentWidgetState extends State<EntryCommentWidget> {
                         isComment: true,
                         count: model.voteCount,
                         onClicked: () => model.toggleVote(),
-                        onLongClicked: () => showDialog(
-                          context: context,
-                          builder: (_) => GreatDialogWidget(
-                            child: Text(
-                                "Niezaimplementowane"), //TODO: implement voters list
-                          ),
-                        ),
+                        onLongClicked: () {
+                          model.loadUpVoters();
+                          _showVotersDialog(context, model.upvoters);
+                        }
                       ),
                     ),
                   ],
@@ -312,5 +309,26 @@ class _EntryCommentWidgetState extends State<EntryCommentWidget> {
     if (i < 1000 && i > 99) return 20.0;
     if (i > 999) return 30.0;
     return 0.0;
+  }
+
+  void _showVotersDialog(BuildContext context, List<Voter> voters) {
+    showDialog(
+      context: context,
+      builder: (context) => GreatDialogWidget(
+        padding: EdgeInsets.zero,
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: voters.length,
+          itemBuilder: (context, index) {
+            return AuthorWidget(
+              author: voters[index].author,
+              date: voters[index].date,
+              fontSize: 14.0,
+              avatarBorderColor: Theme.of(context).dialogBackgroundColor,
+            );
+          },
+        ),
+      ),
+    );
   }
 }

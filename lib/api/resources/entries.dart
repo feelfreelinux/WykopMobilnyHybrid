@@ -126,4 +126,12 @@ class EntriesApi extends ApiResource {
     print(voteCount);
     return int.parse(voteCount["vote_count"]);
   }
+
+  Future<List<Voter>> getCommentUpVoters(int id) async {
+    var items =
+        await client.request('entries', 'commentupvoters', api: [id.toString()]);
+    print(items);
+    var voters = client.deserializeList(VoterResponse.serializer, items);
+    return voters.map((e) => Voter.fromResponse(response: e)).toList();
+  }
 }
