@@ -39,6 +39,7 @@ class OwmApp extends StatelessWidget {
                       theme: settings.useDarkTheme
                           ? Themes.darkTheme(accentColor: settings.accentColor)
                           : Themes.lightTheme(accentColor: settings.accentColor),
+                      darkTheme: Themes.darkTheme(accentColor: settings.accentColor), // TODO: zrobić, żeby zmana tła działała na sestemowym ciemnym
                       routes: {
                         '/': (context) => MainScreen(),
                       },
