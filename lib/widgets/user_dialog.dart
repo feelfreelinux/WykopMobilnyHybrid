@@ -3,6 +3,7 @@ import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/model/profile_model.dart';
 import 'package:owmflutter/models/author.dart';
 import 'package:owmflutter/screens/profile.dart';
+import 'package:owmflutter/screens/screens.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:provider/provider.dart';
@@ -175,7 +176,13 @@ class _UserDialogWidgetState extends State<UserDialogWidget>
                             _button(
                               text: "Napisz",
                               disable: widget.isAuthor,
-                              onTap: () {}, //TODO: get pm screen
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  Utils.getPageTransition(
+                                    PmScreen(receiver: widget.author.login)
+                                  )
+                                );
+                              }, //TODO: get pm screen
                               padding: EdgeInsets.only(left: 6.0),
                             ),
                           ],
