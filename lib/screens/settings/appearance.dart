@@ -107,6 +107,15 @@ class AppearanceSettingScreen extends StatelessWidget {
                                         value: 2,
                                         title: Text("W określonych godzinach"),
                                       ),
+                                      RadioListTile(
+                                        groupValue: settings.autoDarkTheme,
+                                        onChanged: (value) {
+                                          settings.autoDarkTheme = value;
+                                          Navigator.of(context).pop();
+                                        },
+                                        value: 3,
+                                        title: Text("Systemowo"),
+                                      ),
                                     ],
                                   );
                                 },
