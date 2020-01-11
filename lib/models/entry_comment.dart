@@ -25,6 +25,9 @@ abstract class EntryComment
   @nullable
   String get violationUrl;
 
+  @nullable
+  String get app;
+
   factory EntryComment.mapFromResponse(EntryCommentResponse response) {
     return _$EntryComment._(
         id: response.id,
@@ -37,7 +40,8 @@ abstract class EntryComment
         embed: (response.embed != null
             ? Embed.fromResponse(response: response.embed)
             : null),
-        violationUrl: response.violationUrl);
+        violationUrl: response.violationUrl,
+        app: response.app);
   }
 
   EntryComment._();

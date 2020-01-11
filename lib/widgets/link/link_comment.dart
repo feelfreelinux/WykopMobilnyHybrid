@@ -187,7 +187,7 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
                         text: showFullDate
                             ? Utils.getDateFormat(
                                 model.date, 'dd.MM.yyyy \'o\' HH:mm:ss')
-                            : Utils.getSimpleDate(model.date),
+                            : Utils.getSimpleDate(model.date) + (model.app != null ? " via ${model.app}" : ""),
                       ),
                       Flexible(
                         child: TextButton(

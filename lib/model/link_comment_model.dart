@@ -15,6 +15,7 @@ class LinkCommentModel extends ChangeNotifier {
   String _linkId;
   LinkCommentVoteState _voteState;
   String _violationUrl;
+  String _app;
 
   int get id => _id;
   String get body => _body;
@@ -28,6 +29,7 @@ class LinkCommentModel extends ChangeNotifier {
   LinkCommentVoteState get voteState => _voteState;
   bool get isParentComment => _id == _parentId;
   String get violationUrl => _violationUrl;
+  String get app => _app;
 
   void expand() {
     _isExpanded = true;
@@ -47,6 +49,7 @@ class LinkCommentModel extends ChangeNotifier {
     _voteCountPlus = comment.voteCountPlus;
     _voteState = comment.voteState;
     _violationUrl = comment.violationUrl;
+    _app = comment.app;
     notifyListeners();
   }
 

@@ -368,6 +368,7 @@ class InputBarWidgetState extends State<InputBarWidget> {
   }
 
   Widget _drawButtons() {
+    List<String> lennies = ['( ͡° ͜ʖ ͡°)','( ͡° ʖ̯ ͡°)','( ͡º ͜ʖ͡º)','( ͡°( ͡° ͜ʖ( ͡° ͜ʖ ͡°)ʖ ͡°) ͡°)','(╥﹏╥)','(╯︵╰,)','(ʘ‿ʘ)','(｡◕‿‿◕｡)','(⇀‸↼‶)','(òóˇ)','(✌ ﾟ ∀ ﾟ)☞','ʕ•ᴥ•ʔ','ᶘᵒᴥᵒᶅ','(⌒(oo)⌒)','ᄽὁȍ ̪ őὀᄿ','( ͡€ ͜ʖ ͡€)','( ͡° ͜ʖ ͡°)','( ͡° ͜ʖ ͡°)ﾉ⌐■-■','(⌐ ͡■ ͜ʖ ͡■)','¯\\\\\\_(ツ)\\_/¯','(ꖘ⏏ꖘ)','(╯°□°）╯︵ ┻━┻','( ͡~ ͜ʖ ͡°)','( ಠ_ಠ)','(・へ・)','(ง✿﹏✿)ง','(づ•﹏•)づ','乁(♥ ʖ̯♥)ㄏ','|૦ઁ෴૦ઁ','乁(⫑ᴥ⫒)ㄏ','(ꖘ‸ꖘ)','(✿ ͟ʖ✿)','(งⱺ ͟ل͜ⱺ)ง','(￣෴￣)','ヽ( ͠°෴ °)','└[⚆ᴥ⚆]┘','ヽ(☼ᨓ☼)ﾉ','XD','(ⴲ﹏ⴲ)','(ಠ‸ಠ)','(ง ͠° ͟ل͜ ͡°)ง','( ಠ_ಠ)','(－‸ლ)','( ͡° ͜ʖ ͡° )つ──☆*:・ﾟ','(╭☞σ ͜ʖσ)╭☞"'];
     if (showMarkdownBar || hasExternalInput) {
       return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
@@ -386,7 +387,30 @@ class InputBarWidgetState extends State<InputBarWidget> {
                 child: _drawIconRound(
                   icon: Icons.mood,
                   tooltip: "Emotikony",
-                  onTap: () => {}, // TODO: dodac ekran z lennymi
+                  onTap: () => {
+                    showDialog(
+                      context: context,
+                      builder: (context) => GreatDialogWidget(
+                        child: ListView.builder(
+                          itemCount: lennies.length,
+                          padding: const EdgeInsets.all(16.0), // TODO: lepiej dopasowany EdgeInsert
+                          itemBuilder: (context, i) {
+                            if (i.isOdd) return Divider();
+                            final index = i ~/ 2;
+                            return ListTile(
+                              title: GestureDetector(
+                                child: Text(lennies[index]),
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  textController.text += lennies[index];
+                                },
+                              )
+                            );
+                          }
+                        ),
+                      )
+                    )
+                  },
                 ),
               ),
               _drawIconRound(

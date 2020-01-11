@@ -41,6 +41,9 @@ abstract class LinkComment implements Built<LinkComment, LinkCommentBuilder> {
   @nullable
   String get violationUrl;
 
+  @nullable
+  String get app;
+
   factory LinkComment.mapFromResponse(
       LinkCommentResponse response) {
     return _$LinkComment._(
@@ -60,7 +63,8 @@ abstract class LinkComment implements Built<LinkComment, LinkCommentBuilder> {
         embed: (response.embed != null
             ? Embed.fromResponse(response: response.embed)
             : null),
-        violationUrl: response.violationUrl);
+        violationUrl: response.violationUrl,
+        app: response.app);
   }
 
   LinkComment._();

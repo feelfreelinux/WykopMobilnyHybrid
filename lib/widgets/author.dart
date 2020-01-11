@@ -12,6 +12,7 @@ class AuthorWidget extends StatefulWidget {
   final bool showUserDialog;
   final bool isAuthor;
   final Color avatarBorderColor;
+  final String app;
 
   AuthorWidget({
     @required this.author,
@@ -23,6 +24,7 @@ class AuthorWidget extends StatefulWidget {
     this.showUserDialog: true,
     this.isAuthor: false,
     this.avatarBorderColor,
+    this.app,
   });
 
   _AuthorWidgetState createState() => _AuthorWidgetState();
@@ -89,7 +91,7 @@ class _AuthorWidgetState extends State<AuthorWidget> {
                       showFullDate
                           ? Utils.getDateFormat(
                               widget.date, 'dd.MM.yyyy \'o\' HH:mm:ss')
-                          : Utils.getSimpleDate(widget.date),
+                          : Utils.getSimpleDate(widget.date) + (widget.app != null ? " via ${widget.app}" : ""),
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         height: 1.2,

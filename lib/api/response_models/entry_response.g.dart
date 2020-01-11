@@ -73,6 +73,12 @@ class _$EntryResponseSerializer implements StructuredSerializer<EntryResponse> {
         ..add(serializers.serialize(object.violationUrl,
             specifiedType: const FullType(String)));
     }
+    if (object.app != null) {
+      result
+        ..add('app')
+        ..add(serializers.serialize(object.app,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -134,6 +140,10 @@ class _$EntryResponseSerializer implements StructuredSerializer<EntryResponse> {
           result.violationUrl = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'app':
+          result.app = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
       }
     }
 
@@ -164,6 +174,8 @@ class _$EntryResponse extends EntryResponse {
   final EmbedResponse embed;
   @override
   final String violationUrl;
+  @override
+  final String app;
 
   factory _$EntryResponse([void Function(EntryResponseBuilder) updates]) =>
       (new EntryResponseBuilder()..update(updates)).build();
@@ -179,7 +191,8 @@ class _$EntryResponse extends EntryResponse {
       this.commentsCount,
       this.author,
       this.embed,
-      this.violationUrl})
+      this.violationUrl,
+      this.app})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('EntryResponse', 'id');
@@ -216,7 +229,8 @@ class _$EntryResponse extends EntryResponse {
         commentsCount == other.commentsCount &&
         author == other.author &&
         embed == other.embed &&
-        violationUrl == other.violationUrl;
+        violationUrl == other.violationUrl &&
+        app == other.app;
   }
 
   @override
@@ -229,16 +243,20 @@ class _$EntryResponse extends EntryResponse {
                         $jc(
                             $jc(
                                 $jc(
-                                    $jc($jc($jc(0, id.hashCode), date.hashCode),
-                                        userVote.hashCode),
-                                    comments.hashCode),
-                                body.hashCode),
-                            favorite.hashCode),
-                        voteCount.hashCode),
-                    commentsCount.hashCode),
-                author.hashCode),
-            embed.hashCode),
-        violationUrl.hashCode));
+                                    $jc(
+                                        $jc(
+                                            $jc($jc(0, id.hashCode),
+                                                date.hashCode),
+                                            userVote.hashCode),
+                                        comments.hashCode),
+                                    body.hashCode),
+                                favorite.hashCode),
+                            voteCount.hashCode),
+                        commentsCount.hashCode),
+                    author.hashCode),
+                embed.hashCode),
+            violationUrl.hashCode),
+        app.hashCode));
   }
 
   @override
@@ -254,7 +272,8 @@ class _$EntryResponse extends EntryResponse {
           ..add('commentsCount', commentsCount)
           ..add('author', author)
           ..add('embed', embed)
-          ..add('violationUrl', violationUrl))
+          ..add('violationUrl', violationUrl)
+          ..add('app', app))
         .toString();
   }
 }
@@ -311,6 +330,10 @@ class EntryResponseBuilder
   String get violationUrl => _$this._violationUrl;
   set violationUrl(String violationUrl) => _$this._violationUrl = violationUrl;
 
+  String _app;
+  String get app => _$this._app;
+  set app(String app) => _$this._app = app;
+
   EntryResponseBuilder();
 
   EntryResponseBuilder get _$this {
@@ -326,6 +349,7 @@ class EntryResponseBuilder
       _author = _$v.author?.toBuilder();
       _embed = _$v.embed?.toBuilder();
       _violationUrl = _$v.violationUrl;
+      _app = _$v.app;
       _$v = null;
     }
     return this;
@@ -360,7 +384,8 @@ class EntryResponseBuilder
               commentsCount: commentsCount,
               author: author.build(),
               embed: _embed?.build(),
-              violationUrl: violationUrl);
+              violationUrl: violationUrl,
+              app: app);
     } catch (_) {
       String _$failedField;
       try {
