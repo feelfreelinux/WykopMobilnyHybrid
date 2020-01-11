@@ -21,6 +21,7 @@ class EntryModel extends InputModel {
   int _commentsCount;
   bool _loading = false;
   String _violationUrl;
+  String _app;
 
   int get id => _id;
   String get body => _body;
@@ -35,6 +36,7 @@ class EntryModel extends InputModel {
   int get commentsCount => _commentsCount;
   bool get isLoading => _loading;
   String get violationUrl => _violationUrl;
+  String get app => _app;
 
   List<EntryCommentModel> get comments => _comments;
   List<Voter> get upvoters => _upvoters.reversed.toList();
@@ -54,6 +56,8 @@ class EntryModel extends InputModel {
     _isFavorite = entry.isFavorite;
     _commentsCount = entry.commentsCount;
     _violationUrl = entry.violationUrl;
+    _app = entry.app;
+    
     notifyListeners();
   }
 

@@ -31,6 +31,8 @@ class _$Entry extends Entry {
   final Embed embed;
   @override
   final String violationUrl;
+  @override
+  final String app;
 
   factory _$Entry([void Function(EntryBuilder) updates]) =>
       (new EntryBuilder()..update(updates)).build();
@@ -47,7 +49,8 @@ class _$Entry extends Entry {
       this.comments,
       this.author,
       this.embed,
-      this.violationUrl})
+      this.violationUrl,
+      this.app})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('Entry', 'id');
@@ -100,7 +103,8 @@ class _$Entry extends Entry {
         comments == other.comments &&
         author == other.author &&
         embed == other.embed &&
-        violationUrl == other.violationUrl;
+        violationUrl == other.violationUrl &&
+        app == other.app;
   }
 
   @override
@@ -115,18 +119,20 @@ class _$Entry extends Entry {
                                 $jc(
                                     $jc(
                                         $jc(
-                                            $jc($jc(0, id.hashCode),
-                                                date.hashCode),
-                                            body.hashCode),
-                                        voteCount.hashCode),
-                                    commentsCount.hashCode),
-                                isVoted.hashCode),
-                            isExpanded.hashCode),
-                        isFavorite.hashCode),
-                    comments.hashCode),
-                author.hashCode),
-            embed.hashCode),
-        violationUrl.hashCode));
+                                            $jc(
+                                                $jc($jc(0, id.hashCode),
+                                                    date.hashCode),
+                                                body.hashCode),
+                                            voteCount.hashCode),
+                                        commentsCount.hashCode),
+                                    isVoted.hashCode),
+                                isExpanded.hashCode),
+                            isFavorite.hashCode),
+                        comments.hashCode),
+                    author.hashCode),
+                embed.hashCode),
+            violationUrl.hashCode),
+        app.hashCode));
   }
 
   @override
@@ -143,7 +149,8 @@ class _$Entry extends Entry {
           ..add('comments', comments)
           ..add('author', author)
           ..add('embed', embed)
-          ..add('violationUrl', violationUrl))
+          ..add('violationUrl', violationUrl)
+          ..add('app', app))
         .toString();
   }
 }
@@ -201,6 +208,10 @@ class EntryBuilder implements Builder<Entry, EntryBuilder> {
   String get violationUrl => _$this._violationUrl;
   set violationUrl(String violationUrl) => _$this._violationUrl = violationUrl;
 
+  String _app;
+  String get app => _$this._app;
+  set app(String app) => _$this._app = app;
+
   EntryBuilder();
 
   EntryBuilder get _$this {
@@ -217,6 +228,7 @@ class EntryBuilder implements Builder<Entry, EntryBuilder> {
       _author = _$v.author?.toBuilder();
       _embed = _$v.embed?.toBuilder();
       _violationUrl = _$v.violationUrl;
+      _app = _$v.app;
       _$v = null;
     }
     return this;
@@ -252,7 +264,8 @@ class EntryBuilder implements Builder<Entry, EntryBuilder> {
               comments: comments.build(),
               author: author.build(),
               embed: _embed?.build(),
-              violationUrl: violationUrl);
+              violationUrl: violationUrl,
+              app: app);
     } catch (_) {
       String _$failedField;
       try {

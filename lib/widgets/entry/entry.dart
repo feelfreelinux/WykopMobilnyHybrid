@@ -37,6 +37,7 @@ class NewEntryWidget extends StatelessWidget {
                           child: AuthorWidget(
                             author: model.author,
                             date: model.date,
+                            app: model.app,
                             fontSize: 15.0,
                             padding: EdgeInsets.only(top: 12.0, right: 4.0),
                           ),

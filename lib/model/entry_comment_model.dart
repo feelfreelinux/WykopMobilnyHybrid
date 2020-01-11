@@ -13,6 +13,7 @@ class EntryCommentModel extends ChangeNotifier {
   bool _isExpanded;
   List<Voter> _upvoters;
   String _violationUrl;
+  String _app;
 
   int get id => _id;
   String get body => _body;
@@ -23,6 +24,7 @@ class EntryCommentModel extends ChangeNotifier {
   bool get isExpanded => _isExpanded;
   bool get isVoted => _isVoted;
   String get violationUrl => _violationUrl;
+  String get app => _app;
 
   List<Voter> get upvoters => _upvoters.reversed.toList();
 
@@ -40,6 +42,7 @@ class EntryCommentModel extends ChangeNotifier {
     _isVoted = comment.isVoted;
     _isExpanded = comment.isExpanded;
     _violationUrl = comment.violationUrl;
+    _app = comment.app;
     notifyListeners();
   }
 
