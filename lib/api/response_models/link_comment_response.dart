@@ -41,6 +41,9 @@ abstract class LinkCommentResponse
   @BuiltValueField(wireName: "violation_url")
   String get violationUrl;
 
+  @nullable
+  String get app;
+
   LinkCommentResponse._();
   static Serializer<LinkCommentResponse> get serializer =>
       _$linkCommentResponseSerializer;
