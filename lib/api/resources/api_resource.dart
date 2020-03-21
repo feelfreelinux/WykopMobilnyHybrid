@@ -1,4 +1,5 @@
 import 'package:owmflutter/api/api.dart';
+import 'package:owmflutter/api/response_models/profile_related_response.dart';
 import 'package:owmflutter/api/response_models/voter_response.dart';
 import 'package:owmflutter/models/models.dart';
 
@@ -43,6 +44,7 @@ abstract class ApiResource {
     return Link.mapFromResponse(
         _client.deserializeElement(LinkResponse.serializer, item));
   }
+
   Author deserializeAuthor(dynamic item) {
     return Author.fromResponse(
         response: _client.deserializeElement(AuthorResponse.serializer, item));
@@ -86,10 +88,18 @@ abstract class ApiResource {
         .map((e) => EntryComment.mapFromResponse(e))
         .toList();
   }
+
   List<Related> deserializeRelatedLinks(dynamic items) {
     return _client
         .deserializeList(RelatedResponse.serializer, items)
         .map((e) => Related.mapFromResponse(e))
+        .toList();
+  }
+
+  List<ProfileRelated> deserializeProfileRelated(dynamic items) {
+    return _client
+        .deserializeList(ProfileRelatedResponse.serializer, items)
+        .map((e) => ProfileRelated.mapFromResponse(e))
         .toList();
   }
 }

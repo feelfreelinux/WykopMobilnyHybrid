@@ -27,7 +27,7 @@ class EntriesLinksListState extends State<EntriesLinksList>
     return Container(
       decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
       child: ChangeNotifierProvider<EntryLinkListmodel>(
-        builder: widget.builder,
+        create: widget.builder,
         child: Consumer<EntryLinkListmodel>(
           builder: (context, model, _) => RefreshIndicator(
             onRefresh: () => model.refresh(),

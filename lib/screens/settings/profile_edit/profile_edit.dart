@@ -28,7 +28,7 @@ class _ProfileEditScreen extends State<ProfileEditScreen> {
 
     //TODO: Zrobić tak żeby działało z API
     return ChangeNotifierProvider<ShadowControlModel>(
-      builder: (context) => ShadowControlModel(),
+      create: (context) => ShadowControlModel(),
       child: MediaQuery(
         data: mqDataNew,
         child: Scaffold(

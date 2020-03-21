@@ -34,7 +34,7 @@ class _UserDialogWidgetState extends State<UserDialogWidget>
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      builder: (context) => ProfileModel(widget.author)..loadFullProfile(),
+      create: (context) => ProfileModel(widget.author)..loadFullProfile(),
       child: Center(
         child: Material(
           color: Colors.transparent,
@@ -198,8 +198,8 @@ class _UserDialogWidgetState extends State<UserDialogWidget>
                               ),
                               _button(
                                 text: "Zgłoś",
-                                onTap:
-                                    () => Utils.launchURL(profileModel.violationUrl, context),
+                                onTap: () => Utils.launchURL(
+                                    profileModel.violationUrl, context),
                                 padding: EdgeInsets.only(left: 6.0),
                               ),
                             ],
@@ -212,7 +212,7 @@ class _UserDialogWidgetState extends State<UserDialogWidget>
                           onTap: () {
                             Navigator.of(context).pop();
                             Navigator.of(context).push(
-                              Utils.getPageTransition(
+                              Utils.getPageSlideToUp(
                                 ProfileScreen(profileModel: profileModel),
                               ),
                             );

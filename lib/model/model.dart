@@ -20,3 +20,5 @@ export 'tag_model.dart';
 export 'entry_comments_list_model.dart';
 export 'link_comments_list_model.dart';
 export 'observed_tags_model.dart';
+export 'profile_related_list_model.dart';
+export 'profile_related_model.dart';

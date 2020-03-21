@@ -20,7 +20,7 @@ class EntryInputScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: ChangeNotifierProvider<InputModel>(
-        builder: (context) => EditModel(
+        create: (context) => EditModel(
           entryCreated: (entry) {
             Navigator.of(context).pop();
             Navigator.of(context).push(
@@ -57,7 +57,7 @@ class EditInputScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: ChangeNotifierProvider<InputModel>(
-        builder: (context) => EditModel(
+        create: (context) => EditModel(
           entryEdited: (entry) {
             Navigator.of(context).pop();
             entryEdited(entry);
@@ -115,7 +115,7 @@ class _InputScreenState extends State<InputScreen> {
   Widget build(BuildContext context) {
     return Container(
       child: ChangeNotifierProvider<ShadowControlModel>(
-        builder: (context) => ShadowControlModel(),
+        create: (context) => ShadowControlModel(),
         child: _SystemPadding(
           child: Scaffold(
             bottomNavigationBar: InputBarWidget(

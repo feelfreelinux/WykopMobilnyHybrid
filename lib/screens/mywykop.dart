@@ -11,7 +11,7 @@ class MyWykopScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ShadowControlModel>(
-      builder: (context) => ShadowControlModel(),
+      create: (context) => ShadowControlModel(),
       child: DefaultTabController(
         length: 4,
         initialIndex: Provider.of<OWMSettings>(context, listen: false).defaultMyWykopScreen,
@@ -72,7 +72,7 @@ class MyWykopScreen extends StatelessWidget {
   Widget _drawObservedTags() {
     return ShadowNotificationListener(
       child: ChangeNotifierProvider(
-        builder: (context) => ObservedTagsModel()..loadObservedTags(),
+        create: (context) => ObservedTagsModel()..loadObservedTags(),
         child: Consumer<ObservedTagsModel>(
           builder: (context, model, _) {
             if (model.isLoading) {

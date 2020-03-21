@@ -4,8 +4,14 @@ class GreatDialogWidget extends StatefulWidget {
   final Widget child;
   final EdgeInsets margin;
   final EdgeInsets padding;
+  final bool isScrolled;
 
-  GreatDialogWidget({this.child, this.margin, this.padding});
+  GreatDialogWidget({
+    this.child,
+    this.margin,
+    this.padding,
+    this.isScrolled = true,
+  });
 
   _GreatDialogWidgetState createState() => _GreatDialogWidgetState();
 }
@@ -37,13 +43,23 @@ class _GreatDialogWidgetState extends State<GreatDialogWidget>
             child: ClipRRect(
               clipBehavior: Clip.hardEdge,
               borderRadius: BorderRadius.circular(20.0),
-              child: Container(
-                padding: widget.padding ?? EdgeInsets.all(18.0),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).dialogBackgroundColor,
-                ),
-                child: widget.child,
-              ),
+              child: widget.isScrolled
+                  ? SingleChildScrollView(
+                      child: Container(
+                        padding: widget.padding ?? EdgeInsets.all(18.0),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).dialogBackgroundColor,
+                        ),
+                        child: widget.child,
+                      ),
+                    )
+                  : Container(
+                      padding: widget.padding ?? EdgeInsets.all(18.0),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).dialogBackgroundColor,
+                      ),
+                      child: widget.child,
+                    ),
             ),
           ),
         ),

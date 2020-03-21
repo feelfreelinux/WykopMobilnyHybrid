@@ -19,10 +19,10 @@ class _MainCollapsingToolbarState extends State<TagScreen> {
     final mqData = MediaQuery.of(context);
     final mqDataNew = mqData.copyWith(textScaleFactor: 1);
     return ChangeNotifierProvider<TagModel>(
-      builder: (context) => TagModel(widget.tag)..loadMeta(),
+      create: (context) => TagModel(widget.tag)..loadMeta(),
       child: Container(
         child: ChangeNotifierProvider<ShadowControlModel>(
-          builder: (context) => ShadowControlModel(),
+          create: (context) => ShadowControlModel(),
           child: MediaQuery(
             data: mqDataNew,
             child: Scaffold(

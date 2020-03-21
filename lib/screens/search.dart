@@ -29,9 +29,9 @@ class _SearchScreenState extends State<SearchScreen> {
     return Consumer<OWMSettings>(
       builder: (context, settings, _) =>
           ChangeNotifierProvider<SearchScreenModel>(
-        builder: (context) => SearchScreenModel(settings: settings),
+        create: (context) => SearchScreenModel(settings: settings),
         child: ChangeNotifierProvider<ShadowControlModel>(
-          builder: (context) => ShadowControlModel(),
+          create: (context) => ShadowControlModel(),
           child: MediaQuery(
             data: mqDataNew,
             child: Scaffold(

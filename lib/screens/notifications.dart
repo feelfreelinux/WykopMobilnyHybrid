@@ -13,7 +13,7 @@ class NotificationsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ShadowControlModel>(
-      builder: (context) => ShadowControlModel(scrollDelayPixels: 4),
+      create: (context) => ShadowControlModel(scrollDelayPixels: 4),
       child: DefaultTabController(
         length: 3,
         initialIndex: initialIndex ??
@@ -82,7 +82,7 @@ class NotificationsScreen extends StatelessWidget {
   Widget _drawGrouppedNotifs() {
     return ChangeNotifierProvider<
         ListModel<prefix0.Notification, NotificationModel>>(
-      builder: (context) => NotificationListModel(
+      create: (context) => NotificationListModel(
         loadNewNotifications: (page) =>
             api.notifications.getHashtagNotifications(page),
       )..loadGroupedTagNotifs(),

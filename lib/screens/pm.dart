@@ -22,11 +22,11 @@ class _PmScreenState extends State<PmScreen>
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<ShadowControlModel>(
-          builder: (context) =>
+          create: (context) =>
               ShadowControlModel(reverse: true, scrollDelayPixels: 0),
         ),
         ChangeNotifierProvider<PrivateMessagesModel>(
-          builder: (context) => PrivateMessagesModel(receiverNickname: widget.receiver)..loadMessages(),
+          create: (context) => PrivateMessagesModel(receiverNickname: widget.receiver)..loadMessages(),
         ),
       ],
       child: _SystemPadding(

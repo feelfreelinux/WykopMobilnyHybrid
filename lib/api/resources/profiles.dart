@@ -18,46 +18,66 @@ class ProfilesApi extends ApiResource {
   }
 
   Future<List<Link>> getAddedLinks(int page, String username) async {
-    var items = await client
-        .request('profiles', 'added', api: [username], named: {'page': page.toString()});
+    var items = await client.request('profiles', 'added',
+        api: [username], named: {'page': page.toString()});
     return deserializeLinks(items);
   }
 
   Future<List<Link>> getCommentedLinks(int page, String username) async {
-    var items = await client
-        .request('profiles', 'commented', api: [username], named: {'page': page.toString()});
+    var items = await client.request('profiles', 'commented',
+        api: [username], named: {'page': page.toString()});
     return deserializeLinks(items);
   }
 
   Future<List<Link>> getPublishedLinks(int page, String username) async {
-    var items = await client
-        .request('profiles', 'published', api: [username], named: {'page': page.toString()});
+    var items = await client.request('profiles', 'published',
+        api: [username], named: {'page': page.toString()});
     return deserializeLinks(items);
   }
 
   Future<List<LinkComment>> getLinkComments(int page, String username) async {
-    var items = await client
-        .request('profiles', 'comments', api: [username], named: {'page': page.toString()});
+    var items = await client.request('profiles', 'comments',
+        api: [username], named: {'page': page.toString()});
     return deserializeLinkComments(items);
   }
 
   Future<List<Entry>> getEntries(int page, String username) async {
-    var items = await client
-        .request('profiles', 'entries', api: [username], named: {'page': page.toString()});
+    var items = await client.request('profiles', 'entries',
+        api: [username], named: {'page': page.toString()});
     return deserializeEntries(items);
   }
 
-    Future<List<Entry>> getCommentedEntries(int page, String username) async {
-    var items = await client
-        .request('profiles', 'commentedentries', api: [username], named: {'page': page.toString()});
+  Future<List<Entry>> getCommentedEntries(int page, String username) async {
+    var items = await client.request('profiles', 'commentedentries',
+        api: [username], named: {'page': page.toString()});
     return deserializeEntries(items);
   }
 
   Future<List<EntryComment>> getEntryComments(int page, String username) async {
-    var items = await client
-        .request('profiles', 'entriescomments', api: [username], named: {'page': page.toString()});
+    var items = await client.request('profiles', 'entriescomments',
+        api: [username], named: {'page': page.toString()});
     return deserializeEntryComments(items);
   }
+
+  Future<List<LinkComment>> getFollowers(int page, String username) async {
+    var items = await client.request('profiles', 'followers',
+        api: [username], named: {'page': page.toString()});
+    return deserializeLinkComments(items);
+  }
+
+  Future<List<LinkComment>> getFollowed(int page, String username) async {
+    var items = await client.request('profiles', 'followed',
+        api: [username], named: {'page': page.toString()});
+    return deserializeLinkComments(items);
+  }
+
+  Future<List<ProfileRelated>> getProfileRelated(int page, String username) async {
+    var items = await client.request('profiles', 'related',
+        api: [username], named: {'page': page.toString()});
+        print(items);
+    return deserializeProfileRelated(items);
+  }
+
   Future<ProfileResponse> getProfile(String username) async {
     var items = await client.request('profiles', 'index', api: [username]);
     print(items);
@@ -65,8 +85,14 @@ class ProfilesApi extends ApiResource {
   }
 
   Future<List<Link>> getDigged(int page, String username) async {
-    var items = await client
-      .request('profiles', 'digged', api: [username], named: {'page': page.toString()});
+    var items = await client.request('profiles', 'digged',
+        api: [username], named: {'page': page.toString()});
+    return deserializeLinks(items);
+  }
+
+  Future<List<Link>> getBuried(int page, String username) async {
+    var items = await client.request('profiles', 'buried',
+        api: [username], named: {'page': page.toString()});
     return deserializeLinks(items);
   }
 

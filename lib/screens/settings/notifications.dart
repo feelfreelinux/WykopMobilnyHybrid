@@ -10,7 +10,7 @@ class NotificationsSettingScreen extends StatelessWidget {
     final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
 
     return ChangeNotifierProvider<ShadowControlModel>(
-      builder: (context) => ShadowControlModel(),
+      create: (context) => ShadowControlModel(),
       child: MediaQuery(
         data: mqDataNew,
         child: Scaffold(

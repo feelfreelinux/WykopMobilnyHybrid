@@ -16,7 +16,7 @@ class SearchHistoryScreenState extends State<SearchHistoryScreen> {
     final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
 
     return ChangeNotifierProvider<ShadowControlModel>(
-      builder: (context) => ShadowControlModel(scrollDelayPixels: 0),
+      create: (context) => ShadowControlModel(scrollDelayPixels: 0),
       child: MediaQuery(
         data: mqDataNew,
         child: Scaffold(

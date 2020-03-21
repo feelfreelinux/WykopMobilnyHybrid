@@ -11,6 +11,7 @@ export 'response_models/tag_suggestion_response.dart';
 export 'response_models/related_response.dart';
 export 'response_models/pm_message_response.dart';
 export 'response_models/conversation_response.dart';
+export 'response_models/profile_related_response.dart';
 export 'response_models/serializers.dart';
 export 'client.dart';
 export 'resources/pm.dart';

@@ -15,7 +15,7 @@ class LinkCommentsList extends ItemList<LinkComment, LinkCommentModel> {
           persistentHeaderBuilder: persistentHeaderBuilder,
           header: header,
           buildChildren: (context) => ChangeNotifierProvider<InputModel>(
-            builder: (context) => FakeInputModel(),
+            create: (context) => FakeInputModel(),
             child:
                 LinkCommentWidget(relation: AuthorRelation.Author, linkId: 0),
           ),

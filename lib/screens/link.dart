@@ -33,7 +33,7 @@ class _LinkScreenState extends State<LinkScreen>
     final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
 
     return ChangeNotifierProvider<ShadowControlModel>(
-      builder: (context) => ShadowControlModel(),
+      create: (context) => ShadowControlModel(),
       child: ChangeNotifierProvider.value(
         value: _linkModel,
         child: Consumer<LinkModel>(

@@ -197,6 +197,18 @@ class Utils {
         ? Color(0xfff0f0f0)
         : Color(0xff282828);
   }
+  
+  static Color backgroundRoundIconAppbarScroll(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.light
+        ? Colors.white54
+        : Colors.black45;
+  }
+
+  static Color iconColorRoundIconAppbarScroll(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.light
+        ? Colors.black
+        : Colors.white;
+  }
 
   static Color backgroundCommentButton(BuildContext context) {
     return Theme.of(context).brightness == Brightness.light

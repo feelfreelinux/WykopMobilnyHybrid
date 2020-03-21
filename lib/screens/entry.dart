@@ -34,7 +34,7 @@ class _EntryScreenState extends State<EntryScreen>
     return ChangeNotifierProvider<EntryModel>.value(
       value: _entryModel,
       child: ChangeNotifierProvider<ShadowControlModel>(
-        builder: (context) => ShadowControlModel(),
+        create: (context) => ShadowControlModel(),
         child: Consumer<EntryModel>(
           builder: (context, model, _) =>
               ChangeNotifierProvider<InputModel>.value(

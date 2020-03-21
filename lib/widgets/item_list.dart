@@ -31,7 +31,7 @@ class ItemListState<T, D extends ChangeNotifier> extends State<ItemList<T, D>>
     return Container(
       decoration: BoxDecoration(color: Theme.of(context).backgroundColor),
       child: ChangeNotifierProvider<ListModel<T, D>>(
-        builder: widget.builder,
+        create: widget.builder,
         child: Consumer<ListModel<T, D>>(
           builder: (context, model, _) => RefreshIndicator(
             onRefresh: () => model.refresh(),

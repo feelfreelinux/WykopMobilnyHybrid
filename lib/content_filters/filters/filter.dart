@@ -15,5 +15,6 @@ abstract class MultiTypeContentFilter {
   bool performFilterOnEntryLink(EntryLink entry) => true;
   bool performFilterOnEntryComment(EntryComment entryComment) => true;
   bool performFilterOnLinkComment(LinkComment entry) => true;
+  bool performFilterOnProfileRelated(ProfileRelated related) => true;
 
 }

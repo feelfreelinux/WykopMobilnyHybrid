@@ -79,6 +79,11 @@ class OWMContentFilter {
     );
   }
 
+  static ProfileRelated performFilterOnProfileRelated(
+      ProfileRelated entry, BuildContext context, OWMSettings settings) {
+    return entry;
+  }
+
   static Future<List<Entry>> filterEntries(
       Future<List<Entry>> future, BuildContext context) async {
     return (await future)
@@ -113,6 +118,13 @@ class OWMContentFilter {
         .map((e) => performFilterOnLinkComment(e, context, owmSettings))
         .toList();
   }
+
+  static Future<List<ProfileRelated>> filterProfileRelated(
+      Future<List<ProfileRelated>> future, BuildContext context) async {
+    return (await future)
+        .map((e) => performFilterOnProfileRelated(e, context, owmSettings))
+        .toList();
+  }
 }
 
 class EntryContentFilter extends ContentFilter<Entry> {
@@ -127,8 +139,8 @@ class EntryContentFilter extends ContentFilter<Entry> {
   }
 
   @override
-  Future<List<Entry>> filterFutureList(Future<List<Entry>> future, BuildContext context) async {
-
+  Future<List<Entry>> filterFutureList(
+      Future<List<Entry>> future, BuildContext context) async {
     return (await future)
         .map((e) => this.filter(e, context, owmSettings))
         .toList();
@@ -136,6 +148,7 @@ class EntryContentFilter extends ContentFilter<Entry> {
 }
 
 abstract class ContentFilter<T> {
-  Future<List<T>> filterFutureList(Future<List<T>> future, BuildContext context);
+  Future<List<T>> filterFutureList(
+      Future<List<T>> future, BuildContext context);
   T filter(T item, BuildContext context, OWMSettings settings);
 }

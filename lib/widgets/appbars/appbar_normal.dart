@@ -15,6 +15,7 @@ class AppbarNormalWidget extends StatefulWidget implements PreferredSizeWidget {
   final bool shadow;
   final Widget bottom;
   final double bottomHeight;
+  final double toolbarHeight;
 
   AppbarNormalWidget({
     this.title,
@@ -27,12 +28,13 @@ class AppbarNormalWidget extends StatefulWidget implements PreferredSizeWidget {
     this.shadow,
     this.bottom,
     this.bottomHeight = 48.0,
+    this.toolbarHeight = kToolbarHeight,
   });
 
   @override
   Size get preferredSize {
     return Size.fromHeight(
-        bottom != null ? kToolbarHeight + bottomHeight : kToolbarHeight);
+        bottom != null ? toolbarHeight + bottomHeight : toolbarHeight);
   }
 
   _AppbarNormalWidgetState createState() => _AppbarNormalWidgetState();

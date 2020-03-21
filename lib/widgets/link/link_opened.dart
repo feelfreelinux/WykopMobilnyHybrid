@@ -414,52 +414,50 @@ class _LinkOpenedWidgetState extends State<LinkOpenedWidget> {
       builder: (context) {
         return GreatDialogWidget(
           padding: EdgeInsets.zero,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(20.0),
-                  child: Text(
-                    "Sortuj komentarze",
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w700,
-                    ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Text(
+                  "Sortuj komentarze",
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
-                Column(
-                  children: <Widget>[
-                    RadioListTile(
-                      groupValue: 1,
-                      onChanged: (value) {
-                        Navigator.of(context).pop();
-                      },
-                      value: 1,
-                      title: Text("Najlepsze"),
-                    ),
-                    RadioListTile(
-                      groupValue: 1,
-                      onChanged: (value) {
-                        Navigator.of(context).pop();
-                      },
-                      value: 2,
-                      title: Text("Najnowsze"),
-                    ),
-                    RadioListTile(
-                      groupValue: 1,
-                      onChanged: (value) {
-                        Navigator.of(context).pop();
-                      },
-                      value: 3,
-                      title: Text("Najstarsze"),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 18.0),
-              ],
-            ),
+              ),
+              Column(
+                children: <Widget>[
+                  RadioListTile(
+                    groupValue: 1,
+                    onChanged: (value) {
+                      Navigator.of(context).pop();
+                    },
+                    value: 1,
+                    title: Text("Najlepsze"),
+                  ),
+                  RadioListTile(
+                    groupValue: 1,
+                    onChanged: (value) {
+                      Navigator.of(context).pop();
+                    },
+                    value: 2,
+                    title: Text("Najnowsze"),
+                  ),
+                  RadioListTile(
+                    groupValue: 1,
+                    onChanged: (value) {
+                      Navigator.of(context).pop();
+                    },
+                    value: 3,
+                    title: Text("Najstarsze"),
+                  ),
+                ],
+              ),
+              SizedBox(height: 18.0),
+            ],
           ),
         );
       },

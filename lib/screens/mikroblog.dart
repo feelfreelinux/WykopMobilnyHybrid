@@ -41,7 +41,7 @@ class _MikroblogScreenState extends State<MikroblogScreen> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ShadowControlModel>(
-      builder: (context) => ShadowControlModel(),
+      create: (context) => ShadowControlModel(),
       child: DefaultTabController(
         length: 4,
         initialIndex: _getDefaultScreenIndex(context),
