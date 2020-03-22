@@ -89,6 +89,7 @@ class _LinkScreenState extends State<LinkScreen>
                             : Container(),
                         InputBarWidget(
                           key: model.inputBarKey,
+                          isLinkScreen: true,
                         )
                       ]),
                   resizeToAvoidBottomPadding: false,

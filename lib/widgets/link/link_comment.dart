@@ -118,7 +118,8 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
                               padding: EdgeInsets.only(
                                 left: 12.0,
                                 right: 80.0 +
-                                    (Provider.of<OWMSettings>(context, listen: false)
+                                    (Provider.of<OWMSettings>(context,
+                                                listen: false)
                                             .splitVotesLink
                                         ? 10 +
                                             _votePadding(model.voteCountPlus) +
@@ -283,9 +284,7 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
                     child: _drawToolbarIcon(Icons.delete, "Usuń", () async {
                       Navigator.pop(context);
                       if (await showConfirmDialog(
-                        context,
-                        "Jesteś tego pewien?",
-                      )) {
+                          context, "Usunąć ten komentarz?")) {
                         comment.delete();
                       }
                     }),

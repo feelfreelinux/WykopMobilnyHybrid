@@ -40,6 +40,7 @@ class _PmScreenState extends State<PmScreen>
                 bottomNavigationBar: InputBarWidget(
                   key: pmModel.inputBarKey,
                   hintText: "Napisz wiadomość",
+                  isPMScreen: true,
                 ),
                 resizeToAvoidBottomPadding: false,
                 appBar: AppbarNormalWidget(

@@ -111,6 +111,22 @@ class _InputScreenState extends State<InputScreen> {
     }
   }
 
+  String get inputHintDialog {
+    switch (widget.inputType) {
+      case InputType.ENTRY:
+        return "Dodać ten wpis?";
+      case InputType.ENTRY_COMMENT:
+        return "Dodać ten komentarz?";
+      case InputType.LINK_COMMENT:
+        return "Dodać ten komentarz?";
+      case InputType.PRIVATE_MESSAGE:
+        return "Wysłać tę wiadomość?";
+        break;
+      default:
+        return "";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -132,8 +148,8 @@ class _InputScreenState extends State<InputScreen> {
                 icon: Icons.close,
                 onTap: () async {
                   if (owmSettings.confirmExitWriting) {
-                    var res =
-                        await showConfirmDialog(context, "Czy na pewno wyjść?");
+                    var res = await showConfirmDialog(context,
+                        "Wyjść z tego ekranu?\r\nZmiany zostaną utracone.");
                     if (!res) return;
                   }
                   Navigator.of(context).pop();
@@ -150,8 +166,8 @@ class _InputScreenState extends State<InputScreen> {
                       if (this.textController.text.length >= 3 ||
                           this.image != null) {
                         if (owmSettings.confirmSend) {
-                          var res = await showConfirmDialog(
-                              context, "Czy na pewno wysłać?");
+                          var res =
+                              await showConfirmDialog(context, inputHintDialog);
                           if (!res) return;
                         }
 

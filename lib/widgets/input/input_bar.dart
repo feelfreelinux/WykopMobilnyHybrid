@@ -25,6 +25,8 @@ class InputBarWidget extends StatefulWidget {
   final Color iconsColor;
   final String hintText;
   final InputData existingInputData;
+  final bool isPMScreen;
+  final bool isLinkScreen;
 
   InputBarWidget({
     @required Key key,
@@ -33,6 +35,8 @@ class InputBarWidget extends StatefulWidget {
     this.iconsColor,
     this.existingInputData,
     this.hintText = 'Treść komentarza',
+    this.isPMScreen = false,
+    this.isLinkScreen = false,
   }) : super(key: key);
 
   InputBarWidgetState createState() => InputBarWidgetState();
@@ -192,21 +196,17 @@ class InputBarWidgetState extends State<InputBarWidget> {
 
   Widget _drawInputBar() {
     return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: 6.0,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: 6.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           MarkdownButtonWidget(
             show: showMarkdownBar,
-            onTap: () {
-              setState(() {
-                showMarkdownBar = showMarkdownBar ? false : true;
-                showMediaButton =
-                    showMarkdownBar ? false : clickTextField ? false : true;
-              });
-            },
+            onTap: () => setState(() {
+              showMarkdownBar = showMarkdownBar ? false : true;
+              showMediaButton =
+                  showMarkdownBar ? false : clickTextField ? false : true;
+            }),
             iconColor: widget.iconsColor,
           ),
           MediaButtonWidget(
@@ -216,38 +216,24 @@ class InputBarWidgetState extends State<InputBarWidget> {
           ),
           Expanded(
             child: Container(
-                margin: EdgeInsets.symmetric(
-                  vertical: 8.0,
-                  horizontal: 6.0,
-                ),
-                padding: EdgeInsets.only(
-                  top: 1.0,
-                  right: 1.0,
-                  bottom: 1.0,
-                ),
+                margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 6.0),
+                padding: EdgeInsets.only(top: 1.0, right: 1.0, bottom: 1.0),
                 decoration: BoxDecoration(
                   color: Utils.backgroundGreyOpacity(context),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(20.0),
-                  ),
+                  borderRadius: BorderRadius.circular(18.0),
                 ),
                 child: Column(
                   children: <Widget>[
                     SelectedImageWidget(
-                        image: this.image,
-                        onTap: () {
-                          removeImage();
-                        }),
+                        image: this.image, onTap: () => removeImage()),
                     Padding(
-                      padding: EdgeInsets.only(left: 12.0),
+                      padding: EdgeInsets.only(left: 14.0),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
                           Flexible(
                             child: ConstrainedBox(
-                              constraints: BoxConstraints(
-                                maxHeight: 90.0,
-                              ),
+                              constraints: BoxConstraints(maxHeight: 90.0),
                               child: Scrollbar(
                                 child: SingleChildScrollView(
                                   reverse: true,
@@ -257,28 +243,23 @@ class InputBarWidgetState extends State<InputBarWidget> {
                                       focusNode: focusNode,
                                       cursorWidth: 1.5,
                                       cursorRadius: Radius.circular(20.0),
-                                      onChanged: (text) {
-                                        suggestionsModel.loadSuggestions(
-                                            extractSuggestions());
-                                      },
+                                      onChanged: (text) =>
+                                          suggestionsModel.loadSuggestions(
+                                              extractSuggestions()),
                                       style: DefaultTextStyle.of(context)
                                           .style
-                                          .merge(
-                                            TextStyle(fontSize: 16.0),
-                                          ),
+                                          .merge(TextStyle(fontSize: 16.0)),
                                       maxLines: null,
                                       controller: this.textController,
                                       keyboardType: TextInputType.multiline,
-                                      onTap: () {
-                                        setState(() {
-                                          showMediaButton = false;
-                                          clickTextField = true;
-                                        });
-                                      },
+                                      onTap: () => setState(() {
+                                        showMediaButton = false;
+                                        clickTextField = true;
+                                      }),
                                       decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.symmetric(
-                                          vertical: 8.0,
-                                        ),
+                                        contentPadding:
+                                            EdgeInsets.symmetric(vertical: 8.0),
+                                        isDense: true,
                                         border: InputBorder.none,
                                         hintText: widget.hintText,
                                       ),
@@ -289,7 +270,10 @@ class InputBarWidgetState extends State<InputBarWidget> {
                             ),
                           ),
                           EmoticonButtonWidget(
-                            onTap: () {},
+                            onTap: () =>
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                              content: Text("Niezaimplementowane"),
+                            )), //TODO emotikony
                             iconColor: widget.iconsColor,
                           ),
                         ],
@@ -299,9 +283,7 @@ class InputBarWidgetState extends State<InputBarWidget> {
                 )),
           ),
           SendButtonWidget(
-            onTap: () {
-              this._sendButtonClicked(context);
-            },
+            onTap: () => this._sendButtonClicked(context),
             isEmpty: isEmpty,
             sending: sending,
             iconColor: widget.iconsColor,
@@ -334,37 +316,39 @@ class InputBarWidgetState extends State<InputBarWidget> {
 
   Widget _drawSuggestions() {
     return Consumer<SuggestionsModel>(
-        builder: (context, suggestionModel, _) => Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: List()
-              ..addAll(suggestionModel.authorSuggestions
-                  .sublist(
-                      0,
-                      suggestionModel.authorSuggestions.length < 5
-                          ? suggestionModel.authorSuggestions.length
-                          : 5)
-                  .map((s) => new UserSuggestionWidget(
-                        applySuggestion: () {
-                          this._insertSuggestion('@' + s.login);
-                          suggestionModel.clearSuggestions();
-                        },
-                        suggestion: s,
-                      ))
-                  .toList())
-              ..addAll(suggestionModel.tagSuggestions
-                  .sublist(
-                      0,
-                      suggestionModel.tagSuggestions.length < 5
-                          ? suggestionModel.tagSuggestions.length
-                          : 5)
-                  .map((s) => new TagSuggestionWidget(
-                        applySuggestion: () {
-                          this._insertSuggestion(s.tag);
-                          suggestionModel.clearSuggestions();
-                        },
-                        suggestion: s,
-                      ))
-                  .toList())));
+      builder: (context, suggestionModel, _) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: List()
+          ..addAll(suggestionModel.authorSuggestions
+              .sublist(
+                  0,
+                  suggestionModel.authorSuggestions.length < 5
+                      ? suggestionModel.authorSuggestions.length
+                      : 5)
+              .map((s) => new UserSuggestionWidget(
+                    applySuggestion: () {
+                      this._insertSuggestion('@' + s.login);
+                      suggestionModel.clearSuggestions();
+                    },
+                    suggestion: s,
+                  ))
+              .toList())
+          ..addAll(suggestionModel.tagSuggestions
+              .sublist(
+                  0,
+                  suggestionModel.tagSuggestions.length < 5
+                      ? suggestionModel.tagSuggestions.length
+                      : 5)
+              .map((s) => new TagSuggestionWidget(
+                    applySuggestion: () {
+                      this._insertSuggestion(s.tag);
+                      suggestionModel.clearSuggestions();
+                    },
+                    suggestion: s,
+                  ))
+              .toList()),
+      ),
+    );
   }
 
   Widget _drawButtons() {
@@ -386,7 +370,9 @@ class InputBarWidgetState extends State<InputBarWidget> {
                 child: _drawIconRound(
                   icon: Icons.mood,
                   tooltip: "Emotikony",
-                  onTap: () => {}, // TODO: dodac ekran z lennymi
+                  onTap: () => Scaffold.of(context).showSnackBar(SnackBar(
+                    content: Text("Niezaimplementowane"),
+                  )), //TODO emotikony
                 ),
               ),
               _drawIconRound(
@@ -438,15 +424,19 @@ class InputBarWidgetState extends State<InputBarWidget> {
                 color: Colors.grey[600],
                 onTap: () => insertSelectedText("\n! ", suffix: "\n"),
               ),
-              _drawIconRound(
-                icon: Icons.list,
-                tooltip: "Ankieta",
-                color: Colors.deepPurple,
-                onTap: () => {}, //TODO: dodać dodawanie ankiety
+              Visibility(
+                visible: !widget.isPMScreen && !widget.isLinkScreen,
+                child: _drawIconRound(
+                  icon: Icons.list,
+                  tooltip: "Ankieta",
+                  color: Colors.deepPurple,
+                  onTap: () => Scaffold.of(context).showSnackBar(SnackBar(
+                    content: Text("Niezaimplementowane"),
+                  )), //TODO: dodać dodawanie ankiety
+                ),
               ),
               Visibility(
-                visible:
-                    true, //TODO: sprawdzić czy można zamknąć/otworzyć pelny ekran; ukryć w pw i nowym wpisie?
+                visible: !widget.isPMScreen,
                 child: _drawIconRound(
                   icon: hasExternalInput
                       ? Icons.fullscreen_exit
@@ -455,7 +445,9 @@ class InputBarWidgetState extends State<InputBarWidget> {
                       ? "Przywróć do paska"
                       : "Pisz w pełnym ekranie",
                   color: Colors.brown,
-                  onTap: () {}, //TODO: dodać akcję ekranu/paska edycji
+                  onTap: () => Scaffold.of(context).showSnackBar(SnackBar(
+                    content: Text("Niezaimplementowane"),
+                  )), //TODO: dodać akcję ekranu/paska edycji
                 ),
               ),
             ],
@@ -469,13 +461,12 @@ class InputBarWidgetState extends State<InputBarWidget> {
 
   void _sendButtonClicked(BuildContext context) async {
     if (owmSettings.confirmSend) {
-      var res = await showConfirmDialog(context, "Jesteś pewien?");
+      var res = await showConfirmDialog(context,
+          widget.isPMScreen ? "Wysłać tę wiadomość?" : "Dodać ten komentarz?");
       if (!res) return;
     }
-    
-    setState(() {
-      this.sending = true;
-    });
+
+    setState(() => this.sending = true);
 
     var inputModel = Provider.of<InputModel>(context, listen: false);
     await inputModel.onInputSubmitted(
@@ -487,17 +478,13 @@ class InputBarWidgetState extends State<InputBarWidget> {
     removeImage();
   }
 
-  Widget _drawIconRound({
-    IconData icon,
-    Color color,
-    VoidCallback onTap,
-    String tooltip,
-  }) {
+  Widget _drawIconRound(
+      {IconData icon, Color color, VoidCallback onTap, String tooltip}) {
     return Tooltip(
       preferBelow: false,
       message: tooltip ?? "",
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 6.0),
+        margin: EdgeInsets.symmetric(horizontal: 5.0),
         decoration: BoxDecoration(
           color: color ?? Theme.of(context).accentColor,
           shape: BoxShape.circle,
@@ -518,21 +505,13 @@ class InputBarWidgetState extends State<InputBarWidget> {
   }
 
   void setImage(File image) {
-    setState(() {
-      this.image = image;
-    });
-    if (hasExternalInput) {
-      widget.imageStateChanged(image);
-    }
+    setState(() => this.image = image);
+    if (hasExternalInput) widget.imageStateChanged(image);
   }
 
   void removeImage() {
-    setState(() {
-      this.image = null;
-    });
-    if (hasExternalInput) {
-      widget.imageStateChanged(null);
-    }
+    setState(() => this.image = null);
+    if (hasExternalInput) widget.imageStateChanged(null);
   }
 
   String extractSuggestions() {
@@ -564,7 +543,7 @@ class TagSuggestionWidget extends StatelessWidget {
       onTap: this.applySuggestion,
       child: Container(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(8.0),
           child: Text(this.suggestion.tag +
               " (" +
               this.suggestion.followers.toString() +
@@ -587,22 +566,28 @@ class UserSuggestionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var author = Author.fromAuthState(
-        username: suggestion.login,
-        avatarUrl: suggestion.avatar,
-        color: suggestion.color);
+      username: suggestion.login,
+      avatarUrl: suggestion.avatar,
+      color: suggestion.color,
+    );
     return InkWell(
       onTap: this.applySuggestion,
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(children: [
-          AvatarWidget(author: author, size: 20),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: Text(this.suggestion.login,
+        padding: EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            AvatarWidget(author: author, size: 20.0),
+            Padding(
+              padding: EdgeInsets.only(left: 8.0),
+              child: Text(
+                this.suggestion.login,
                 style: TextStyle(
-                    color: Utils.getAuthorColor(author.color, context))),
-          ),
-        ]),
+                  color: Utils.getAuthorColor(author.color, context),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

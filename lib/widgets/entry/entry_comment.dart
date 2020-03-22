@@ -284,9 +284,7 @@ class _EntryCommentWidgetState extends State<EntryCommentWidget> {
                     child: _drawToolbarIcon(Icons.delete, "Usuń", () async {
                       Navigator.pop(context);
                       if (await showConfirmDialog(
-                        context,
-                        "Jesteś tego pewien?",
-                      )) {
+                          context, "Usunąć ten komentarz?")) {
                         comment.delete();
                       }
                     }),
