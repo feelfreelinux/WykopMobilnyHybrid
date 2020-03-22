@@ -104,7 +104,7 @@ class _$EntryResponseSerializer implements StructuredSerializer<EntryResponse> {
           result.comments.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(EntryCommentResponse)]))
-              as BuiltList<dynamic>);
+              as BuiltList<Object>);
           break;
         case 'body':
           result.body = serializers.deserialize(value,

@@ -127,9 +127,9 @@ class _EmbedState extends State<EmbedWidget> {
             return;
           }
           if (!resized) {
-            if ((!nsfw && Provider.of<OWMSettings>(context).skipExpandImage) ||
+            if ((!nsfw && Provider.of<OWMSettings>(context, listen: false).skipExpandImage) ||
                 (nsfw &&
-                    Provider.of<OWMSettings>(context).skipShowAdultImage)) {
+                    Provider.of<OWMSettings>(context, listen: false).skipShowAdultImage)) {
               openFullscreen();
             } else {
               setState(() {
@@ -138,7 +138,7 @@ class _EmbedState extends State<EmbedWidget> {
               });
             }
           } else if (nsfw) {
-            if (Provider.of<OWMSettings>(context).skipShowAdultImage) {
+            if (Provider.of<OWMSettings>(context, listen: false).skipShowAdultImage) {
               openFullscreen();
             } else {
               setState(() => nsfw = false);
@@ -272,7 +272,7 @@ class _EmbedState extends State<EmbedWidget> {
       image: DecorationImage(
         image: hide
             ? MemoryImage(kTransparentImage)
-            : NetworkImage(Provider.of<OWMSettings>(context).highResImage
+            : NetworkImage(Provider.of<OWMSettings>(context, listen: false).highResImage
                 ? widget.embed.preview.replaceAll(",w400.jpg", ",w600.jpg")
                 : widget.embed.preview),
         alignment: FractionalOffset.topCenter,

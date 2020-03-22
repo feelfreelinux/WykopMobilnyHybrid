@@ -6,6 +6,8 @@ import 'package:owmflutter/api/response_models/entry_link_response.dart';
 import 'package:owmflutter/api/response_models/profile_response.dart';
 import 'package:owmflutter/api/response_models/voter_response.dart';
 
+import 'profile_related_response.dart';
+
 part 'serializers.g.dart';
 
 @SerializersFor(const [
@@ -19,6 +21,7 @@ part 'serializers.g.dart';
   AuthorSuggestionResponse,
   RelatedResponse,
   EntryLinkResponse,
+  ProfileRelatedResponse,
   ConversationResponse,
   PmMessageResponse,
   TagSuggestionResponse,

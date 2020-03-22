@@ -63,7 +63,7 @@ class NewEntryWidget extends StatelessWidget {
                         child: BodyWidget(
                           body: model.body,
                           ellipsize:
-                              Provider.of<OWMSettings>(context).shortLongBody,
+                              Provider.of<OWMSettings>(context, listen: false).shortLongBody,
                           textSize: 16.0,
                           padding: EdgeInsets.only(
                               top: 8.0, left: 2.0, right: 2.0, bottom: 2.0),

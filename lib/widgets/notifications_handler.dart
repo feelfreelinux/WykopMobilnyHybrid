@@ -78,7 +78,7 @@ Future<int> fetchNotifications() async {
 
 void fetchNotificationsTask() async {
   await fetchNotifications();
-  BackgroundFetch.finish();
+  BackgroundFetch.finish("owmh");
 }
 
 class NotificationsHandler extends StatefulWidget {

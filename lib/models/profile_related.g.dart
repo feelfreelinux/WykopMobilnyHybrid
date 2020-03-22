@@ -30,9 +30,6 @@ class _$ProfileRelated extends ProfileRelated {
     if (title == null) {
       throw new BuiltValueNullFieldError('ProfileRelated', 'title');
     }
-    if (voteCount == null) {
-      throw new BuiltValueNullFieldError('ProfileRelated', 'voteCount');
-    }
   }
 
   @override

@@ -90,6 +90,8 @@ abstract class ApiResource {
   }
 
   List<Related> deserializeRelatedLinks(dynamic items) {
+    print(items);
+    
     return _client
         .deserializeList(RelatedResponse.serializer, items)
         .map((e) => Related.mapFromResponse(e))

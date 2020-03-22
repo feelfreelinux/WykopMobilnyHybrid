@@ -36,15 +36,15 @@ class RelatedWidget extends StatelessWidget {
   Widget _drawHeader(BuildContext context, Models.Related related) {
     return Row(
       children: <Widget>[
-        AvatarWidget(
+        related?.author != null ? AvatarWidget(
           author: related.author,
           size: 26.0,
           borderColor: Utils.backgroundGrey(context),
-        ),
+        ) : Container(),
         Expanded(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(
+            child: related?.author != null ? Text(
               related.author.login,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
@@ -52,7 +52,7 @@ class RelatedWidget extends StatelessWidget {
                 fontSize: 14.0,
                 fontWeight: FontWeight.w500,
               ),
-            ),
+            ) : Container(),
           ),
         ),
         VoteButton(

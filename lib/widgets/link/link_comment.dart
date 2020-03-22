@@ -118,7 +118,7 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
                               padding: EdgeInsets.only(
                                 left: 12.0,
                                 right: 80.0 +
-                                    (Provider.of<OWMSettings>(context)
+                                    (Provider.of<OWMSettings>(context, listen: false)
                                             .splitVotesLink
                                         ? 10 +
                                             _votePadding(model.voteCountPlus) +
@@ -300,7 +300,7 @@ class _LinkCommentWidgetState extends State<LinkCommentWidget> {
   }
 
   Widget _drawVoteButons(LinkCommentModel model) {
-    return Provider.of<OWMSettings>(context).splitVotesLink
+    return Provider.of<OWMSettings>(context, listen: false).splitVotesLink
         ? Row(
             children: <Widget>[
               Padding(

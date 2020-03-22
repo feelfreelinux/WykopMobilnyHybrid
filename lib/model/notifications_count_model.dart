@@ -18,23 +18,21 @@ class NotificationsCountModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> startBackgroundFetch() {
-    print("yo");
+  void startBackgroundFetch() {
     BackgroundFetch.configure(
         BackgroundFetchConfig(
+            requiredNetworkType: NetworkType.ANY,
             minimumFetchInterval: 15,
             stopOnTerminate: false,
             enableHeadless: true,
             requiresBatteryNotLow: false,
             requiresCharging: false,
             requiresStorageNotLow: false,
-            requiresDeviceIdle: false,
-            requiredNetworkType: BackgroundFetchConfig.NETWORK_TYPE_NONE),
-        () async {
+            requiresDeviceIdle: false), () async {
       print('[BackgroundFetch] Event received');
       var count = await fetchNotifications();
       setUnreadNotificationsCount(count);
-      BackgroundFetch.finish();
+      BackgroundFetch.finish("owmh");
     }).then((int status) {
       print('[BackgroundFetch] configure success: $status');
     }).catchError((e) {

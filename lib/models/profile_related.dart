@@ -7,10 +7,13 @@ part 'profile_related.g.dart';
 abstract class ProfileRelated
     implements Built<ProfileRelated, ProfileRelatedBuilder> {
   int get id;
+
   String get url;
 
   String get title;
 
+  @nullable
+  @BuiltValueField(wireName: 'vote_count')
   int get voteCount;
 
   factory ProfileRelated.mapFromResponse(ProfileRelatedResponse response) {

@@ -73,8 +73,10 @@ class ProfilesApi extends ApiResource {
 
   Future<List<ProfileRelated>> getProfileRelated(int page, String username) async {
     var items = await client.request('profiles', 'related',
-        api: [username], named: {'page': page.toString()});
-        print(items);
+      api: [username], named: {'page': page.toString()});
+
+    print(items);
+
     return deserializeProfileRelated(items);
   }
 
