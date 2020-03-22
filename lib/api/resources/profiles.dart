@@ -1,8 +1,5 @@
 import 'dart:core';
-
 import 'package:owmflutter/api/api.dart';
-import 'package:built_collection/built_collection.dart';
-import 'package:owmflutter/api/api.dart' as prefix0;
 import 'package:owmflutter/models/entry_link.dart';
 import 'package:owmflutter/models/link.dart';
 import 'package:owmflutter/models/link_comment.dart';
@@ -71,12 +68,10 @@ class ProfilesApi extends ApiResource {
     return deserializeLinkComments(items);
   }
 
-  Future<List<ProfileRelated>> getProfileRelated(int page, String username) async {
+  Future<List<ProfileRelated>> getProfileRelated(
+      int page, String username) async {
     var items = await client.request('profiles', 'related',
-      api: [username], named: {'page': page.toString()});
-
-    print(items);
-
+        api: [username], named: {'page': page.toString()});
     return deserializeProfileRelated(items);
   }
 

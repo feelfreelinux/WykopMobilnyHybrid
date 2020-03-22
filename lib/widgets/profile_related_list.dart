@@ -18,7 +18,7 @@ class ProfileRelatedList extends ItemList<ProfileRelated, ProfileRelatedModel> {
           header: header,
           buildChildren: (context) => ChangeNotifierProvider<InputModel>(
             create: (context) => FakeInputModel(),
-            child: RelatedWidget(related: null, count: 0,),//TODO ??
+            child: ProfileRelatedWidget(),
           ),
         );
 }

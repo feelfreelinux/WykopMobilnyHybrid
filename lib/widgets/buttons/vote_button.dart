@@ -6,7 +6,7 @@ class VoteButton extends StatefulWidget {
   final VoidCallback onClicked;
   final VoidCallback onLongClicked;
   final num count;
-  final isSelected;
+  final bool isSelected;
   final bool negativeIcon;
   final bool onlyIcon;
   final double fontSize;
