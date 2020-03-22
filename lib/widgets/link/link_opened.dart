@@ -340,6 +340,7 @@ class _LinkOpenedWidgetState extends State<LinkOpenedWidget> {
                   cursorRadius: Radius.circular(20.0),
                   style: TextStyle(fontSize: 14.0),
                   decoration: InputDecoration(
+                    isDense: true,
                     contentPadding: EdgeInsets.symmetric(vertical: 10.0),
                     border: InputBorder.none,
                     hintText: "Podaj adres URL strony, którą chcesz dodać",
@@ -357,6 +358,7 @@ class _LinkOpenedWidgetState extends State<LinkOpenedWidget> {
                   cursorRadius: Radius.circular(20.0),
                   style: TextStyle(fontSize: 14.0),
                   decoration: InputDecoration(
+                    isDense: true,
                     contentPadding: EdgeInsets.symmetric(vertical: 10.0),
                     border: InputBorder.none,
                     hintText: "Napisz krótki opisujący stronę tytuł",

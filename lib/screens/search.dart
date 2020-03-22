@@ -53,6 +53,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         },
                         keyboardType: TextInputType.text,
                         decoration: InputDecoration(
+                          isDense: true,
                           contentPadding: EdgeInsets.symmetric(
                               vertical: 8.0, horizontal: 12.0),
                           border: InputBorder.none,
@@ -194,7 +195,8 @@ class _SearchResultPageState extends State<SearchResultPage>
       return Container(
         child: LinksList(
           builder: (context) => LinkListModel(
-            context: context, loadNewLinks: (page) => api.search.searchLinks(page, widget.query),
+            context: context,
+            loadNewLinks: (page) => api.search.searchLinks(page, widget.query),
           ),
         ),
       );
@@ -202,7 +204,8 @@ class _SearchResultPageState extends State<SearchResultPage>
       return Container(
         child: EntriesList(
           builder: (context) => EntryListModel(
-            context: context, loadNewEntries: (page) =>
+            context: context,
+            loadNewEntries: (page) =>
                 api.search.searchEntries(page, widget.query),
           ),
         ),

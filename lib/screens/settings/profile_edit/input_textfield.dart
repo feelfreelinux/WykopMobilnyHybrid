@@ -20,6 +20,7 @@ class InputTextFieldWidget extends StatelessWidget {
         maxLines: maxLines,
         obscureText: obscureText,
         decoration: InputDecoration(
+          isDense: true,
           border: InputBorder.none,
         ),
       ),

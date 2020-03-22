@@ -136,6 +136,7 @@ class _UserDialogWidgetState extends State<UserDialogWidget>
                                         maxLines: null,
                                         keyboardType: TextInputType.multiline,
                                         decoration: InputDecoration(
+                                          isDense: true,
                                           contentPadding: EdgeInsets.symmetric(
                                               vertical: 10.0),
                                           border: InputBorder.none,

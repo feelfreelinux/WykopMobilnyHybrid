@@ -91,7 +91,8 @@ class _MainScreenState extends State<MainScreen> {
                   _addMenuButton(Icons.create, "Dodaj"),
                   _iconButton(Icons.loyalty, 2, "Mój Wykop"),
                   _iconButton(Icons.mail, 3, "Powiadomienia",
-                      badge: notifsModel.unreadNotificationsCount), //TODO: display number of notifications
+                      badge: notifsModel
+                          .unreadNotificationsCount), //TODO: display number of notifications
                 ],
               ),
             ),
@@ -209,6 +210,7 @@ class _MainScreenState extends State<MainScreen> {
                 cursorRadius: Radius.circular(20.0),
                 style: TextStyle(fontSize: 14.0),
                 decoration: InputDecoration(
+                  isDense: true,
                   contentPadding: EdgeInsets.symmetric(vertical: 10.0),
                   border: InputBorder.none,
                   hintText: "Wpisz nazwę użytkownika", //TODO: user suggestion

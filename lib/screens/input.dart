@@ -223,6 +223,7 @@ class _InputScreenState extends State<InputScreen> {
                             controller: textController,
                             keyboardType: TextInputType.multiline,
                             decoration: InputDecoration(
+                              isDense: true,
                               border: InputBorder.none,
                               hintText: 'Napisz coś ciekawego',
                             ),
