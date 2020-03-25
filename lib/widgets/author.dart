@@ -88,11 +88,11 @@ class _AuthorWidgetState extends State<AuthorWidget> {
                     child: Text(
                       showFullDate
                           ? Utils.getDateFormat(
-                              widget.date, 'dd.MM.yyyy \'o\' HH:mm:ss')
+                              widget.date, 'HH:mm:ss • dd.MM.yyyy')
                           : Utils.getSimpleDate(widget.date),
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        height: 1.2,
+                        height: 1.4,
                         color: Theme.of(context).textTheme.caption.color,
                         fontSize: widget.fontSize - 3.0,
                         fontWeight: FontWeight.w400,

@@ -29,6 +29,9 @@ abstract class EntryCommentResponse
   @nullable
   @BuiltValueField(wireName: "violation_url")
   String get violationUrl;
+  
+  @nullable
+  String get app;
 
   EntryCommentResponse._();
   static Serializer<EntryCommentResponse> get serializer =>

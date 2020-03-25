@@ -19,7 +19,7 @@ abstract class Entry implements Built<Entry, EntryBuilder> {
   bool get isVoted;
 
   bool get isExpanded;
-  
+
   bool get isFavorite;
 
   BuiltList<EntryComment> get comments;
@@ -32,26 +32,31 @@ abstract class Entry implements Built<Entry, EntryBuilder> {
   @nullable
   String get violationUrl;
 
+  @nullable
+  String get app;
+
   factory Entry.mapFromResponse(EntryResponse response) {
     return _$Entry._(
-        id: response.id,
-        date: response.date,
-        body: response.body,
-        voteCount: response.voteCount,
-        isExpanded: true,
-        commentsCount: response.commentsCount ?? 0,
-        comments: response.comments == null
-            ? BuiltList.from([])
-            : BuiltList.from(response.comments.map((el) {
-                return EntryComment.mapFromResponse(el);
-              })),
-        isVoted: response.userVote != null && response.userVote > 0,
-        isFavorite: response.favorite,
-        author: Author.fromResponse(response: response.author),
-        embed: (response.embed != null
-            ? Embed.fromResponse(response: response.embed)
-            : null),
-        violationUrl: response.violationUrl);
+      id: response.id,
+      date: response.date,
+      body: response.body,
+      voteCount: response.voteCount,
+      isExpanded: true,
+      commentsCount: response.commentsCount ?? 0,
+      comments: response.comments == null
+          ? BuiltList.from([])
+          : BuiltList.from(response.comments.map((el) {
+              return EntryComment.mapFromResponse(el);
+            })),
+      isVoted: response.userVote != null && response.userVote > 0,
+      isFavorite: response.favorite,
+      author: Author.fromResponse(response: response.author),
+      embed: (response.embed != null
+          ? Embed.fromResponse(response: response.embed)
+          : null),
+      violationUrl: response.violationUrl,
+      app: response.app,
+    );
   }
 
   Entry._();

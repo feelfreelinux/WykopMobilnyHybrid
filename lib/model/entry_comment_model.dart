@@ -11,7 +11,9 @@ class EntryCommentModel extends ChangeNotifier {
   Embed _embed;
   bool _isVoted;
   bool _isExpanded;
+  List<Voter> _upvoters = [];
   String _violationUrl;
+  String _app;
 
   int get id => _id;
   String get body => _body;
@@ -22,11 +24,15 @@ class EntryCommentModel extends ChangeNotifier {
   bool get isExpanded => _isExpanded;
   bool get isVoted => _isVoted;
   String get violationUrl => _violationUrl;
+  String get app => _app;
+
+  List<Voter> get upvoters => _upvoters.reversed.toList();
 
   void expand() {
     _isExpanded = true;
     notifyListeners();
   }
+
   void setData(EntryComment comment) {
     _id = comment.id;
     _body = comment.body;
@@ -37,12 +43,18 @@ class EntryCommentModel extends ChangeNotifier {
     _isVoted = comment.isVoted;
     _isExpanded = comment.isExpanded;
     _violationUrl = comment.violationUrl;
+    _app = comment.app;
     notifyListeners();
   }
 
   Future<void> delete() async {
     await api.entries.deleteComment(_id);
     _body = "[Komentarz usunięty]";
+    notifyListeners();
+  }
+
+  Future<void> loadUpVoters() async {
+    _upvoters = await api.entries.getEntryCommentUpVoters(_id);
     notifyListeners();
   }
 

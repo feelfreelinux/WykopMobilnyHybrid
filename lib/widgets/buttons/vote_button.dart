@@ -42,14 +42,8 @@ class _VoteButtonState extends State<VoteButton> {
         padding: EdgeInsets.all(widget.fontSize / 3.5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
-          boxShadow: widget.isComment
-              ? [
-                  BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 2.0,
-                    offset: Offset(0.0, 1.0),
-                  )
-                ]
+          border: widget.isComment
+              ? Border.all(color: Theme.of(context).backgroundColor, width: 2.0)
               : null,
           color: Utils.voteBackgroundStateColor(
             context,

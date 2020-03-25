@@ -106,10 +106,6 @@ class _LinkScreenState extends State<LinkScreen>
                         padding: EdgeInsets.all(0.0),
                         iconColor: Theme.of(context).accentColor,
                         onTap: () => refreshIndicatorKey.currentState.show(),
-                      ),
-                      IconButtonWidget(
-                        icon: Icons.more_horiz,
-                        iconColor: Theme.of(context).accentColor,
                       )
                     ],
                   ),

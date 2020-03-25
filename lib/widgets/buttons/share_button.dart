@@ -1,3 +1,4 @@
+import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 
 class ShareButton extends StatelessWidget {
@@ -10,26 +11,12 @@ class ShareButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.only(left: 4.0),
-        child: Row(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(right: 6.0),
-              child: Icon(
-                Icons.share,
-                size: 18.0,
-                color: Theme.of(context).textTheme.caption.color,
-              ),
-            ),
-            Text(
-              "Udostępnij",
-              style: TextStyle(
-                fontSize: 14.0,
-                color: Theme.of(context).textTheme.caption.color,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
+        padding: EdgeInsets.symmetric(horizontal: 8.0),
+        alignment: Alignment.center,
+        child: Icon(
+          CommunityMaterialIcons.share_variant,
+          size: 22.0,
+          color: Theme.of(context).textTheme.caption.color,
         ),
       ),
     );

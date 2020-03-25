@@ -10,6 +10,8 @@ export 'entry/entry_footer.dart';
 export 'entry/entry_comment.dart';
 export 'entry/entry.dart';
 export 'entry/entry_open.dart';
+export 'entry/entry_voters.dart';
+export 'entry/entry_bottomsheet.dart';
 export 'entry/entry_footer.dart';
 export 'input/input_bar.dart';
 export 'link/related.dart';

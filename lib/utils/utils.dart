@@ -163,9 +163,9 @@ class Utils {
     return formatter.format(newDate);
   }
 
-  static String getSimpleDate(String date) {
+  static String getSimpleDate(String date, {String locale}) {
     var newDate = DateTime.parse(date);
-    return timeago.format(newDate, locale: 'pl');
+    return timeago.format(newDate, locale: locale ?? 'pl');
   }
 
   static Color voteIconStateColor({bool isSelected, bool negativeIcon}) {
@@ -197,7 +197,7 @@ class Utils {
         ? Color(0xfff0f0f0)
         : Color(0xff282828);
   }
-  
+
   static Color backgroundRoundIconAppbarScroll(BuildContext context) {
     return Theme.of(context).brightness == Brightness.light
         ? Colors.white54
@@ -212,7 +212,7 @@ class Utils {
 
   static Color backgroundCommentButton(BuildContext context) {
     return Theme.of(context).brightness == Brightness.light
-        ? Color(0xffffffff)
+        ? Color(0xfff0f0f0)
         : Color(0xff333333);
   }
 
@@ -252,27 +252,41 @@ class Utils {
   }
 }
 
-Future<bool> showConfirmDialog(
-    BuildContext context, String title) async {
+Future<bool> showConfirmDialog(BuildContext context, String title) async {
   var resolve = false;
   await showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: new Text(title),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+        title: Text(title),
         actions: <Widget>[
-          new FlatButton(
-            child: new Text("Anuluj"),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+          Padding(
+            padding: EdgeInsets.only(right: 4.0, bottom: 2.0),
+            child: FlatButton(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              color: Colors.grey.withOpacity(0.5),
+              textColor: Theme.of(context).textTheme.body1.color,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+              child: Text("Anuluj"),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
           ),
-          new FlatButton(
-            child: new Text("OK"),
-            onPressed: () {
-              resolve = true;
-              Navigator.of(context).pop();
-            },
+          Padding(
+            padding: EdgeInsets.only(right: 12.0, bottom: 2.0),
+            child: FlatButton(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              color: Theme.of(context).accentColor,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+              child: Text("OK"),
+              onPressed: () {
+                resolve = true;
+                Navigator.of(context).pop();
+              },
+            ),
           ),
         ],
       );

@@ -42,6 +42,7 @@ class _AppbarTabsWidgetState extends State<AppbarTabsWidget> {
                   child: Stack(
                     children: <Widget>[
                       Container(
+                        height: kToolbarHeight,
                         color: Theme.of(context).primaryColor,
                         child: TabBar(
                           tabs: widget.tabs,

@@ -64,6 +64,14 @@ class EntriesApi extends ApiResource {
     var voters = client.deserializeList(VoterResponse.serializer, items);
     return voters.map((e) => Voter.fromResponse(response: e)).toList();
   }
+  
+  Future<List<Voter>> getEntryCommentUpVoters(int entryId) async {
+    var items =
+        await client.request('entries', 'commentupvoters', api: [entryId.toString()]);
+    print(items);
+    var voters = client.deserializeList(VoterResponse.serializer, items);
+    return voters.map((e) => Voter.fromResponse(response: e)).toList();
+  }
 
   Future<Entry> addEntry(InputData data) async {
     var entry = await client.request('entries', 'add',

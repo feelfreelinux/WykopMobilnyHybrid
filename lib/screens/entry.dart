@@ -1,9 +1,10 @@
+import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/models/author.dart';
-import 'package:owmflutter/models/voter.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 
 class EntryScreen extends StatefulWidget {
   final EntryModel model;
@@ -22,10 +23,11 @@ class _EntryScreenState extends State<EntryScreen>
   @override
   void initState() {
     _entryModel = (widget.model ?? (EntryModel()..setId(widget.entryId))
-        ..updateEntry()
-        ..loadUpVoters());
+      ..updateEntry()
+      ..loadUpVoters());
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     final mqData = MediaQuery.of(context);
@@ -78,15 +80,34 @@ class _EntryScreenState extends State<EntryScreen>
                           padding: EdgeInsets.only(left: 2.0, right: 6.0),
                           actions: <Widget>[
                             IconButtonWidget(
-                              icon: Icons.refresh,
-                              iconColor: Theme.of(context).accentColor,
-                              padding: EdgeInsets.all(0.0),
-                              onTap: () => refreshIndicatorKey.currentState.show(),
+                              iconSize: 26.0,
+                              icon: model.isFavorite
+                                  ? CommunityMaterialIcons.heart
+                                  : CommunityMaterialIcons.heart_outline,
+                              iconColor: model.isFavorite
+                                  ? Colors.red
+                                  : Theme.of(context).accentColor,
+                              padding: EdgeInsets.fromLTRB(2.0, 0.0, 2.0, 2.0),
+                              iconPadding: EdgeInsets.all(7.0),
+                              onTap: () => model.favoriteToggle(),
                             ),
                             IconButtonWidget(
-                              icon: Icons.more_horiz,
+                              iconSize: 26.0,
+                              icon: CommunityMaterialIcons.share_variant,
                               iconColor: Theme.of(context).accentColor,
-                              onTap: () {},
+                              padding: EdgeInsets.fromLTRB(2.0, 0.0, 2.0, 2.0),
+                              iconPadding: EdgeInsets.all(7.0),
+                              onTap: () => Share.share(
+                                  "https://www.wykop.pl/wpis/" +
+                                      model.id.toString()),
+                            ),
+                            IconButtonWidget(
+                              iconSize: 28.0,
+                              icon: CommunityMaterialIcons.refresh,
+                              iconColor: Theme.of(context).accentColor,
+                              padding: EdgeInsets.fromLTRB(2.0, 0.0, 2.0, 2.0),
+                              onTap: () =>
+                                  refreshIndicatorKey.currentState.show(),
                             )
                           ],
                         ),
@@ -99,7 +120,8 @@ class _EntryScreenState extends State<EntryScreen>
                           child: ScrollConfiguration(
                             behavior: NotSuddenJumpScrollBehavior(),
                             child: InfiniteList(
-                              persistentHeaderBuilder: (context) => EntryOpenWidget(),
+                              persistentHeaderBuilder: (context) =>
+                                  EntryOpenWidget(),
                               itemCount: model.comments.length,
                               itemBuilder: (context, index) =>
                                   ChangeNotifierProvider<

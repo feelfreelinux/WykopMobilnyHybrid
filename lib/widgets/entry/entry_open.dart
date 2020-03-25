@@ -1,60 +1,124 @@
 import 'package:flutter/material.dart';
-import 'package:owmflutter/models/voter.dart';
+import 'package:owmflutter/models/models.dart';
+import 'package:owmflutter/widgets/entry/entry_bottomsheet.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:owmflutter/model/model.dart';
+import 'package:html/parser.dart';
 
 class EntryOpenWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<EntryModel>(
-      builder: (context, model, _) => Material(
-        key: Key(model.id.toString()),
-        color: Theme.of(context).cardColor,
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 18.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(top: 10.0, bottom: 4.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    _drawVotersList(context, model),
-                    VoteButton(
-                      fontSize: 17.0,
-                      isSelected: model.isVoted,
-                      count: model.voteCount,
-                      onClicked: () {
-                        model.voteToggle();
-                      },
-                      onLongClicked: () => model.upvoters.length == 0
-                          ? null
-                          : _showVotersDialog(context, model.upvoters),
+      builder: (context, model, _) => AuthorRelationBuilder(
+        relationType: RelationType.ENTRY,
+        builder: (context, relation) => Material(
+          key: Key(model.id.toString()),
+          color: Theme.of(context).cardColor,
+          child: Padding(
+            padding: EdgeInsets.only(left: 18.0, right: 14.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(top: 10.0, bottom: 4.0, right: 4.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      _drawVotersList(context, model),
+                      VoteButton(
+                        fontSize: 17.0,
+                        isSelected: model.isVoted,
+                        count: model.voteCount,
+                        onClicked: () {
+                          model.voteToggle();
+                        },
+                        onLongClicked: () => model.upvoters.length == 0
+                            ? null
+                            : _showVotersDialog(context, model.upvoters),
+                      ),
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onLongPress: () =>
+                      _showActionsDialog(context, model, relation),
+                  child: BodyWidget(
+                    textSize: 16,
+                    body: model.body,
+                    padding: EdgeInsets.only(
+                        top: 8.0, left: 2.0, right: 6.0, bottom: 2.0),
+                  ),
+                ),
+                Visibility(
+                  visible: model.embed != null,
+                  child: GestureDetector(
+                    onLongPress: () =>
+                        _showActionsDialog(context, model, relation),
+                    child: EmbedWidget(
+                      padding: EdgeInsets.only(top: 12.0, bottom: 2.0, right: 4.0),
+                      embed: model.embed,
+                      type: ImageType.ENTRY,
+                      borderRadius: 18.0,
+                      reducedWidth: 36.0,
                     ),
-                  ],
+                  ),
                 ),
-              ),
-              BodyWidget(
-                textSize: 16,
-                body: model.body,
-                padding: EdgeInsets.only(
-                    top: 8.0, left: 2.0, right: 2.0, bottom: 2.0),
-              ),
-              Visibility(
-                visible: model.embed != null,
-                child: EmbedWidget(
-                  padding: EdgeInsets.only(top: 12.0, bottom: 2.0),
-                  embed: model.embed,
-                  type: ImageType.ENTRY,
-                  borderRadius: 20.0,
-                  reducedWidth: 36.0,
+                Consumer<InputModel>(
+                  builder: (context, inputModel, _) => Padding(
+                    padding: EdgeInsets.only(top: 14.0, bottom: 8.0),
+                    child: Row(
+                      children: <Widget>[
+                        Text(
+                          model.commentsCount.toString() +
+                              " " +
+                              Utils.polishPlural(
+                                count: model.commentsCount,
+                                first: "komentarz",
+                                many: "komentarzy",
+                                other: "komentarze",
+                              ),
+                          style: TextStyle(
+                              fontSize: 20.0, fontWeight: FontWeight.w500),
+                        ),
+                        Expanded(
+                          child: Container(),
+                        ),
+                        InkWell(
+                          borderRadius: BorderRadius.circular(30),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 3.0, horizontal: 8.0),
+                            child: Text(
+                              "Cytuj",
+                              style: TextStyle(fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                          onTap: () => inputModel.inputBarKey.currentState
+                              .quoteText(
+                                  parse(model.body ?? "").documentElement.text,
+                                  author: model.author),
+                        ),
+                        InkWell(
+                          borderRadius: BorderRadius.circular(30),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 3.0, horizontal: 8.0),
+                            child: Text(
+                              "Odpowiedz",
+                              style: TextStyle(fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                          onTap: () => inputModel.inputBarKey.currentState
+                              .replyToUser(model.author),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-              EntryFooterWidget(model, false),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -126,24 +190,20 @@ class EntryOpenWidget extends StatelessWidget {
     );
   }
 
+  void _showActionsDialog(
+      BuildContext contextmain, EntryModel entry, AuthorRelation relation) {
+    showModalBottomSheet<void>(
+      backgroundColor: Colors.transparent,
+      context: contextmain,
+      builder: (BuildContext context) =>
+          EntryBottomsheetWidget(contextmain, entry, relation),
+    );
+  }
+
   void _showVotersDialog(BuildContext context, List<Voter> voters) {
     showDialog(
       context: context,
-      builder: (context) => GreatDialogWidget(
-        padding: EdgeInsets.zero,
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: voters.length,
-          itemBuilder: (context, index) {
-            return AuthorWidget(
-              author: voters[index].author,
-              date: voters[index].date,
-              fontSize: 14.0,
-              avatarBorderColor: Theme.of(context).dialogBackgroundColor,
-            );
-          },
-        ),
-      ),
+      builder: (context) => EntryVotersWidget(voters),
     );
   }
 }
