@@ -11,7 +11,7 @@ abstract class LinkResponse
   String get date;
 
   String get title;
-  
+
   @nullable
   String get description;
 
@@ -39,7 +39,7 @@ abstract class LinkResponse
 
   @BuiltValueField(wireName: "bury_count")
   int get buryCount;
-  
+
   AuthorResponse get author;
 
   @nullable
@@ -50,6 +50,13 @@ abstract class LinkResponse
 
   @BuiltValueField(wireName: "can_vote")
   bool get canVote;
+
+  @nullable
+  @BuiltValueField(wireName: "violation_url")
+  String get violationUrl;
+
+  @nullable
+  String get app;
 
   LinkResponse._();
   static Serializer<LinkResponse> get serializer => _$linkResponseSerializer;

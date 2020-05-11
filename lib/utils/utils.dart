@@ -216,9 +216,17 @@ class Utils {
         : Color(0xff333333);
   }
 
-  static BoxDecoration appBarShadow(bool show,
-      {double blurRadius = 2.0, double opacity = 0.2}) {
+  static BoxDecoration appBarShadow(
+    bool show, {
+    double blurRadius = 2.0,
+    double opacity = 0.2,
+    bool animatedBackground = false,
+    Color animatedBackgroundColor,
+  }) {
     return BoxDecoration(
+      color: animatedBackground
+          ? animatedBackgroundColor.withOpacity(show ? 1.0 : 0.0)
+          : null,
       boxShadow: [
         BoxShadow(
           color: Colors.black.withOpacity(show ? opacity : 0.0),
@@ -282,6 +290,7 @@ Future<bool> showConfirmDialog(BuildContext context, String title) async {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)),
               child: Text("OK"),
+              textColor: Colors.white,
               onPressed: () {
                 resolve = true;
                 Navigator.of(context).pop();

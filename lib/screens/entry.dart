@@ -2,6 +2,7 @@ import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/models/author.dart';
+import 'package:owmflutter/utils/utils.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -49,14 +50,18 @@ class _EntryScreenState extends State<EntryScreen>
                       child: Scaffold(
                         backgroundColor: Theme.of(context).backgroundColor,
                         bottomNavigationBar: InputBarWidget(
+                          isLinkScreen: true,
                           key: model.inputBarKey,
                         ),
                         resizeToAvoidBottomPadding: false,
                         appBar: AppbarNormalWidget(
-                          leading: IconButtonWidget(
-                            icon: Icons.arrow_back,
+                          leading: RoundIconButtonWidget(
+                            icon: Icons.keyboard_backspace,
+                            iconSize: 26.0,
                             onTap: () => Navigator.of(context).pop(),
-                            iconColor: Theme.of(context).accentColor,
+                            padding: EdgeInsets.fromLTRB(8.0, 0.0, 16.0, 0.0),
+                            iconPadding:
+                                EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
                           ),
                           center: Consumer<ShadowControlModel>(
                             builder: (context, shadowControlModel, _) =>
@@ -65,6 +70,7 @@ class _EntryScreenState extends State<EntryScreen>
                                   shadowControlModel.showTopShadow ? 0.0 : 1.0,
                               duration: Duration(milliseconds: 300),
                               child: AuthorWidget(
+                                avatarSize: 36.0,
                                 author: Author.fromAuthState(
                                   username: model.author.login,
                                   avatarUrl: model.author.avatar,
@@ -77,35 +83,34 @@ class _EntryScreenState extends State<EntryScreen>
                               ),
                             ),
                           ),
-                          padding: EdgeInsets.only(left: 2.0, right: 6.0),
+                          padding: EdgeInsets.only(left: 8.0, right: 8.0),
                           actions: <Widget>[
-                            IconButtonWidget(
-                              iconSize: 26.0,
+                            RoundIconButtonWidget(
                               icon: model.isFavorite
-                                  ? CommunityMaterialIcons.heart
-                                  : CommunityMaterialIcons.heart_outline,
-                              iconColor: model.isFavorite
-                                  ? Colors.red
-                                  : Theme.of(context).accentColor,
-                              padding: EdgeInsets.fromLTRB(2.0, 0.0, 2.0, 2.0),
-                              iconPadding: EdgeInsets.all(7.0),
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              iconColor: model.isFavorite ? Colors.red : null,
+                              padding: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
+                              iconPadding:
+                                  EdgeInsets.fromLTRB(6.0, 7.0, 6.0, 5.0),
                               onTap: () => model.favoriteToggle(),
                             ),
-                            IconButtonWidget(
-                              iconSize: 26.0,
-                              icon: CommunityMaterialIcons.share_variant,
-                              iconColor: Theme.of(context).accentColor,
-                              padding: EdgeInsets.fromLTRB(2.0, 0.0, 2.0, 2.0),
-                              iconPadding: EdgeInsets.all(7.0),
+                            RoundIconButtonWidget(
+                              iconSize: 22.0,
+                              icon: Icons.share,
+                              padding: EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 0.0),
+                              iconPadding:
+                                  EdgeInsets.fromLTRB(6.0, 7.0, 8.0, 7.0),
                               onTap: () => Share.share(
                                   "https://www.wykop.pl/wpis/" +
                                       model.id.toString()),
                             ),
-                            IconButtonWidget(
-                              iconSize: 28.0,
-                              icon: CommunityMaterialIcons.refresh,
-                              iconColor: Theme.of(context).accentColor,
-                              padding: EdgeInsets.fromLTRB(2.0, 0.0, 2.0, 2.0),
+                            RoundIconButtonWidget(
+                              iconSize: 26.0,
+                              icon: Icons.refresh,
+                              padding: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
+                              iconPadding:
+                                  EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
                               onTap: () =>
                                   refreshIndicatorKey.currentState.show(),
                             )
@@ -120,8 +125,12 @@ class _EntryScreenState extends State<EntryScreen>
                           child: ScrollConfiguration(
                             behavior: NotSuddenJumpScrollBehavior(),
                             child: InfiniteList(
-                              persistentHeaderBuilder: (context) =>
+                              persistentHeaderBuilder: (context) => Column(
+                                children: <Widget>[
                                   EntryOpenWidget(),
+                                  NoCommentsWidget(model.comments.length == 0)
+                                ],
+                              ),
                               itemCount: model.comments.length,
                               itemBuilder: (context, index) =>
                                   ChangeNotifierProvider<

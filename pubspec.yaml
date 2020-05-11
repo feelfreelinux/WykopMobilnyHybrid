@@ -33,6 +33,7 @@ dependencies:
   youtube_player_flutter: ^6.1.0+4
   flutter_custom_tabs: ^0.6.0
   community_material_icon: ^3.5.95
+  vibration: ^1.2.4
 
 dev_dependencies:
   flutter_test:

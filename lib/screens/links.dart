@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<ShadowControlModel>(
-      create: (context) => ShadowControlModel(),
+      create: (context) => ShadowControlModel(scrollDelayPixels: 0),
       child: DefaultTabController(
         length: 4,
         initialIndex:
@@ -30,89 +30,46 @@ class _HomeScreenState extends State<HomeScreen> {
           resizeToAvoidBottomPadding: false,
           appBar: AppbarTabsWidget(
             tabs: <Widget>[
-              Tab(text: 'Główna'),
+              GestureDetector(child: Tab(text: 'Główna')),
               Tab(text: 'Wykopalisko'),
               Tab(text: 'Hity'),
               Tab(text: 'Ulubione'),
             ],
           ),
           body: TabBarView(
-            //physics: NeverScrollableScrollPhysics(),
             children: [
               LinksList(
-                persistentHeaderBuilder: (context) => Column(
+                header: FloatingTabsHeader(
+                  size: 89,
+                  padding: EdgeInsets.zero,
                   children: <Widget>[
-                    Stack(
-                      children: <Widget>[
-                        SingleChildScrollView(
-                          padding: EdgeInsets.symmetric(horizontal: 9.0),
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: <Widget>[
-                              topIcon("Ciekawostki", "ciekawostki",
-                                  Icons.lightbulb_outline),
-                              topIcon("Nauka", "nauka", Icons.school),
-                              topIcon(
-                                  "Historia", "historia", Icons.calendar_today),
-                              topIcon("Rozrywka", "rozrywka",
-                                  Icons.videogame_asset),
-                              topIcon("Sport", "sport", Icons.rowing),
-                              topIcon("Motoryzacja", "motoryzacja",
-                                  Icons.motorcycle),
-                              topIcon("Syria", "syria", Icons.place),
-                              topIcon("Świat", "swiat", Icons.public),
-                              topIcon("SpaceX", "spacex", Icons.whatshot),
-                              topIcon(
-                                  "Programowanie", "programowanie", Icons.code),
-                              topIcon("Technologia", "technologia",
-                                  Icons.wifi_tethering),
-                              topIcon("AMA", "ama", Icons.question_answer),
-                            ],
-                          ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        padding: EdgeInsets.symmetric(horizontal: 9.0),
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: <Widget>[
+                            topIcon("Ciekawostki", "ciekawostki",
+                                Icons.lightbulb_outline),
+                            topIcon("Nauka", "nauka", Icons.school),
+                            topIcon(
+                                "Historia", "historia", Icons.calendar_today),
+                            topIcon(
+                                "Rozrywka", "rozrywka", Icons.videogame_asset),
+                            topIcon("Sport", "sport", Icons.rowing),
+                            topIcon(
+                                "Motoryzacja", "motoryzacja", Icons.motorcycle),
+                            topIcon("Syria", "syria", Icons.place),
+                            topIcon("Świat", "swiat", Icons.public),
+                            topIcon("SpaceX", "spacex", Icons.whatshot),
+                            topIcon(
+                                "Programowanie", "programowanie", Icons.code),
+                            topIcon("Technologia", "technologia",
+                                Icons.wifi_tethering),
+                            topIcon("AMA", "ama", Icons.question_answer),
+                          ],
                         ),
-                        Positioned(
-                          top: 0,
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Container(
-                                width: 18.0,
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    colors: [
-                                      Theme.of(context).primaryColor,
-                                      Theme.of(context)
-                                          .primaryColor
-                                          .withOpacity(0.0),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: 18.0,
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    colors: [
-                                      Theme.of(context)
-                                          .primaryColor
-                                          .withOpacity(0.0),
-                                      Theme.of(context).primaryColor,
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    DividerWidget(
-                      padding: EdgeInsets.symmetric(horizontal: 18.0),
+                      ),
                     ),
                   ],
                 ),
@@ -181,9 +138,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget topIcon(String title, String tag, IconData icon) {
     return GestureDetector(
       onTap: () =>
-          Navigator.push(context, Utils.getPageTransition(TagScreen(tag: tag))),
+          Navigator.push(context, Utils.getPageSlideToUp(TagScreen(tag: tag))),
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 9.0),
+        padding: EdgeInsets.fromLTRB(9.0, 8.0, 9.0, 12.0),
         child: Column(
           children: <Widget>[
             Container(
@@ -191,8 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: Utils.backgroundGreyOpacity(context),
                 shape: BoxShape.circle,
               ),
-              margin:
-                  EdgeInsets.only(left: 4.0, top: 2.0, right: 4.0, bottom: 6.0),
+              margin: EdgeInsets.fromLTRB(4.0, 2.0, 4.0, 6.0),
               padding: EdgeInsets.all(12.0),
               child: Icon(icon),
             ),

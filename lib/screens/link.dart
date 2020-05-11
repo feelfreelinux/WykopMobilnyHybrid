@@ -1,9 +1,10 @@
+import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:owmflutter/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:owmflutter/model/model.dart';
 import 'package:owmflutter/widgets/widgets.dart';
-import 'package:owmflutter/keys.dart';
+import 'package:share/share.dart';
 
 class LinkScreen extends StatefulWidget {
   final LinkModel model;
@@ -33,7 +34,7 @@ class _LinkScreenState extends State<LinkScreen>
     final mqDataNew = mqData.copyWith(textScaleFactor: 1.0);
 
     return ChangeNotifierProvider<ShadowControlModel>(
-      create: (context) => ShadowControlModel(),
+      create: (context) => ShadowControlModel(scrollDelayPixels: 130),
       child: ChangeNotifierProvider.value(
         value: _linkModel,
         child: Consumer<LinkModel>(
@@ -44,97 +45,134 @@ class _LinkScreenState extends State<LinkScreen>
               child: MediaQuery(
                 data: mqDataNew,
                 child: Scaffold(
-                  bottomNavigationBar: model.isLoading ? Center(child: CircularProgressIndicator(),) : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        model.isResponding ? DividerWidget() : Container(),
-                        model.isResponding
-                            ? Container(
-                                child: Padding(
-                                    padding: const EdgeInsets.only(left: 16.0),
-                                    child: Row(
-                                      children: [
-                                        RichText(
+                  extendBodyBehindAppBar: true,
+                  bottomNavigationBar: model.isLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : InputBarWidget(
+                          key: model.inputBarKey,
+                          isLinkScreen: true,
+                          child: model.isResponding
+                              ? Padding(
+                                  padding:
+                                      EdgeInsets.fromLTRB(16.0, 4.0, 10.0, 0.0),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: RichText(
                                           text: TextSpan(
                                             style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 16),
+                                              fontSize: 14.0,
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .body1
+                                                  .color,
+                                            ),
                                             children: [
                                               TextSpan(
-                                                  text:
-                                                      "W odpowiedzi na komentarz "),
+                                                text: "Odpowiedź na komentarz ",
+                                              ),
                                               TextSpan(
                                                 text: model.respondingTo.login,
                                                 style: TextStyle(
+                                                  fontWeight: FontWeight.w500,
                                                   color: Utils.getAuthorColor(
-                                                      model.respondingTo.color,
-                                                      context),
+                                                    model.respondingTo.color,
+                                                    context,
+                                                  ),
                                                 ),
-                                              )
+                                              ),
                                             ],
                                           ),
                                         ),
-                                        Expanded(
-                                          child: Container(),
-                                        ),
-                                        IconButton(
-                                          icon: Icon(Icons.close),
-                                          onPressed: () => model.cancelReply(),
-                                        ),
-                                      ],
-                                    )),
-                              )
-                            : Container(),
-                        InputBarWidget(
-                          key: model.inputBarKey,
-                          isLinkScreen: true,
-                        )
-                      ]),
+                                      ),
+                                      RoundIconButtonWidget(
+                                        padding: EdgeInsets.zero,
+                                        iconPadding: EdgeInsets.all(4.0),
+                                        icon: Icons.close,
+                                        onTap: () => model.cancelReply(),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Container(),
+                        ),
                   resizeToAvoidBottomPadding: false,
                   appBar: AppbarNormalWidget(
-                    leading: IconButtonWidget(
-                      icon: Icons.arrow_back,
+                    animatedBackground: true,
+                    leading: RoundIconButtonWidget(
+                      icon: Icons.keyboard_backspace,
+                      iconSize: 26.0,
                       onTap: () => Navigator.of(context).pop(),
-                      iconColor: Theme.of(context).accentColor,
+                      padding: EdgeInsets.fromLTRB(8.0, 0.0, 16.0, 0.0),
+                      iconPadding: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
                     ),
-                    padding: EdgeInsets.only(left: 2.0, right: 6.0),
+                    padding: EdgeInsets.only(left: 8.0, right: 8.0),
                     actions: <Widget>[
-                      IconButtonWidget(
+                      RoundIconButtonWidget(
+                        icon: model.isFavorite
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        iconColor: model.isFavorite ? Colors.red : null,
+                        padding: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
+                        iconPadding: EdgeInsets.fromLTRB(6.0, 7.0, 6.0, 5.0),
+                        onTap: () => model.favoriteToggle(),
+                      ),
+                      RoundIconButtonWidget(
+                        iconSize: 22.0,
+                        icon: Icons.share,
+                        padding: EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 0.0),
+                        iconPadding: EdgeInsets.fromLTRB(6.0, 7.0, 8.0, 7.0),
+                        onTap: () => Share.share(model.title +
+                            "\r\nhttps://www.wykop.pl/link/" +
+                            model.id.toString()),
+                      ),
+                      RoundIconButtonWidget(
+                        iconSize: 26.0,
                         icon: Icons.refresh,
-                        padding: EdgeInsets.all(0.0),
-                        iconColor: Theme.of(context).accentColor,
+                        padding: EdgeInsets.fromLTRB(8.0, 0.0, 8.0, 0.0),
+                        iconPadding: EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 5.0),
                         onTap: () => refreshIndicatorKey.currentState.show(),
                       )
                     ],
                   ),
                   body: Container(
-                    decoration:
-                        BoxDecoration(color: Theme.of(context).backgroundColor),
+                    color: Theme.of(context).backgroundColor,
                     child: RefreshIndicator(
+                      displacement: 100.0,
                       key: refreshIndicatorKey,
-                      onRefresh: () {
-                        return model.loadComments();
-                      },
+                      onRefresh: () => model.loadComments(),
                       child: ScrollConfiguration(
                         behavior: NotSuddenJumpScrollBehavior(),
                         child: ShadowNotificationListener(
                           child: Consumer<LinkModel>(
-                            builder: (context, commModel, _) => ListView.builder(
+                            builder: (context, commModel, _) =>
+                                ListView.builder(
+                              padding: EdgeInsets.all(0),
                               physics: AlwaysScrollableScrollPhysics(),
                               itemCount: commModel.comments.length + 1,
                               itemBuilder: (context, index) {
-                                if (index == 0) {
-                                  return LinkOpenedWidget();
-                                }
-                                return ChangeNotifierProvider<LinkCommentModel>.value(
+                                if (index == 0)
+                                  return Column(
+                                    children: <Widget>[
+                                      LinkOpenedWidget(),
+                                      NoCommentsWidget(
+                                          model.comments.length == 0)
+                                    ],
+                                  );
+                                return ChangeNotifierProvider<
+                                    LinkCommentModel>.value(
                                   value: commModel.comments[index - 1],
                                   child: AuthorRelationBuilder(
                                     relationType: RelationType.LINK_COMMENT,
                                     builder: (context, relation) =>
                                         LinkCommentWidget(
-                                            linkId: model.id, relation: relation),
+                                      linkId: model.id,
+                                      relation: relation,
+                                    ),
                                   ),
                                 );
                               },

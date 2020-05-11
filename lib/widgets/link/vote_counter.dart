@@ -4,6 +4,7 @@ import 'package:owmflutter/owm_glyphs.dart';
 
 class VoteCounterWidget extends StatelessWidget {
   final VoidCallback onTap;
+  final VoidCallback onLongPress;
   final LinkVoteState voteState;
   final num count;
   final bool isHot;
@@ -12,6 +13,7 @@ class VoteCounterWidget extends StatelessWidget {
 
   VoteCounterWidget({
     @required this.onTap,
+    @required this.onLongPress,
     @required this.voteState,
     @required this.count,
     @required this.isHot,
@@ -25,6 +27,7 @@ class VoteCounterWidget extends StatelessWidget {
       padding: padding,
       child: GestureDetector(
         onTap: onTap,
+        onLongPress: onLongPress,
         child: Stack(
           alignment: Alignment.center,
           children: <Widget>[
@@ -37,39 +40,32 @@ class VoteCounterWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            _hotIcon(context),
+            Visibility(
+              visible: isHot,
+              child: Positioned(
+                top: 0,
+                right: 0,
+                child: Container(
+                  padding: EdgeInsets.only(bottom: (size / 32)),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Theme.of(context).cardColor,
+                  ),
+                  child: Icon(OwmGlyphs.ic_hot,
+                      size: (size / 3.7), color: Colors.red),
+                ),
+              ),
+            ),
             Text(
               count.toString(),
               style: TextStyle(
                 letterSpacing: -(size / 100.00),
-                fontSize: (size / 3.2),
+                fontSize: (size / 3.0),
                 fontWeight: FontWeight.w700,
                 color: Color(0xffff5917),
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _hotIcon(BuildContext context) {
-    return Visibility(
-      visible: isHot,
-      child: Positioned(
-        top: 0,
-        right: 0,
-        child: Container(
-          padding: EdgeInsets.only(bottom: (size / 32)),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: Theme.of(context).cardColor,
-          ),
-          child: Icon(
-            OwmGlyphs.ic_hot,
-            size: (size / 3.7),
-            color: Colors.red,
-          ),
         ),
       ),
     );

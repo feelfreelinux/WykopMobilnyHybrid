@@ -41,6 +41,10 @@ class _$Link extends Link {
   final bool isExpanded;
   @override
   final bool canVote;
+  @override
+  final String violationUrl;
+  @override
+  final String app;
 
   factory _$Link([void Function(LinkBuilder) updates]) =>
       (new LinkBuilder()..update(updates)).build();
@@ -62,7 +66,9 @@ class _$Link extends Link {
       this.preview,
       this.isHot,
       this.isExpanded,
-      this.canVote})
+      this.canVote,
+      this.violationUrl,
+      this.app})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('Link', 'id');
@@ -141,7 +147,9 @@ class _$Link extends Link {
         preview == other.preview &&
         isHot == other.isHot &&
         isExpanded == other.isExpanded &&
-        canVote == other.canVote;
+        canVote == other.canVote &&
+        violationUrl == other.violationUrl &&
+        app == other.app;
   }
 
   @override
@@ -162,24 +170,33 @@ class _$Link extends Link {
                                                         $jc(
                                                             $jc(
                                                                 $jc(
-                                                                    $jc(0,
-                                                                        id.hashCode),
-                                                                    date.hashCode),
-                                                                title.hashCode),
-                                                            description.hashCode),
-                                                        tags.hashCode),
-                                                    sourceUrl.hashCode),
-                                                voteCount.hashCode),
-                                            buryCount.hashCode),
-                                        isFavorite.hashCode),
-                                    commentsCount.hashCode),
-                                relatedCount.hashCode),
-                            voteState.hashCode),
-                        author.hashCode),
-                    preview.hashCode),
-                isHot.hashCode),
-            isExpanded.hashCode),
-        canVote.hashCode));
+                                                                    $jc(
+                                                                        $jc(
+                                                                            $jc(
+                                                                                0,
+                                                                                id
+                                                                                    .hashCode),
+                                                                            date
+                                                                                .hashCode),
+                                                                        title
+                                                                            .hashCode),
+                                                                    description
+                                                                        .hashCode),
+                                                                tags.hashCode),
+                                                            sourceUrl.hashCode),
+                                                        voteCount.hashCode),
+                                                    buryCount.hashCode),
+                                                isFavorite.hashCode),
+                                            commentsCount.hashCode),
+                                        relatedCount.hashCode),
+                                    voteState.hashCode),
+                                author.hashCode),
+                            preview.hashCode),
+                        isHot.hashCode),
+                    isExpanded.hashCode),
+                canVote.hashCode),
+            violationUrl.hashCode),
+        app.hashCode));
   }
 
   @override
@@ -201,7 +218,9 @@ class _$Link extends Link {
           ..add('preview', preview)
           ..add('isHot', isHot)
           ..add('isExpanded', isExpanded)
-          ..add('canVote', canVote))
+          ..add('canVote', canVote)
+          ..add('violationUrl', violationUrl)
+          ..add('app', app))
         .toString();
   }
 }
@@ -277,6 +296,14 @@ class LinkBuilder implements Builder<Link, LinkBuilder> {
   bool get canVote => _$this._canVote;
   set canVote(bool canVote) => _$this._canVote = canVote;
 
+  String _violationUrl;
+  String get violationUrl => _$this._violationUrl;
+  set violationUrl(String violationUrl) => _$this._violationUrl = violationUrl;
+
+  String _app;
+  String get app => _$this._app;
+  set app(String app) => _$this._app = app;
+
   LinkBuilder();
 
   LinkBuilder get _$this {
@@ -298,6 +325,8 @@ class LinkBuilder implements Builder<Link, LinkBuilder> {
       _isHot = _$v.isHot;
       _isExpanded = _$v.isExpanded;
       _canVote = _$v.canVote;
+      _violationUrl = _$v.violationUrl;
+      _app = _$v.app;
       _$v = null;
     }
     return this;
@@ -338,7 +367,9 @@ class LinkBuilder implements Builder<Link, LinkBuilder> {
               preview: preview,
               isHot: isHot,
               isExpanded: isExpanded,
-              canVote: canVote);
+              canVote: canVote,
+              violationUrl: violationUrl,
+              app: app);
     } catch (_) {
       String _$failedField;
       try {

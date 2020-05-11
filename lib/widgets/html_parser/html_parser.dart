@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart' as html show parse;
 import 'package:html/dom.dart' as html;
+import 'package:owmflutter/screens/profile.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:owmflutter/navigator/navigator.dart';
 import 'package:flutter/gestures.dart';
@@ -195,14 +196,23 @@ class _HtmlParser {
           );
           return;
         } else if (element.attributes['href'].startsWith('@')) {
-          _tokenizeBody(
-            element.text,
-            style: TextStyle(
-              fontSize: textSize,
-              decoration: linkColor != textColor && linkColor != null
-                  ? TextDecoration.none
-                  : TextDecoration.underline,
-              color: linkColor ?? textColor,
+          _currentTextSpans.add(
+            ClickableTextSpan(
+              text: element.text,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  Utils.getPageSlideRight(
+                      ProfileScreen(username: element.text)),
+                );
+              },
+              style: TextStyle(
+                fontSize: textSize,
+                decoration: linkColor != textColor && linkColor != null
+                    ? TextDecoration.none
+                    : TextDecoration.underline,
+                color: linkColor ?? textColor,
+              ),
             ),
           );
           return;

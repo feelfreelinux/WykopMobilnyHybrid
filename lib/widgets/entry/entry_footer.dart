@@ -6,34 +6,44 @@ import 'package:share/share.dart';
 import 'package:owmflutter/model/model.dart';
 
 class EntryFooterWidget extends StatelessWidget {
-  final EntryModel entry;
+  final EntryModel model;
   final bool isClickable;
+  final AuthStateModel authStateModel;
   final AuthorRelation relation;
+  final EdgeInsets padding;
 
-  EntryFooterWidget(this.entry, this.isClickable, this.relation);
+  EntryFooterWidget({
+    @required this.model,
+    @required this.isClickable,
+    @required this.authStateModel,
+    @required this.relation,
+    this.padding,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 46.0,
+      padding: padding,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           FavoriteButton(
-            isFavorite: entry.isFavorite,
-            onTap: () => entry.favoriteToggle(),
+            isFavorite: model.isFavorite,
+            onTap: () => model.favoriteToggle(),
           ),
           ShareButton(
             onTap: () =>
-                Share.share("https://www.wykop.pl/wpis/" + entry.id.toString()),
+                Share.share("https://www.wykop.pl/wpis/" + model.id.toString()),
           ),
           CommentsButton(
-            count: entry.commentsCount,
-            onLongPress: () => _showActionsDialog(context, entry, relation),
+            count: model.commentsCount,
+            onLongPress: () =>
+                _showActionsDialog(context, model, authStateModel, relation),
             onTap: () {
               if (isClickable)
                 Navigator.push(
-                    context, Utils.getPageSlideToUp(EntryScreen(model: entry)));
+                    context, Utils.getPageSlideToUp(EntryScreen(model: model)));
             },
           ),
         ],
@@ -41,13 +51,13 @@ class EntryFooterWidget extends StatelessWidget {
     );
   }
 
-  void _showActionsDialog(
-      BuildContext contextmain, EntryModel entry, AuthorRelation relation) {
+  void _showActionsDialog(BuildContext contextmain, EntryModel model,
+      AuthStateModel authStateModel, AuthorRelation relation) {
     showModalBottomSheet<void>(
       backgroundColor: Colors.transparent,
       context: contextmain,
       builder: (BuildContext context) =>
-          EntryBottomsheetWidget(contextmain, entry, relation),
+          EntryToolbarWidget(contextmain, model, authStateModel, relation),
     );
   }
 }

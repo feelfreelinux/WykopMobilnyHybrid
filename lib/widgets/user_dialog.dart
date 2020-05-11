@@ -41,7 +41,17 @@ class _UserDialogWidgetState extends State<UserDialogWidget>
           child: ScaleTransition(
             scale: animation,
             child: Container(
+              width: MediaQuery.of(context).orientation == Orientation.portrait
+                  ? null
+                  : (MediaQuery.of(context).size.width / 2) + 28.0,
               decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black38,
+                    blurRadius: 8.0,
+                    offset: Offset(0.0, 1.0),
+                  )
+                ],
                 color: Theme.of(context).dialogBackgroundColor,
                 borderRadius: BorderRadius.circular(20.0),
               ),

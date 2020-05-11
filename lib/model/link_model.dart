@@ -54,6 +54,8 @@ class LinkModel extends InputModel {
   LinkVoteState _voteState;
   bool _isFavorite;
   List<LinkCommentModel> _comments = [];
+  String _violationUrl;
+  String _app;
 
   int _respondingTo = -1;
 
@@ -63,6 +65,7 @@ class LinkModel extends InputModel {
   int get id => _id;
   String get date => _date;
   int get voteCount => _voteCount;
+  int get buryCount => _buryCount;
   Author get author => _author;
   String get title => (_title ?? "").replaceAll('&quot;', '"').replaceAll('&amp;', '&');
   String get description =>
@@ -76,6 +79,8 @@ class LinkModel extends InputModel {
   bool get isFavorite => _isFavorite;
   bool get isExpanded => _isExpanded;
   bool get canVote => _canVote;
+  String get violationUrl => _violationUrl;
+  String get app => _app;
 
   int get commentsCount => _commentsCount;
   LinkVoteState get voteState => _voteState;
@@ -106,6 +111,8 @@ class LinkModel extends InputModel {
     _voteState = link.voteState;
     _comments = [];
     _commentsCount = link.commentsCount;
+    _violationUrl = link.violationUrl;
+    _app = link.app;
     notifyListeners();
   }
 

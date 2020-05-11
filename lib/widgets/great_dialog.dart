@@ -39,7 +39,19 @@ class _GreatDialogWidgetState extends State<GreatDialogWidget>
         child: ScaleTransition(
           scale: animation,
           child: Container(
-            margin: widget.margin ?? EdgeInsets.all(14.0),
+            decoration: BoxDecoration(
+              color: Theme.of(context).dialogBackgroundColor,
+              borderRadius: BorderRadius.circular(20.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black38,
+                  blurRadius: 8.0,
+                  offset: Offset(0.0, 1.0),
+                )
+              ],
+            ),
+            margin: widget.margin ??
+                EdgeInsets.symmetric(horizontal: 22.0, vertical: 14.0),
             child: ClipRRect(
               clipBehavior: Clip.hardEdge,
               borderRadius: BorderRadius.circular(20.0),

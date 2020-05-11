@@ -34,6 +34,7 @@ enum RelationType {
   ENTRY,
   LINK_COMMENT,
   LINK_COMMENTS_LIST,
+  LINK,
 }
 
 typedef Widget AuthorRelationWidgetBuilder(
@@ -114,6 +115,16 @@ class AuthorRelationBuilder extends StatelessWidget {
 
         if (authModel.loggedIn &&
             commentModel.author.login == authModel.login) {
+          return builder(context, AuthorRelation.User);
+        }
+        break;
+      case RelationType.LINK:
+        var linkModel = Provider.of<LinkModel>(context, listen: false);
+        if (highlightId != null && linkModel.id == highlightId.id) {
+          return builder(context, AuthorRelation.Highlight);
+        }
+
+        if (authModel.loggedIn && linkModel.author.login == authModel.login) {
           return builder(context, AuthorRelation.User);
         }
         break;

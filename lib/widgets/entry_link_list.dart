@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:owmflutter/model/model.dart';
-import 'package:owmflutter/utils/owm_settings.dart';
 import 'package:owmflutter/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -9,7 +8,11 @@ class EntriesLinksList extends StatefulWidget {
   final Widget header;
   final WidgetBuilder persistentHeaderBuilder;
 
-  EntriesLinksList({this.builder, this.header, this.persistentHeaderBuilder});
+  EntriesLinksList({
+    this.builder,
+    this.header,
+    this.persistentHeaderBuilder,
+  });
 
   @override
   EntriesLinksListState createState() {
@@ -43,7 +46,7 @@ class EntriesLinksListState extends State<EntriesLinksList>
                 if (model.items[index] is EntryModel) {
                   return ListenableProvider<EntryModel>.value(
                     value: model.items[index],
-                    child: NewEntryWidget(ellipsize: true),
+                    child: EntryWidget(ellipsize: true),
                   );
                 } else {
                   return ListenableProvider<LinkModel>.value(

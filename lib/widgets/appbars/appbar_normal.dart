@@ -13,6 +13,7 @@ class AppbarNormalWidget extends StatefulWidget implements PreferredSizeWidget {
   final EdgeInsets padding;
   final EdgeInsets titlePadding;
   final bool shadow;
+  final bool animatedBackground;
   final Widget bottom;
   final double bottomHeight;
   final double toolbarHeight;
@@ -26,6 +27,7 @@ class AppbarNormalWidget extends StatefulWidget implements PreferredSizeWidget {
     this.padding,
     this.titlePadding = const EdgeInsets.symmetric(horizontal: 8.0),
     this.shadow,
+    this.animatedBackground = false,
     this.bottom,
     this.bottomHeight = 48.0,
     this.toolbarHeight = kToolbarHeight,
@@ -47,8 +49,13 @@ class _AppbarNormalWidgetState extends State<AppbarNormalWidget> {
       builder: (context, shadowControlModel, _) => AnimatedContainer(
         duration: Duration(milliseconds: 200),
         decoration: Utils.appBarShadow(
-            widget.shadow ?? shadowControlModel.showTopShadow),
+          widget.shadow ?? shadowControlModel.showTopShadow,
+          animatedBackground: widget.animatedBackground,
+          animatedBackgroundColor: Theme.of(context).primaryColor,
+        ),
         child: AppBar(
+          backgroundColor:
+              widget.animatedBackground ? Colors.transparent : null,
           bottom: widget.bottom != null
               ? PreferredSize(
                   preferredSize: Size.fromHeight(widget.bottomHeight),

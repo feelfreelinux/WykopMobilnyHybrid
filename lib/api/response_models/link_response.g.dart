@@ -76,6 +76,18 @@ class _$LinkResponseSerializer implements StructuredSerializer<LinkResponse> {
         ..add(serializers.serialize(object.preview,
             specifiedType: const FullType(String)));
     }
+    if (object.violationUrl != null) {
+      result
+        ..add('violation_url')
+        ..add(serializers.serialize(object.violationUrl,
+            specifiedType: const FullType(String)));
+    }
+    if (object.app != null) {
+      result
+        ..add('app')
+        ..add(serializers.serialize(object.app,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -154,6 +166,14 @@ class _$LinkResponseSerializer implements StructuredSerializer<LinkResponse> {
           result.canVote = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool;
           break;
+        case 'violation_url':
+          result.violationUrl = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'app':
+          result.app = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
       }
     }
 
@@ -194,6 +214,10 @@ class _$LinkResponse extends LinkResponse {
   final bool isHot;
   @override
   final bool canVote;
+  @override
+  final String violationUrl;
+  @override
+  final String app;
 
   factory _$LinkResponse([void Function(LinkResponseBuilder) updates]) =>
       (new LinkResponseBuilder()..update(updates)).build();
@@ -214,7 +238,9 @@ class _$LinkResponse extends LinkResponse {
       this.author,
       this.preview,
       this.isHot,
-      this.canVote})
+      this.canVote,
+      this.violationUrl,
+      this.app})
       : super._() {
     if (id == null) {
       throw new BuiltValueNullFieldError('LinkResponse', 'id');
@@ -280,7 +306,9 @@ class _$LinkResponse extends LinkResponse {
         author == other.author &&
         preview == other.preview &&
         isHot == other.isHot &&
-        canVote == other.canVote;
+        canVote == other.canVote &&
+        violationUrl == other.violationUrl &&
+        app == other.app;
   }
 
   @override
@@ -300,23 +328,32 @@ class _$LinkResponse extends LinkResponse {
                                                     $jc(
                                                         $jc(
                                                             $jc(
-                                                                $jc(0,
-                                                                    id.hashCode),
-                                                                date.hashCode),
-                                                            title.hashCode),
-                                                        description.hashCode),
-                                                    tags.hashCode),
-                                                favorite.hashCode),
-                                            userVote.hashCode),
-                                        sourceUrl.hashCode),
-                                    voteCount.hashCode),
-                                commentsCount.hashCode),
-                            relatedCount.hashCode),
-                        buryCount.hashCode),
-                    author.hashCode),
-                preview.hashCode),
-            isHot.hashCode),
-        canVote.hashCode));
+                                                                $jc(
+                                                                    $jc(
+                                                                        $jc(
+                                                                            0,
+                                                                            id
+                                                                                .hashCode),
+                                                                        date
+                                                                            .hashCode),
+                                                                    title
+                                                                        .hashCode),
+                                                                description
+                                                                    .hashCode),
+                                                            tags.hashCode),
+                                                        favorite.hashCode),
+                                                    userVote.hashCode),
+                                                sourceUrl.hashCode),
+                                            voteCount.hashCode),
+                                        commentsCount.hashCode),
+                                    relatedCount.hashCode),
+                                buryCount.hashCode),
+                            author.hashCode),
+                        preview.hashCode),
+                    isHot.hashCode),
+                canVote.hashCode),
+            violationUrl.hashCode),
+        app.hashCode));
   }
 
   @override
@@ -337,7 +374,9 @@ class _$LinkResponse extends LinkResponse {
           ..add('author', author)
           ..add('preview', preview)
           ..add('isHot', isHot)
-          ..add('canVote', canVote))
+          ..add('canVote', canVote)
+          ..add('violationUrl', violationUrl)
+          ..add('app', app))
         .toString();
   }
 }
@@ -411,6 +450,14 @@ class LinkResponseBuilder
   bool get canVote => _$this._canVote;
   set canVote(bool canVote) => _$this._canVote = canVote;
 
+  String _violationUrl;
+  String get violationUrl => _$this._violationUrl;
+  set violationUrl(String violationUrl) => _$this._violationUrl = violationUrl;
+
+  String _app;
+  String get app => _$this._app;
+  set app(String app) => _$this._app = app;
+
   LinkResponseBuilder();
 
   LinkResponseBuilder get _$this {
@@ -431,6 +478,8 @@ class LinkResponseBuilder
       _preview = _$v.preview;
       _isHot = _$v.isHot;
       _canVote = _$v.canVote;
+      _violationUrl = _$v.violationUrl;
+      _app = _$v.app;
       _$v = null;
     }
     return this;
@@ -470,7 +519,9 @@ class LinkResponseBuilder
               author: author.build(),
               preview: preview,
               isHot: isHot,
-              canVote: canVote);
+              canVote: canVote,
+              violationUrl: violationUrl,
+              app: app);
     } catch (_) {
       String _$failedField;
       try {

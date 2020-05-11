@@ -13,7 +13,7 @@ class FavoriteButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         alignment: Alignment.center,
-        padding: EdgeInsets.only(right: 10.0),
+        padding: EdgeInsets.symmetric(horizontal: 8.0),
         child: AnimatedCrossFade(
           duration: Duration(milliseconds: 300),
           firstChild: Icon(

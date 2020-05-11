@@ -17,7 +17,7 @@ abstract class Link implements Built<Link, LinkBuilder> {
   String get sourceUrl;
 
   int get voteCount;
-  
+
   int get buryCount;
 
   bool get isFavorite;
@@ -37,6 +37,12 @@ abstract class Link implements Built<Link, LinkBuilder> {
   bool get isExpanded;
 
   bool get canVote;
+
+  @nullable
+  String get violationUrl;
+  
+  @nullable
+  String get app;
 
   factory Link.mapFromResponse(LinkResponse response) {
     var voteState = LinkVoteState.NONE;
@@ -71,6 +77,8 @@ abstract class Link implements Built<Link, LinkBuilder> {
       description: response.description ?? '',
       relatedCount: response.relatedCount,
       tags: response.tags,
+      violationUrl: response.violationUrl,
+      app: response.app,
     );
   }
 

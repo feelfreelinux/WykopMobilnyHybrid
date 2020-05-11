@@ -6,14 +6,17 @@ import 'package:provider/provider.dart';
 
 class FloatingTabsHeader extends StatelessWidget {
   final List<Widget> children;
+  final double size;
+  final EdgeInsets padding;
 
-  FloatingTabsHeader({this.children});
+  FloatingTabsHeader({this.children, this.size, this.padding});
 
   @override
   Widget build(BuildContext context) {
     return SliverPersistentHeader(
       floating: true,
       delegate: SizedSliverHeaderDelegate(
+        size: size ?? 44,
         builder: (context) => OWMSettingListener(
           rebuildOnChange: (owmSettings) => owmSettings.useDarkThemeStream,
           builder: (context, settings) {
@@ -26,8 +29,7 @@ class FloatingTabsHeader extends StatelessWidget {
               child: Material(
                 color: Theme.of(context).backgroundColor,
                 child: Padding(
-                  padding: EdgeInsets.only(
-                      bottom: 8.0, top: 8.0, right: 18.0, left: 18.0),
+                  padding: padding ?? EdgeInsets.fromLTRB(18.0, 8.0, 18.0, 8.0),
                   child: Row(children: children),
                 ),
               ),

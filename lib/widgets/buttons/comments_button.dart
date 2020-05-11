@@ -16,6 +16,7 @@ class CommentsButton extends StatelessWidget {
         onTap: onTap,
         onLongPress: onLongPress ?? null,
         child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 10.0),
           alignment: Alignment.centerRight,
           color: Colors.transparent,
           child: Text(

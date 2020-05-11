@@ -6,38 +6,34 @@ import 'package:owmflutter/utils/utils.dart';
 import 'package:share/share.dart';
 
 class LinkFooterWidget extends StatelessWidget {
-  final LinkModel link;
-  final bool isClickable;
+  final LinkModel model;
+  final EdgeInsets padding;
 
-  LinkFooterWidget({this.link, this.isClickable});
+  LinkFooterWidget({this.model, this.padding});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 46.0,
+      padding: padding,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           FavoriteButton(
-            isFavorite: link.isFavorite,
-            onTap: () => link.favoriteToggle(),
-          ),
-          CommentsButton(
-            count: link.commentsCount,
-            onTap: () {
-              if (isClickable) {
-                Navigator.push(
-                  context,
-                  Utils.getPageTransition(LinkScreen(model: link)),
-                );
-              }
-            },
+            isFavorite: model.isFavorite,
+            onTap: () => model.favoriteToggle(),
           ),
           ShareButton(
-            onTap: () => Share.share(link.title +
-                "\nhttps://www.wykop.pl/link/" +
-                link.id.toString()),
+            onTap: () => Share.share(
+                "${model.title}\r\nhttps://www.wykop.pl/link/${model.id}"),
+          ),
+          CommentsButton(
+            count: model.commentsCount,
+            onTap: () => Navigator.push(
+              context,
+              Utils.getPageSlideToUp(LinkScreen(model: model)),
+            ),
           ),
         ],
       ),

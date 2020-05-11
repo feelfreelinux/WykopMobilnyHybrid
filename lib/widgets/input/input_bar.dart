@@ -27,6 +27,7 @@ class InputBarWidget extends StatefulWidget {
   final InputData existingInputData;
   final bool isPMScreen;
   final bool isLinkScreen;
+  final Widget child;
 
   InputBarWidget({
     @required Key key,
@@ -37,6 +38,7 @@ class InputBarWidget extends StatefulWidget {
     this.hintText = 'Treść komentarza',
     this.isPMScreen = false,
     this.isLinkScreen = false,
+    this.child,
   }) : super(key: key);
 
   InputBarWidgetState createState() => InputBarWidgetState();
@@ -162,6 +164,7 @@ class InputBarWidgetState extends State<InputBarWidget> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       _drawSuggestions(),
+                      widget.child ?? Container(),
                       hasExternalInput ? Container() : _drawInputBar(),
                       _drawButtons(),
                     ],
